@@ -1,23 +1,14 @@
-package domain.usuarios;
+package ar.edu.utn.frba.dds.utils;
+
+import ar.edu.utn.frba.dds.usuarios.Usuario;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class Usuario {
-    private String user;
-    private String password;
-
-    public Usuario(String user, String password) throws ContraseñaInvalidaException {
-        this.user = user;
-        if(!esContraseniaSegura(password)){
-            throw new ContraseñaInvalidaException("La contraseña no es segura");
-        }
-        this.password = password;
-    }
-
-    private boolean esContraseniaSegura(String password) {
+public class ValidadorDeContrasenias {
+    public static boolean esValida(String contrasenia) {
         ClassLoader classLoader = Usuario.class.getClassLoader();
         URL path_contrasenias_inseguras = classLoader.getResource("textFiles/list-top-10000.txt");
 
@@ -25,7 +16,7 @@ public class Usuario {
             try (BufferedReader lector = new BufferedReader(new InputStreamReader(path_contrasenias_inseguras.openStream()))) {
                 String contrasenia_insegura;
                 while ((contrasenia_insegura = lector.readLine()) != null) {
-                    if(contrasenia_insegura.equals(password)){
+                    if(contrasenia_insegura.equals(contrasenia)){
                         return false;
                     }
                 }
@@ -36,17 +27,23 @@ public class Usuario {
             System.out.println("No se encontró el archivo de las 10 mil contrasenias más inseguras. Revisar el path");
             return false;
         }
-
-        if (password.length() < 8) {
+        if (contrasenia.length() < 8) {
             return false;
         } // Para saber si tiene al menos 8 caracteres
-        
-        return true;
-    }
-
-    public static class ContraseñaInvalidaException extends Exception {
-        public ContraseñaInvalidaException(String message) {
-            super(message);
-        }
+        else if (contrasenia.length() > 64) {
+            return false;
+        } // Para saber si tiene al menos 8 caracteres
+        else if (!contrasenia.matches(".*[a-z].*")) {
+            return false;
+        } // Para saber si tiene al menos una letra minúscula
+        else if (!contrasenia.matches(".*[A-Z].*")) {
+            return false;
+        } // Para saber si tiene al menos una letra mayúscula
+        else
+            if (!contrasenia.matches(".*[0-9].*")) {
+            return false;
+        } // Para saber si tiene al menos un número
+        else return contrasenia.matches(".*[!@#$%^&*].*");
+        // Si tiene caracter especial, devuelve true xq ya evaluo el resto y dieron tru. Si no tiene devuelve false
     }
 }

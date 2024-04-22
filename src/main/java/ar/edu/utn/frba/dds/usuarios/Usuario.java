@@ -6,17 +6,12 @@ public class Usuario {
     private String user;
     private String password;
 
-    public Usuario(String user, String password) throws ContraseniaInvalidaException {
-        this.user = user;
-        if(!ValidadorDeContrasenias.esValida(password)){
-            throw new ContraseniaInvalidaException("La contraseña no es segura");
+    public Usuario(String user, String password) throws ValidadorDeContrasenias.ContraseniaInvalidaException {
+        if(ValidadorDeContrasenias.esValida(password)){
+            this.user = user;
+            this.password = password;
         }
-        this.password = password;
     }
 
-    public static class ContraseniaInvalidaException extends Exception {
-        public ContraseniaInvalidaException(String message) {
-            super(message);
-        }
-    }
+
 }

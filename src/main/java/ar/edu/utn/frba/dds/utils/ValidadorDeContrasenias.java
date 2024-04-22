@@ -47,9 +47,10 @@ public class ValidadorDeContrasenias {
     }
 
     public static boolean esValida(String contrasenia) throws ContraseniaInvalidaException {
-        return new ValidadorDeContrasenias().cumpleConLaLongitud(contrasenia) &&
-                new ValidadorDeContrasenias().cumpleConConvencionDeCaracteres(contrasenia) &&
-                new ValidadorDeContrasenias().estaEntreLas10milMasUsadas(contrasenia);
+        ValidadorDeContrasenias validadorDeContrasenias = new ValidadorDeContrasenias();
+        return validadorDeContrasenias.cumpleConLaLongitud(contrasenia) &&
+                validadorDeContrasenias.cumpleConConvencionDeCaracteres(contrasenia) &&
+                validadorDeContrasenias.estaEntreLas10milMasUsadas(contrasenia);
     }
 
     public static class ContraseniaInvalidaException extends Exception {

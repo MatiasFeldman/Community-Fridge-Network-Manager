@@ -1,0 +1,17 @@
+package ar.edu.utn.frba.dds.usuarios;
+
+import ar.edu.utn.frba.dds.utils.ValidadorDeContrasenias;
+
+public class Usuario {
+    private String user;
+    private String password;
+
+    public Usuario(String user, String password) throws ValidadorDeContrasenias.ContraseniaInvalidaException {
+        if(ValidadorDeContrasenias.esValida(password)){
+            this.user = user;
+            this.password = password;
+        }
+    }
+
+
+}

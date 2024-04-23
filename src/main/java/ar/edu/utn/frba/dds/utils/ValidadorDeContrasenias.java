@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.usuarios.Usuario;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,8 +23,8 @@ public class ValidadorDeContrasenias {
     }
 
     public Boolean estaEntreLas10milMasUsadas(String contrasenia) throws ContraseniaInvalidaException{
-        ClassLoader classLoader = Usuario.class.getClassLoader();
-        URL path_contrasenias_inseguras = classLoader.getResource("textFiles/list-top-10000.txt");
+        // Quiero acceder a resources/textFiles/list-top-10000.txt
+        URL path_contrasenias_inseguras = ValidadorDeContrasenias.class.getClassLoader().getResource("textFiles/list-top-10000.txt");
 
         if (path_contrasenias_inseguras != null) { // Para saber si está entre las 10k más inseguras
             try (BufferedReader lector = new BufferedReader(new InputStreamReader(path_contrasenias_inseguras.openStream()))) {
@@ -49,8 +47,8 @@ public class ValidadorDeContrasenias {
     public static boolean esValida(String contrasenia) throws ContraseniaInvalidaException {
         ValidadorDeContrasenias validadorDeContrasenias = new ValidadorDeContrasenias();
         return validadorDeContrasenias.cumpleConLaLongitud(contrasenia) &&
-                validadorDeContrasenias.cumpleConConvencionDeCaracteres(contrasenia) &&
-                validadorDeContrasenias.estaEntreLas10milMasUsadas(contrasenia);
+                validadorDeContrasenias.estaEntreLas10milMasUsadas(contrasenia) &&
+                validadorDeContrasenias.cumpleConConvencionDeCaracteres(contrasenia);
     }
 
     public static class ContraseniaInvalidaException extends Exception {

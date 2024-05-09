@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.usuarios;
 
-import ar.edu.utn.frba.dds.utils.ValidadorDeContrasenias;
+import ar.edu.utn.frba.dds.seguridad.*;
 
 public class Usuario {
     private String user;
@@ -8,12 +8,23 @@ public class Usuario {
 
     public Usuario(String user, String password) {
         try {
-            if(ValidadorDeContrasenias.esValida(password)){
+            ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+            validador.agregarCondiciones(new CumpleLongitud(8,64),
+                                         new TieneMayuscula(),
+                                         new TieneMinuscula(),
+                                         new TieneNumero(),
+                                         new TieneCaracterEspecial(),
+                                         new NoEstaDentroDeLasComunes());
+
+            if (!validador.esValida(password)) {
+                throw new Exception("La contraseña no cumple con los requisitos mínimos");
+            } else{
                 this.user = user;
                 this.password = password;
             }
-        } catch (ValidadorDeContrasenias.ContraseniaInvalidaException e) {
-            System.out.println("Contraseña invalida: " + e.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

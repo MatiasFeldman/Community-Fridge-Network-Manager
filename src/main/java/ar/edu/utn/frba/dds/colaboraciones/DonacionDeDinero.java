@@ -15,6 +15,6 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
 
     @Override
     public double asignarPuntaje() {
-        return frecuenciaDeDonacion.vecesCumplidas() * monto * 0.5; //TODO: hacer bien las constantes multiplicativas
+        return frecuenciaDeDonacion.vecesCumplidas() * monto * Reconocimiento.getInstance().getCtePesosDonados(); //TODO: hacer bien las constantes multiplicativas
     }
 }

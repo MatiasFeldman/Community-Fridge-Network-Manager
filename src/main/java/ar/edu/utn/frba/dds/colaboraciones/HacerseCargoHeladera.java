@@ -12,6 +12,6 @@ public class HacerseCargoHeladera implements ContribucionJuridica{
 
     @Override
     public double asignarPuntaje() {
-        return heladera.mesesActiva() * 5;
+        return heladera.mesesActiva() * Reconocimiento.getInstance().getCteHeladeras();
     } //TODO: hacer bien las constantes multiplicativas
 }

@@ -13,24 +13,24 @@ public class Heladera {
     private Coordenada coordenada;
     @Setter
     private PuntoDeHeladera nombre;
-    private int capacidadMaxima;
+    private Integer capacidadMaxima;
     @Setter
-    private int capacidadActual;
+    private Integer capacidadActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
     @Setter
     private boolean activa;
     @Setter
-    private Float tempActual;
+    private Float ultimaTemperaturaRegistrada;
     private Float tempMinima;
     private Float tempMaxima;
     @Setter
     private boolean hayMovimiento;
 
-    public void agregarViandas(int cantidad){
+    public void agregarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() - cantidad);
     }
 
-    public void quitarViandas(int cantidad){
+    public void quitarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() + cantidad);
     }
 

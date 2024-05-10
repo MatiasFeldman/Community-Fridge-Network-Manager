@@ -11,6 +11,6 @@ public class DonacionDeVianda implements ContribucionHumana{
 
     @Override
     public double asignarPuntaje() {
-        return 1.5;
-    } //TODO: hacer bien las constantes multiplicativas
+        return Reconocimiento.getInstance().getCteViandasDonadas();
+    }
 }

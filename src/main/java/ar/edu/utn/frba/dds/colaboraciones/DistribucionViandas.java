@@ -20,6 +20,6 @@ public class DistribucionViandas implements ContribucionHumana{
 
     @Override
     public double asignarPuntaje() {
-        return cantidadViandas;
+        return cantidadViandas * Reconocimiento.getInstance().getCteViandasDistribuidas();
     } //TODO: hacer bien las constantes multiplicativas
 }

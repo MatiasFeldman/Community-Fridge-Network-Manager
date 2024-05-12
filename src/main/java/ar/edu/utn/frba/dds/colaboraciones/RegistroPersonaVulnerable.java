@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
+import ar.edu.utn.frba.dds.helpers.ConstanteMultiplicativa;
 import ar.edu.utn.frba.dds.personas.PersonaVulnerable;
 import lombok.Setter;
 
@@ -19,7 +20,7 @@ public class RegistroPersonaVulnerable implements ContribucionHumana{
 
     @Override
     public void contribuir(){
-        if(tarjetasDisponibles() == 0){
+        if(tarjetasDisponibles() <= 0){
             throw new RuntimeException("No hay tarjetas disponibles");
         } else {
             for (Tarjeta tarjeta : tarjetas) {
@@ -27,18 +28,20 @@ public class RegistroPersonaVulnerable implements ContribucionHumana{
                     personaVulnerableActual.setTarjeta(tarjeta);
                     tarjeta.setDuenio(personaVulnerableActual);
                     tarjetasRepartidas++;
+                    System.out.println("Se le asigno la tarjeta a la persona vulnerable");
                 }
             }
         }
+    }
+
+    @Override
+    public double asignarPuntaje() {
+        return tarjetasRepartidas * ConstanteMultiplicativa.CONSTANTE_TARJETAS;
     }
 
     public Integer tarjetasDisponibles(){
         return tarjetas.size() - tarjetasRepartidas;
     }
 
-    @Override
-    public double asignarPuntaje() {
-        return tarjetasRepartidas * Reconocimiento.getInstance().getCteTarjetas();
-    }
 
 }

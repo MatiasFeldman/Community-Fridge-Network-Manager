@@ -3662,8 +3662,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1197,
-									"top": 1068,
+									"left": 1344,
+									"top": 1200,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -3683,8 +3683,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1200,
-									"top": 1083,
+									"left": 1344,
+									"top": 1215,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -3704,8 +3704,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1192,
-									"top": 1039,
+									"left": 1343,
+									"top": 1171,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -3723,7 +3723,7 @@
 								"$ref": "AAAAAAGO591Zf8yFn9o="
 							},
 							"lineStyle": 1,
-							"points": "1775:951;615:1170",
+							"points": "1775:990;1344:1192;615:1193",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGO5+brmCtJwzg="
@@ -8924,9 +8924,9 @@
 											"font": "Arial;13;1",
 											"left": 1085,
 											"top": 975,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "Reconocimiento"
+											"text": "ConstanteMultiplicativa"
 										},
 										{
 											"_type": "LabelView",
@@ -8959,7 +8959,7 @@
 									"font": "Arial;13;0",
 									"left": 1080,
 									"top": 968,
-									"width": 209.7197265625,
+									"width": 306.60400390625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGPVWRaQ36sBPc="
@@ -8996,9 +8996,9 @@
 											"font": "Arial;13;0",
 											"left": 1085,
 											"top": 998,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "-ctePesosDonados: double",
+											"text": "+CONSTANTE_PESOS_DONADOS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9013,9 +9013,9 @@
 											"font": "Arial;13;0",
 											"left": 1085,
 											"top": 1013,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "-cteViandasDistribuidas: double",
+											"text": "+CONSTANTE_HELADERAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9030,9 +9030,9 @@
 											"font": "Arial;13;0",
 											"left": 1085,
 											"top": 1028,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "-cteViandasDonadas: double",
+											"text": "+CONSTANTE_VIANDAS_DISTRIBUIDAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9047,9 +9047,9 @@
 											"font": "Arial;13;0",
 											"left": 1085,
 											"top": 1043,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "-cteTarjetas: double",
+											"text": "+CONSTANTE_VIANDAS_DONADAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9064,34 +9064,17 @@
 											"font": "Arial;13;0",
 											"left": 1085,
 											"top": 1058,
-											"width": 199.7197265625,
+											"width": 296.60400390625,
 											"height": 13,
-											"text": "-cteHeladeras: double",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGPXfkcHRC4Bwg=",
-											"_parent": {
-												"$ref": "AAAAAAGPVWRaQ36wLwY="
-											},
-											"model": {
-												"$ref": "AAAAAAGPXfkcDBB/4rE="
-											},
-											"font": "Arial;13;0",
-											"left": 1085,
-											"top": 1073,
-											"width": 199.7197265625,
-											"height": 13,
-											"text": "-instance: Reconocimiento",
+											"text": "+CONSTANTE_TARJETAS: double",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1080,
 									"top": 993,
-									"width": 209.7197265625,
-									"height": 98
+									"width": 306.60400390625,
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -9102,47 +9085,11 @@
 									"model": {
 										"$ref": "AAAAAAGPVWRaQ36oW6Q="
 									},
-									"subViews": [
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGPXfjAUgLyl7o=",
-											"_parent": {
-												"$ref": "AAAAAAGPVWRaQ36xQQk="
-											},
-											"model": {
-												"$ref": "AAAAAAGPXfjAOwK5INA="
-											},
-											"font": "Arial;13;0",
-											"left": 1085,
-											"top": 1096,
-											"width": 199.7197265625,
-											"height": 13,
-											"text": "-Reconocimiento()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGPXfjKswSoO5E=",
-											"_parent": {
-												"$ref": "AAAAAAGPVWRaQ36xQQk="
-											},
-											"model": {
-												"$ref": "AAAAAAGPXfjKpQRvi5Y="
-											},
-											"font": "Arial;13;0",
-											"left": 1085,
-											"top": 1111,
-											"width": 199.7197265625,
-											"height": 13,
-											"text": "+getInstance(): Reconocimiento",
-											"horizontalAlignment": 0
-										}
-									],
 									"font": "Arial;13;0",
 									"left": 1080,
-									"top": 1091,
-									"width": 209.7197265625,
-									"height": 38
+									"top": 1076,
+									"width": 306.60400390625,
+									"height": 10
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -9181,7 +9128,7 @@
 							"containerChangeable": true,
 							"left": 1080,
 							"top": 968,
-							"width": 208.7197265625,
+							"width": 305.60400390625,
 							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAGPVWRaQ36rHmc="
@@ -9516,8 +9463,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1034,
-									"top": 907,
+									"left": 1055,
+									"top": 906,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -9537,8 +9484,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1043,
-									"top": 895,
+									"left": 1063,
+									"top": 894,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -9558,8 +9505,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1015,
-									"top": 930,
+									"left": 1038,
+									"top": 931,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -9577,7 +9524,7 @@
 								"$ref": "AAAAAAGO58K+Mq3+6m4="
 							},
 							"lineStyle": 1,
-							"points": "971:884;1079:967",
+							"points": "985:884;1110:967",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPYA2pdBk3goo="
@@ -9610,8 +9557,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1274,
-									"top": 910,
+									"left": 1298,
+									"top": 908,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -9631,8 +9578,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1287,
-									"top": 917,
+									"left": 1312,
+									"top": 913,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -9652,8 +9599,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1247,
-									"top": 895,
+									"left": 1269,
+									"top": 897,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -9671,7 +9618,7 @@
 								"$ref": "AAAAAAGO58qaPK8L+w8="
 							},
 							"lineStyle": 1,
-							"points": "1293:851;1229:967",
+							"points": "1306:851;1262:967",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPYA2y6x/Jut0="
@@ -9704,8 +9651,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1390,
-									"top": 951,
+									"left": 1392,
+									"top": 950,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -9725,8 +9672,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1397,
-									"top": 964,
+									"left": 1400,
+									"top": 962,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -9746,8 +9693,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1377,
-									"top": 924,
+									"left": 1375,
+									"top": 925,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -9765,7 +9712,7 @@
 								"$ref": "AAAAAAGPTh6VsbTKVbk="
 							},
 							"lineStyle": 1,
-							"points": "1553:748;1384:944;1290:993",
+							"points": "1553:748;1384:944;1350:967",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPYA2/qSnfvkM="
@@ -9859,7 +9806,7 @@
 								"$ref": "AAAAAAGO58o3Q67ZQnI="
 							},
 							"lineStyle": 1,
-							"points": "598:855;728:1120;1079:1065",
+							"points": "598:855;728:1120;1079:1070",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPYA3jIT8JEKA="
@@ -12246,7 +12193,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGO5+VqBROvJRI="
 									},
-									"name": "Integer cantViandas"
+									"name": "Integer cantViandas",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -14098,7 +14046,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Reconocimiento",
+					"name": "ConstanteMultiplicativa",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -14175,8 +14123,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "ctePesosDonados",
-							"visibility": "private",
+							"name": "CONSTANTE_PESOS_DONADOS",
 							"type": "double"
 						},
 						{
@@ -14185,8 +14132,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "cteViandasDistribuidas",
-							"visibility": "private",
+							"name": "CONSTANTE_HELADERAS",
 							"type": "double"
 						},
 						{
@@ -14195,8 +14141,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "cteViandasDonadas",
-							"visibility": "private",
+							"name": "CONSTANTE_VIANDAS_DISTRIBUIDAS",
 							"type": "double"
 						},
 						{
@@ -14205,8 +14150,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "cteTarjetas",
-							"visibility": "private",
+							"name": "CONSTANTE_VIANDAS_DONADAS",
 							"type": "double"
 						},
 						{
@@ -14215,53 +14159,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "cteHeladeras",
-							"visibility": "private",
+							"name": "CONSTANTE_TARJETAS",
 							"type": "double"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGPXfkcDBB/4rE=",
-							"_parent": {
-								"$ref": "AAAAAAGPVWRaQ36oW6Q="
-							},
-							"name": "instance",
-							"visibility": "private",
-							"type": {
-								"$ref": "AAAAAAGPVWRaQ36oW6Q="
-							}
-						}
-					],
-					"operations": [
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGPXfjAOwK5INA=",
-							"_parent": {
-								"$ref": "AAAAAAGPVWRaQ36oW6Q="
-							},
-							"name": "Reconocimiento",
-							"visibility": "private"
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGPXfjKpQRvi5Y=",
-							"_parent": {
-								"$ref": "AAAAAAGPVWRaQ36oW6Q="
-							},
-							"name": "getInstance",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAGPXfkDBA5h17w=",
-									"_parent": {
-										"$ref": "AAAAAAGPXfjKpQRvi5Y="
-									},
-									"type": {
-										"$ref": "AAAAAAGPVWRaQ36oW6Q="
-									},
-									"direction": "return"
-								}
-							]
 						}
 					]
 				},

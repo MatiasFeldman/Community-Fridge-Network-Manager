@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
+import ar.edu.utn.frba.dds.helpers.ConstanteMultiplicativa;
+
 import java.time.LocalDate;
 
 public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana{
@@ -10,11 +12,19 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
 
     @Override
     public void contribuir() {
-        frecuenciaDeDonacion.setFechaUltimaDonacion(fechaDeDonacion);
+        if(esPeriodica){
+            frecuenciaDeDonacion.setFechaUltimaDonacion(fechaDeDonacion);
+        }
+        System.out.println("Donacion de dinero realizada: se han donado$" + monto);
     }
 
     @Override
     public double asignarPuntaje() {
-        return frecuenciaDeDonacion.vecesCumplidas() * monto * Reconocimiento.getInstance().getCtePesosDonados(); //TODO: hacer bien las constantes multiplicativas
+        if(!esPeriodica){
+            return monto * ConstanteMultiplicativa.CONSTANTE_PESOS_DONADOS;
+        }else{
+            return monto * frecuenciaDeDonacion.vecesCumplidas() * ConstanteMultiplicativa.CONSTANTE_PESOS_DONADOS;
+        }
     }
+
 }

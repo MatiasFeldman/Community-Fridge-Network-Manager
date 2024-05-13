@@ -7,12 +7,10 @@ public class HacerseCargoHeladera implements ContribucionJuridica{
     private Heladera heladera;
 
     @Override
-    public void contribuir() {
+    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas) {
         System.out.println("Hacerse cargo de heladera");
+        colaboracionesRealizadas.agregarHeladera(heladera);
     }
 
-    public double asignarPuntaje() {
-        return heladera.mesesActiva() * ConstanteMultiplicativa.CONSTANTE_HELADERAS;
-    }
 
 }

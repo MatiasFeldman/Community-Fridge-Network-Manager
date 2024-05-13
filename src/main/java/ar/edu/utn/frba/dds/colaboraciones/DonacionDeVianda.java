@@ -8,13 +8,11 @@ import lombok.AllArgsConstructor;
 public class DonacionDeVianda implements ContribucionHumana{
     private Vianda vianda;
     @Override
-    public void contribuir(){
+    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas){
         System.out.println("Donacion de vianda");
+        colaboracionesRealizadas.agregarViandaDonada();
     }
 
-    @Override
-    public double asignarPuntaje() {
-        return ConstanteMultiplicativa.CONSTANTE_VIANDAS_DONADAS;
-    }
+
 
 }

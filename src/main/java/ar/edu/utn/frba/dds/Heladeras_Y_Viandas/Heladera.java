@@ -34,8 +34,8 @@ public class Heladera {
         this.setCapacidadActual(this.getCapacidadActual() + cantidad);
     }
 
-    public long mesesActiva(){
-        return ChronoUnit.MONTHS.between(this.fechaDePuestaEnFuncionamiento, LocalDate.now());
+    public Integer mesesActiva(){
+        return Math.toIntExact(ChronoUnit.MONTHS.between(this.fechaDePuestaEnFuncionamiento, LocalDate.now()));
     }
 
     public void desactivar(){

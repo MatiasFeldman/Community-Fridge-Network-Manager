@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.personas;
 
+import ar.edu.utn.frba.dds.colaboraciones.ColaboracionesRealizadas;
 import ar.edu.utn.frba.dds.colaboraciones.ContribucionHumana;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +12,11 @@ public class Humano {
     private ArrayList<AtributoHumano> atributosOpcionales;
     @Setter
     private double puntosDisponibles;
-    private ArrayList<ContribucionHumana> colaboracionesRealizadas;
+    private ColaboracionesRealizadas colaboracionesRealizadas;
+
 
     public void colaborar(ContribucionHumana contribucion){
-        contribucion.contribuir();
-        this.colaboracionesRealizadas.add(contribucion);
-        setPuntosDisponibles(getPuntosDisponibles() + contribucion.asignarPuntaje());
+        contribucion.contribuir(this.colaboracionesRealizadas);
     }
 
     public void generarAtributo(TipoAtributo tipo, String nombreAtributo){
@@ -25,6 +25,10 @@ public class Humano {
         } else {
             this.atributosOpcionales.add(new AtributoHumano(nombreAtributo));
         }
+    }
+
+    public double calcularPuntaje(){
+        return this.colaboracionesRealizadas.calcularPuntaje();
     }
 
 }

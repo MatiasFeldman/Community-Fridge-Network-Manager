@@ -15,6 +15,12 @@ public class Tarjeta {
     private PersonaVulnerable duenio;
     private ArrayList<UsoTarjeta> historialDeUsos;
 
+    public Tarjeta(String id) {
+        this.id = id;
+        this.duenio = null;
+        this.historialDeUsos = new ArrayList<>();
+    }
+
     private Integer usosDeHoy(){
         LocalDate hoy = LocalDate.now();
         return Math.toIntExact(historialDeUsos.stream().filter(uso -> uso.getFecha().isEqual(hoy)).count());

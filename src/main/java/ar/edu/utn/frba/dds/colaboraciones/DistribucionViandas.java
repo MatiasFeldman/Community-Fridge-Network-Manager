@@ -14,14 +14,12 @@ public class DistribucionViandas implements ContribucionHumana{
 
 
     @Override
-    public void contribuir() {
+    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas) {
         heladeraOrigen.quitarViandas(cantidadViandas);
         heladeraDestino.agregarViandas(cantidadViandas);
         System.out.println("Distribucion de viandas realizada: se han distribuido " + cantidadViandas + " viandas.");
+        colaboracionesRealizadas.agregarViandasDistribuidas(cantidadViandas);
     }
 
-    @Override
-    public double asignarPuntaje() {
-        return cantidadViandas * ConstanteMultiplicativa.CONSTANTE_VIANDAS_DISTRIBUIDAS;
-    } //TODO: hacer bien las constantes multiplicativas
+
 }

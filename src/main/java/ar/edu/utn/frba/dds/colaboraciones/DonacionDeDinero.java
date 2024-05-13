@@ -1,30 +1,31 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
-import ar.edu.utn.frba.dds.helpers.ConstanteMultiplicativa;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana{
     private LocalDate fechaDeDonacion;
+    @Getter
     private Float monto;
     private Frecuencia frecuenciaDeDonacion;
     private boolean esPeriodica;
 
     @Override
-    public void contribuir() {
+    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas) {
         if(esPeriodica){
             frecuenciaDeDonacion.setFechaUltimaDonacion(fechaDeDonacion);
         }
         System.out.println("Donacion de dinero realizada: se han donado$" + monto);
+        colaboracionesRealizadas.agregarDonacionDeDinero(this);
     }
 
-    @Override
-    public double asignarPuntaje() {
+    public long vecesCumplidas(){
         if(!esPeriodica){
-            return monto * ConstanteMultiplicativa.CONSTANTE_PESOS_DONADOS;
-        }else{
-            return monto * frecuenciaDeDonacion.vecesCumplidas() * ConstanteMultiplicativa.CONSTANTE_PESOS_DONADOS;
+            return 1;
         }
+        return frecuenciaDeDonacion.vecesCumplidas();
     }
+
 
 }

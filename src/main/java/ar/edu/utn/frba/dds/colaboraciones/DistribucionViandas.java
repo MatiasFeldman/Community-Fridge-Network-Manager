@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
 import ar.edu.utn.frba.dds.Heladeras_Y_Viandas.Heladera;
-import ar.edu.utn.frba.dds.helpers.ConstanteMultiplicativa;
 
 import java.time.LocalDate;
 

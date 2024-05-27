@@ -220,7 +220,7 @@
 											"top": 850,
 											"width": 304.86865234375,
 											"height": 13,
-											"text": "+contribuir(DonacionesRealizadas donaciones): void",
+											"text": "+contribuir(ColaboracionesRealizadas col): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -735,7 +735,7 @@
 											"top": 813,
 											"width": 304.86865234375,
 											"height": 13,
-											"text": "+contribuir(DonacionesRealizadas donaciones): void",
+											"text": "+contribuir(ColaboracionesRealizadas col): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1035,7 +1035,7 @@
 											"top": 921,
 											"width": 304.86865234375,
 											"height": 13,
-											"text": "+contribuir(DonacionesRealizadas donaciones): void",
+											"text": "+contribuir(ColaboracionesRealizadas col): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2286,23 +2286,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAGPTjF/+o/ioZQ=",
-											"_parent": {
-												"$ref": "AAAAAAGO591Zf8yM2ig="
-											},
-											"model": {
-												"$ref": "AAAAAAGPTjF/84/WjdA="
-											},
-											"font": "Arial;13;0",
-											"left": 1781,
-											"top": 1010,
-											"width": 270.87060546875,
-											"height": 13,
-											"text": "+intentoDeRobo(): void",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAGPWxc5oZJH+zg=",
 											"_parent": {
 												"$ref": "AAAAAAGO591Zf8yM2ig="
@@ -2312,7 +2295,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1781,
-											"top": 1025,
+											"top": 1010,
 											"width": 270.87060546875,
 											"height": 13,
 											"text": "+activar(): void",
@@ -2329,7 +2312,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1781,
-											"top": 1040,
+											"top": 1025,
 											"width": 270.87060546875,
 											"height": 13,
 											"text": "+desactivar(): void",
@@ -2340,7 +2323,7 @@
 									"left": 1776,
 									"top": 960,
 									"width": 280.87060546875,
-									"height": 98
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -3887,7 +3870,7 @@
 											"top": 316,
 											"width": 325.111328125,
 											"height": 13,
-											"text": "-puntosDisponibles: double",
+											"text": "-puntosCanjeados: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3904,7 +3887,7 @@
 											"top": 331,
 											"width": 325.111328125,
 											"height": 13,
-											"text": "-colaboracionesRealizadas: List<ContribucionHumana>",
+											"text": "-donaciones: ColaboracionesRealizadas",
 											"horizontalAlignment": 0
 										}
 									],
@@ -4185,7 +4168,7 @@
 											"top": 597,
 											"width": 304.86865234375,
 											"height": 13,
-											"text": "+contribuir(DonacionesRealizadas donaciones): void",
+											"text": "+contribuir(ColaboracionesRealizadas col): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7013,7 +6996,7 @@
 											"top": 684,
 											"width": 304.86865234375,
 											"height": 13,
-											"text": "+contribuir(DonacionesRealizadas donaciones): void",
+											"text": "+contribuir(ColaboracionesRealizadas col): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8870,19 +8853,6 @@
 							}
 						},
 						{
-							"_type": "UMLTextView",
-							"_id": "AAAAAAGPVWjOe/UEOYw=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 1152,
-							"top": 136,
-							"width": 216,
-							"height": 88,
-							"text": "Tendria que haber una lsita con los elementos que se deben solicitar del usuario o el sistema ya lo sabe y nos los pasa directametne cuando crea el el humano?"
-						},
-						{
 							"_type": "UMLAssociationView",
 							"_id": "AAAAAAGPYAwCQeJYBu0=",
 							"_parent": {
@@ -10389,7 +10359,7 @@
 											"font": "Arial;13;1",
 											"left": 157,
 											"top": 471,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "DonacionesRealizadas"
 										},
@@ -10424,7 +10394,7 @@
 									"font": "Arial;13;0",
 									"left": 152,
 									"top": 464,
-									"width": 306.60400390625,
+									"width": 337.294921875,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGPc3OE5INVeRU="
@@ -10461,9 +10431,9 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 494,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
-											"text": "-CONSTANTE_PESOS_DONADOS: double",
+											"text": "-static CONSTANTE_PESOS_DONADOS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10478,9 +10448,9 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 509,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
-											"text": "-CONSTANTE_VIANDAS_DISTRIBUIDAS: double",
+											"text": "-static CONSTANTE_VIANDAS_DISTRIBUIDAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10495,9 +10465,9 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 524,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
-											"text": "-CONSTANTE_HELADERAS: double",
+											"text": "-static CONSTANTE_HELADERAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10512,9 +10482,9 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 539,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
-											"text": "-CONSTANTE_TARJETAS: double",
+											"text": "-static CONSTANTE_TARJETAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10529,9 +10499,9 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 554,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
-											"text": "-CONSTANTE_VIANDAS_DONADAS: double",
+											"text": "-static CONSTANTE_VIANDAS_DONADAS: double",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10546,7 +10516,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 569,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "-tarjetasRepartidas: Integer",
 											"horizontalAlignment": 0
@@ -10563,7 +10533,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 584,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "-viandasDistribuidas: Integer",
 											"horizontalAlignment": 0
@@ -10580,7 +10550,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 599,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "-pesosDonados: double",
 											"horizontalAlignment": 0
@@ -10597,7 +10567,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 614,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "-heladerasACargo: List<Heladeras>",
 											"horizontalAlignment": 0
@@ -10614,7 +10584,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 629,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "-viandasDonadas: Integer",
 											"horizontalAlignment": 0
@@ -10623,7 +10593,7 @@
 									"font": "Arial;13;0",
 									"left": 152,
 									"top": 489,
-									"width": 306.60400390625,
+									"width": 337.294921875,
 									"height": 158
 								},
 								{
@@ -10648,7 +10618,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 652,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "+calcularPuntaje(): double",
 											"horizontalAlignment": 0
@@ -10665,7 +10635,7 @@
 											"font": "Arial;13;0",
 											"left": 157,
 											"top": 667,
-											"width": 296.60400390625,
+											"width": 327.294921875,
 											"height": 13,
 											"text": "+agregarHeladera(Heladera heladera): void",
 											"horizontalAlignment": 0
@@ -10674,7 +10644,7 @@
 									"font": "Arial;13;0",
 									"left": 152,
 									"top": 647,
-									"width": 306.60400390625,
+									"width": 337.294921875,
 									"height": 38
 								},
 								{
@@ -10714,7 +10684,7 @@
 							"containerChangeable": true,
 							"left": 152,
 							"top": 464,
-							"width": 305.60400390625,
+							"width": 336.294921875,
 							"height": 221,
 							"nameCompartment": {
 								"$ref": "AAAAAAGPc3OE5INUJVI="
@@ -10753,8 +10723,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 634,
-									"top": 465,
+									"left": 649,
+									"top": 463,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -10774,8 +10744,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 639,
-									"top": 479,
+									"left": 654,
+									"top": 477,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -10795,8 +10765,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 623,
-									"top": 436,
+									"left": 638,
+									"top": 434,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -10814,7 +10784,7 @@
 								"$ref": "AAAAAAGO6Dpqx4o6ewQ="
 							},
 							"lineStyle": 1,
-							"points": "799:396;459:519",
+							"points": "799:398;489:512",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPc3XZUuxDsD8="
@@ -12017,8 +11987,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6ZGK/ZZrzvo="
 									},
-									"name": "DonacionesRealizadas donaciones",
-									"type": ""
+									"name": "ColaboracionesRealizadas col"
 								}
 							]
 						},
@@ -12315,8 +12284,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6cRGHgWxJEM="
 									},
-									"name": "DonacionesRealizadas donaciones",
-									"type": ""
+									"name": "ColaboracionesRealizadas col"
 								}
 							]
 						},
@@ -12553,8 +12521,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6cZpdxbVqps="
 									},
-									"name": "DonacionesRealizadas donaciones",
-									"type": ""
+									"name": "ColaboracionesRealizadas col"
 								}
 							]
 						}
@@ -13049,25 +13016,6 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGPTjF/84/WjdA=",
-							"_parent": {
-								"$ref": "AAAAAAGO591Zf8yDYE8="
-							},
-							"name": "intentoDeRobo",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAGPTjGoM5LRUAA=",
-									"_parent": {
-										"$ref": "AAAAAAGPTjF/84/WjdA="
-									},
-									"type": "void",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAGPWxc5mJI7gsA=",
 							"_parent": {
 								"$ref": "AAAAAAGO591Zf8yDYE8="
@@ -13416,7 +13364,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6Dpqx4o43/A="
 							},
-							"name": "puntosDisponibles",
+							"name": "puntosCanjeados",
 							"visibility": "private",
 							"type": "double"
 						},
@@ -13426,9 +13374,9 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6Dpqx4o43/A="
 							},
-							"name": "colaboracionesRealizadas",
+							"name": "donaciones",
 							"visibility": "private",
-							"type": "List<ContribucionHumana>"
+							"type": "ColaboracionesRealizadas"
 						}
 					],
 					"operations": [
@@ -14083,7 +14031,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6cZNfhOeRvY="
 									},
-									"name": "DonacionesRealizadas donaciones"
+									"name": "ColaboracionesRealizadas col"
 								}
 							]
 						},
@@ -14687,8 +14635,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGPTh8IHsPxNUk="
 									},
-									"name": "DonacionesRealizadas donaciones",
-									"type": ""
+									"name": "ColaboracionesRealizadas col"
 								}
 							]
 						},
@@ -15039,7 +14986,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGPVWRaQ36oW6Q="
 							},
-							"name": "pesosDonados _ double"
+							"name": "pesosDonados _ double",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15121,7 +15069,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPc3OE5INRk9k="
 							},
-							"name": "CONSTANTE_PESOS_DONADOS",
+							"name": "static CONSTANTE_PESOS_DONADOS",
 							"visibility": "private",
 							"type": "double"
 						},
@@ -15131,7 +15079,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPc3OE5INRk9k="
 							},
-							"name": "CONSTANTE_VIANDAS_DISTRIBUIDAS",
+							"name": "static CONSTANTE_VIANDAS_DISTRIBUIDAS",
 							"visibility": "private",
 							"type": "double"
 						},
@@ -15141,7 +15089,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPc3OE5INRk9k="
 							},
-							"name": "CONSTANTE_HELADERAS",
+							"name": "static CONSTANTE_HELADERAS",
 							"visibility": "private",
 							"type": "double"
 						},
@@ -15151,7 +15099,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPc3OE5INRk9k="
 							},
-							"name": "CONSTANTE_TARJETAS",
+							"name": "static CONSTANTE_TARJETAS",
 							"visibility": "private",
 							"type": "double"
 						},
@@ -15161,7 +15109,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPc3OE5INRk9k="
 							},
-							"name": "CONSTANTE_VIANDAS_DONADAS",
+							"name": "static CONSTANTE_VIANDAS_DONADAS",
 							"visibility": "private",
 							"type": "double"
 						},

@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
-import ar.edu.utn.frba.dds.helpers.ConstanteMultiplicativa;
 import ar.edu.utn.frba.dds.personas.PersonaVulnerable;
 import lombok.Setter;
 

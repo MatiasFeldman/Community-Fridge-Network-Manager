@@ -27,28 +27,7 @@ public class Juridica {
         contribucion.contribuir(this.colaboracionesRealizadas);
     }
 
-    public ArrayList<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, Float radio) throws IOException, InterruptedException {
 
-        String url = "https://2c238370-e089-4c6c-8806-ede2b26642e4.mock.pstmn.io/api/ubicacion/lat=-34.58&lon=-58.43&radio=3";
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            String body = response.body();
-
-            System.out.println("Respuesta de la API: " + body);
-
-        } else {
-            System.out.println("Error al obtener la recomendacion de heladeras");
-        }
-
-        return new ArrayList<Coordenada>();
-    }
 
     public double calcularPuntaje(){
         double puntosDisponibles =  this.colaboracionesRealizadas.calcularPuntaje();

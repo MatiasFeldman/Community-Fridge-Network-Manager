@@ -1,6 +1,14 @@
 package ar.edu.utn.frba.dds.ubicacion;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public class Coordenada {
-    private Float latitud;
-    private Float longitud;
+    private double latitud;
+    private double longitud;
+
+    public Coordenada() {
+    }
 }

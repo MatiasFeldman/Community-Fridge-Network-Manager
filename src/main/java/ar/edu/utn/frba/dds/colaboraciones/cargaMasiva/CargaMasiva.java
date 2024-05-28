@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones.cargaMasiva;
 
+import ar.edu.utn.frba.dds.models.repositories.HumanosRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -54,15 +55,12 @@ public class CargaMasiva {
                     continue;
                 }
 
-                // TODO: Fijarse si existe el colaborador y asignarle la colaboración
-                /*Colaborador colaborador = buscarColaborador(documento);
-
-                if (colaborador != null) {
-                    colaborador.asignarColaboracion(formaColaboracion, cantidad);
-                } else {
+                //Fijarse si existe el humano y asignarle la colaboración en el repositorio
+                if (HumanosRepository.getInstance().getHumanoByDocumento(documento) == null) {
                     enviarMail(nombre, apellido, mail);
-                }*/
-
+                } else {
+                    // Crear colaboración
+                }
             }
         } catch (IOException | CsvValidationException | ParseException e) {
             e.printStackTrace();

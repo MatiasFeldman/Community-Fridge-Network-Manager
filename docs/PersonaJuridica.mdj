@@ -7679,8 +7679,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1913,
-									"top": 246,
+									"left": 1961,
+									"top": 294,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -7700,8 +7700,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1923,
-									"top": 235,
+									"left": 1971,
+									"top": 282,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -7721,8 +7721,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1894,
-									"top": 269,
+									"left": 1942,
+									"top": 317,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -7740,7 +7740,7 @@
 								"$ref": "AAAAAAGO6GQYr+ssn/c="
 							},
 							"lineStyle": 1,
-							"points": "1569:293;1904:264;2328:623",
+							"points": "1569:315;1952:312;2327:623",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGPutSW/xMxoU0="
@@ -8342,7 +8342,7 @@
 											"top": 125,
 											"width": 165.6455078125,
 											"height": 13,
-											"text": "-valorContacto: Valor",
+											"text": "-valorContacto: String",
 											"horizontalAlignment": 0
 										}
 									],
@@ -9430,7 +9430,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6ZGK/ZZrzvo="
 									},
-									"name": "ColaboracionesRealizadas col"
+									"name": "ColaboracionesRealizadas col",
+									"type": ""
 								}
 							]
 						},
@@ -10360,7 +10361,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGO5+VqBROvJRI="
 									},
-									"name": "Integer cantidad"
+									"name": "Integer cantidad",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -10957,7 +10959,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6Ja34Nsl5r8="
 									},
-									"name": "ColaboracionesRealizadas col"
+									"name": "ColaboracionesRealizadas col",
+									"type": ""
 								}
 							]
 						},
@@ -11868,7 +11871,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGO6bYeWBxMBsc="
 									},
-									"name": "ColaboracionesRealizadas col"
+									"name": "ColaboracionesRealizadas col",
+									"type": ""
 								}
 							]
 						},
@@ -12834,7 +12838,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGPcs9u5eqJuLQ="
 									},
-									"name": "ColaboracionesRealizadas col"
+									"name": "ColaboracionesRealizadas col",
+									"type": ""
 								}
 							]
 						}
@@ -12945,7 +12950,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGPctUh4YUy2+0="
 									},
-									"name": "Oferta oferta"
+									"name": "Oferta oferta",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -13200,7 +13206,7 @@
 							},
 							"name": "valorContacto",
 							"visibility": "private",
-							"type": "Valor"
+							"type": "String"
 						}
 					]
 				},

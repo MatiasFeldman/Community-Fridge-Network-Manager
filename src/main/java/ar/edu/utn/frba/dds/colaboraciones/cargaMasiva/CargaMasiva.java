@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones.cargaMasiva;
 
+import ar.edu.utn.frba.dds.helpers.EnviarMail;
 import ar.edu.utn.frba.dds.models.repositories.HumanosRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -57,53 +58,24 @@ public class CargaMasiva {
 
                 //Fijarse si existe el humano y asignarle la colaboración en el repositorio
                 if (HumanosRepository.getInstance().getHumanoByDocumento(documento) == null) {
-                    enviarMail(nombre, apellido, mail);
+
+                    String cuerpo = "Hola " + nombre + " " + apellido + ",\n\n"
+                            + "Muchas gracias por querer colaborar con nosotros. "
+                            + "Lamentablemente no pudimos encontrar tu usuario en nuestra base de datos. "
+                            + "Por favor, registrate en nuestro sitio web para poder colaborar.\n\n"
+                            + "Saludos,\n"
+                            + "Equipo de colaboraciones";
+                    String motivo = "Colaboración pendiente";
+
+                    EnviarMail enviador = new EnviarMail(cuerpo, motivo);
+                    enviador.enviarMail(nombre, apellido, mail);
                 } else {
                     // Crear colaboración
                 }
             }
-        } catch (IOException | CsvValidationException | ParseException e) {
+        } catch (IOException | CsvValidationException | ParseException | MessagingException e) {
             e.printStackTrace();
         }
     }
 
-    private static void enviarMail(String nombre, String apellido, String mail) {
-        final String username = "nuestroMail@gmail.com";
-        final String password = "nuestraClave";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true"); //TLS
-
-        Session session = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
-
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("desdeEmail@gmail.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(mail)
-            );
-            message.setSubject("Colaboración pendiente");
-            message.setText("Hola " + nombre + " " + apellido + ",\n\n"
-                    + "Muchas gracias por querer colaborar con nosotros. "
-                    + "Lamentablemente no pudimos encontrar tu usuario en nuestra base de datos. "
-                    + "Por favor, registrate en nuestro sitio web para poder colaborar.\n\n"
-                    + "Saludos,\n"
-                    + "Equipo de colaboraciones");
-
-            Transport.send(message);
-
-            System.out.println("Mail enviado a " + mail);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
 }

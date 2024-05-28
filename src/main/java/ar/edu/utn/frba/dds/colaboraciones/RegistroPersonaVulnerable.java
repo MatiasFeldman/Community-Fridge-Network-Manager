@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
+import ar.edu.utn.frba.dds.exceptions.TarjetasAgotadasException;
 import ar.edu.utn.frba.dds.personas.PersonaVulnerable;
 import lombok.Setter;
 
@@ -27,13 +28,12 @@ public class RegistroPersonaVulnerable implements ContribucionHumana{
             colaboracionesRealizadas.aumentarTarjetasRepartidas();
             System.out.println("Se ha registrado a la persona vulnerable con la tarjeta. ");
         } else {
-            System.out.println("No hay tarjetas disponibles para registrar a la persona vulnerable.");
+            throw new TarjetasAgotadasException("No hay mas tarjetas disponibles");
         }
     }
 
     public Tarjeta obtenerTarjetaSinDuenio() {
-        for (int i = 0; i < tarjetas.size(); i++) {
-            Tarjeta tarjeta = tarjetas.get(i);
+        for (Tarjeta tarjeta : tarjetas) {
             if (tarjeta.getDuenio() == null) {
                 return tarjeta;
             }

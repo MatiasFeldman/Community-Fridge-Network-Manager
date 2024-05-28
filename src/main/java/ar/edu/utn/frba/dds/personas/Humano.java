@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.colaboraciones.ColaboracionesRealizadas;
 import ar.edu.utn.frba.dds.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.colaboraciones.OfertasDisponibles;
+import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -28,24 +29,19 @@ public class Humano {
         }
     }
 
-    public double calcularPuntaje(){
-        double puntosDisponibles =  this.colaboracionesRealizadas.calcularPuntaje();
+    public double calcularPuntaje() {
+        double puntosDisponibles = this.colaboracionesRealizadas.calcularPuntaje();
         return puntosDisponibles - puntosCanjeados;
     }
 
     public void canjearOferta(Oferta oferta) {
-        OfertasDisponibles ofertasDisponibles = new OfertasDisponibles();
-        try {
-            ofertasDisponibles.estaDisponible(oferta);
-            if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
-                throw new RuntimeException("No tiene los puntos necesarios para canjear la oferta");
-            }
-            oferta.serCanjeada();
-            this.puntosCanjeados += oferta.getPuntosNecesarios();
-
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+        OfertasDisponibles ofertasDisponibles = new OfertasDisponibles(); // TODO: está mal
+        if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
+            throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
+        oferta.serCanjeada();
+        this.puntosCanjeados += oferta.getPuntosNecesarios();
+
 
     }
 

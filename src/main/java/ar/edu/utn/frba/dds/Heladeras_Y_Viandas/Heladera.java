@@ -46,9 +46,5 @@ public class Heladera {
         this.setActiva(true);
     }
 
-    public void intentoDeRobo(){
-
-    }
-
 
 }

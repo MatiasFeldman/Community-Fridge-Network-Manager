@@ -45,7 +45,7 @@ public class ColaboracionesRealizadas {
     }
 
     public double calcularPesoDonados(DonacionDeDinero donacion){
-        return donacion.vecesCumplidas() * donacion.getMonto();
+        return donacion.vecesCumplidas() * donacion.getMonto(); // Podría calcualarlo la donacion
     }
 
     public Integer cantHeladerasActivas(){

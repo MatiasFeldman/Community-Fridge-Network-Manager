@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
+import ar.edu.utn.frba.dds.exceptions.OfertaNoDisponibleException;
+
 import java.util.ArrayList;
 
 public class OfertasDisponibles {
@@ -10,18 +12,10 @@ public class OfertasDisponibles {
     }
 
     public void canjearOferta(Oferta oferta) {
-        if(ofertas.contains(oferta)){
-            oferta.serCanjeada();
-            if(oferta.canjesRestantes() == 0){
-                ofertas.remove(oferta);
-            }
-        }
-        else{
-            throw new RuntimeException("La oferta no se encuentra disponible");
+        oferta.serCanjeada();
+        if (oferta.canjesRestantes() == 0) {
+            ofertas.remove(oferta);
         }
     }
 
-    public Boolean estaDisponible(Oferta oferta) {
-        return ofertas.contains(oferta);
-    }
 }

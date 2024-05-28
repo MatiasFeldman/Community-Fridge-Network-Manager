@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
+import ar.edu.utn.frba.dds.exceptions.OfertaAgotadaException;
 import lombok.Getter;
 
 public class Oferta {
@@ -27,7 +28,7 @@ public class Oferta {
             canjesUsados++;
         }
         else{
-            throw new RuntimeException("No hay canjes disponibles para esta oferta");
+            throw new OfertaAgotadaException("No hay canjes disponibles para esta oferta");
         }
     }
 }

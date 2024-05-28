@@ -10383,7 +10383,7 @@
 											"top": 447,
 											"width": 369.189453125,
 											"height": 13,
-											"text": "DonacionesRealizadas"
+											"text": "ColaboracionesRealizadas"
 										},
 										{
 											"_type": "LabelView",
@@ -15909,7 +15909,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionesRealizadas",
+					"name": "ColaboracionesRealizadas",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",

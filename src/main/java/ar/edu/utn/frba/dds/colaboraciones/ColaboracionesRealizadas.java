@@ -24,6 +24,7 @@ public class ColaboracionesRealizadas {
         this.heladerasDonadas = new ArrayList<>();
     }
 
+
     public void agregarViandasDistribuidas(int cantidadViandas) {
         this.viandasDistribuidas += cantidadViandas;
     }
@@ -44,8 +45,8 @@ public class ColaboracionesRealizadas {
         this.tarjetasRepartidas += 1;
     }
 
-    public double calcularPesoDonados(DonacionDeDinero donacion){
-        return donacion.vecesCumplidas() * donacion.getMonto(); // Podría calcualarlo la donacion
+    public double cantidadDonada(DonacionDeDinero donacion){
+        return donacion.cantidadDonada();
     }
 
     public Integer cantHeladerasActivas(){
@@ -57,7 +58,7 @@ public class ColaboracionesRealizadas {
     }
 
     public double pesosDonados (){
-        return donacionesDeDineroRealizadas.stream().mapToDouble(this::calcularPesoDonados).sum();
+        return donacionesDeDineroRealizadas.stream().mapToDouble(this::cantidadDonada).sum();
     }
 
     public double calcularPuntaje(){

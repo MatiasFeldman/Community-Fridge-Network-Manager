@@ -27,5 +27,10 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
         return frecuenciaDeDonacion.vecesCumplidas();
     }
 
+    public double cantidadDonada(){
+        return monto * vecesCumplidas();
+    }
+
+
 
 }

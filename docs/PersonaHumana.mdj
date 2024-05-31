@@ -10574,7 +10574,7 @@
 											"top": 575,
 											"width": 369.189453125,
 											"height": 13,
-											"text": "-pesosDonados: double",
+											"text": "-pesosDonados: List<DonacionDeDinero>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16032,7 +16032,7 @@
 							},
 							"name": "pesosDonados",
 							"visibility": "private",
-							"type": "double"
+							"type": "List<DonacionDeDinero>"
 						},
 						{
 							"_type": "UMLAttribute",

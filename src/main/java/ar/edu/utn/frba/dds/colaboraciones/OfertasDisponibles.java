@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.colaboraciones;
 
-import ar.edu.utn.frba.dds.exceptions.OfertaNoDisponibleException;
-
 import java.util.ArrayList;
 
 public class OfertasDisponibles {

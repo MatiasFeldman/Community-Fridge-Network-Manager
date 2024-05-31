@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.ubicacion;
 
 import ar.edu.utn.frba.dds.exceptions.RecomendarPuntosException;
 import ar.edu.utn.frba.dds.helpers.ConexionAPI;
-import ar.edu.utn.frba.dds.ubicacion.Coordenada;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 public class RecomendarPuntos {
 
     public ArrayList<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, Double radio) throws IOException, InterruptedException {
-        String url = "https://b5d319cd-de7d-4fbc-9808-c101eab29c7d.mock.pstmn.io/api/ubicacion/lat=-34.58&lon=-58.43&radio=3";
+        String url = "https://b5d319cd-de7d-4fbc-9808-c101eab29c7d.mock.pstmn.io/api/ubicacion/lat=" + coordenada.getLatitud() + "&lon=" + coordenada.getLongitud() + "&radio=" + radio;
 
         ConexionAPI api = new ConexionAPI(url);
 

@@ -5,14 +5,8 @@ import ar.edu.utn.frba.dds.colaboraciones.ContribucionJuridica;
 import ar.edu.utn.frba.dds.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.colaboraciones.OfertasDisponibles;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
-import ar.edu.utn.frba.dds.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.ubicacion.Direccion;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
 public class Juridica {

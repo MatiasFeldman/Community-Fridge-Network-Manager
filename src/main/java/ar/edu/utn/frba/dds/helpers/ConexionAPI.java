@@ -10,7 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ConexionAPI {
-    private String url;
+    private final String url;
     @Setter
     private HttpResponse<String> response;
     @Setter
@@ -24,6 +24,8 @@ public class ConexionAPI {
         statusCode = null;
         body = null;
     }
+
+
 
     public void conectarse() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()

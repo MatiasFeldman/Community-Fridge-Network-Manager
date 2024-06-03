@@ -12,12 +12,17 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
     private boolean esPeriodica;
 
     @Override
-    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas) {
+    public void contribuir() {
         if(esPeriodica){
             frecuenciaDeDonacion.setFechaUltimaDonacion(fechaDeDonacion);
         }
         System.out.println("Donacion de dinero realizada: se han donado$" + monto);
-        colaboracionesRealizadas.agregarDonacionDeDinero(this);
+    }
+
+    @Override
+    public double calcularPuntaje() {
+        ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
+        return this.cantidadDonada() * constantes.getCtePesosDonados();
     }
 
     public long vecesCumplidas(){

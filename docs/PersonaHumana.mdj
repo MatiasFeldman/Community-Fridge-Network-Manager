@@ -14603,7 +14603,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6GQYrusq3/Y="
 							},
-							"name": "colaboracionesRealizadas",
+							"name": "constantesMultiplicativas",
 							"visibility": "private",
 							"type": "List<ContribucionJuridica>"
 						}

@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.personas;
 
-import ar.edu.utn.frba.dds.colaboraciones.ColaboracionesRealizadas;
-import ar.edu.utn.frba.dds.colaboraciones.ContribucionJuridica;
-import ar.edu.utn.frba.dds.colaboraciones.Oferta;
-import ar.edu.utn.frba.dds.colaboraciones.OfertasDisponibles;
+import ar.edu.utn.frba.dds.colaboraciones.*;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.ubicacion.Direccion;
 
@@ -16,17 +13,21 @@ public class Juridica {
     private ArrayList<Contacto> mediosDeContacto;
     private Direccion direccion;
     private double puntosCanjeados;
-    private ColaboracionesRealizadas colaboracionesRealizadas;
+    private ArrayList<ContribucionJuridica> contribuciones;
 
     public void colaborar(ContribucionJuridica contribucion){
-        contribucion.contribuir(this.colaboracionesRealizadas);
+        contribucion.contribuir();
+        contribuciones.add(contribucion);
     }
 
 
 
-    public double calcularPuntaje(){
-        double puntosDisponibles =  this.colaboracionesRealizadas.calcularPuntaje();
-        return puntosDisponibles - puntosCanjeados;
+    public double calcularPuntaje() {
+        return this.puntosGanados() - puntosCanjeados;
+    }
+
+    public double puntosGanados(){
+        return contribuciones.stream().mapToDouble(ContribucionJuridica::calcularPuntaje).sum();
     }
 
     public void canjearOferta(Oferta oferta) {

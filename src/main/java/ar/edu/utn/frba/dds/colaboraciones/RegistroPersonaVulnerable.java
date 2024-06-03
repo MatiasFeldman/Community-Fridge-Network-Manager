@@ -19,17 +19,22 @@ public class RegistroPersonaVulnerable implements ContribucionHumana{
     }
 
     @Override
-    public void contribuir(ColaboracionesRealizadas colaboracionesRealizadas) {
+    public void contribuir() {
         Tarjeta tarjetaARepartir = obtenerTarjetaSinDuenio();
         if (tarjetaARepartir != null) {
             personaVulnerableActual.setTarjeta(tarjetaARepartir);
             tarjetaARepartir.setDuenio(personaVulnerableActual);
             tarjetasRepartidas++;
-            colaboracionesRealizadas.aumentarTarjetasRepartidas();
             System.out.println("Se ha registrado a la persona vulnerable con la tarjeta. ");
         } else {
             throw new TarjetasAgotadasException("No hay mas tarjetas disponibles");
         }
+    }
+
+    @Override
+    public double calcularPuntaje() {
+        ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
+        return constantes.getCteTarjetas() * tarjetasRepartidas;
     }
 
     public Tarjeta obtenerTarjetaSinDuenio() {

@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.personas;
 
-import ar.edu.utn.frba.dds.colaboraciones.ColaboracionesRealizadas;
+import ar.edu.utn.frba.dds.colaboraciones.ConstantesMultiplicativas;
 import ar.edu.utn.frba.dds.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.colaboraciones.OfertasDisponibles;
@@ -14,11 +14,12 @@ public class Humano {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<AtributoHumano> atributosOpcionales;
     private double puntosCanjeados;
-    private ColaboracionesRealizadas colaboracionesRealizadas;
+    private ArrayList<ContribucionHumana> contribuciones;
 
 
     public void colaborar(ContribucionHumana contribucion) {
-        contribucion.contribuir(this.colaboracionesRealizadas);
+        contribucion.contribuir();
+        contribuciones.add(contribucion);
     }
 
     public void generarAtributo(TipoAtributo tipo, String nombreAtributo) {
@@ -30,8 +31,11 @@ public class Humano {
     }
 
     public double calcularPuntaje() {
-        double puntosDisponibles = this.colaboracionesRealizadas.calcularPuntaje();
-        return puntosDisponibles - puntosCanjeados;
+        return this.puntosGanados() - puntosCanjeados;
+    }
+
+    public double puntosGanados(){
+        return contribuciones.stream().mapToDouble(ContribucionHumana::calcularPuntaje).sum();
     }
 
     public void canjearOferta(Oferta oferta) {

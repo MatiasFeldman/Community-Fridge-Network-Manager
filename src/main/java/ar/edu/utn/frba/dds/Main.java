@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.ConexionAPI;
+import ar.edu.utn.frba.dds.models.entities.helpers.APIRecomendadoraDePuntos;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 
 public class Main {
     public static void main(String[] args) {
-        ConexionAPI api = new ConexionAPI();
+        APIRecomendadoraDePuntos api = new APIRecomendadoraDePuntos();
         RecomendarPuntos recomendarPuntos = new RecomendarPuntos(api);
 
         try {

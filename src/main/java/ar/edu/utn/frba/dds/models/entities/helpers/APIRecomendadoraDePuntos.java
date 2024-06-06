@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.helpers;
 
 import ar.edu.utn.frba.dds.exceptions.ConexionAPIException;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -10,12 +9,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@NoArgsConstructor
-public class ConexionAPI {
-    @Setter
+public class APIRecomendadoraDePuntos implements IConexionApi{
     private String url;
-    @Setter
     private String params;
+    @Setter
+    private double lat;
+    @Setter
+    private double lon;
+    @Setter
+    private double rad;
     @Setter
     private HttpResponse<String> response;
     @Setter
@@ -23,17 +25,18 @@ public class ConexionAPI {
     @Setter
     private String body;
 
-    public ConexionAPI(String url, String params) {
-        this.url = url;
-        this.params = params;
+    public APIRecomendadoraDePuntos() {
+        this.url = "https://b5d319cd-de7d-4fbc-9808-c101eab29c7d.mock.pstmn.io";
+        this.params = "/api/ubicacion/lat=" + this.lat + "&lon=" + this.lon + "&radio=" + this.rad;
         response = null;
         statusCode = null;
         body = null;
+        lat = 0;
+        lon = 0;
+        rad = -1;
     }
 
-
-
-
+    @Override
     public void get() throws IOException, InterruptedException {
         String urlFinal = url + params;
         HttpRequest request = HttpRequest.newBuilder()
@@ -46,6 +49,7 @@ public class ConexionAPI {
         setBody(response.body());
     }
 
+    @Override
     public String revisarRespuesta(){
         if(statusCode == 200){
             return body;

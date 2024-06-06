@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.exceptions.RecomendarPuntosException;
-import ar.edu.utn.frba.dds.models.entities.helpers.ConexionAPI;
+import ar.edu.utn.frba.dds.models.entities.helpers.APIRecomendadoraDePuntos;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,17 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RecomendarPuntos {
-    private ConexionAPI api;
-    public RecomendarPuntos(ConexionAPI api){
+    private APIRecomendadoraDePuntos api;
+    public RecomendarPuntos(APIRecomendadoraDePuntos api){
         this.api = api;
     }
 
-    public ArrayList<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, Double radio) throws IOException, InterruptedException {
-        String url = "https://b5d319cd-de7d-4fbc-9808-c101eab29c7d.mock.pstmn.io";
-        String params = "/api/ubicacion/lat=" + coordenada.getLatitud() + "&lon=" + coordenada.getLongitud() + "&radio=" + radio;
-
-        api.setUrl(url);
-        api.setParams(params);
+    public ArrayList<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, double radio) throws IOException, InterruptedException {
+        api.setLat(coordenada.getLatitud());
+        api.setLon(coordenada.getLongitud());
+        api.setRad(radio);
 
         ArrayList<Coordenada> resultado;
         ObjectMapper objectMapper = new ObjectMapper();

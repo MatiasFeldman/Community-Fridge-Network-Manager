@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.seguridad;
 
-import ar.edu.utn.frba.dds.seguridad.*;
+import ar.edu.utn.frba.dds.utils.seguridad.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

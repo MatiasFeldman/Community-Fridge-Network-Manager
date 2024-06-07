@@ -15,7 +15,7 @@ public class EnviarMail {
         this.motivo = motivo;
     }
 
-    public void enviarMail(String mail, String cuerpo, String motivo) throws MessagingException {
+    public void enviarMail(String destinatario, Mail mail) throws MessagingException {
 
         final String username = "nuestroMail@gmail.com";
         final String password = "nuestraClave";
@@ -38,14 +38,14 @@ public class EnviarMail {
         message.setFrom(new InternetAddress("desdeEmail@gmail.com"));
         message.setRecipients(
                 Message.RecipientType.TO,
-                InternetAddress.parse(mail)
+                InternetAddress.parse(destinatario)
         );
-        message.setSubject(motivo);
-        message.setText(cuerpo);
+        message.setSubject(mail.getMotivo());
+        message.setText(mail.getCuerpo());
 
         Transport.send(message);
 
-        System.out.println("Mail enviado a " + mail);
+        System.out.println("Mail enviado a " + destinatario);
 
     }
 }

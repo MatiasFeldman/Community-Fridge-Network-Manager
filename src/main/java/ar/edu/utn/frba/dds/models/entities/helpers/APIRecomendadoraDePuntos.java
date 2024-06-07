@@ -9,7 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class APIRecomendadoraDePuntos implements IConexionApi{
+public class APIRecomendadoraDePuntos implements IRecomendadoraDePuntosAPI {
     private String url;
     private String params;
     @Setter

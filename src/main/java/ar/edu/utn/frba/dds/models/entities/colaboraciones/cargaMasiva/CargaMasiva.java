@@ -1,7 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.cargaMasiva;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.EnviarMail;
-import ar.edu.utn.frba.dds.models.entities.helpers.Mail;
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.EnviarMail;
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.repositories.imp.HumanosRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -65,7 +66,7 @@ public class CargaMasiva {
                             + "Equipo de colaboraciones";
                     String motivo = "Colaboración pendiente";
 
-                    EnviarMail enviador = new EnviarMail(cuerpo, motivo);
+                    EnviarMail enviador = new EnviarMail(cuerpo, motivo, new MimeMailSender());
                     enviador.enviarMail(mail, new Mail(cuerpo, motivo));
                 } else {
                     // Crear colaboración

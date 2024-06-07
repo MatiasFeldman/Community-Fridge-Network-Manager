@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.ubicacion;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.IRecomendadoraDePuntosAPI;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import org.junit.jupiter.api.Test;

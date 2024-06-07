@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.helpers;
+package ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos;
 
 import java.io.IOException;
 

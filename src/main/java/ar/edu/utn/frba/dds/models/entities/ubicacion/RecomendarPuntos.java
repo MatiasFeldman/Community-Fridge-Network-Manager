@@ -2,7 +2,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.exceptions.RecomendarPuntosException;
-import ar.edu.utn.frba.dds.models.entities.helpers.IRecomendadoraDePuntosAPI;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

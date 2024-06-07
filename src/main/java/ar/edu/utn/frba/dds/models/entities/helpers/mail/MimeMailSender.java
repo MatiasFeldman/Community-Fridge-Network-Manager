@@ -1,22 +1,18 @@
-package ar.edu.utn.frba.dds.models.entities.helpers;
+package ar.edu.utn.frba.dds.models.entities.helpers.mail;
+
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.IMailSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
+import lombok.NoArgsConstructor;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class EnviarMail {
-
-    private String cuerpo;
-    private String motivo;
-
-    public EnviarMail(String cuerpo, String motivo) {
-        this.cuerpo = cuerpo;
-        this.motivo = motivo;
-    }
-
+@NoArgsConstructor
+public class MimeMailSender implements IMailSender {
+    @Override
     public void enviarMail(String destinatario, Mail mail) throws MessagingException {
-
         final String username = "nuestroMail@gmail.com";
         final String password = "nuestraClave";
 

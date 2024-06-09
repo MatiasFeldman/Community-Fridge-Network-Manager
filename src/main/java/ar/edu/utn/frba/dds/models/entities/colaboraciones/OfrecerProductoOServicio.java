@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.repositories.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 
 public class OfrecerProductoOServicio implements ContribucionJuridica {
 

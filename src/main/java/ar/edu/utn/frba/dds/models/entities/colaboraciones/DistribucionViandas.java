@@ -1,15 +1,24 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;
-    private int cantidadViandas;
+    private Integer cantidadViandas;
     private String motivo;
     private LocalDate fechaDistribucion;
+
+    public DistribucionViandas(Integer cantViandas){
+        this.cantidadViandas = cantViandas;
+    }
 
 
     @Override
@@ -24,6 +33,8 @@ public class DistribucionViandas implements ContribucionHumana{
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
         return constantes.getCteViandasDistribuidas() * cantidadViandas;
     }
+
+
 
 
 }

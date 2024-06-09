@@ -6,6 +6,11 @@ public class Rol {
     private String nombre;
     private ArrayList<Permiso> permisos;
 
+    public Rol(String nombre){
+        this.nombre = nombre;
+        this.permisos = new ArrayList<Permiso>();
+    }
+
     public boolean tienePermiso(Permiso permiso){
         return permisos.contains(permiso);
     }

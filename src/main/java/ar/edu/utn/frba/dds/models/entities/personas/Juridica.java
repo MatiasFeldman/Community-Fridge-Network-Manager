@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionJuridica;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
-import ar.edu.utn.frba.dds.models.repositories.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 
 import java.util.ArrayList;

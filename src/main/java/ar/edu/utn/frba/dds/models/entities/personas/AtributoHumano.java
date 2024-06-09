@@ -13,4 +13,9 @@ public class AtributoHumano {
     public AtributoHumano(String nombreAtributo) {
         this.nombreAtributo = nombreAtributo;
     }
+
+    public AtributoHumano(String nombreAtributo, String valorAtributo) {
+        this.nombreAtributo = nombreAtributo;
+        this.valorAtributo = valorAtributo;
+    }
 }

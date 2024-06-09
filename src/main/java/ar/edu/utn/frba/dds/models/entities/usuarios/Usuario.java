@@ -2,12 +2,16 @@ package ar.edu.utn.frba.dds.models.entities.usuarios;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
+import java.util.UUID;
 
 import java.io.IOException;
 
 public class Usuario {
-    private String user;
+    @Getter
+    private final String user;
     private String password;
+    @Getter
+    private String id;
     @Getter
     private Rol rol;
 
@@ -26,7 +30,9 @@ public class Usuario {
                 this.user = user;
                 this.password = password;
                 this.rol = rol;
+                this.id = UUID.randomUUID().toString();
             }
 
     }
+
 }

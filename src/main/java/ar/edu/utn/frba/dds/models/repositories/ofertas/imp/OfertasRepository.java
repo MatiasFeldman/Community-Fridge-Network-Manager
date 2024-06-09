@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.repositories.imp;
+package ar.edu.utn.frba.dds.models.repositories.ofertas.imp;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.repositories.IOfertasRepository;

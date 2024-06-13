@@ -2,6 +2,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.exceptions.RecomendarPuntosException;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,10 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RecomendarPuntos {
-    private IRecomendadoraDePuntosAPI api;
+    private APIRecomendadoraDePuntos api;
 
-    public RecomendarPuntos(IRecomendadoraDePuntosAPI api) {
-        this.api = api;
+    public RecomendarPuntos() {
+        this.api = APIRecomendadoraDePuntos.getInstance();
     }
 
     public ArrayList<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, double radio) throws IOException, InterruptedException {

@@ -1,14 +1,21 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos;
 
-import java.io.IOException;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface IRecomendadoraDePuntosAPI {
-    public void get() throws IOException, InterruptedException;
-    public String revisarRespuesta();
+//    public void get() throws IOException, InterruptedException;
+//    public String revisarRespuesta();
+//
+//    void setLat(double latitud);
+//
+//    void setLon(double longitud);
+//
+//    void setRad(double radio);
 
-    void setLat(double latitud);
+    //Con retrofit
+    @GET("/api/ubicacion/")
+    Call<String> getRecomendaciones(@Query("lat") double latitud, @Query("lon") double longitud, @Query("radio") double radio);
 
-    void setLon(double longitud);
-
-    void setRad(double radio);
 }

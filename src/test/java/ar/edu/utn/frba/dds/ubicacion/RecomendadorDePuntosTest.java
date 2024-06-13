@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.ubicacion;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
@@ -12,8 +13,8 @@ public class RecomendadorDePuntosTest {
 
     @Test
     public void recomendarPuntosParaHeladeraTest() throws IOException, InterruptedException {
-        IRecomendadoraDePuntosAPI apiImpostor = mock(IRecomendadoraDePuntosAPI.class);
-        RecomendarPuntos recomendarPuntos = new RecomendarPuntos(apiImpostor);
+        APIRecomendadoraDePuntos apiImpostor = mock(APIRecomendadoraDePuntos.class);
+        RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
 
         when(apiImpostor.revisarRespuesta()).thenReturn("[{\"latitud\":40.712776,\"longitud\":-74.005974},{\"latitud\":34.052235,\"longitud\":-118.243683}]");
 

@@ -2214,7 +2214,7 @@
 											"top": 312,
 											"width": 567.2109375,
 											"height": 13,
-											"text": "-colaboracionesRealizadas: List<ContribucionJuridica>",
+											"text": "-constantesMultiplicativas: List<ContribucionJuridica>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -11312,7 +11312,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6Dpqx4o43/A="
 							},
-							"name": "colaboracionesRealizadas",
+							"name": "constantesMultiplicativas",
 							"visibility": "private",
 							"type": "List<ContribucionHumana>"
 						}
@@ -11851,7 +11851,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6GQYrusq3/Y="
 							},
-							"name": "colaboracionesRealizadas",
+							"name": "constantesMultiplicativas",
 							"visibility": "private",
 							"type": "List<ContribucionJuridica>"
 						},

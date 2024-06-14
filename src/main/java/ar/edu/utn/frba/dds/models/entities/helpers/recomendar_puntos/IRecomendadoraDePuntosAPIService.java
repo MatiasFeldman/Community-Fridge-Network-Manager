@@ -5,7 +5,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface IRecomendadoraDePuntosAPI {
+public interface IRecomendadoraDePuntosAPIService {
 //    public void get() throws IOException, InterruptedException;
 //    public String revisarRespuesta();
 //

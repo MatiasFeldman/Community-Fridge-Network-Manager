@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPIService;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 public class RecomendadorDePuntosTest {
     @Mock
-    private IRecomendadoraDePuntosAPI iRecomendadoraDePuntosAPI;
+    private IRecomendadoraDePuntosAPIService iRecomendadoraDePuntosAPI;
 
     @Mock
     private Call<ListUbi> mockCall;
@@ -36,7 +36,7 @@ public class RecomendadorDePuntosTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        when(mockRetrofit.create(IRecomendadoraDePuntosAPI.class)).thenReturn(iRecomendadoraDePuntosAPI);
+        when(mockRetrofit.create(IRecomendadoraDePuntosAPIService.class)).thenReturn(iRecomendadoraDePuntosAPI);
         apiRecomendadoraDePuntos = new APIRecomendadoraDePuntos(mockRetrofit);
     }
 

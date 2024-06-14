@@ -1,15 +1,11 @@
 // RecomendarPuntos.java
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
-import ar.edu.utn.frba.dds.exceptions.RecomendarPuntosException;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadorDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadoraDePuntosAPI;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecomendarPuntos {
@@ -25,4 +21,6 @@ public class RecomendarPuntos {
 
         return obj.getCoordenadas();
     }
+
+
 }

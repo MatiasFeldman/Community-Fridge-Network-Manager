@@ -31,6 +31,7 @@ public class ConversorCSVReader implements IConversorCSV {
     @Override
     public void convertir(String path) throws CsvValidationException, IOException, ParseException, MessagingException {
         CSVReader reader = new CSVReader(new FileReader(path));
+        ValidadorCargaMasiva validador = new ValidadorCargaMasiva();
         String[] line;
         while ((line = reader.readNext()) != null) {
             String tipoDocumento = line[0];
@@ -44,13 +45,13 @@ public class ConversorCSVReader implements IConversorCSV {
             String username = nombre.charAt(0) + apellido;
 
             // Validar tipo de documento
-            if (!tipoDocumento.matches("DNI|LE|LC")) {
+            if (!validador.cumpleTipoDNI(tipoDocumento)){
                 System.err.println("Error en la línea: " + line + ". Tipo de documento inválido.");
                 continue;
             }
 
             // Validar formato de mail
-            if (!mail.matches(".+@.+\\..+")) {
+            if (!validador.cumpleFromatoMail(mail)) {
                 System.err.println("Error en la línea: " + line + ". Formato de mail inválido.");
                 continue;
             }
@@ -60,7 +61,7 @@ public class ConversorCSVReader implements IConversorCSV {
             Date fechaColaboracion = sdf.parse(fechaColaboracionString);
 
             // Validar forma de colaboración
-            if (!formaColaboracion.matches("DINERO|DONACION_VIANDAS|REDISTRIBUCION_VIANDAS|ENTREGA_VIANDAS")) {
+            if (!validador.cumpleFormaColaboracion(formaColaboracion)) {
                 System.err.println("Error en la línea: " + line + ". Forma de colaboración inválida.");
                 continue;
             }

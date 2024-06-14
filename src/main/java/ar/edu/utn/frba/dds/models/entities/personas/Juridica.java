@@ -3,10 +3,14 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionJuridica;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Juridica {
     private String razonSocial;
@@ -17,9 +21,11 @@ public class Juridica {
     private double puntosCanjeados;
     private ArrayList<ContribucionJuridica> contribuciones;
     private OfertasRepository ofertasDisponibles;
+    private RecomendarPuntos recomendador;
 
-    public Juridica(OfertasRepository ofertas){
+    public Juridica(OfertasRepository ofertas, RecomendarPuntos recomendador){
         this.ofertasDisponibles = ofertas;
+        this.recomendador = recomendador;
     }
 
     public void colaborar(ContribucionJuridica contribucion){
@@ -27,9 +33,10 @@ public class Juridica {
         contribuciones.add(contribucion);
     }
 
+    public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
+        return recomendador.solicitarRecomendacionParaHeladera(coord, radio);
 
-
-
+    }
 
     public double calcularPuntaje() {
         return this.puntosGanados() - puntosCanjeados;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Juridica {
     private String razonSocial;
     private Tipo tipo;
-    private String rubro;
+    private String Rubro;
     private ArrayList<Contacto> mediosDeContacto;
     private Direccion direccion;
     private double puntosCanjeados;
@@ -26,7 +26,6 @@ public class Juridica {
         contribucion.contribuir();
         contribuciones.add(contribucion);
     }
-
 
 
 

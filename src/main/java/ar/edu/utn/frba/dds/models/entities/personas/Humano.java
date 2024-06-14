@@ -17,6 +17,7 @@ import java.util.ArrayList;
 @Builder
 public class Humano {
     private ArrayList<AtributoHumano> atributosObligatorios;
+    private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumano> atributosOpcionales;
     private double puntosCanjeados;
     private ArrayList<ContribucionHumana> contribuciones;
@@ -39,6 +40,10 @@ public class Humano {
         } else {
             this.atributosOpcionales.add(new AtributoHumano(nombreAtributo));
         }
+    }
+
+    public void generarContacto(Contacto contacto){
+        this.mediosDeContacto.add(contacto);
     }
 
     public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor) {

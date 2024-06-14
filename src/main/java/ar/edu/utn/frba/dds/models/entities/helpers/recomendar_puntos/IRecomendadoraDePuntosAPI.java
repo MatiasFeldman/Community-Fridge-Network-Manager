@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -16,6 +17,6 @@ public interface IRecomendadoraDePuntosAPI {
 
     //Con retrofit
     @GET("/api/ubicacion/")
-    Call<String> getRecomendaciones(@Query("lat") double latitud, @Query("lon") double longitud, @Query("radio") double radio);
+    Call<ListUbi> recomendados(@Query("lat") double latitud, @Query("lon") double longitud, @Query("radio") double radio);
 
 }

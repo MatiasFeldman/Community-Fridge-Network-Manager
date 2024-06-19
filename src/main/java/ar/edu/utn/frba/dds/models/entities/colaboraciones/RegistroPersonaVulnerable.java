@@ -15,6 +15,9 @@ import java.util.ArrayList;
 public class RegistroPersonaVulnerable implements ContribucionHumana {
     private ArrayList<Tarjeta> tarjetas;
     private Integer tarjetasRepartidas;
+    // Se van creando a medida que se van entregando tarjetas
+    // eL CONTROLADOR GENERA Y REGISTRA LA CONTRIBUCION
+    // La accion del dominion es registrar la conribucion
 
     public RegistroPersonaVulnerable(ArrayList<Tarjeta> tarjetas) {
         this.tarjetas = new ArrayList<>(tarjetas);

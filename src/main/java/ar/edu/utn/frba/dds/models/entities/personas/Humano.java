@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class Humano {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<AtributoHumano> atributosOpcionales;
+    private ArrayList<Contacto> mediosDeContacto;
     private double puntosCanjeados;
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
@@ -31,9 +32,9 @@ public class Humano {
     public void colaborar(ContribucionHumana contribucion) {
         contribucion.contribuir();
         contribuciones.add(contribucion);
-    }
+    } // cada vez q la agregamos, le sumamos los puntos
 
-    public void generarAtributo(TipoAtributo tipo, String nombreAtributo) {
+    public void generarMedioDeContacto(TipoAtributo tipo, String nombreAtributo) {
         if (tipo == TipoAtributo.OBLIGATORIO) {
             this.atributosObligatorios.add(new AtributoHumano(nombreAtributo));
         } else {
@@ -69,5 +70,17 @@ public class Humano {
 
     public void agregarContribucion(ContribucionHumana contribucion) {
         this.contribuciones.add(contribucion);
+    }
+
+    public void generarContacto(Contacto contacto) {
+        this.mediosDeContacto.add(contacto);
+    }
+
+    public String nombre(){
+        return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Nombre")).findFirst().get().getValorAtributo();
+    }
+
+    public String apellido(){
+        return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Apellido")).findFirst().get().getValorAtributo();
     }
 }

@@ -4,13 +4,9 @@ import javax.mail.*;
 
 public class EnviarMail{
 
-    private String cuerpo;
-    private String motivo;
     private IMailSender mailSender;
 
-    public EnviarMail(String cuerpo, String motivo, IMailSender mailSender) {
-        this.cuerpo = cuerpo;
-        this.motivo = motivo;
+    public EnviarMail(IMailSender mailSender) {
         this.mailSender = mailSender;
     }
 

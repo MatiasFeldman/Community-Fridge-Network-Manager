@@ -24,7 +24,7 @@ public class DistribucionViandas implements ContribucionHumana{
     @Override
     public void contribuir() {
         heladeraOrigen.quitarViandas(cantidadViandas);
-        heladeraDestino.agregarViandas(cantidadViandas);
+        heladeraDestino.agregarViandas(cantidadViandas); // directament q lo haga el controller. en el modelo registramos lo q pasó
         System.out.println("Distribucion de viandas realizada: se han distribuido " + cantidadViandas + " viandas.");
     }
 

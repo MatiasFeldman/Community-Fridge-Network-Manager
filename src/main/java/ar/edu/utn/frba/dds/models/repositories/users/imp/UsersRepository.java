@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.users.imp;
 
-import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.IUsersRepository;
 import ar.edu.utn.frba.dds.models.repositories.users.dao.IUsersDAO;
@@ -10,10 +9,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-public class UsuariosRepository implements IUsersRepository {
+public class UsersRepository implements IUsersRepository {
     private IUsersDAO usuarios;
 
-    public UsuariosRepository(IUsersDAO usuarios) {
+    public UsersRepository(IUsersDAO usuarios) {
         this.usuarios = usuarios;
     }
 

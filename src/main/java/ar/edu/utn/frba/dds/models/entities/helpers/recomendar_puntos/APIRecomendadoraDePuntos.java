@@ -1,61 +1,49 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos;
 
-import ar.edu.utn.frba.dds.exceptions.ConexionAPIException;
-import lombok.Setter;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
-public class APIRecomendadoraDePuntos implements IRecomendadoraDePuntosAPI {
-    private String url;
-    private String params;
-    @Setter
-    private double lat;
-    @Setter
-    private double lon;
-    @Setter
-    private double rad;
-    @Setter
-    private HttpResponse<String> response;
-    @Setter
-    private Integer statusCode;
-    @Setter
-    private String body;
+public class APIRecomendadoraDePuntos implements IRecomendadorDePuntos{
+    private static APIRecomendadoraDePuntos instance = null;
+    private static final String urlBase = "http://example.com";
+    protected Retrofit retrofit;
 
     public APIRecomendadoraDePuntos() {
-        this.url = "https://b5d319cd-de7d-4fbc-9808-c101eab29c7d.mock.pstmn.io";
-        this.params = "/api/ubicacion/lat=" + this.lat + "&lon=" + this.lon + "&radio=" + this.rad;
-        response = null;
-        statusCode = null;
-        body = null;
-        lat = 0;
-        lon = 0;
-        rad = -1;
-    }
-
-    @Override
-    public void get() throws IOException, InterruptedException {
-        String urlFinal = url + params;
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(urlFinal))
-                .GET()
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl(urlBase)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+    // Constructor para pruebas unitarias
+    public APIRecomendadoraDePuntos(Retrofit retrofit) {
+        this.retrofit = retrofit;
+    }
 
-        setResponse(HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()));
-        setStatusCode(response.statusCode());
-        setBody(response.body());
+
+    public static APIRecomendadoraDePuntos getInstance() {
+        if (instance == null) {
+            instance = new APIRecomendadoraDePuntos();
+        }
+        return instance;
     }
 
     @Override
-    public String revisarRespuesta(){
-        if(statusCode == 200){
-            return body;
-        }
-        else {
-            throw new ConexionAPIException("Peticion fallida; Status Code: " + statusCode);
-        }
+    public ListUbi listaDeUbis(double lat,double lon,double radio) throws IOException {
+        IRecomendadoraDePuntosAPIService iRecomendadoraDePuntosAPI = this.retrofit.create(IRecomendadoraDePuntosAPIService.class);
+        Call<ListUbi> requestUbis = iRecomendadoraDePuntosAPI.recomendados(lat,lon,radio);
+        Response<ListUbi> responseUbis = requestUbis.execute();
+        return responseUbis.body();
     }
+
 }
+
+
+
+
+
+

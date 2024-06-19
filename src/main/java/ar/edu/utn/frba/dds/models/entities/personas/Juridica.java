@@ -15,7 +15,7 @@ import java.util.List;
 public class Juridica {
     private String razonSocial;
     private Tipo tipo;
-    private String rubro;
+    private String Rubro;
     private ArrayList<Contacto> mediosDeContacto;
     private Direccion direccion;
     private double puntosCanjeados;
@@ -35,7 +35,6 @@ public class Juridica {
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
         return recomendador.solicitarRecomendacionParaHeladera(coord, radio);
-
     }
 
     public double calcularPuntaje() {

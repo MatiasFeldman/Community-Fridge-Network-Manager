@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFact
 import ar.edu.utn.frba.dds.models.entities.helpers.mail.EnviarMail;
 import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
 import ar.edu.utn.frba.dds.models.entities.helpers.mail.MimeMailSender;
+import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
@@ -70,7 +71,7 @@ public class ConversorCSVReader implements IConversorCSV {
             humano.generarAtributo(TipoAtributo.OBLIGATORIO, "Nombre", nombre);
             humano.generarAtributo(TipoAtributo.OBLIGATORIO, "Apellido", apellido);
             humano.generarAtributo(TipoAtributo.OBLIGATORIO, "Mail", mail);
-            humano.generarAtributo(TipoAtributo.OPCIONAL, tipoDocumento, documento);
+            humano.generarContacto(new Contacto(tipoDocumento, documento));
 
             ContribucionHumana contribucion = ContribucionHumanaFactory.create(formaColaboracion, cantidad);
 

@@ -43,7 +43,6 @@ public class ConversorCSVReader implements ConversorCSV {
             Date fechaColaboracion = sdf.parse(fechaColaboracionString);
  */
 
-
         }
     }
 

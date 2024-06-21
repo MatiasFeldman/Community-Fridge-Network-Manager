@@ -53,7 +53,7 @@ public class Heladera {
         if (!this.estaEntreLosLimites(ultimaTemperaturaRegistrada)){
             this.desactivar();
         }
-    }
+    } // pendiente entrega
 
     public void recibirMovimiento(){
         //Simula recibir si hay movimiento

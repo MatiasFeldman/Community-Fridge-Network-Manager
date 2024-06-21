@@ -1,20 +1,14 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
-import com.opencsv.exceptions.CsvValidationException;
-
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.text.ParseException;
-
 public class CargaMasiva {
     private String path;
-    private IConversorCSV conversor;
+    private ConversorCSV conversor;
 
-    public CargaMasiva(String path, IConversorCSV conversor) {
+    public CargaMasiva(String path, ConversorCSV conversor) {
         this.conversor = conversor;
     }
 
-    public void cargar() throws CsvValidationException, MessagingException, IOException, ParseException {
+    public void cargar() { // propagar o hacer el catch del exception y convertirla
         conversor.convertir(path);
     }
 

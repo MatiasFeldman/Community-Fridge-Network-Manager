@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class SensorDeMovimiento {
-    private Heladera heladera;
+    private ReceptorMovimiento receptor;
 
-    public SensorDeMovimiento(Heladera heladera) {
-        this.heladera = heladera;
-    }
-
-    public void recibirMovimiento(){
+    public void recibirMovimiento(String string){
         // recibe que hay movimiento y se lo manda a la heladera
     }
 }

@@ -3,11 +3,20 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.factories.AccionadorFactory;
+import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
+import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -22,6 +31,7 @@ public class Humano {
     private double puntosCanjeados;
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
+    private IncidentesRepository incidentesRepository;
     private UUID idUsuario;
 
     public Humano(OfertasRepository ofertas) {
@@ -89,11 +99,17 @@ public class Humano {
         this.contribuciones.add(contribucion);
     }
 
-    public String nombre() {
-        return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Nombre")).findFirst().get().getValorAtributo();
+    public void reportarFallaTecnica(Heladera heladera){
+        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
+        Accionador accionador = factory.crearParaFallaTecnica(heladera);
+        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica());
     }
 
-    public String apellido() {
-        return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Apellido")).findFirst().get().getValorAtributo();
+    public void reportarFallaTecnica(Heladera heladera, String descripcion, Image foto){
+        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
+        Accionador accionador = factory.crearParaFallaTecnica(heladera);
+        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica(descripcion, foto, LocalDateTime.now()));
     }
+
+
 }

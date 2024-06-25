@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Setter
-public class Humano {
+public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumano> atributosOpcionales;

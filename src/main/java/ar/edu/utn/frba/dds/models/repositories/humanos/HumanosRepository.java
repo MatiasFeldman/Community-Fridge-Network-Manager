@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.dao.HumanosDAO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class HumanosRepository {
     private HumanosDAO humanos;
@@ -17,8 +18,8 @@ public class HumanosRepository {
         humanos.guardar(humano);
     }
 
-    public Optional<Humano> buscarPorNombreYApellido(String nombre, String apellido) {
-        return humanos.buscarPorIdentificacion(nombre, apellido);
+    public Optional<Humano> buscarPorUUID(UUID uuid) {
+        return humanos.buscarPorId(uuid);
     }
 
     public List<Humano> buscarTodos() {

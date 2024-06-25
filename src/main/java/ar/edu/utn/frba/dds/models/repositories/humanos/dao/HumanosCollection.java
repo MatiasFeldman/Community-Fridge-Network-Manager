@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class HumanosCollection implements HumanosDAO{
 
@@ -18,10 +19,10 @@ public class HumanosCollection implements HumanosDAO{
     }
 
     @Override
-    public Optional<Humano> buscarPorIdentificacion(String nombre, String apellido){
+    public Optional<Humano> buscarPorId(UUID id){
         return humanos
                 .stream()
-                .filter(humano -> humano.nombre().equals(nombre) && humano.apellido().equals(apellido))
+                .filter(humano -> humano.getIdUsuario().equals(id))
                 .findFirst();
     }
 

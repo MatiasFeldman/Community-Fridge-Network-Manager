@@ -1,33 +1,45 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
+import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class Humano {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumano> atributosOpcionales;
-    private ArrayList<Contacto> mediosDeContacto;
     private double puntosCanjeados;
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
+    private UUID idUsuario;
 
-    public Humano(OfertasRepository ofertas){
+    public Humano(OfertasRepository ofertas) {
         this.ofertasDisponibles = ofertas;
     }
 
+    public static Humano create(HumanoInputDTO dto) {
+        return Humano
+                .builder()
+                .atributosObligatorios(dto.getAtributosObligatorios())
+                .atributosOpcionales(dto.getAtributosOpcionales())
+                .mediosDeContacto(dto.getMediosDeContacto())
+                .puntosCanjeados(dto.getPuntosCanjeados())
+                .contribuciones(dto.getContribuciones())
+                .ofertasDisponibles(dto.getOfertasDisponibles())
+                .idUsuario(dto.getIdUsuario())
+                .build();
+    }
 
 
     public void colaborar(ContribucionHumana contribucion) {
@@ -43,7 +55,7 @@ public class Humano {
         }
     }
 
-    public void generarContacto(Contacto contacto){
+    public void generarContacto(Contacto contacto) {
         this.mediosDeContacto.add(contacto);
     }
 
@@ -59,7 +71,7 @@ public class Humano {
         return this.puntosGanados() - puntosCanjeados;
     }
 
-    public double puntosGanados(){
+    public double puntosGanados() {
         return contribuciones.stream().mapToDouble(ContribucionHumana::calcularPuntaje).sum();
     }
 
@@ -77,15 +89,11 @@ public class Humano {
         this.contribuciones.add(contribucion);
     }
 
-    public void generarContacto(Contacto contacto) {
-        this.mediosDeContacto.add(contacto);
-    }
-
-    public String nombre(){
+    public String nombre() {
         return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Nombre")).findFirst().get().getValorAtributo();
     }
 
-    public String apellido(){
+    public String apellido() {
         return this.atributosObligatorios.stream().filter(atributo -> atributo.getNombreAtributo().equals("Apellido")).findFirst().get().getValorAtributo();
     }
 }

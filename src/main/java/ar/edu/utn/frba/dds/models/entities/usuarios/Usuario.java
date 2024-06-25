@@ -11,11 +11,11 @@ public class Usuario {
     private final String user;
     private String password;
     @Getter
-    private String id;
+    private UUID id;
     @Getter
     private Rol rol;
 
-    public Usuario(String user, String password, Rol rol) throws IOException {
+    public Usuario(String user, String password, UUID id ,Rol rol) throws IOException {
             ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
             validador.agregarCondiciones(new CumpleLongitud(8,64),
                                          new TieneMayuscula(),
@@ -30,7 +30,7 @@ public class Usuario {
                 this.user = user;
                 this.password = password;
                 this.rol = rol;
-                this.id = UUID.randomUUID().toString();
+                this.id = id;
             }
 
     }

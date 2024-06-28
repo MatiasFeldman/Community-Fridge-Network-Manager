@@ -1,13 +1,18 @@
 package ar.edu.utn.frba.dds.reportes;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.IGeneradorPDF;
-import ar.edu.utn.frba.dds.models.entities.reportes.Reporte;
+import ar.edu.utn.frba.dds.models.entities.reportes.*;
+import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import com.itextpdf.text.pdf.PdfException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.times;
@@ -17,19 +22,21 @@ public class GenerarReporteTest {
     public void generarReporteTest() throws PdfException {
 
         IGeneradorPDF pdfGeneratorMock = Mockito.mock(IGeneradorPDF.class);
+        IncidentesRepository incidentesRepository = Mockito.mock(IncidentesRepository.class);
+        HumanosRepository humanosRepository = Mockito.mock(HumanosRepository.class);
 
 
         GeneradorPDF generarReporte = new GeneradorPDF(pdfGeneratorMock);
 
 
-        String filePath = "C:\\Nico\\utn\\3°Año\\Diseño";
+        String filePath = "/Users/matifeldman/Documentos/DDS";
 
-        List<Reporte> reportes = new ArrayList<>();
-        reportes.add(new Reporte("Reporte 1", "Este es el contenido del primer reporte."));
-        reportes.add(new Reporte("Reporte 2", "Este es el contenido del segundo reporte."));
-        reportes.add(new Reporte("Reporte 3", "Este es el contenido del tercer reporte."));
 
-        // Ejecutar el método a probar
+        // Crear instancias de reportes usando los repositorios mock
+        List<IReporte> reportes = List.of(
+                new ReporteFallas(incidentesRepository),
+                new ReporteViandasDonadas(humanosRepository));
+
         generarReporte.generarPDF(reportes, filePath);
 
         // Verificar que el método generarPDF fue llamado con los argumentos correctos

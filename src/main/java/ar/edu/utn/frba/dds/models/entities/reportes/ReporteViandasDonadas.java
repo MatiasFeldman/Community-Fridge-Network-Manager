@@ -8,14 +8,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReporteViandasDonadas {
+public class ReporteViandasDonadas implements IReporte{
     private HumanosRepository humanosRepository;
 
     public ReporteViandasDonadas(HumanosRepository humanosRepository) {
         this.humanosRepository = humanosRepository;
     }
 
-    public Reporte generarReporteViandas() {
+    @Override
+    public String nombre (){
+        return "Reporte de viandas donadas";
+    }
+
+    @Override
+    public String contenido(){
+        return generarReporteViandas();
+    }
+
+    public String generarReporteViandas() {
         Map<String, Integer> viandasPorHumano = contarViandasPorHumano();
         StringBuilder contenido = new StringBuilder();
         contenido.append("Reporte de viandas donadas\n");
@@ -23,7 +33,7 @@ public class ReporteViandasDonadas {
         for (Map.Entry<String, Integer> entry : viandasPorHumano.entrySet()) {
             contenido.append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
         }
-        return new Reporte("Reporte de viandas donadas", contenido.toString());
+        return contenido.toString();
     }
 
     private Map<String, Integer> contarViandasPorHumano() {

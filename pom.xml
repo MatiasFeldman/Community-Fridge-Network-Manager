@@ -179,7 +179,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ar.edu.utn.frba.dds.main</mainClass>
+              <mainClass>ar.edu.utn.frba.dds.models.main.MainReportes</mainClass>
             </manifest>
           </archive>
         </configuration>

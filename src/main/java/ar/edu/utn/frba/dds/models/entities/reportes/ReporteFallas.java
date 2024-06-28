@@ -8,14 +8,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReporteFallas {
-    private static IncidentesRepository incidentesRepository;
+
+public class ReporteFallas implements  IReporte {
+    private IncidentesRepository incidentesRepository;
 
     public ReporteFallas(IncidentesRepository incidentesRepository) {
         this.incidentesRepository = incidentesRepository;
     }
 
-    public static Reporte generarReporteFallas() {
+    @Override
+    public String nombre() {
+        return "Reporte de fallas";
+    }
+
+    @Override
+    public String contenido() {
+        return generarReporteFallas();
+    }
+
+    public String generarReporteFallas() {
         Map<Heladera, Integer> heladeraConteo = contarHeladeras();
         StringBuilder contenido = new StringBuilder();
         contenido.append("Reporte de fallas\n");
@@ -23,10 +34,10 @@ public class ReporteFallas {
         for (Map.Entry<Heladera, Integer> entry : heladeraConteo.entrySet()) {
             contenido.append(entry.getKey().getNombre()).append("\t").append(entry.getValue()).append("\n");
         }
-        return new Reporte("Reporte de fallas", contenido.toString());
+        return contenido.toString();
     }
 
-    public static Map<Heladera, Integer> contarHeladeras() {
+    public Map<Heladera, Integer> contarHeladeras() {
         List<Incidente> incidentes = incidentesRepository.buscarTodos();
         Map<Heladera, Integer> heladeraConteo = new HashMap<>();
 

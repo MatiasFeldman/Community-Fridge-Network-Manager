@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.IGeneradorPDF;
-import ar.edu.utn.frba.dds.models.entities.helpers.reportes.Reporte;
+import ar.edu.utn.frba.dds.models.entities.reportes.Reporte;
 import com.itextpdf.text.pdf.PdfException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

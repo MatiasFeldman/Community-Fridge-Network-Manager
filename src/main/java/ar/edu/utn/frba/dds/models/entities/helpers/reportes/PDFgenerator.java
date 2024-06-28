@@ -1,4 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.reportes;
+import ar.edu.utn.frba.dds.models.entities.reportes.Reporte;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -20,7 +21,6 @@ public class PDFgenerator implements IGeneradorPDF {
 
         String nombrePDF = path + "/reporte_semanal_" + date + ".pdf";
 
-        // Crear y escribir en el documento PDF
         Document document = new Document();
         try {
             PdfWriter.getInstance(document, new FileOutputStream(nombrePDF));
@@ -31,7 +31,6 @@ public class PDFgenerator implements IGeneradorPDF {
                 // Añadir contenido de cada reporte a una nueva página
                 document.add(new Paragraph("Reporte Semanal"));
                 document.add(new Paragraph("Fecha: " + date));
-                document.add(new Paragraph("Contenido del reporte: " + reporte.getNombre()));
                 document.add(new Paragraph(reporte.getContenido()));
 
                 if (i < reportes.size() - 1) {

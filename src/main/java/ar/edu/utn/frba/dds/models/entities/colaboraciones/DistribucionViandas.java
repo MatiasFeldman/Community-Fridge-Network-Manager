@@ -3,12 +3,14 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;

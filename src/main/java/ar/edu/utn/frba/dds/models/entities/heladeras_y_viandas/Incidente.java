@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Incidente {
     private LocalDateTime fecha;
+    @Getter
     private Heladera heladera;
     private TipoEvento tipo;
     private Object colaborador;

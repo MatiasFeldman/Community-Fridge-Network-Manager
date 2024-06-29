@@ -2,9 +2,13 @@ package ar.edu.utn.frba.dds.models.entities.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.UsoTarjeta;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +16,11 @@ import java.util.Map;
 
 public class ReporteMovimientoViandas implements IReporte {
     private HumanosRepository humanosRepository;
+    private PersonasVulnerablesRepository personasVulnerablesRepository;
 
-    public ReporteMovimientoViandas(HumanosRepository humanosRepository) {
+    public ReporteMovimientoViandas(HumanosRepository humanosRepository, PersonasVulnerablesRepository personasVulnerablesRepository) {
         this.humanosRepository = humanosRepository;
+        this.personasVulnerablesRepository = personasVulnerablesRepository;
     }
 
     public String generarReporteMovimientoViandas() {
@@ -37,8 +43,10 @@ public class ReporteMovimientoViandas implements IReporte {
 
     public Map<String, Integer[]> contarViandasPorHeladera() {
         List<Humano> humanos = humanosRepository.buscarTodos();
+        List<PersonaVulnerable> personasVulnerables = personasVulnerablesRepository.buscarTodos();
         Map<String, Integer[]> viandasPorHeladera = new HashMap<>();
 
+        // Conteo de viandas distribuidas
         for (Humano humano : humanos) {
             for (ContribucionHumana contribucion : humano.getContribuciones()) {
                 if (contribucion instanceof DistribucionViandas) {
@@ -64,6 +72,19 @@ public class ReporteMovimientoViandas implements IReporte {
                 }
             }
         }
+
+        // Contar viandas retiradas por personas vulnerables
+        for (PersonaVulnerable persona : personasVulnerables) {
+            Tarjeta tarjeta = persona.getTarjeta();
+            List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
+            for (UsoTarjeta uso : historialUso) {
+                Heladera heladera = uso.getHeladera();
+                Integer[] conteo = viandasPorHeladera.getOrDefault(heladera.getNombre().getNombreDePunto(), new Integer[]{0, 0});
+                conteo[1] += 1; // Cada uso de tarjeta cuenta como una vianda saliente
+                viandasPorHeladera.put(heladera.getNombre().getNombreDePunto(), conteo);
+            }
+        }
+
         return viandasPorHeladera;
     }
 

@@ -9,10 +9,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Tarjeta {
+    @Getter
     private String id;
     @Setter
     @Getter
     private PersonaVulnerable duenio;
+    @Getter
     private ArrayList<UsoTarjeta> historialDeUsos;
 
     public Tarjeta(String id) {

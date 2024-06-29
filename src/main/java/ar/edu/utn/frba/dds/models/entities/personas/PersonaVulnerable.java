@@ -31,4 +31,8 @@ public class PersonaVulnerable {
         this.registradaPor = registradaPor;
         this.tarjeta = null;
     }
+
+    public String getIdPersonaVulnerable() {
+        return tarjeta.getId();
+    }
 }

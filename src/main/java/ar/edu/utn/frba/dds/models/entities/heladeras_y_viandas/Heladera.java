@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,14 +78,15 @@ public class Heladera {
         registrosAperturas.add(intentoApertura);
     }
 
-    public boolean verificarAcceso(String tarjeta) {
+    public boolean verificarAcceso(TarjetaHumano tarjeta) {
         for (SolicitudApertura solicitud : solicitudes) {
-            if (solicitud.getColaborador().getTarjeta().equals(tarjeta) && solicitud.isDentroDeTiempo()) {
-                registrarApertura(solicitud.getColaborador().getNombre(), true);
+            if (solicitud.getSolicitante().equals(tarjeta) && solicitud.isDentroDeTiempo()) {
+                agregarApertura(new IntentoApertura(tarjeta.getduenio(), true) );
+
                 return true;
             }
         }
-        registrarApertura(tarjeta, false);
+        agregarApertura(new IntentoApertura(tarjeta.getDuenio(), false) );
         return false;
     }
 

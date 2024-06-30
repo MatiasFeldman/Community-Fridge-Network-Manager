@@ -14,7 +14,7 @@ public class DonacionDeVianda implements ContribucionHumana{
     private Heladera heladera;
 
     @Override
-    public void contribuir(Humano solicitante, Integer horasParaEjecutar, Integer cantidadDeVianda){
+    public void contribuir(TarjetaHumano solicitante, Integer horasParaEjecutar, Integer cantidadDeVianda){
         SolicitudApertura soliApertura = new SolicitudApertura(solicitante, horasParaEjecutar, cantidadDeVianda);
         heladera.agregarSolicitudApertura(soliApertura);
     }

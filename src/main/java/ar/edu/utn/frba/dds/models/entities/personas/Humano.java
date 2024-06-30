@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
@@ -24,6 +25,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Setter
+@Data
+@EqualsAndHashCode(of = "tarjeta")//no lo temrino de entender
 public class Humano {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
@@ -33,6 +36,7 @@ public class Humano {
     private OfertasRepository ofertasDisponibles;
     private IncidentesRepository incidentesRepository;
     private UUID idUsuario;
+    private TarjetaHumano tarjeta;
 
     public Humano(OfertasRepository ofertas) {
         this.ofertasDisponibles = ofertas;
@@ -49,6 +53,10 @@ public class Humano {
                 .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getIdUsuario())
                 .build();
+    }
+    public void asignarTarjeta(TarjetaHumano tarjeta) {
+        this.tarjeta = tarjeta;
+        tarjeta.setDuenio(this);
     }
 
 

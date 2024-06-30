@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class Heladera {
@@ -25,6 +27,8 @@ public class Heladera {
     private double tempMaxima;
     @Setter
     private boolean hayMovimiento;
+    private List<SolicitudApertura> solicitudes = new ArrayList<>();
+    private List<IntentoApertura> registrosAperturas = new ArrayList<>();
 
 
     public void agregarViandas(Integer cantidad){
@@ -65,5 +69,23 @@ public class Heladera {
         return temp >= this.tempMinima && temp <= this.tempMaxima;
     }
 
+
+    public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
+        solicitudes.add(soliApertura);
+    }
+    public void agregarApertura(IntentoApertura intentoApertura) {
+        registrosAperturas.add(intentoApertura);
+    }
+
+    public boolean verificarAcceso(String tarjeta) {
+        for (SolicitudApertura solicitud : solicitudes) {
+            if (solicitud.getColaborador().getTarjeta().equals(tarjeta) && solicitud.isDentroDeTiempo()) {
+                registrarApertura(solicitud.getColaborador().getNombre(), true);
+                return true;
+            }
+        }
+        registrarApertura(tarjeta, false);
+        return false;
+    }
 
 }

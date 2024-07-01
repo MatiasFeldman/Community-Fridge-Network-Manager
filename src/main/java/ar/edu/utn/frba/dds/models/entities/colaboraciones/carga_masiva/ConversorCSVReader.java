@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.IMailSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -79,7 +79,7 @@ public class ConversorCSVReader implements ConversorCSV {
 
     public void enviarMailBienvenida(String mail, String nombre, String apellido, String username, String password)
             throws MessagingException {
-        IMailSender enviador = MailSenderFactory.create();
+        MailSender enviador = MailSenderFactory.create();
         enviador.enviarMail(mail,
                 new Mail(this.cuerpoMail(nombre, apellido, username, password), "Colaboración pendiente"));
     }

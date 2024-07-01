@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class ListUbi {
+public class ListaDeUbicaciones {
     @Getter
     public List<Coordenada> coordenadas ;
 }

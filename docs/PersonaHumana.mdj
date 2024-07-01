@@ -7151,7 +7151,7 @@
 											"top": 646,
 											"width": 339.0634765625,
 											"height": 13,
-											"text": "-tarjetas: List<Tarjeta>",
+											"text": "-tarjetaPersonaVulnerables: List<Tarjeta>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16456,7 +16456,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPTh6VsLTIqGU="
 							},
-							"name": "tarjetas",
+							"name": "tarjetaPersonaVulnerables",
 							"visibility": "private",
 							"type": "List<Tarjeta>"
 						},

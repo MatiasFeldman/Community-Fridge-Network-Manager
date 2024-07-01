@@ -4,28 +4,26 @@ import ar.edu.utn.frba.dds.exceptions.TarjetasAgotadasException;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistroPersonaVulnerable implements ContribucionHumana {
-    private ArrayList<Tarjeta> tarjetas;
+    private ArrayList<TarjetaPersonaVulnerable> tarjetaPersonaVulnerables;
     private Integer tarjetasRepartidas;
     // Se van creando a medida que se van entregando tarjetas
     // eL CONTROLADOR GENERA Y REGISTRA LA CONTRIBUCION
     // La accion del dominion es registrar la conribucion
 
-    public RegistroPersonaVulnerable(ArrayList<Tarjeta> tarjetas) {
-        this.tarjetas = new ArrayList<>(tarjetas);
+    public RegistroPersonaVulnerable(ArrayList<TarjetaPersonaVulnerable> tarjetaPersonaVulnerables) {
+        this.tarjetaPersonaVulnerables = new ArrayList<>(tarjetaPersonaVulnerables);
         this.tarjetasRepartidas = 0;
     }
 
     public RegistroPersonaVulnerable(Integer cantidadTarjetas) {
-        this.tarjetas = new ArrayList<>();
+        this.tarjetaPersonaVulnerables = new ArrayList<>();
         this.tarjetasRepartidas = cantidadTarjetas;
     }
 
@@ -35,10 +33,10 @@ public class RegistroPersonaVulnerable implements ContribucionHumana {
     }
 
     public void contribuir(Humano colaborador, PersonaVulnerable vulnerable) {
-        Tarjeta tarjetaARepartir = obtenerTarjetaSinDuenio();
-        if (tarjetaARepartir != null) {
-            vulnerable.setTarjeta(tarjetaARepartir);
-            tarjetaARepartir.setDuenio(vulnerable);
+        TarjetaPersonaVulnerable tarjetaPersonaVulnerableARepartir = obtenerTarjetaSinDuenio();
+        if (tarjetaPersonaVulnerableARepartir != null) {
+            vulnerable.setTarjetaPersonaVulnerable(tarjetaPersonaVulnerableARepartir);
+            tarjetaPersonaVulnerableARepartir.setDuenio(vulnerable);
             vulnerable.setRegistradaPor(colaborador);
             tarjetasRepartidas++;
             System.out.println("Se ha registrado a la persona vulnerable con la tarjeta. ");
@@ -55,17 +53,17 @@ public class RegistroPersonaVulnerable implements ContribucionHumana {
 
 
 
-    public Tarjeta obtenerTarjetaSinDuenio() {
-        for (Tarjeta tarjeta : tarjetas) {
-            if (tarjeta.getDuenio() == null) {
-                return tarjeta;
+    public TarjetaPersonaVulnerable obtenerTarjetaSinDuenio() {
+        for (TarjetaPersonaVulnerable tarjetaPersonaVulnerable : tarjetaPersonaVulnerables) {
+            if (tarjetaPersonaVulnerable.getDuenio() == null) {
+                return tarjetaPersonaVulnerable;
             }
         }
         return null; // Devuelve null si no hay tarjetas sin dueño
     }
 
     public Integer tarjetasDisponibles() {
-        return tarjetas.size() - tarjetasRepartidas;
+        return tarjetaPersonaVulnerables.size() - tarjetasRepartidas;
     }
 
 

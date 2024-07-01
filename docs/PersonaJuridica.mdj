@@ -14383,7 +14383,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPTh6VsLTIqGU="
 							},
-							"name": "tarjetas",
+							"name": "tarjetaPersonaVulnerables",
 							"visibility": "private",
 							"type": "List<Tarjeta>"
 						},

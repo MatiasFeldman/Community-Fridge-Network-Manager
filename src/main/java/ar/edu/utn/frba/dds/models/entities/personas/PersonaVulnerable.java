@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class PersonaVulnerable {
     private String nroDocumento;
     private Integer menoresACargo;
     private Humano registradaPor;
-    private Tarjeta tarjeta;
+    private TarjetaPersonaVulnerable tarjetaPersonaVulnerable;
 
     public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, Humano registradaPor) {
         this.nombre = nombre;
@@ -29,7 +29,7 @@ public class PersonaVulnerable {
         this.nroDocumento = nroDocumento;
         this.menoresACargo = menoresACargo;
         this.registradaPor = registradaPor;
-        this.tarjeta = null;
+        this.tarjetaPersonaVulnerable = null;
     }
 
     public String getIdPersonaVulnerable() {

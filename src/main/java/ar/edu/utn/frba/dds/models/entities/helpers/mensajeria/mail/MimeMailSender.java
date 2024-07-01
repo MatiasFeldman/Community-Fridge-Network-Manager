@@ -1,7 +1,5 @@
-package ar.edu.utn.frba.dds.models.entities.helpers.mail;
+package ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.IMailSender;
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
 import lombok.NoArgsConstructor;
 
 import javax.mail.*;

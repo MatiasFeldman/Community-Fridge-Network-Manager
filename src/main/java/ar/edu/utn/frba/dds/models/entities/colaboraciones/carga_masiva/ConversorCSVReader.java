@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.IMailSender;
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.IMailSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.Mail;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.mailSender.MailSenderFactory;

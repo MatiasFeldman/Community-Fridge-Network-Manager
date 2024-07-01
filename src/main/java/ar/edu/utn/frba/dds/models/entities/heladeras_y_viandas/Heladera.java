@@ -45,10 +45,12 @@ public class Heladera {
 
     public void agregarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() - cantidad);
+        this.notificarColaboradores();
     }
 
     public void quitarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() + cantidad);
+        this.notificarColaboradores();
     }
 
     public Integer mesesActiva(){

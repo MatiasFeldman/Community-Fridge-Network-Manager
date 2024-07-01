@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class ViandasDisponibles implements MotivoNotificion {
+public class ViandasDisponibles implements MotivoNotificacion {
     public int cantidadViandasDisponibles;
     @Getter
     public final String mensaje = "La heladera tiene la cantidad de viandas esperadas";

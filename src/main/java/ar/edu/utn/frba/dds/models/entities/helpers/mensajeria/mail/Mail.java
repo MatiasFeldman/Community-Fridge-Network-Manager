@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.helpers.mail;
+package ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

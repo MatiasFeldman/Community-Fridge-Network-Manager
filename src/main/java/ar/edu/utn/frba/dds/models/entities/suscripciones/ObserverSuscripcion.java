@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 public class ObserverSuscripcion {
-    MotivoNotificion motivo;
+    MotivoNotificacion motivo;
 
     public void verificarEvento(Heladera heladera){
         if (motivo.validar(heladera)){

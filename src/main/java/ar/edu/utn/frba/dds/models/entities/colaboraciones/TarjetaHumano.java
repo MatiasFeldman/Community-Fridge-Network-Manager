@@ -6,18 +6,21 @@ import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.*;
 
 import java.time.LocalDate;
-//@Setter
+import java.util.UUID;
+
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = "id")
 public class TarjetaHumano implements Tarjeta{
     @Getter
     private String id;
     @Getter
+    @Setter
     private Humano duenio;
 
     // Constructor
-    public TarjetaHumano(String id) {
-        this.id = id;
+    public TarjetaHumano() {
+        this.id = UUID.randomUUID().toString();
     }
     @Override
     public void usarEn(Heladera heladera){

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class TarjetaPersonaVulnerable implements Tarjeta{
     private String id;
@@ -15,8 +16,8 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     private PersonaVulnerable duenio;
     private ArrayList<UsoTarjeta> historialDeUsos;
 
-    public TarjetaPersonaVulnerable(String id) {
-        this.id = id;
+    public TarjetaPersonaVulnerable() {
+        this.id = UUID.randomUUID().toString();
         this.duenio = null;
         this.historialDeUsos = new ArrayList<>();
     }
@@ -31,7 +32,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     }
     @Override
     public void usarEn(Heladera heladera){
-        heladera.quitarViandas(1);
+        heladera.modificarViandas(-1);
         historialDeUsos.add(new UsoTarjeta(heladera, LocalDate.now()));
     }
 }

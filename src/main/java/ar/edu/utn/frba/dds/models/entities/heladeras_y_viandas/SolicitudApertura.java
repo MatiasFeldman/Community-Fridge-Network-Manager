@@ -2,30 +2,30 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 public class SolicitudApertura {
+
+    @Getter
     private LocalDateTime fechaHoraSolicitud;
-    private Integer horasParaEjecutarAccion;
+    private Integer horasParaEjecutarAccion = 3;
+    @Getter
     private TarjetaHumano solicitante;
+    @Getter
     private Integer cantidadDeViandas;
+    @Setter
+    @Getter
+    private Vianda vianda;
 
     // Constructor
-    public SolicitudApertura(TarjetaHumano solicitante, Integer horasParaEjecutar, Integer cantidadDeVianda) {
+    public SolicitudApertura(TarjetaHumano solicitante, Integer cantidadDeVianda) {
         this.fechaHoraSolicitud = LocalDateTime.now(); // Asigna la fecha y hora actuales
-        this.horasParaEjecutarAccion = horasParaEjecutar;
         this.solicitante = solicitante;
         this.cantidadDeViandas = cantidadDeVianda;
-    }
-
-    // Getters
-    public LocalDateTime getFechaHoraSolicitud() {
-        return fechaHoraSolicitud;
-    }
-
-    public TarjetaHumano getSolicitante() {
-        return solicitante;
+        this.vianda = null;
     }
 
     public boolean isDentroDeTiempo() {

@@ -13,6 +13,7 @@ import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesReposito
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -38,6 +39,12 @@ public class Humano {
     private UUID idUsuario;
     private TarjetaHumano tarjeta;
 
+    // Inicializador de instancia para asignar la tarjeta
+    {
+        this.tarjeta = new TarjetaHumano();
+        this.tarjeta.setDuenio(this);
+    }
+
     public Humano(OfertasRepository ofertas) {
         this.ofertasDisponibles = ofertas;
     }
@@ -52,11 +59,8 @@ public class Humano {
                 .contribuciones(dto.getContribuciones())
                 .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getIdUsuario())
+                .tarjeta(dto.getTarjeta())
                 .build();
-    }
-    public void asignarTarjeta(TarjetaHumano tarjeta) {
-        this.tarjeta = tarjeta;
-        tarjeta.setDuenio(this);
     }
 
 

@@ -32,7 +32,7 @@ public class ReporteFallas implements  IReporte {
         contenido.append("Reporte de fallas\n");
         contenido.append("Heladera\tCantidad de fallas\n");
         for (Map.Entry<Heladera, Integer> entry : heladeraConteo.entrySet()) {
-            contenido.append(entry.getKey().getNombre()).append("\t").append(entry.getValue()).append("\n");
+            contenido.append(entry.getKey().getNombre().getNombreDePunto()).append("\t").append(entry.getValue()).append("\n");
         }
         return contenido.toString();
     }

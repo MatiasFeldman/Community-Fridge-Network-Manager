@@ -28,11 +28,11 @@ public class Heladera {
 
 
     public void agregarViandas(Integer cantidad){
-        this.setCapacidadActual(this.getCapacidadActual() - cantidad);
+        this.setCapacidadActual(this.getCapacidadActual() + cantidad);
     }
 
     public void quitarViandas(Integer cantidad){
-        this.setCapacidadActual(this.getCapacidadActual() + cantidad);
+        this.setCapacidadActual(this.getCapacidadActual() - cantidad);
     }
 
     public Integer mesesActiva(){

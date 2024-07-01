@@ -8,4 +8,5 @@ import lombok.Getter;
 public class DireccionDTO {
     private Calle calle;
     private int altura;
+    private int comuna;
 }

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class Heladera {
     @Setter
     private Coordenada coordenada;
     @Setter
-    private PuntoDeHeladera nombre;
+    private Direccion direccion;
     private Integer capacidadMaxima;
     @Setter
     private Integer capacidadActual;
@@ -35,7 +36,7 @@ public class Heladera {
         return Heladera
                 .builder()
                 .coordenada(dto.getCoordenada())
-                .nombre(dto.getNombre())
+                .direccion(dto.getDireccion())
                 .capacidadMaxima(dto.getCapacidadMaxima())
                 .capacidadActual(dto.getCapacidadActual())
                 .fechaDePuestaEnFuncionamiento(dto.getFechaDePuestaEnFuncionamiento())

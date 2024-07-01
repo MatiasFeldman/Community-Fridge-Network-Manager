@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -10,8 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 public class VisitaAHeladera {
     private Tecnico tecnico;
+    @Getter
     private Heladera heladeraFallada;
     private LocalDateTime fechaDeVisita;
+    @Getter
     private boolean solucionado;
     private String descripcion;
     private Image foto = null;

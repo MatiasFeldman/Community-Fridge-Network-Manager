@@ -12,9 +12,9 @@ public class Tecnico {
     private TipoTecnico tipo;
     private String nroDocumento;
     private String nroCUIL;
-    private String areaCobertura;
+    private AreaCobertura areaCobertura;
 
-    public static Object create(TecnicoDTO dto) {
+    public static Tecnico create(TecnicoDTO dto) {
         return Tecnico.builder()
                 .nombre(dto.getNombre())
                 .apellido(dto.getApellido())
@@ -24,5 +24,9 @@ public class Tecnico {
                 .nroCUIL(dto.getNroCUIL())
                 .areaCobertura(dto.getAreaCobertura())
                 .build();
+    }
+
+    public void registrarVisitaAHeladera(VisitaAHeladera visita){
+
     }
 }

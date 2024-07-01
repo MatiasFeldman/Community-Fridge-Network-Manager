@@ -1,13 +1,17 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Getter
+@Builder
 public class Heladera {
     @Setter
     private Coordenada coordenada;
@@ -25,7 +29,23 @@ public class Heladera {
     private double tempMaxima;
     @Setter
     private boolean hayMovimiento;
+    private UUID id;
 
+    public static Heladera of(HeladeraDTO dto){
+        return Heladera
+                .builder()
+                .coordenada(dto.getCoordenada())
+                .nombre(dto.getNombre())
+                .capacidadMaxima(dto.getCapacidadMaxima())
+                .capacidadActual(dto.getCapacidadActual())
+                .fechaDePuestaEnFuncionamiento(dto.getFechaDePuestaEnFuncionamiento())
+                .activa(dto.isActiva())
+                .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
+                .tempMinima(dto.getTempMinima())
+                .tempMaxima(dto.getTempMaxima())
+                .hayMovimiento(dto.isHayMovimiento())
+                .build();
+    }
 
     public void agregarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() - cantidad);
@@ -46,24 +66,5 @@ public class Heladera {
     public void activar(){
         this.setActiva(true);
     }
-
-    public void recibirTemperatura(){
-        //Simula recibir la temperatura de la heladera cada 5 mins
-        this.setUltimaTemperaturaRegistrada(10);
-        if (!this.estaEntreLosLimites(ultimaTemperaturaRegistrada)){
-            this.desactivar();
-        }
-    } // pendiente entrega
-
-    public void recibirMovimiento(){
-        //Simula recibir si hay movimiento
-        this.setHayMovimiento(true);
-        this.desactivar();
-    }
-
-    private boolean estaEntreLosLimites(double temp) {
-        return temp >= this.tempMinima && temp <= this.tempMaxima;
-    }
-
 
 }

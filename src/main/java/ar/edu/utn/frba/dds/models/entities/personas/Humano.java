@@ -94,21 +94,8 @@ public class Humano {
 
     }
 
-
     public void agregarContribucion(ContribucionHumana contribucion) {
         this.contribuciones.add(contribucion);
-    }
-
-    public void reportarFallaTecnica(Heladera heladera){
-        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
-        Accionador accionador = factory.crearParaFallaTecnica(heladera);
-        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica());
-    }
-
-    public void reportarFallaTecnica(Heladera heladera, String descripcion, Image foto){
-        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
-        Accionador accionador = factory.crearParaFallaTecnica(heladera);
-        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica(descripcion, foto, LocalDateTime.now()));
     }
 
 

@@ -21,6 +21,5 @@ public class HumanoInputDTO {
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
     private UUID idUsuario;
-    private TarjetaHumano tarjeta;
 
 }

@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
-import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
@@ -13,16 +12,13 @@ import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesReposito
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Setter
@@ -37,11 +33,10 @@ public class Humano {
     private OfertasRepository ofertasDisponibles;
     private IncidentesRepository incidentesRepository;
     private UUID idUsuario;
-    private TarjetaHumano tarjeta;
+    private TarjetaHumano tarjeta = null;
 
-    // Inicializador de instancia para asignar la tarjeta
-    {
-        this.tarjeta = new TarjetaHumano();
+    public void setTarjeta(TarjetaHumano tarjeta) {
+        this.tarjeta = tarjeta;
         this.tarjeta.setDuenio(this);
     }
 
@@ -59,7 +54,6 @@ public class Humano {
                 .contribuciones(dto.getContribuciones())
                 .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getIdUsuario())
-                .tarjeta(dto.getTarjeta())
                 .build();
     }
 

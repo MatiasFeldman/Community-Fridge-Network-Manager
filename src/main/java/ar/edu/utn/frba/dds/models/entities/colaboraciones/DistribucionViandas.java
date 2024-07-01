@@ -5,11 +5,13 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;

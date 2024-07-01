@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class SolicitudApertura {
 
     @Getter
+    @Setter
     private LocalDateTime fechaHoraSolicitud;
     private Integer horasParaEjecutarAccion = 3;
     @Getter

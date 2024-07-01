@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@AllArgsConstructor
+
 @Data
 @EqualsAndHashCode(of = "id")
 public class TarjetaHumano implements Tarjeta{

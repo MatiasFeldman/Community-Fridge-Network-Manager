@@ -6,12 +6,14 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Vianda;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 
 @NoArgsConstructor
+@Getter
 public class DonacionDeVianda implements ContribucionHumana{
     private Vianda vianda;
     private TarjetaHumano solicitante;

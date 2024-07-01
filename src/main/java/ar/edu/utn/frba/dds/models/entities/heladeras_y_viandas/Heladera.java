@@ -12,22 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 public class Heladera {
-    @Setter
+
     private Coordenada coordenada;
-    @Setter
     private PuntoDeHeladera nombre;
     private Integer capacidadMaxima;
-    @Setter
     private Integer capacidadActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
-    @Setter
     private boolean activa;
-    @Setter
     private double ultimaTemperaturaRegistrada;
     private double tempMinima;
     private double tempMaxima;
-    @Setter
     private boolean hayMovimiento;
     private List<SolicitudApertura> solicitudes = new ArrayList<>();
     private List<IntentoApertura> registrosAperturas = new ArrayList<>();

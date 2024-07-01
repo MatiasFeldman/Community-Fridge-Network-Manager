@@ -35,7 +35,7 @@ public class RegistroPersonaVulnerable implements ContribucionHumana {
     public void contribuir(Humano colaborador, PersonaVulnerable vulnerable) {
         TarjetaPersonaVulnerable tarjetaPersonaVulnerableARepartir = obtenerTarjetaSinDuenio();
         if (tarjetaPersonaVulnerableARepartir != null) {
-            vulnerable.setTarjeta(tarjetaPersonaVulnerableARepartir);
+            vulnerable.setTarjetaPersonaVulnerable(tarjetaPersonaVulnerableARepartir);
             tarjetaPersonaVulnerableARepartir.setDuenio(vulnerable);
             vulnerable.setRegistradaPor(colaborador);
             tarjetasRepartidas++;

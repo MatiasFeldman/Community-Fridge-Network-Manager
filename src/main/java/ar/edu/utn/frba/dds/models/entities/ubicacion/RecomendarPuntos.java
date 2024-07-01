@@ -2,8 +2,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadorDePuntos;
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListaDeUbicaciones;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +15,7 @@ public class RecomendarPuntos {
     }
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coordenada, double radio) throws IOException, InterruptedException {
-        ListUbi obj = api.listaDeUbis(coordenada.getLatitud(),coordenada.getLongitud(),radio);
-
-
+        ListaDeUbicaciones obj = api.puntosIdeales(coordenada,radio);
         return obj.getCoordenadas();
     }
 

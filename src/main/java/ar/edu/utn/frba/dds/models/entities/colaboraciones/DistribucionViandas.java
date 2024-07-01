@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;
@@ -18,8 +17,16 @@ public class DistribucionViandas implements ContribucionHumana{
     private String motivo;
     private LocalDate fechaDistribucion;
 
-    public DistribucionViandas(Integer cantViandas){
-        this.cantidadViandas = cantViandas;
+    public DistribucionViandas(Heladera heladeraOrigen, Heladera heladeraDestino, Integer cantidadViandas, String motivo, LocalDate fechaDistribucion) {
+        this.heladeraOrigen = heladeraOrigen;
+        this.heladeraDestino = heladeraDestino;
+        this.cantidadViandas = cantidadViandas;
+        this.motivo = motivo;
+        this.fechaDistribucion = fechaDistribucion;
+    }
+
+    public DistribucionViandas(Integer cantidadViandas) {
+        this.cantidadViandas = cantidadViandas;
     }
 
 

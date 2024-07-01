@@ -36,6 +36,10 @@ public class Humano {
 
     public Humano(OfertasRepository ofertas) {
         this.ofertasDisponibles = ofertas;
+        this.atributosObligatorios = new ArrayList<>();
+        this.mediosDeContacto = new ArrayList<>();
+        this.atributosOpcionales = new ArrayList<>();
+        this.contribuciones = new ArrayList<>();
     }
 
     public static Humano create(HumanoInputDTO dto) {

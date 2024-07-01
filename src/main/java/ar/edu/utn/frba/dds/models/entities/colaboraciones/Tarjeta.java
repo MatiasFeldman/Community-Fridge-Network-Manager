@@ -32,7 +32,7 @@ public class Tarjeta {
         return 4 + duenio.getMenoresACargo() - usosDeHoy();
     }
 
-    private void usarEn(Heladera heladera){
+    public void usarEn(Heladera heladera){
         heladera.quitarViandas(1);
         historialDeUsos.add(new UsoTarjeta(heladera, LocalDate.now()));
     }

@@ -2,11 +2,12 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+@Getter
 @Builder
 public class Incidente {
     private LocalDateTime fecha;

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
@@ -15,6 +16,7 @@ import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,5 +95,8 @@ public class Humano extends ObserverSuscripcion {
         puntosGanados+= contribucion.calcularPuntaje();
     }
 
-
+    private void aceptarSugerenciaHeladeras(Heladera heladeraRota, Heladera heladeraElegida){
+        // Pasar todos los alimentos de la heladera rota a la heladera elegida
+        colaborar(new DistribucionViandas(heladeraRota, heladeraElegida, heladeraRota.getCapacidadActual(), "Falla", LocalDate.now()));
+    }
 }

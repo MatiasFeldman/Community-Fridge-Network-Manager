@@ -22,5 +22,8 @@ public class Direccion {
 
     public String direccionCompleta() {
         return calle.getNombre() + " " + altura;
+
+    public boolean esCercaDe(Direccion direccion) {
+        return this.calle.equals(direccion.calle) && Math.abs(this.altura - direccion.altura) < 10;
     }
 }

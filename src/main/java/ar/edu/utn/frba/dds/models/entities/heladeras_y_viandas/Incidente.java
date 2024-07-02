@@ -27,6 +27,22 @@ public class Incidente {
                 .colaborador(dto.getColaborador())
                 .descripcion(dto.getDescripcion())
                 .foto(dto.getFoto())
+                .resuelto(false)
                 .build();
     }
+
+    public static Incidente fallaTecnica(DenunciaFallaTecnica denuncia){
+        return Incidente
+                .builder()
+                .fecha(denuncia.getFecha())
+                .heladera(denuncia.getHeladera())
+                .tipo(TipoEvento.FALLA_TECNICA)
+                .colaborador(denuncia.getDenunciante())
+                .descripcion(denuncia.getDescripcion())
+                .foto(denuncia.getFoto())
+                .resuelto(false)
+                .build();
+    }
+
+
 }

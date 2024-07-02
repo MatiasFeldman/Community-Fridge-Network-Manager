@@ -32,6 +32,7 @@ public class Humano extends ObserverSuscripcion {
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumano> atributosOpcionales;
     private double puntosCanjeados;
+    private double puntosGanados;
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
     private IncidentesRepository incidentesRepository;
@@ -47,18 +48,13 @@ public class Humano extends ObserverSuscripcion {
                 .atributosObligatorios(dto.getAtributosObligatorios())
                 .atributosOpcionales(dto.getAtributosOpcionales())
                 .mediosDeContacto(dto.getMediosDeContacto())
-                .puntosCanjeados(dto.getPuntosCanjeados())
+                .puntosCanjeados(0)
+                .puntosGanados(0)
                 .contribuciones(dto.getContribuciones())
                 .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getIdUsuario())
                 .build();
     }
-
-
-    public void colaborar(ContribucionHumana contribucion) {
-        contribucion.contribuir();
-        contribuciones.add(contribucion);
-    } // cada vez q la agregamos, le sumamos los puntos
 
     public void generarMedioDeContacto(TipoAtributo tipo, String nombreAtributo) {
         if (tipo == TipoAtributo.OBLIGATORIO) {
@@ -81,12 +77,9 @@ public class Humano extends ObserverSuscripcion {
     }
 
     public double calcularPuntaje() {
-        return this.puntosGanados() - puntosCanjeados;
+        return puntosGanados - puntosCanjeados;
     }
 
-    public double puntosGanados() {
-        return contribuciones.stream().mapToDouble(ContribucionHumana::calcularPuntaje).sum();
-    }
 
     public void canjearOferta(Oferta oferta) {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
@@ -97,21 +90,9 @@ public class Humano extends ObserverSuscripcion {
 
     }
 
-
     public void agregarContribucion(ContribucionHumana contribucion) {
         this.contribuciones.add(contribucion);
-    }
-
-    public void reportarFallaTecnica(Heladera heladera){
-        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
-        Accionador accionador = factory.crearParaFallaTecnica(heladera);
-        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica());
-    }
-
-    public void reportarFallaTecnica(Heladera heladera, String descripcion, Image foto){
-        AccionadorFactory factory = new AccionadorFactory(incidentesRepository);
-        Accionador accionador = factory.crearParaFallaTecnica(heladera);
-        accionador.sucedeFallaTecnica(this, new DenunciaFallaTecnica(descripcion, foto, LocalDateTime.now()));
+        puntosGanados+= contribucion.calcularPuntaje();
     }
 
     private void aceptarSugerenciaHeladeras(Heladera heladeraRota, Heladera heladeraElegida){

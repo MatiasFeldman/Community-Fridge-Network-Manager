@@ -23,15 +23,11 @@ public class Juridica extends ObserverSuscripcion {
     private ArrayList<ContribucionJuridica> contribuciones;
     private OfertasRepository ofertasDisponibles;
     private RecomendarPuntos recomendador;
+    private double puntosGanados;
 
-    public Juridica(OfertasRepository ofertas, RecomendarPuntos recomendador){
+    public Juridica(OfertasRepository ofertas, RecomendarPuntos recomendador) {
         this.ofertasDisponibles = ofertas;
         this.recomendador = recomendador;
-    }
-
-    public void colaborar(ContribucionJuridica contribucion){
-        contribucion.contribuir();
-        contribuciones.add(contribucion);
     }
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
@@ -39,11 +35,7 @@ public class Juridica extends ObserverSuscripcion {
     }
 
     public double calcularPuntaje() {
-        return this.puntosGanados() - puntosCanjeados;
-    }
-
-    public double puntosGanados(){
-        return contribuciones.stream().mapToDouble(ContribucionJuridica::calcularPuntaje).sum();
+        return puntosGanados - puntosCanjeados;
     }
 
     public void canjearOferta(Oferta oferta) {
@@ -53,5 +45,10 @@ public class Juridica extends ObserverSuscripcion {
         ofertasDisponibles.canjearOferta(oferta);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
+    }
+
+    public void agregarContribucion(ContribucionJuridica contribucion) {
+        this.contribuciones.add(contribucion);
+        puntosGanados += contribucion.calcularPuntaje();
     }
 }

@@ -23,6 +23,5 @@ public class TecnicosService {
         tecnicosRepository.guardar(creado);
 
         return creado;
-
     }
 }

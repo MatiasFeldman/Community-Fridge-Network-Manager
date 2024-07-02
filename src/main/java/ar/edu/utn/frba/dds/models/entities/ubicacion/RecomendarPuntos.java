@@ -2,7 +2,6 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.IRecomendadorDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
 
 import java.io.IOException;

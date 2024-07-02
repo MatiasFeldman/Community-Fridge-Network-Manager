@@ -3,8 +3,11 @@ package ar.edu.utn.frba.dds.models.entities.tecnicos;
 import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import lombok.Builder;
+import lombok.Getter;
+
 
 @Builder
+@Getter
 public class Tecnico {
     private String nombre;
     private String apellido;
@@ -12,9 +15,9 @@ public class Tecnico {
     private TipoTecnico tipo;
     private String nroDocumento;
     private String nroCUIL;
-    private String areaCobertura;
+    private AreaCobertura areaCobertura;
 
-    public static Object create(TecnicoDTO dto) {
+    public static Tecnico create(TecnicoDTO dto) {
         return Tecnico.builder()
                 .nombre(dto.getNombre())
                 .apellido(dto.getApellido())
@@ -24,5 +27,9 @@ public class Tecnico {
                 .nroCUIL(dto.getNroCUIL())
                 .areaCobertura(dto.getAreaCobertura())
                 .build();
+    }
+
+    public boolean puedeIrA(int comuna){
+        return areaCobertura.seEncuentraEnRango(comuna);
     }
 }

@@ -1,21 +1,27 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
 public class Heladera {
     @Setter
     private Coordenada coordenada;
     @Setter
-    private PuntoDeHeladera nombre;
+    private Direccion direccion;
     private Integer capacidadMaxima;
     @Setter
     private Integer capacidadActual;
@@ -28,6 +34,23 @@ public class Heladera {
     private double tempMaxima;
     @Setter
     private boolean hayMovimiento;
+    private UUID id;
+
+    public static Heladera of(HeladeraDTO dto){
+        return Heladera
+                .builder()
+                .coordenada(dto.getCoordenada())
+                .direccion(dto.getDireccion())
+                .capacidadMaxima(dto.getCapacidadMaxima())
+                .capacidadActual(dto.getCapacidadActual())
+                .fechaDePuestaEnFuncionamiento(dto.getFechaDePuestaEnFuncionamiento())
+                .activa(dto.isActiva())
+                .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
+                .tempMinima(dto.getTempMinima())
+                .tempMaxima(dto.getTempMaxima())
+                .hayMovimiento(dto.isHayMovimiento())
+                .build();
+    }
 
     private final List<ObserverSuscripcion> colaboradores = new ArrayList<>();
 

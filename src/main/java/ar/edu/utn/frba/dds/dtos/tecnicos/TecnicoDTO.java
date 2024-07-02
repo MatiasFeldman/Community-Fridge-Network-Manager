@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.tecnicos;
 
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.AreaCobertura;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.TipoTecnico;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,5 +16,5 @@ public class TecnicoDTO {
     private TipoTecnico tipo;
     private String nroDocumento;
     private String nroCUIL;
-    private String areaCobertura;
+    private AreaCobertura areaCobertura;
 }

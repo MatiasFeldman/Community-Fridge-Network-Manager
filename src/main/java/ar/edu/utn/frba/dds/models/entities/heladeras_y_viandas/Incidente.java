@@ -42,4 +42,6 @@ public class Incidente {
                 .resuelto(false)
                 .build();
     }
+
+
 }

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
@@ -24,7 +25,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Setter
-public class Humano {
+public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumano> atributosOpcionales;

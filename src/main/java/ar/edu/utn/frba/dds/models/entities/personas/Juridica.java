@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionJuridica;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Juridica {
+public class Juridica extends ObserverSuscripcion {
     private String razonSocial;
     private Tipo tipo;
     private String Rubro;
@@ -53,5 +54,4 @@ public class Juridica {
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }
-
 }

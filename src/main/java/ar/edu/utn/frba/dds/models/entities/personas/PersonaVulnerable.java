@@ -33,6 +33,6 @@ public class PersonaVulnerable {
     }
 
     public String getIdPersonaVulnerable() {
-        return tarjeta.getId();
+        return tarjetaPersonaVulnerable.getId();
     }
 }

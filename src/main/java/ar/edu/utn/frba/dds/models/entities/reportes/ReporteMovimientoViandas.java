@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.reportes;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.UsoTarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
@@ -75,7 +72,7 @@ public class ReporteMovimientoViandas implements IReporte {
 
         // Contar viandas retiradas por personas vulnerables
         for (PersonaVulnerable persona : personasVulnerables) {
-            Tarjeta tarjeta = persona.getTarjeta();
+            TarjetaPersonaVulnerable tarjeta = persona.getTarjetaPersonaVulnerable();
             List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
             for (UsoTarjeta uso : historialUso) {
                 Heladera heladera = uso.getHeladera();

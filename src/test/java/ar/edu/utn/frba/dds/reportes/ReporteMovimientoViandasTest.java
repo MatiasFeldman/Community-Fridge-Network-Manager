@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.UsoTarjeta;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
@@ -91,7 +92,7 @@ class ReporteMovimientoViandasTest {
         humanosRepository.guardar(humano1);
 
         // Crear tarjeta
-        Tarjeta tarjeta = new Tarjeta("12345");
+        TarjetaPersonaVulnerable tarjeta = new TarjetaPersonaVulnerable();
 
         // Usar la tarjeta para añadir usos
         tarjeta.usarEn(heladera1); // Añadir un uso en heladera1
@@ -99,7 +100,7 @@ class ReporteMovimientoViandasTest {
 
         // Crear persona vulnerable y asignar tarjeta
         PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, humano1);
-        personaVulnerable.setTarjeta(tarjeta);
+        personaVulnerable.setTarjetaPersonaVulnerable(tarjeta);
         personasVulnerablesRepository.guardar(personaVulnerable);
 
         // Generar el contenido del reporte

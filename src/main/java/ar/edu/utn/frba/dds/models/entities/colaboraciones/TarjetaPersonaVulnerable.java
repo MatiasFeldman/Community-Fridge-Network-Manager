@@ -8,11 +8,10 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
-
+@Getter
 public class TarjetaPersonaVulnerable implements Tarjeta{
     private String id;
     @Setter
-    @Getter
     private PersonaVulnerable duenio;
     private ArrayList<UsoTarjeta> historialDeUsos;
 

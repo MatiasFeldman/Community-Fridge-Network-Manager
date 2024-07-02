@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Getter
 
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;

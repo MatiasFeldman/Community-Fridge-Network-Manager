@@ -2,11 +2,9 @@ package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
 import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
-import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.awt.geom.Area;
 
 @Builder
 @Getter
@@ -29,10 +27,6 @@ public class Tecnico {
                 .nroCUIL(dto.getNroCUIL())
                 .areaCobertura(dto.getAreaCobertura())
                 .build();
-    }
-
-    public void registrarVisitaAHeladera(VisitaAHeladera visita){
-
     }
 
     public boolean puedeIrA(int comuna){

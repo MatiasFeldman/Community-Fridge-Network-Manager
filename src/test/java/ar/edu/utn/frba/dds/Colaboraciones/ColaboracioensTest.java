@@ -25,7 +25,7 @@ public class ColaboracioensTest {
     private Heladera heladeraDestino;
     private Humano humano;
     private TarjetaHumano tarjeta;
-    private Vianda viandaMock;
+    //private Vianda viandaMock;
 
     @BeforeEach
     public void setUp() {

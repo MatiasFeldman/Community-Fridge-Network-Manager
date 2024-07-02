@@ -20,6 +20,10 @@ public class SolicitudApertura {
     @Setter
     @Getter
     private Vianda vianda;
+    @Setter
+    @Getter
+    private boolean autorizado;
+
 
     // Constructor
     public SolicitudApertura(TarjetaHumano solicitante, Integer cantidadDeVianda) {
@@ -30,6 +34,6 @@ public class SolicitudApertura {
     }
 
     public boolean isDentroDeTiempo() {
-        return LocalDateTime.now().isBefore(fechaHoraSolicitud.plusHours(horasParaEjecutarAccion));//TODO:revisarala
+        return LocalDateTime.now().isBefore(fechaHoraSolicitud.plusHours(horasParaEjecutarAccion));
     }
 }

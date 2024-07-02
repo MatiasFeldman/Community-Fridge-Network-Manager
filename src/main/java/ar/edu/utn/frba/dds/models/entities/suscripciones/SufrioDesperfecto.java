@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.suscripciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ public class SufrioDesperfecto implements MotivoNotificacion {
     public SufrioDesperfecto(IncidentesRepository incidentesRepository){
         this.incidentesRepository = incidentesRepository;
     }
-
+    @Override
     public boolean validar(Heladera heladera){
         return incidentesRepository.buscarFallaTecnicaEnHeladera(heladera);
     }

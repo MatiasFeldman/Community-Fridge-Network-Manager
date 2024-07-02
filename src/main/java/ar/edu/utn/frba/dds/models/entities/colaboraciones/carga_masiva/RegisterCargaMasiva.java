@@ -56,7 +56,7 @@ public class RegisterCargaMasiva {
     }
 
     public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, UUID id){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, 0, new ArrayList<>(), ofertas , id);
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , id);
 
         return HumanoFactory.crear(dto);
     }

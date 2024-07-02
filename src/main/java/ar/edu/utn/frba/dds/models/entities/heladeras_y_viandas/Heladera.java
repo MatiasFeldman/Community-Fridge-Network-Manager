@@ -91,25 +91,6 @@ public class Heladera {
         this.setActiva(true);
     }
 
-    public void recibirTemperatura(){
-        //Simula recibir la temperatura de la heladera cada 5 mins
-        this.setUltimaTemperaturaRegistrada(10);
-        if (!this.estaEntreLosLimites(ultimaTemperaturaRegistrada)){
-            this.desactivar();
-        }
-    } // pendiente entrega
-
-    public void recibirMovimiento(){
-        //Simula recibir si hay movimiento
-        this.setHayMovimiento(true);
-        this.desactivar();
-    }
-
-    private boolean estaEntreLosLimites(double temp) {
-        return temp >= this.tempMinima && temp <= this.tempMaxima;
-    }
-
-
     public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
         solicitudes.add(soliApertura);
     }

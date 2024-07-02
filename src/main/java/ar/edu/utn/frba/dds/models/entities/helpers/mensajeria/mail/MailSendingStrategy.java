@@ -10,7 +10,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class MailSendingStrategy implements SendingStrategy {
 
-    private IMailSender mailSender;
+    private MailSender mailSender;
 
     @Override
     public void enviarMensaje(Mensaje mensaje) throws MessagingException {

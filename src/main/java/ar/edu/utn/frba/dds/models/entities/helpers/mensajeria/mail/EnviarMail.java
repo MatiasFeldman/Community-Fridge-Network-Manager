@@ -4,9 +4,9 @@ import javax.mail.*;
 
 public class EnviarMail{
 
-    private IMailSender mailSender;
+    private MailSender mailSender;
 
-    public EnviarMail(IMailSender mailSender) {
+    public EnviarMail(MailSender mailSender) {
         this.mailSender = mailSender;
     }
 

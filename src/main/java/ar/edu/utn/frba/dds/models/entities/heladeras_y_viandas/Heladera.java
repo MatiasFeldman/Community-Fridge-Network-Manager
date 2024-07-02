@@ -3,6 +3,8 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.Builder;
@@ -17,24 +19,24 @@ import java.util.List;
 
 @Getter
 @Builder
+@Setter
 public class Heladera {
-    @Setter
+
     private Coordenada coordenada;
     @Setter
     private Direccion direccion;
+    private PuntoDeHeladera nombre;
     private Integer capacidadMaxima;
-    @Setter
     private Integer capacidadActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
-    @Setter
     private boolean activa;
-    @Setter
     private double ultimaTemperaturaRegistrada;
     private double tempMinima;
     private double tempMaxima;
-    @Setter
     private boolean hayMovimiento;
     private UUID id;
+    private List<SolicitudApertura> solicitudes = new ArrayList<>();
+    private List<IntentoApertura> registrosAperturas = new ArrayList<>();
 
     public static Heladera of(HeladeraDTO dto){
         return Heladera
@@ -66,7 +68,7 @@ public class Heladera {
         colaboradores.forEach(colaborador -> colaborador.verificarEvento(this));
     }
 
-    public void agregarViandas(Integer cantidad){
+    public void modificarViandas(Integer cantidad){
         this.setCapacidadActual(this.getCapacidadActual() - cantidad);
         this.notificarColaboradores();
     }
@@ -75,7 +77,6 @@ public class Heladera {
         this.setCapacidadActual(this.getCapacidadActual() + cantidad);
         this.notificarColaboradores();
     }
-
     public Integer mesesActiva(){
         return Math.toIntExact(ChronoUnit.MONTHS.between(this.fechaDePuestaEnFuncionamiento, LocalDate.now()));
     }
@@ -88,4 +89,42 @@ public class Heladera {
         this.setActiva(true);
     }
 
+    public void recibirTemperatura(){
+        //Simula recibir la temperatura de la heladera cada 5 mins
+        this.setUltimaTemperaturaRegistrada(10);
+        if (!this.estaEntreLosLimites(ultimaTemperaturaRegistrada)){
+            this.desactivar();
+        }
+    } // pendiente entrega
+
+    public void recibirMovimiento(){
+        //Simula recibir si hay movimiento
+        this.setHayMovimiento(true);
+        this.desactivar();
+    }
+
+    private boolean estaEntreLosLimites(double temp) {
+        return temp >= this.tempMinima && temp <= this.tempMaxima;
+    }
+
+
+    public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
+        solicitudes.add(soliApertura);
+    }
+    public void agregarApertura(IntentoApertura intentoApertura) {
+        registrosAperturas.add(intentoApertura);
+    }
+
+    public boolean verificarAcceso(TarjetaHumano tarjeta) {
+        for (SolicitudApertura solicitud : solicitudes) {
+            if (solicitud.getSolicitante().equals(tarjeta) && solicitud.isDentroDeTiempo()) {
+                agregarApertura(new IntentoApertura(tarjeta.getDuenio(), true) );
+                this.modificarViandas(solicitud.getCantidadDeViandas());
+                if(solicitud.getVianda()!=null){ solicitud.getVianda().setEntregada(true); }
+                return true;
+            }
+        }
+        agregarApertura(new IntentoApertura(tarjeta.getDuenio(), false) );
+        throw new AccesoDenegadoHeladeraException("El usuario carece de permisos para realizar dicha acción");
+    }
 }

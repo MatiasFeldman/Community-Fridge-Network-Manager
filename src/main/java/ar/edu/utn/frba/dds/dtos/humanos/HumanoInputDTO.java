@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.humanos;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;

@@ -1,0 +1,17 @@
+package ar.edu.utn.frba.dds.models.entities.helpers.reportes;
+import ar.edu.utn.frba.dds.models.entities.reportes.IReporte;
+import com.itextpdf.text.pdf.PdfException;
+
+import java.util.List;
+
+public class GeneradorPDF {
+    private IGeneradorPDF pdfGenerator;
+
+    public GeneradorPDF(IGeneradorPDF pdfGenerator) {
+        this.pdfGenerator = pdfGenerator;
+    }
+
+    public void generarPDF(List<IReporte> reportes, String path) throws PdfException {
+        pdfGenerator.generarPDF(reportes, path);
+    }
+}

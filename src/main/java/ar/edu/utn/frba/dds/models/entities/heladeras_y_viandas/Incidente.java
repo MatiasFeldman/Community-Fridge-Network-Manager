@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Incidente {
     private LocalDateTime fecha;
+    @Getter
     private Heladera heladera;
     private TipoEvento tipo;
     private Object colaborador;

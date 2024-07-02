@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListUbi;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListaDeUbicaciones;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -8,12 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 
-public class APIRecomendadoraDePuntos implements IRecomendadorDePuntos{
+public class APIRecomendadoraDePuntos {
     private static APIRecomendadoraDePuntos instance = null;
-    private static final String urlBase = "http://example.com";
+    private static String urlBase; //recibirlo por constructor
     protected Retrofit retrofit;
 
-    public APIRecomendadoraDePuntos() {
+    public APIRecomendadoraDePuntos(String urlBase) {
+        this.urlBase = urlBase;
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(urlBase)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -23,20 +25,20 @@ public class APIRecomendadoraDePuntos implements IRecomendadorDePuntos{
     public APIRecomendadoraDePuntos(Retrofit retrofit) {
         this.retrofit = retrofit;
     }
+    //Constructor
 
 
     public static APIRecomendadoraDePuntos getInstance() {
         if (instance == null) {
-            instance = new APIRecomendadoraDePuntos();
+            instance = new APIRecomendadoraDePuntos("www.example.com");
         }
         return instance;
     }
 
-    @Override
-    public ListUbi listaDeUbis(double lat,double lon,double radio) throws IOException {
-        IRecomendadoraDePuntosAPIService iRecomendadoraDePuntosAPI = this.retrofit.create(IRecomendadoraDePuntosAPIService.class);
-        Call<ListUbi> requestUbis = iRecomendadoraDePuntosAPI.recomendados(lat,lon,radio);
-        Response<ListUbi> responseUbis = requestUbis.execute();
+    public ListaDeUbicaciones puntosIdeales(Coordenada coordenadas, double radio) throws IOException {
+        RecomendadoraDePuntosAPIService iRecomendadoraDePuntosAPI = this.retrofit.create(RecomendadoraDePuntosAPIService.class);
+        Call<ListaDeUbicaciones> requestUbis = iRecomendadoraDePuntosAPI.recomendados(coordenadas.getLatitud(),coordenadas.getLongitud(),radio);
+        Response<ListaDeUbicaciones> responseUbis = requestUbis.execute();
         return responseUbis.body();
     }
 

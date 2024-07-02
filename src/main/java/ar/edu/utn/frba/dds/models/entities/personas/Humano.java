@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
@@ -19,14 +20,14 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Setter
+@Data
+@EqualsAndHashCode(of = "tarjeta")//no lo temrino de entender
 public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
@@ -37,9 +38,19 @@ public class Humano extends ObserverSuscripcion {
     private OfertasRepository ofertasDisponibles;
     private IncidentesRepository incidentesRepository;
     private UUID idUsuario;
+    private TarjetaHumano tarjeta = null;
+
+    public void setTarjeta(TarjetaHumano tarjeta) {
+        this.tarjeta = tarjeta;
+        this.tarjeta.setDuenio(this);
+    }
 
     public Humano(OfertasRepository ofertas) {
         this.ofertasDisponibles = ofertas;
+        this.atributosObligatorios = new ArrayList<>();
+        this.mediosDeContacto = new ArrayList<>();
+        this.atributosOpcionales = new ArrayList<>();
+        this.contribuciones = new ArrayList<>();
     }
 
     public static Humano create(HumanoInputDTO dto) {

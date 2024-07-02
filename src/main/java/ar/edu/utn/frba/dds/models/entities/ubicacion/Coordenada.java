@@ -9,4 +9,7 @@ public class Coordenada {
     public double latitud;
     public double longitud;
 
+    public Direccion getDireccion() {
+        return null;
+    }
 }

@@ -65,6 +65,4 @@ public class Heladera {
         this.setActiva(true);
     }
 
-
-
 }

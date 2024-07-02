@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.incidentes.dao;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface IncidentesDAO {
     public void eliminar(Incidente incidente);
 
     public Optional<Incidente> buscarIncidente(Incidente incidente);
+
+    boolean buscarFallaTecnicaEnHeladera(Heladera heladera);
 }

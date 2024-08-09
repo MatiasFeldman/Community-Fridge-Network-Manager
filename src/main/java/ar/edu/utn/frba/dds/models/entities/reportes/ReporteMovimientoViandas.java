@@ -82,6 +82,24 @@ public class ReporteMovimientoViandas implements IReporte {
             }
         }
 
+        // contar donaciones de viandas
+        for (Humano humano : humanos) {
+            for (ContribucionHumana contribucion : humano.getContribuciones()) {
+                if (contribucion instanceof DonacionDeVianda) {
+                    DonacionDeVianda donacion = (DonacionDeVianda) contribucion;
+                    Heladera destino = donacion.getVianda().getHeladeraDondeSeEncuentra();
+
+                    // Contar viandas que llegan a la heladera destino
+                    Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
+                    if (conteoDestino == null) {
+                        conteoDestino = new Integer[]{0, 0};
+                    }
+                    conteoDestino[1] += 1;
+                    viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+                }
+            }
+        }
+
         return viandasPorHeladera;
     }
 

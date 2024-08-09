@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.UsoTarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Vianda;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
@@ -68,27 +66,34 @@ class ReporteMovimientoViandasTest {
     @Test
     void testContenido() {
         // Crear heladeras
-        Heladera heladera1 = new Heladera();
-        PuntoDeHeladera punto1 = new PuntoDeHeladera();
-        punto1.setNombreDePunto("Heladera1");
-        heladera1.setNombre(punto1);
+        Heladera heladera1 = Heladera.builder()
+                .nombre(new PuntoDeHeladera())
+                .build();
+        heladera1.getNombre().setNombreDePunto("Heladera1");
         heladera1.setCapacidadActual(10);  // Inicializar capacidad actual
 
-        Heladera heladera2 = new Heladera();
-        PuntoDeHeladera punto2 = new PuntoDeHeladera();
-        punto2.setNombreDePunto("Heladera2");
-        heladera2.setNombre(punto2);
+        Heladera heladera2 = Heladera.builder()
+                .nombre(new PuntoDeHeladera())
+                .build();
+        heladera2.getNombre().setNombreDePunto("Heladera2");
         heladera2.setCapacidadActual(10);  // Inicializar capacidad actual
 
         // Crear distribuciones de viandas
         DistribucionViandas distribucion1 = new DistribucionViandas(heladera1, heladera2, 5, "Motivo1", LocalDate.now());
         DistribucionViandas distribucion2 = new DistribucionViandas(heladera2, heladera1, 3, "Motivo2", LocalDate.now());
 
+        // Crear donación de viandas
+        DonacionDeVianda donacion1 = new DonacionDeVianda(null, LocalDate.now(), 500f, 1f, heladera1, null);
+        DonacionDeVianda donacion2 = new DonacionDeVianda(null, LocalDate.now(), 500f, 1f, heladera2, null);
+
+
         // Crear humano con contribuciones
         Humano humano1 = new Humano(null);
         humano1.setIdUsuario(UUID.randomUUID());
         humano1.agregarContribucion(distribucion1);
         humano1.agregarContribucion(distribucion2);
+        humano1.agregarContribucion(donacion1);
+        humano1.agregarContribucion(donacion2);
         humanosRepository.guardar(humano1);
 
         // Crear tarjeta
@@ -110,8 +115,8 @@ class ReporteMovimientoViandasTest {
         List<String> expectedLines = Arrays.asList(
                 "Reporte de viandas por heladera",
                 "Heladera Nombre\t\tEntraron\tSalieron",
-                "Heladera1\t\t4\t\t5",
-                "Heladera2\t\t6\t\t3"
+                "Heladera1\t\t5\t\t5",
+                "Heladera2\t\t7\t\t3"
         );
         String expected = expectedLines.stream().sorted().collect(Collectors.joining("\n"));
 

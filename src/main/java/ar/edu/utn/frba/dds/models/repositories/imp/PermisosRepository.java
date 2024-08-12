@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.models.repositories.imp;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
-import ar.edu.utn.frba.dds.models.repositories.IPermisosRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PermisosRepository implements IPermisosRepository {
+public class PermisosRepository implements ar.edu.utn.frba.dds.models.repositories.PermisosRepository {
     private List<Permiso> permisos;
 
     public PermisosRepository() {

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
+import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -45,18 +46,27 @@ public class RegisterCargaMasiva {
 
         ArrayList<AtributoHumano> atributosOpcionales = new ArrayList<>(List.of(new AtributoHumano(tipoDocumento, documento)));
 
-        Humano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, id);
+        Usuario userCreado = this.crearUsuarioHumano(nombre, apellido, id);
+
+        Humano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, id, userCreado);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
-        String pass = this.guardarEnRepositorios(creado, nombre, apellido);
+        String pass = this.guardarEnRepositorios(creado, userCreado);
 
         return pass;
 
     }
 
-    public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, UUID id){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , id);
+    public Usuario crearUsuarioHumano(String nombre, String apellido, UUID id) throws IOException {
+        UsernameGenerator usernameGenerator = new UsernameGenerator(usersRepository);
+        String username = usernameGenerator.generateUsername(nombre, apellido);
+        String password = RandomStringUtils.randomAlphanumeric(16);
+        return new Usuario(username, password, id, new ArrayList<>(List.of(new Rol("HUMANO"))));
+    }
+
+    public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, UUID id, Usuario userCreado){
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , id, userCreado);
 
         return HumanoFactory.crear(dto);
     }
@@ -66,15 +76,13 @@ public class RegisterCargaMasiva {
         humano.agregarContribucion(contribucion);
     }
 
-    public String guardarEnRepositorios(Humano humano, String nombre, String apellido) throws IOException {
+    public String guardarEnRepositorios(Humano humano, Usuario userCreado){
 
-        String username = nombre.charAt(0) + apellido;
-        String password = RandomStringUtils.randomAlphanumeric(16);
+        this.usersRepository.guardar(userCreado);
 
-        this.usersRepository.guardar(new Usuario(username, password, humano.getIdUsuario(), new Rol("HUMANO")));
         this.humanRepository.guardar(humano);
 
-        return password;
+        return userCreado.getPassword();
     }
 
 }

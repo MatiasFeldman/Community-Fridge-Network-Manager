@@ -2,20 +2,20 @@ package ar.edu.utn.frba.dds.models.entities.usuarios;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
+
+import java.util.List;
 import java.util.UUID;
 
 import java.io.IOException;
 
+@Getter
 public class Usuario {
-    @Getter
     private final String user;
     private String password;
-    @Getter
     private UUID id;
-    @Getter
-    private Rol rol;
+    private List<Rol> roles;
 
-    public Usuario(String user, String password, UUID id ,Rol rol) throws IOException {
+    public Usuario(String user, String password, UUID id ,List<Rol> roles) throws IOException {
             ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
             validador.agregarCondiciones(new CumpleLongitud(8,64),
                                          new TieneMayuscula(),
@@ -29,7 +29,7 @@ public class Usuario {
             } else{
                 this.user = user;
                 this.password = password;
-                this.rol = rol;
+                this.roles = roles;
                 this.id = id;
             }
 

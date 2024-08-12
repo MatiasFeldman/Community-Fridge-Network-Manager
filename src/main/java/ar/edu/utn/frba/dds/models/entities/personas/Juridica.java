@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 
@@ -24,6 +25,7 @@ public class Juridica extends ObserverSuscripcion {
     private OfertasRepository ofertasDisponibles;
     private RecomendarPuntos recomendador;
     private double puntosGanados;
+    private Usuario user;
 
     public Juridica(OfertasRepository ofertas, RecomendarPuntos recomendador) {
         this.ofertasDisponibles = ofertas;

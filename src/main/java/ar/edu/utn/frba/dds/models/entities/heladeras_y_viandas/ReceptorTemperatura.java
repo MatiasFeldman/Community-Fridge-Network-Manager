@@ -51,6 +51,6 @@ public class ReceptorTemperatura implements IMqttMessageListener {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        evaluar(Double.parseDouble(mqttMessage.toString()));
+        this.evaluar(Double.parseDouble(mqttMessage.toString()));
     }
 }

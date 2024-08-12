@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
-import ar.edu.utn.frba.dds.models.entities.helpers.reportes.IGeneradorPDF;
+import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.*;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
@@ -19,13 +18,11 @@ public class GenerarReporteTest {
     @Test
     public void generarReporteTest() throws PdfException {
 
-        IGeneradorPDF pdfGeneratorMock = Mockito.mock(IGeneradorPDF.class);
+        PDFgenerator pdfGeneratorMock = Mockito.mock(PDFgenerator.class);
         IncidentesRepository incidentesRepository = Mockito.mock(IncidentesRepository.class);
         HumanosRepository humanosRepository = Mockito.mock(HumanosRepository.class);
         PersonasVulnerablesRepository personasVulnerablesRepository = Mockito.mock(PersonasVulnerablesRepository.class);
 
-
-        GeneradorPDF generarReporte = new GeneradorPDF(pdfGeneratorMock);
 
 
         String filePath = "/Users/matifeldman/Documentos/DDS";
@@ -37,7 +34,7 @@ public class GenerarReporteTest {
                 new ReporteViandasDonadas(humanosRepository),
                 new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository));
 
-        generarReporte.generarPDF(reportes, filePath);
+        pdfGeneratorMock.generarPDF(reportes, filePath);
 
         // Verificar que el método generarPDF fue llamado con los argumentos correctos
         Mockito.verify(pdfGeneratorMock, times(1)).generarPDF(reportes, filePath);

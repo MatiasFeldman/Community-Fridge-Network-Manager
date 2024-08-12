@@ -4,10 +4,7 @@ import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Comida;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Vianda;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,7 +97,7 @@ public class ColaboracioensTest {
     @Test
     public void testAccesoDonacionDenegado() {
         // Preparar una solicitud expirada
-        SolicitudApertura solicitudExpirada = new SolicitudApertura(tarjeta, 1);
+        SolicitudApertura solicitudExpirada = new SolicitudApertura(tarjeta, 1, AccionSobreViandas.RETIRAR);
         solicitudExpirada.setFechaHoraSolicitud(LocalDate.now().minusDays(1).atStartOfDay()); // Hace la solicitud expirada
         heladera.agregarSolicitudApertura(solicitudExpirada);
 
@@ -142,7 +139,7 @@ public class ColaboracioensTest {
     @Test
     public void testAccesoDistribucionDenegado() {
         // Preparar una solicitud expirada
-        SolicitudApertura solicitudExpirada = new SolicitudApertura(tarjeta, 1);
+        SolicitudApertura solicitudExpirada = new SolicitudApertura(tarjeta, 1, AccionSobreViandas.INGRESAR);
         solicitudExpirada.setFechaHoraSolicitud(LocalDate.now().minusDays(1).atStartOfDay()); // Hace la solicitud expirada
         heladera.agregarSolicitudApertura(solicitudExpirada);
 
@@ -154,7 +151,7 @@ public class ColaboracioensTest {
         assertFalse(heladera.getRegistrosAperturas().get(0).isAcceso());
 
         // Preparar la solicitud para la heladera destino
-        SolicitudApertura solicitudExpiradaDestino = new SolicitudApertura(tarjeta, 1);
+        SolicitudApertura solicitudExpiradaDestino = new SolicitudApertura(tarjeta, 1, AccionSobreViandas.RETIRAR);
         solicitudExpiradaDestino.setFechaHoraSolicitud(LocalDate.now().minusDays(1).atStartOfDay()); // Hace la solicitud expirada
         heladeraDestino.agregarSolicitudApertura(solicitudExpiradaDestino);
 

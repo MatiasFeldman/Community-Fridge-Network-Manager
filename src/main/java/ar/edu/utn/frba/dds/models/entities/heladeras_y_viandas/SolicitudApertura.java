@@ -6,34 +6,43 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+
+@Getter
+@Setter
 public class SolicitudApertura {
 
-    @Getter
-    @Setter
     private LocalDateTime fechaHoraSolicitud;
-    private Integer horasParaEjecutarAccion = 3;
-    @Getter
+    private static Integer horasParaEjecutarAccion = 3;
     private TarjetaHumano solicitante;
-    @Getter
+    private Heladera heladera;
     private Integer cantidadDeViandas;
-    @Setter
-    @Getter
-    private Vianda vianda;
-    @Setter
-    @Getter
-    private boolean autorizado;
+    private AccionSobreViandas accion;
+    private LocalDateTime fechaDeExpiracion;
 
 
     // Constructor
-    public SolicitudApertura(TarjetaHumano solicitante, Integer cantidadDeVianda) {
-        this.fechaHoraSolicitud = LocalDateTime.now(); // Asigna la fecha y hora actuales
+    public SolicitudApertura(TarjetaHumano solicitante, Integer cantidadDeVianda, AccionSobreViandas accion, Heladera heladera) {
+        this.fechaHoraSolicitud = LocalDateTime.now();
         this.solicitante = solicitante;
         this.cantidadDeViandas = cantidadDeVianda;
-        this.vianda = null;
+        this.accion = accion;
+        this.heladera = heladera;
+        this.fechaDeExpiracion = fechaHoraSolicitud.plusHours(horasParaEjecutarAccion);
+    }
+
+    public UUID getIdHeladera(){
+        return heladera.getId();
+    }
+
+    public String getIdSolicitante(){
+        return solicitante.getId();
     }
 
     public boolean isDentroDeTiempo() {
         return LocalDateTime.now().isBefore(fechaHoraSolicitud.plusHours(horasParaEjecutarAccion));
     }
+
+
 }

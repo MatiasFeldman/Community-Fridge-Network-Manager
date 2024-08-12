@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import java.util.List;
 import java.util.Optional;
 
-public interface IOfertasRepository {
+public interface OfertasRepository {
     public void guardar(Oferta oferta);
 
     public Optional<Oferta> buscarPorNombre(String nombre);

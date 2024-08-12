@@ -2,15 +2,15 @@ package ar.edu.utn.frba.dds.utils.permisos;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.IPermisosRepository;
+import ar.edu.utn.frba.dds.models.repositories.PermisosRepository;
 
 import java.util.Optional;
 
 public class VerificadorDePermisos {
 
-    private IPermisosRepository permisosRepository;
+    private PermisosRepository permisosRepository;
 
-    public VerificadorDePermisos(IPermisosRepository permisosRepository) {
+    public VerificadorDePermisos(PermisosRepository permisosRepository) {
         this.permisosRepository = permisosRepository;
     }
 

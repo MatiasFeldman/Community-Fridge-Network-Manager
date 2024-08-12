@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.reportes;
 
 
-import ar.edu.utn.frba.dds.models.entities.helpers.reportes.IGeneradorPDF;
+import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class GenerarReportesCronJob implements Runnable {
-    private IGeneradorPDF generadorPDF;
+    private GeneradorPDF generadorPDF;
     private String filePath;
     private IncidentesRepository incidentesRepository;
     private HumanosRepository humanosRepository;

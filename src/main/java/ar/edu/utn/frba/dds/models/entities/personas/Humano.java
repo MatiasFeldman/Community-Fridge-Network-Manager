@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.AccionadorFactory;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
@@ -39,6 +40,7 @@ public class Humano extends ObserverSuscripcion {
     private IncidentesRepository incidentesRepository;
     private UUID idUsuario;
     private TarjetaHumano tarjeta = null;
+    private Usuario user;
 
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
@@ -64,15 +66,8 @@ public class Humano extends ObserverSuscripcion {
                 .contribuciones(dto.getContribuciones())
                 .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getIdUsuario())
+                .user(dto.getUser())
                 .build();
-    }
-
-    public void generarMedioDeContacto(TipoAtributo tipo, String nombreAtributo) {
-        if (tipo == TipoAtributo.OBLIGATORIO) {
-            this.atributosObligatorios.add(new AtributoHumano(nombreAtributo));
-        } else {
-            this.atributosOpcionales.add(new AtributoHumano(nombreAtributo));
-        }
     }
 
     public void generarContacto(Contacto contacto) {

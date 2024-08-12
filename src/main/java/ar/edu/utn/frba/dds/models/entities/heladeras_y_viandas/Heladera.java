@@ -2,17 +2,25 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.ACCION_APERTURA;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MensajeSolicitudApertura;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.ArrayList;
@@ -22,7 +30,7 @@ import java.util.Optional;
 @Getter
 @Builder
 @Setter
-public class Heladera {
+public class Heladera implements IMqttMessageListener {
 
     private Coordenada coordenada;
     @Setter
@@ -37,11 +45,17 @@ public class Heladera {
     private double tempMaxima;
     private boolean hayMovimiento;
     private UUID id;
-    private List<SolicitudApertura> solicitudes = new ArrayList<>();
-    private List<IntentoApertura> registrosAperturas = new ArrayList<>();
+    private List<MensajeSolicitudApertura> solicitudes = new ArrayList<>();
+    private IntentosDeAperturaRepository intentos;
 
-    public static Heladera of(HeladeraDTO dto){
-        return Heladera
+
+    private static String BROKER_URL;
+    private MqttClient client;
+    private static String topic = "heladeras/solicitudes_de_apertura";
+
+    @SneakyThrows
+    public static Heladera of(HeladeraDTO dto) {
+        HeladeraBuilder builder = Heladera
                 .builder()
                 .coordenada(dto.getCoordenada())
                 .direccion(dto.getDireccion())
@@ -53,16 +67,21 @@ public class Heladera {
                 .tempMinima(dto.getTempMinima())
                 .tempMaxima(dto.getTempMaxima())
                 .hayMovimiento(dto.isHayMovimiento())
-                .build();
+                .intentos(dto.getIntentos());
+
+        MqttClient client1 = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+        client1.subscribe(topic);
+        builder.client(client1);
+        return builder.build();
     }
 
     private final List<ObserverSuscripcion> colaboradores = new ArrayList<>();
 
-    public void suscribir(ObserverSuscripcion colaborador){
+    public void suscribir(ObserverSuscripcion colaborador) {
         colaboradores.add(colaborador);
     }
 
-    public void desuscribir(ObserverSuscripcion colaborador){
+    public void desuscribir(ObserverSuscripcion colaborador) {
         colaboradores.remove(colaborador);
     }
 
@@ -70,52 +89,61 @@ public class Heladera {
         colaboradores.forEach(colaborador -> colaborador.verificarEvento(this));
     }
 
-    public void modificarViandas(Integer cantidad){
+    public void modificarViandas(Integer cantidad) {
         this.setCapacidadActual(this.getCapacidadActual() - cantidad);
         this.notificarColaboradores();
     }
 
-    public void quitarViandas(Integer cantidad){
+    public void quitarViandas(Integer cantidad) {
         this.setCapacidadActual(this.getCapacidadActual() + cantidad);
         this.notificarColaboradores();
     }
-    public Integer mesesActiva(){
+
+    public Integer mesesActiva() {
         return Math.toIntExact(ChronoUnit.MONTHS.between(this.fechaDePuestaEnFuncionamiento, LocalDate.now()));
     }
 
-    public void desactivar(){
+    public void desactivar() {
         this.setActiva(false);
     }
 
-    public void activar(){
+    public void activar() {
         this.setActiva(true);
     }
 
-    public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
+    public void agregarSolicitudApertura(MensajeSolicitudApertura soliApertura) {
         solicitudes.add(soliApertura);
     }
-    public void agregarApertura(IntentoApertura intentoApertura) {
-        registrosAperturas.add(intentoApertura);
-    }
 
-    public boolean verificarAcceso(TarjetaHumano tarjeta) {
-        for (SolicitudApertura solicitud : solicitudes) {
-            if (solicitud.getSolicitante().equals(tarjeta) && solicitud.isDentroDeTiempo() && solicitud.isAutorizado()) {
-                agregarApertura(new IntentoApertura(tarjeta.getDuenio(), true) );
-                this.modificarViandas(solicitud.getCantidadDeViandas());
-                if(solicitud.getVianda()!=null){ solicitud.getVianda().setEntregada(true); }
-
-                return true;
+    public void verificarAcceso(String id, LocalDateTime fecha) {
+        Optional<MensajeSolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
+        if (aviso.isPresent()){
+            MensajeSolicitudApertura aviso_posta = aviso.get();
+            solicitudes.remove(aviso_posta);
+            if (aviso_posta.getFecha().isBefore(fecha)){
+                IntentoAperturaResuelto intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
+                intentos.guardar(intento);
+                throw new AccesoDenegadoHeladeraException("La solicitud de ingreso ya venció");
+            } else{
+                IntentoAperturaResuelto intento = new IntentoAperturaResuelto(id, this.id, fecha, true);
+                intentos.guardar(intento);
             }
         }
-        agregarApertura(new IntentoApertura(tarjeta.getDuenio(), false) );
-        throw new AccesoDenegadoHeladeraException("El usuario carece de permisos para realizar dicha acción");
+
     }
 
-    public void actualizarSolicitud(Humano humano, boolean bool){
-        Optional<SolicitudApertura> solicitud = solicitudes.stream().filter(soli->soli.getSolicitante().equals(humano)).findFirst();
-        if(solicitud.isPresent()){
-            solicitud.get().setAutorizado(bool);
+    @Override
+    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+        String jsonMensaje = mqttMessage.toString();
+        ObjectMapper mapper = new ObjectMapper();
+        MensajeSolicitudApertura msg = mapper.readValue(jsonMensaje, MensajeSolicitudApertura.class);
+
+        if (msg.getIdHeladera().equals(this.id)) {
+            if (msg.getAccion().equals(ACCION_APERTURA.AVISO)) {
+                this.agregarSolicitudApertura(msg);
+            } else if (msg.getAccion().equals(ACCION_APERTURA.INTENTO)) {
+                this.verificarAcceso(msg.getIdTarjeta(), msg.getFecha());
+            }
         }
     }
 }

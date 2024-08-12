@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
 import java.util.List;
 import java.util.Optional;
 
-public interface IPermisosRepository {
+public interface PermisosRepository {
     public void guardar(Permiso permiso);
 
     public Optional<Permiso> buscarPorNombre(String nombre);

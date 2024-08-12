@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.models.repositories.ofertas.imp;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
-import ar.edu.utn.frba.dds.models.repositories.IOfertasRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OfertasRepository implements IOfertasRepository {
+public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositories.OfertasRepository {
     private List<Oferta> ofertas;
 
     public OfertasRepository() {

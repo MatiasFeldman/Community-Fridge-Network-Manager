@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.AccionSobreViandas;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
 import lombok.AllArgsConstructor;
@@ -39,9 +40,9 @@ public class DistribucionViandas implements ContribucionHumana{
 
     @Override
     public void contribuir() {
-        SolicitudApertura soliApertura = new SolicitudApertura(solicitante,-cantidadViandas );
+        SolicitudApertura soliApertura = new SolicitudApertura(solicitante,cantidadViandas, AccionSobreViandas.RETIRAR, heladeraOrigen );
         heladeraOrigen.agregarSolicitudApertura(soliApertura);
-        SolicitudApertura soliApertura2 = new SolicitudApertura(solicitante,cantidadViandas );
+        SolicitudApertura soliApertura2 = new SolicitudApertura(solicitante,cantidadViandas, AccionSobreViandas.INGRESAR, heladeraDestino);
         heladeraDestino.agregarSolicitudApertura(soliApertura2);
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UsersCollection implements IUsersDAO {
+public class UsersCollection implements UsersDAO {
     private List<Usuario> usuarios;
 
     public UsersCollection(List<Usuario> users) {
@@ -40,5 +40,10 @@ public class UsersCollection implements IUsersDAO {
     @Override
     public void eliminar(Usuario usuario) {
         usuarios.remove(usuario);
+    }
+
+    @Override
+    public Boolean existeUsuario(String username) {
+        return usuarios.stream().anyMatch(usuario -> usuario.getUser().equals(username));
     }
 }

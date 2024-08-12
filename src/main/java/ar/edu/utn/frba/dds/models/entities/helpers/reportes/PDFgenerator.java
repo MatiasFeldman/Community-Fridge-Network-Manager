@@ -8,13 +8,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class PDFgenerator implements IGeneradorPDF {
+public class PDFgenerator implements GeneradorPDF {
 
     @Override
     public void generarPDF(List<IReporte> reportes, String path) {

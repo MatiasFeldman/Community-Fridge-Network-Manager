@@ -39,13 +39,21 @@ public class Heladera implements IMqttMessageListener {
     private Integer capacidadMaxima;
     private Integer capacidadActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
+
+
+    private ReceptorTemperatura receptorTemperatura;
+    private ReceptorMovimiento receptorMovimiento;
     private boolean activa;
     private double ultimaTemperaturaRegistrada;
     private double tempMinima;
     private double tempMaxima;
     private boolean hayMovimiento;
+
+    private Accionador accionadorParaTemperatura;
+    private Accionador accionadorParaMovimiento;
+
     private UUID id;
-    private List<MensajeSolicitudApertura> solicitudes = new ArrayList<>();
+    private List<MensajeSolicitudApertura> solicitudes;
 
 
     private static String BROKER_URL;
@@ -160,6 +168,30 @@ public class Heladera implements IMqttMessageListener {
 
         if (msg.getIdHeladera().equals(this.id)) {
             this.agregarSolicitudApertura(msg);
+        }
+    }
+
+    public boolean temperaturaValida(Double temp){
+        return temp >= this.tempMinima && temp <= this.tempMaxima;
+    }
+
+    public void evaluarTemperatura(){
+        Double ultimaTemp = this.receptorTemperatura.getTemperaturaRegistrada();
+        if (!this.temperaturaValida(ultimaTemp)){
+            this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
+        }
+    }
+
+    public void evaluarConexion(){
+        LocalDateTime ultFecha = this.receptorTemperatura.getUltFechaRegistrada();
+        if (ultFecha.plusMinutes(5).isBefore(LocalDateTime.now())){
+            this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.FALLA_CONEXION, LocalDateTime.now(), this);
+        }
+    }
+
+    public void evaluarMovimiento(){
+        if (this.receptorMovimiento.isMovimiento()){
+            this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
         }
     }
 }

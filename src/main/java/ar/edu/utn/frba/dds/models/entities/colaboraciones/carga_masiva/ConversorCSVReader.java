@@ -8,7 +8,6 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.mailSender.MailSenderFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
-import ar.edu.utn.frba.dds.models.repositories.users.imp.UsersRepository;
 import com.opencsv.CSVReader;
 import lombok.SneakyThrows;
 
@@ -16,15 +15,12 @@ import javax.mail.MessagingException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 public class ConversorCSVReader implements ConversorCSV {
-    private UsersRepository usersRespository;
-    private ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository humanosRepository;
+    private HumanosRepository humanosRepository;
     private OfertasRepository ofertas;
 
-    public ConversorCSVReader(UsersRepository repositorio, HumanosRepository humanosRepository, OfertasRepository ofertas) {
-        this.usersRespository = repositorio;
+    public ConversorCSVReader(HumanosRepository humanosRepository, OfertasRepository ofertas) {
         this.humanosRepository = humanosRepository;
         this.ofertas = ofertas;
 
@@ -37,38 +33,33 @@ public class ConversorCSVReader implements ConversorCSV {
         ValidadorCargaMasiva validador = new ValidadorCargaMasiva();
         String[] line;
         while ((line = reader.readNext()) != null) {
-            String nombre = line[2];
-            String apellido = line[3];
-
-            String fechaColaboracionString = line[5];
 
             if (!validador.validarLinea(line)) {
                 continue;
             }
 
-            this.registrarHumano(line);
+            this.verificarExistenciaHumano(line);
 
         }
     }
 
-    public void registrarHumano(String[] line) throws IOException, MessagingException {
+    public void verificarExistenciaHumano(String[] line) throws IOException, MessagingException {
+        String tipoDocumento = line[0];
+        String documento = line[1];
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
-        String username = nombre.charAt(0) + apellido;
 
-        if (usersRespository.buscarPorUsername(username).isEmpty()) {
-            RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, usersRespository, ofertas);
+        if (humanosRepository.buscarPorDocumento(tipoDocumento, documento).isEmpty()) {
+            RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, ofertas);
 
-            String password = registrador.registrarHumano(line);
+            Usuario userCreado = registrador.registrarHumano(line);
 
-            this.enviarMailBienvenida(mail, nombre, apellido, username, password);
+            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword());
         } else {
-            Optional<Usuario> user = usersRespository.buscarPorUsername(username);
-            UUID idUsuario = user.get().getId();
-            Optional<Humano> humanoRegistrado = humanosRepository.buscarPorUUID(idUsuario);
+            Optional<Humano> humanoRegistrado = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
             if (humanoRegistrado.isPresent()) {
                 Humano human = humanoRegistrado.get();
                 human.agregarContribucion(ContribucionHumanaFactory.create(formaColaboracion, cantidad));
@@ -77,22 +68,7 @@ public class ConversorCSVReader implements ConversorCSV {
         }
     }
 
-    public void enviarMailBienvenida(String mail, String nombre, String apellido, String username, String password)
-            throws MessagingException {
-        MailSender enviador = MailSenderFactory.create();
-        enviador.enviarMail(mail,
-                new Mail(this.cuerpoMail(nombre, apellido, username, password), "Colaboración pendiente"));
-    }
 
-    public String cuerpoMail(String nombre, String apellido, String username, String password) {
-        return "Hola " + nombre + " " + apellido + ",\n\n"
-                + "Muchas gracias por querer colaborar con nosotros. "
-                + "Lamentablemente no pudimos encontrar tu usuario en nuestra base de datos. "
-                + "Es por eso, que te creamos una cuenta para que confimers y/o actualices tus credenciales\n\n"
-                + "Usuario: " + username + "\n"
-                + "Contraseña: " + password + "\n\n"
-                + "Saludos,\n"
-                + "Equipo de colaboraciones";
-    }
+
 
 }

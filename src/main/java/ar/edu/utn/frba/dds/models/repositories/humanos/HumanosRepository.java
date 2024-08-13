@@ -29,4 +29,12 @@ public class HumanosRepository {
     public void eliminar(Humano humano) {
         humanos.eliminar(humano);
     }
+
+    public Optional<Humano> buscarPorDocumento(String tipo, String nro){
+        return humanos.buscarPorDocumento(tipo, nro);
+    }
+
+    public boolean existeUsername(String username){
+        return humanos.existeUsername(username);
+    }
 }

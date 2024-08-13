@@ -101,4 +101,16 @@ public class Humano extends ObserverSuscripcion {
         puntosGanados+= contribucion.calcularPuntaje();
     }
 
+    public String getDocumento(String tipo) {
+        return this.atributosOpcionales
+                .stream()
+                .filter(atributo -> atributo.getNombreAtributo().equals(tipo))
+                .findFirst()
+                .get()
+                .getValorAtributo();
+    }
+
+    public String getUsername(){
+        return this.user.getUser();
+    }
 }

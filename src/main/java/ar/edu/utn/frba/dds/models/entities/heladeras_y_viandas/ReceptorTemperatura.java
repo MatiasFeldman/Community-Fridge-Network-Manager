@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
@@ -9,20 +11,22 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Setter
+@Getter
 @Builder
 public class ReceptorTemperatura implements IMqttMessageListener {
     private static String BROKER_URL;
-    private Accionador accionadorParaTemperatura;
     private LocalDateTime ultFechaRegistrada;
-    private Heladera heladera;
+    private Double temperaturaRegistrada;
+    private UUID idHeladera;
 
-    public ReceptorTemperatura create(Heladera heladera, Accionador accionadorParaTemperatura) throws MqttException {
+    public ReceptorTemperatura create(UUID idHeladera) throws MqttException {
         ReceptorTemperatura receptor = ReceptorTemperatura
                 .builder()
-                .heladera(heladera)
-                .accionadorParaTemperatura(accionadorParaTemperatura)
+                .temperaturaRegistrada(null)
+                .idHeladera(idHeladera)
                 .ultFechaRegistrada(null)
                 .build();
 
@@ -32,25 +36,19 @@ public class ReceptorTemperatura implements IMqttMessageListener {
 
     private void suscribirseATopic(ReceptorTemperatura receptor) throws MqttException {
         MqttClient client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        client.subscribe("heladera/" + heladera.getId().toString() + "/temperatura", receptor);
+        client.subscribe("heladera/temperatura", receptor);
     }
 
-
-    public void evaluar(double temp){
-        if (temp > heladera.getTempMaxima() || temp < heladera.getTempMinima()){
-            accionadorParaTemperatura.sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), heladera);
-            setUltFechaRegistrada(LocalDateTime.now());
-        }
-    }
-
-    public void evaluarConexion(){
-        if (ultFechaRegistrada.plusMinutes(5).isBefore(LocalDateTime.now())){
-            accionadorParaTemperatura.sucedeIncidente(TipoEvento.FALLA_CONEXION, LocalDateTime.now(), heladera);
-        }
-    }
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        this.evaluar(Double.parseDouble(mqttMessage.toString()));
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonMessage = new String(mqttMessage.getPayload());
+        MensajeSensorTemperatura mensaje = mapper.readValue(jsonMessage, MensajeSensorTemperatura.class);
+        if (mensaje.getIdHeladera().equals(idHeladera)) {
+            setTemperaturaRegistrada(mensaje.getTemperatura());
+            setUltFechaRegistrada(LocalDateTime.now());
+        }
+
     }
 }

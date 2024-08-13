@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
-import ar.edu.utn.frba.dds.models.repositories.users.imp.UsersRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
@@ -21,16 +20,14 @@ import java.util.UUID;
 
 public class RegisterCargaMasiva {
     private HumanosRepository humanRepository;
-    private UsersRepository usersRepository;
     private OfertasRepository ofertas;
 
-    public RegisterCargaMasiva(HumanosRepository humanRepository, UsersRepository usersRepository, OfertasRepository ofertas) {
+    public RegisterCargaMasiva(HumanosRepository humanRepository, OfertasRepository ofertas) {
         this.humanRepository = humanRepository;
-        this.usersRepository = usersRepository;
         this.ofertas = ofertas;
     }
 
-    public String registrarHumano(String[] line) throws IOException {
+    public Usuario registrarHumano(String[] line) throws IOException {
         String tipoDocumento = line[0];
         String documento = line[1];
         String nombre = line[2];
@@ -52,14 +49,13 @@ public class RegisterCargaMasiva {
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
-        String pass = this.guardarEnRepositorios(creado, userCreado);
 
-        return pass;
+        return creado.getUser();
 
     }
 
     public Usuario crearUsuarioHumano(String nombre, String apellido, UUID id) throws IOException {
-        UsernameGenerator usernameGenerator = new UsernameGenerator(usersRepository);
+        UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = RandomStringUtils.randomAlphanumeric(16);
         return new Usuario(username, password, id, new ArrayList<>(List.of(new Rol("HUMANO"))));
@@ -76,13 +72,10 @@ public class RegisterCargaMasiva {
         humano.agregarContribucion(contribucion);
     }
 
-    public String guardarEnRepositorios(Humano humano, Usuario userCreado){
-
-        this.usersRepository.guardar(userCreado);
+    public void guardarEnRepositorios(Humano humano, Usuario userCreado){
 
         this.humanRepository.guardar(humano);
 
-        return userCreado.getPassword();
     }
 
 }

@@ -11,6 +11,6 @@ import java.util.UUID;
 public class MensajeSolicitudApertura {
     private UUID idHeladera;
     private String idTarjeta;
-    private LocalDateTime fecha; // Si es aviso es la fecha de expiracion y si es intento la fecha de intento
+    private LocalDateTime fecha;
 
 }

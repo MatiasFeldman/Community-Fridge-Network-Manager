@@ -40,10 +40,6 @@ public class DistribucionViandas implements ContribucionHumana{
 
     @Override
     public void contribuir() {
-        SolicitudApertura soliApertura = new SolicitudApertura(solicitante,cantidadViandas, AccionSobreViandas.RETIRAR, heladeraOrigen );
-        heladeraOrigen.agregarSolicitudApertura(soliApertura);
-        SolicitudApertura soliApertura2 = new SolicitudApertura(solicitante,cantidadViandas, AccionSobreViandas.INGRESAR, heladeraDestino);
-        heladeraDestino.agregarSolicitudApertura(soliApertura2);
     }
 
     @Override

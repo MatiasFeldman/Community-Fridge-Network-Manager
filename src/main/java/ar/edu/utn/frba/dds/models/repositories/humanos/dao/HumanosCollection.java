@@ -35,4 +35,19 @@ public class HumanosCollection implements HumanosDAO{
     public void eliminar(Humano humano) {
         humanos.remove(humano);
     }
+
+    @Override
+    public Optional<Humano> buscarPorDocumento(String tipo, String nro) {
+        return humanos
+                .stream()
+                .filter(humano -> humano.getDocumento(tipo).equals(nro))
+                .findFirst();
+    }
+
+    @Override
+    public boolean existeUsername(String username) {
+        return humanos
+                .stream()
+                .anyMatch(humano -> humano.getUsername().equals(username));
+    }
 }

@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura;
 
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.ACCION_APERTURA;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,6 +12,5 @@ public class MensajeSolicitudApertura {
     private UUID idHeladera;
     private String idTarjeta;
     private LocalDateTime fecha; // Si es aviso es la fecha de expiracion y si es intento la fecha de intento
-    private ACCION_APERTURA accion;
 
 }

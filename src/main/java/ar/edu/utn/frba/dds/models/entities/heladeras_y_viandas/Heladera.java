@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.ACCION_APERTURA;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MensajeSolicitudApertura;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
@@ -46,12 +46,14 @@ public class Heladera implements IMqttMessageListener {
     private boolean hayMovimiento;
     private UUID id;
     private List<MensajeSolicitudApertura> solicitudes = new ArrayList<>();
-    private IntentosDeAperturaRepository intentos;
 
 
     private static String BROKER_URL;
-    private MqttClient client;
-    private static String topic = "heladeras/solicitudes_de_apertura";
+    private MqttClient client_solicitudes;
+    private MqttClient client_intentos;
+    private static String topic_solicitudes = "heladeras/solicitudes_de_apertura";
+    private static String topic_intentos = "heladeras/intentos_de_apertura";
+
 
     @SneakyThrows
     public static Heladera of(HeladeraDTO dto) {
@@ -66,12 +68,15 @@ public class Heladera implements IMqttMessageListener {
                 .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
                 .tempMinima(dto.getTempMinima())
                 .tempMaxima(dto.getTempMaxima())
-                .hayMovimiento(dto.isHayMovimiento())
-                .intentos(dto.getIntentos());
+                .hayMovimiento(dto.isHayMovimiento());
 
         MqttClient client1 = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        client1.subscribe(topic);
-        builder.client(client1);
+        client1.subscribe(topic_solicitudes);
+
+        MqttClient client2 = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+        client2.connect();
+
+        builder.client_solicitudes(client1);
         return builder.build();
     }
 
@@ -115,21 +120,36 @@ public class Heladera implements IMqttMessageListener {
         solicitudes.add(soliApertura);
     }
 
+    @SneakyThrows
     public void verificarAcceso(String id, LocalDateTime fecha) {
         Optional<MensajeSolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
-        if (aviso.isPresent()){
+        IntentoAperturaResuelto intento;
+        ObjectMapper mapper = new ObjectMapper();
+        if (aviso.isPresent()) {
             MensajeSolicitudApertura aviso_posta = aviso.get();
             solicitudes.remove(aviso_posta);
-            if (aviso_posta.getFecha().isBefore(fecha)){
-                IntentoAperturaResuelto intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
-                intentos.guardar(intento);
+            if (aviso_posta.getFecha().isBefore(fecha)) {
+                intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
                 throw new AccesoDenegadoHeladeraException("La solicitud de ingreso ya venció");
-            } else{
-                IntentoAperturaResuelto intento = new IntentoAperturaResuelto(id, this.id, fecha, true);
-                intentos.guardar(intento);
+            } else {
+                intento = new IntentoAperturaResuelto(id, this.id, fecha, true);
             }
+        } else{
+            intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
+            throw new AccesoDenegadoHeladeraException("No se encontró la solicitud de ingreso");
         }
+        String jsonMensaje = mapper.writeValueAsString(intento);
 
+        MqttMessage message = new MqttMessage(jsonMensaje.getBytes());
+        message.setQos(1);
+
+        client_intentos.publish(topic_intentos, message);
+
+    }
+
+    public void intentoAcceso(Object solicitud) {
+        IntentoApertura intento = (IntentoApertura) solicitud;
+        this.verificarAcceso(intento.getIdTarjeta(), intento.getFechaHoraDeIntento());
     }
 
     @Override
@@ -139,11 +159,8 @@ public class Heladera implements IMqttMessageListener {
         MensajeSolicitudApertura msg = mapper.readValue(jsonMensaje, MensajeSolicitudApertura.class);
 
         if (msg.getIdHeladera().equals(this.id)) {
-            if (msg.getAccion().equals(ACCION_APERTURA.AVISO)) {
-                this.agregarSolicitudApertura(msg);
-            } else if (msg.getAccion().equals(ACCION_APERTURA.INTENTO)) {
-                this.verificarAcceso(msg.getIdTarjeta(), msg.getFecha());
-            }
+            this.agregarSolicitudApertura(msg);
         }
     }
 }
+

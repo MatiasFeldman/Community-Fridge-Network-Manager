@@ -14,14 +14,10 @@ import java.util.UUID;
 public class IntentoApertura {
     private LocalDateTime fechaHoraDeIntento;
     private TarjetaHumano solicitante;
-    private Heladera heladera;
 
 
     public String getIdTarjeta(){
         return solicitante.getId();
     }
 
-    public UUID getIdHeladera(){
-        return heladera.getId();
-    }
 }

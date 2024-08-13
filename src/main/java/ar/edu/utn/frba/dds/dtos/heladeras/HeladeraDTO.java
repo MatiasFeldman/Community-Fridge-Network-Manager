@@ -28,5 +28,4 @@ public class HeladeraDTO {
     @Setter
     private boolean hayMovimiento;
     private UUID id;
-    private IntentosDeAperturaRepository intentos;
 }

@@ -23,4 +23,12 @@ public class HeladerasCollection implements HeladerasDAO {
     public void eliminar(Heladera heladera) {
         heladeras.remove(heladera);
     }
+
+    @Override
+    public Optional<Heladera> buscarPorNombre(String name) {
+        return heladeras
+                .stream()
+                .filter(h -> h.nombrePunto().equalsIgnoreCase(name))
+                .findFirst();
+    }
 }

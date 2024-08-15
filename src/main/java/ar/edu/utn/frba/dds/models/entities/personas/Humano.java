@@ -1,12 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
@@ -41,6 +38,7 @@ public class Humano extends ObserverSuscripcion {
     private UUID idUsuario;
     private TarjetaHumano tarjeta = null;
     private Usuario user;
+    private ArrayList<ContribucionHumana> contribucionesPendientes;
 
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
@@ -112,5 +110,9 @@ public class Humano extends ObserverSuscripcion {
 
     public String getUsername(){
         return this.user.getUser();
+    }
+
+    public void agregarContribucionPendiente(ContribucionHumana donacion) {
+        this.contribucionesPendientes.add(donacion);
     }
 }

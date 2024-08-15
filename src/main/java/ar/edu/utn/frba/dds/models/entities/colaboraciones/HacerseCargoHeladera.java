@@ -5,10 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 public class HacerseCargoHeladera implements ContribucionJuridica {
     private Heladera heladera;
 
-    @Override
-    public void contribuir() {
-        System.out.println("Hacerse cargo de heladera");
-    }
+
 
     @Override
     public double calcularPuntaje() {

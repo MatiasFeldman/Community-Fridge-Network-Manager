@@ -68,7 +68,7 @@ public class RegisterCargaMasiva {
     }
 
     public void agregarContribucion(Humano humano, String formaColaboracion, Integer cantidad){
-        ContribucionHumana contribucion = ContribucionHumanaFactory.create(formaColaboracion, cantidad);
+        ContribucionHumana contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad);
         humano.agregarContribucion(contribucion);
     }
 

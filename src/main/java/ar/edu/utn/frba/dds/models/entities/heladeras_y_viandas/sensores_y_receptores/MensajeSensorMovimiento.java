@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
+package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

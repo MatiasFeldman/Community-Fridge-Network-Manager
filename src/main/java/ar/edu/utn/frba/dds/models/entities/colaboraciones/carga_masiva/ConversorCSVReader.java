@@ -1,11 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
-import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
-import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.Mail;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.factories.mailSender.MailSenderFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import com.opencsv.CSVReader;
@@ -52,18 +49,17 @@ public class ConversorCSVReader implements ConversorCSV {
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
 
-        if (humanosRepository.buscarPorDocumento(tipoDocumento, documento).isEmpty()) {
+        Optional<Humano> humano = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
+
+        if (humano.isEmpty()) {
             RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, ofertas);
 
             Usuario userCreado = registrador.registrarHumano(line);
 
             MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword());
         } else {
-            Optional<Humano> humanoRegistrado = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
-            if (humanoRegistrado.isPresent()) {
-                Humano human = humanoRegistrado.get();
-                human.agregarContribucion(ContribucionHumanaFactory.create(formaColaboracion, cantidad));
-            }
+            Humano human = humano.get();
+            human.agregarContribucion(ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad));
 
         }
     }

@@ -1,7 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
+package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;

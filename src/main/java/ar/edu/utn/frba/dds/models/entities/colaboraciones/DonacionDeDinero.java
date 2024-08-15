@@ -21,13 +21,7 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
         this.esPeriodica = false;
     }
 
-    @Override
-    public void contribuir() {
-        if(esPeriodica){
-            frecuenciaDeDonacion.setFechaUltimaDonacion(fechaDeDonacion);
-        }
-        System.out.println("Donacion de dinero realizada: se han donado$" + monto);
-    }
+
 
     @Override
     public double calcularPuntaje() {

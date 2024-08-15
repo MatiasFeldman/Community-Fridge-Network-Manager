@@ -13,11 +13,6 @@ public class OfrecerProductoOServicio implements ContribucionJuridica {
     }
 
     @Override
-    public void contribuir() {
-        ofertasRepository.guardar(oferta);
-    }
-
-    @Override
     public double calcularPuntaje() {
         return 0;
     }

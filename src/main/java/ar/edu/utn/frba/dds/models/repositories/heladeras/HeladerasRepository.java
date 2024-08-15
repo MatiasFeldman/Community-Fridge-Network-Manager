@@ -23,4 +23,8 @@ public class HeladerasRepository {
     public void eliminar(Heladera heladera) {
         heladeras.eliminar(heladera);
     }
+
+    public Optional<Heladera> buscarPorNombre(String name){
+        return heladeras.buscarPorNombre(name);
+    }
 }

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 public class DistribucionViandas implements ContribucionHumana{
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;
@@ -33,14 +33,23 @@ public class DistribucionViandas implements ContribucionHumana{
         this.fechaDistribucion = fechaDistribucion;
     }
 
+    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo){
+        return DistribucionViandas
+                .builder()
+                .heladeraOrigen(origen)
+                .heladeraDestino(destino)
+                .cantidadViandas(cant)
+                .motivo(motivo)
+                .fechaDistribucion(null)
+                .build();
+    }
+
     public DistribucionViandas(Integer cantidadViandas) {
         this.cantidadViandas = cantidadViandas;
     }
 
 
-    @Override
-    public void contribuir() {
-    }
+
 
     @Override
     public double calcularPuntaje() {

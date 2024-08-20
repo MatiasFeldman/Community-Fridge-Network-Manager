@@ -1,3 +1,4 @@
+
 package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.utils.cronjobs.RevisarConexionSensorTemperatura;
 import lombok.AllArgsConstructor;

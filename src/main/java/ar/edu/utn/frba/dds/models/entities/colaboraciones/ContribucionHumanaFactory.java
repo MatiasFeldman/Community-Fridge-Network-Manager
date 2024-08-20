@@ -17,8 +17,8 @@ public class ContribucionHumanaFactory {
         };
     }
 
-    public static DonacionDeVianda crearDonacionDeVianda(UUID idHumano){
-        return DonacionDeVianda.of(idHumano);
+    public static DonacionDeVianda crearDonacionDeVianda(UUID idHumano, Heladera destino){
+        return DonacionDeVianda.of(idHumano, destino);
     }
 
     public static DistribucionViandas crearDistribucionDeViandas(Heladera origen, Heladera destino, Integer cant, String motivo){

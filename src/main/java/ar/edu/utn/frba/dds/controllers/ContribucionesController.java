@@ -31,9 +31,15 @@ public class ContribucionesController {
 
         if (humano.isPresent()) {
             Humano h = humano.get();
-            DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(id);
-            h.agregarContribucionPendiente(donacion);
-            return;
+            String heladera_destino = node.get("heladera_destino").asText();
+            Optional<Heladera> destino = heladeras.buscarPorNombre(heladera_destino);
+
+            if (destino.isPresent()){
+                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(id, destino.get());
+                h.agregarContribucionPendiente(donacion);
+                return;
+            }
+            throw new HeladeraInexistenteException("No se encontró la heladera");
         }
 
         throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");

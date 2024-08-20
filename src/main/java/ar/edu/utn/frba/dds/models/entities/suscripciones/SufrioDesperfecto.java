@@ -17,4 +17,6 @@ public class SufrioDesperfecto implements MotivoNotificacion {
     public boolean validar(Heladera heladera){
         return incidentesRepository.buscarFallaTecnicaEnHeladera(heladera);
     }
+
+    // falta implementar el metodo de getMensaje
 }

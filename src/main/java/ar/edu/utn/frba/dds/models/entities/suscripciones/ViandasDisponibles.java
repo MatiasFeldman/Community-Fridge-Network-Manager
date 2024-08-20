@@ -10,7 +10,10 @@ public class ViandasDisponibles implements MotivoNotificacion {
     @Getter
     public final String mensaje = "La heladera tiene la cantidad de viandas esperadas";
 
+    @Override
     public boolean validar(Heladera heladera) {
         return heladera.getCapacidadActual() == cantidadViandasDisponibles;
     }
+
+    // falta implementar el metodo de getMensaje
 }

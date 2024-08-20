@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReporteMock implements IReporte{
+public class ReporteMock implements Reporte {
     String nombre;
     String contenido;
     @Override

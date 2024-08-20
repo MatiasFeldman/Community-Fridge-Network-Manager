@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.cargaMasiva;
 
 
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.MailSender;
-import ar.edu.utn.frba.dds.models.entities.helpers.mail.Mail;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.Mail;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

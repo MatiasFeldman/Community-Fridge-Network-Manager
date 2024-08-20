@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReporteViandasDonadas implements IReporte{
+public class ReporteViandasDonadas implements Reporte {
     private HumanosRepository humanosRepository;
 
     public ReporteViandasDonadas(HumanosRepository humanosRepository) {

@@ -34,5 +34,13 @@ public class Usuario {
             }
 
     }
+    public boolean tienePermiso(Permiso permiso) {
+        for (Rol rol : roles) {
+            if (rol.tienePermiso(permiso)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

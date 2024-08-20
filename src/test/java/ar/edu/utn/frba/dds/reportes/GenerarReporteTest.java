@@ -29,7 +29,7 @@ public class GenerarReporteTest {
 
 
         // Crear instancias de reportes usando los repositorios mock
-        List<IReporte> reportes = List.of(
+        List<Reporte> reportes = List.of(
                 new ReporteFallas(incidentesRepository),
                 new ReporteViandasDonadas(humanosRepository),
                 new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository));

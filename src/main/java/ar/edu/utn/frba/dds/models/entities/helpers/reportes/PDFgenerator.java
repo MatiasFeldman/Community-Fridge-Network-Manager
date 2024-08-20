@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.reportes;
-import ar.edu.utn.frba.dds.models.entities.reportes.IReporte;
+import ar.edu.utn.frba.dds.models.entities.reportes.Reporte;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class PDFgenerator implements GeneradorPDF {
 
     @Override
-    public void generarPDF(List<IReporte> reportes, String path) {
+    public void generarPDF(List<Reporte> reportes, String path) {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timeStamp = dateTime.format(dateFormat);
@@ -28,7 +28,7 @@ public class PDFgenerator implements GeneradorPDF {
             PdfWriter.getInstance(document, new FileOutputStream(nombrePDF));
             document.open();
             for (int i = 0; i < reportes.size(); i++) {
-                IReporte reporte = reportes.get(i);
+                Reporte reporte = reportes.get(i);
 
                 // Añadir contenido de cada reporte a una nueva página
                 document.add(new Paragraph("Reporte Semanal" + " - " + reporte.nombre()));

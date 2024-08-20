@@ -82,9 +82,8 @@ class ReporteMovimientoViandasTest {
         DistribucionViandas distribucion2 = new DistribucionViandas(heladera2, heladera1, 3, "Motivo2", LocalDate.now());
 
         // Crear donación de viandas
-        DonacionDeVianda donacion1 = new DonacionDeVianda(null, LocalDate.now(), 500f, 1f, heladera1, null);
-        DonacionDeVianda donacion2 = new DonacionDeVianda(null, LocalDate.now(), 500f, 1f, heladera2, null);
-
+        DonacionDeVianda donacion1 = DonacionDeVianda.of(UUID.randomUUID(), heladera1);
+        DonacionDeVianda donacion2 = DonacionDeVianda.of(UUID.randomUUID(), heladera2);
 
         // Crear humano con contribuciones
         Humano humano1 = new Humano(null);

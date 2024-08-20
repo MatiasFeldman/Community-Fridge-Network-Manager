@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.repositories.imp;
+package ar.edu.utn.frba.dds.models.repositories.permisos;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
 

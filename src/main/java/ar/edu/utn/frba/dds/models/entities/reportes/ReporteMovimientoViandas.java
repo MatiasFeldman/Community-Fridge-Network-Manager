@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReporteMovimientoViandas implements IReporte {
+public class ReporteMovimientoViandas implements Reporte {
     private HumanosRepository humanosRepository;
     private PersonasVulnerablesRepository personasVulnerablesRepository;
 
@@ -87,7 +87,7 @@ public class ReporteMovimientoViandas implements IReporte {
             for (ContribucionHumana contribucion : humano.getContribuciones()) {
                 if (contribucion instanceof DonacionDeVianda) {
                     DonacionDeVianda donacion = (DonacionDeVianda) contribucion;
-                    Heladera destino = donacion.getVianda().getHeladeraDondeSeEncuentra();
+                    Heladera destino = donacion.getHeladera();
 
                     // Contar viandas que llegan a la heladera destino
                     Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());

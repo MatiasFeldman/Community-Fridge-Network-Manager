@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -24,6 +25,7 @@ public class TarjetaHumano implements Tarjeta{
     }
     @Override
     public void usarEn(Heladera heladera){
-        heladera.verificarAcceso(this);
+        heladera.verificarAcceso(this.id, LocalDateTime.now());
     }
+     // la fecha del parametro es now??
 }

@@ -22,7 +22,7 @@ public class VerificadorDePermisos {
 
         Permiso permiso = permisoBuscado.get();
 
-        if(!usuario.getRol().tienePermiso(permiso))
+        if(!usuario.tienePermiso(permiso))
             throw new PermisoDenegadoException("El usuario no tiene permisos para realizar la accion " + accion);
     }
 }

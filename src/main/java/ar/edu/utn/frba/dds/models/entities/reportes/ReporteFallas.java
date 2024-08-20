@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ReporteFallas implements  IReporte {
+public class ReporteFallas implements Reporte {
     private IncidentesRepository incidentesRepository;
 
     public ReporteFallas(IncidentesRepository incidentesRepository) {

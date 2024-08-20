@@ -23,7 +23,7 @@ public class GenerarReportesCronJob implements Runnable {
     @Override
     public void run() {
         System.out.println("Generando reportes...");
-        List<IReporte> listaReportes = new ArrayList<>();
+        List<Reporte> listaReportes = new ArrayList<>();
         //listaReportes.add(new ReporteMock("Reporte 1", "Este es el contenido del primer reporte."));
         listaReportes.add(new ReporteFallas(incidentesRepository));
         listaReportes.add(new ReporteViandasDonadas(humanosRepository));

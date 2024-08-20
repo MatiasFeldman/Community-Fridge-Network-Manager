@@ -27,7 +27,6 @@ public class RegistroPersonaVulnerable implements ContribucionHumana {
         this.tarjetasRepartidas = cantidadTarjetas;
     }
 
-    @Override
     public void contribuir() {
         throw new UnsupportedOperationException("No se puede contribuir sin colaborador y persona vulnerable");
     }

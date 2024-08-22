@@ -33,7 +33,7 @@ public class DistribucionViandas implements ContribucionHumana{
         this.fechaDistribucion = fechaDistribucion;
     }
 
-    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo){
+    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, TarjetaHumano tarjetaSoli){
         return DistribucionViandas
                 .builder()
                 .heladeraOrigen(origen)
@@ -41,6 +41,7 @@ public class DistribucionViandas implements ContribucionHumana{
                 .cantidadViandas(cant)
                 .motivo(motivo)
                 .fechaDistribucion(null)
+                .solicitante(tarjetaSoli)
                 .build();
     }
 

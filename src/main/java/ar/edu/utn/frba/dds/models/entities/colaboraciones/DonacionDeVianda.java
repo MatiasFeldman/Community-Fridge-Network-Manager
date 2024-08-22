@@ -19,23 +19,20 @@ public class DonacionDeVianda implements ContribucionHumana{
     @Getter
     private Heladera heladera;
 
-    private static TarjetasRepository tarjetasRepository = new TarjetasRepository();
-
     public DonacionDeVianda(TarjetaHumano solicitante, Heladera heladera) {
         this.solicitante = solicitante;
         this.finalizada = false;
         this.heladera = heladera;
     }
 
-    public static DonacionDeVianda of(UUID idSolicitante, Heladera heladera){
-        Optional<TarjetaHumano> tarjeta = tarjetasRepository.buscarTarjetaPorDuenio(idSolicitante);
-        if (tarjeta.isPresent()){
-            return new DonacionDeVianda(tarjeta.get(), heladera);
-        }
-        throw new UsuarioSinTarjetaException("El usuario no tiene tarjeta");
+    public static DonacionDeVianda of(Heladera heladera, TarjetaHumano solicitante){
+        return DonacionDeVianda
+                .builder()
+                .heladera(heladera)
+                .solicitante(solicitante)
+                .finalizada(false)
+                .build();
     }
-
-
 
     @Override
     public double calcularPuntaje() {

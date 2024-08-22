@@ -6,9 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana{
     private LocalDate fechaDeDonacion;
     @Getter
@@ -22,6 +25,25 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
     }
 
 
+    public static DonacionDeDinero of(double monto, ChronoUnit unidad, Integer frecuencia){
+        return DonacionDeDinero
+                .builder()
+                .monto(monto)
+                .frecuenciaDeDonacion(new Frecuencia(unidad,frecuencia, LocalDate.now()))
+                .esPeriodica(true)
+                .fechaDeDonacion(LocalDate.now())
+                .build();
+    }
+
+    public static DonacionDeDinero of(double monto){
+        return DonacionDeDinero
+                .builder()
+                .monto(monto)
+                .esPeriodica(false)
+                .frecuenciaDeDonacion(null)
+                .fechaDeDonacion(LocalDate.now())
+                .build();
+    }
 
     @Override
     public double calcularPuntaje() {

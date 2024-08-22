@@ -20,6 +20,14 @@ public class Direccion {
                 .build();
     }
 
+    public static Direccion of(String calle, int altura){
+        return Direccion
+                .builder()
+                .calle(new Calle(calle))
+                .altura(altura)
+                .build();
+    }
+
     public String direccionCompleta() {
         return calle.getNombre() + " " + altura;
     }

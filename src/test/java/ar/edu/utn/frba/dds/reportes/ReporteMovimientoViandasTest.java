@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,7 +102,7 @@ class ReporteMovimientoViandasTest {
 
         // Crear persona vulnerable y asignar tarjeta
         PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, humano1);
-        personaVulnerable.setTarjetaPersonaVulnerable(tarjeta);
+        personaVulnerable.setTarjeta(tarjeta);
         personasVulnerablesRepository.guardar(personaVulnerable);
 
         // Generar el contenido del reporte

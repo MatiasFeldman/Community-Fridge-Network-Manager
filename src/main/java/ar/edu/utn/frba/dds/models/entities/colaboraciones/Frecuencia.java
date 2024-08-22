@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+@AllArgsConstructor
 public class Frecuencia {
     private ChronoUnit unidad;
     private Integer frecuencia;

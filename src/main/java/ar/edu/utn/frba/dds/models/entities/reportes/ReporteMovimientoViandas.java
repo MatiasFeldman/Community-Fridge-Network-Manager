@@ -72,7 +72,7 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // Contar viandas retiradas por personas vulnerables
         for (PersonaVulnerable persona : personasVulnerables) {
-            TarjetaPersonaVulnerable tarjeta = persona.getTarjetaPersonaVulnerable();
+            TarjetaPersonaVulnerable tarjeta = persona.getTarjeta();
             List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
             for (UsoTarjeta uso : historialUso) {
                 Heladera heladera = uso.getHeladera();

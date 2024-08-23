@@ -12,7 +12,7 @@ public class ViandasDisponibles implements MotivoNotificacion {
 
     @Override
     public boolean validar(Heladera heladera) {
-        return heladera.getCapacidadActual() == cantidadViandasDisponibles;
+        return heladera.getCantActual() == cantidadViandasDisponibles;
     }
 
     // falta implementar el metodo de getMensaje

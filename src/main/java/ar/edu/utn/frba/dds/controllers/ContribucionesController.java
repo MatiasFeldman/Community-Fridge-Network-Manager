@@ -44,9 +44,12 @@ public class ContribucionesController {
             String heladera_destino = node.get("heladera_destino").asText();
             Optional<Heladera> destino = heladeras.buscarPorNombre(heladera_destino);
 
+
             if (destino.isPresent()) {
-                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(destino.get(), tarjeta.get());
-                h.agregarContribucionPendiente(donacion);
+                Heladera heladera = destino.get();
+                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera, tarjeta.get());
+                heladera.agregarViandas(1);
+                h.agregarContribucion(donacion);
                 return;
             }
             throw new HeladeraInexistenteException("No se encontró la heladera");
@@ -76,8 +79,14 @@ public class ContribucionesController {
             Optional<Heladera> destino = heladeras.buscarPorNombre(punto_destino);
 
             if (origen.isPresent() && destino.isPresent()) {
-                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(origen.get(), destino.get(), cantidad, motivo, tarjeta.get());
-                h.agregarContribucionPendiente(distri);
+                Heladera hOrigen = origen.get();
+                Heladera hDestino = destino.get();
+
+                hOrigen.quitarViandas(cantidad);
+                hDestino.agregarViandas(cantidad);
+
+                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, tarjeta.get());
+                h.agregarContribucion(distri);
                 return;
             }
             throw new HeladeraInexistenteException("No se encontró alguna de las heladeras");

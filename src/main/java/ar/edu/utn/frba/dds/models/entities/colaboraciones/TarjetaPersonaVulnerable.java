@@ -31,7 +31,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     }
     @Override
     public void usarEn(Heladera heladera){
-        heladera.modificarViandas(-1);
+        heladera.agregarViandas(-1);
         historialDeUsos.add(new UsoTarjeta(heladera, LocalDate.now()));
     }
 }

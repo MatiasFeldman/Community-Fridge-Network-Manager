@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
+import ar.edu.utn.frba.dds.exceptions.EspacioInsuficienteException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MensajeSolicitudApertura;
@@ -38,7 +39,7 @@ public class Heladera implements IMqttMessageListener {
     private Direccion direccion;
     private PuntoDeHeladera nombre;
     private Integer capacidadMaxima;
-    private Integer capacidadActual;
+    private Integer cantActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
 
 
@@ -71,7 +72,7 @@ public class Heladera implements IMqttMessageListener {
                 .coordenada(dto.getCoordenada())
                 .direccion(dto.getDireccion())
                 .capacidadMaxima(dto.getCapacidadMaxima())
-                .capacidadActual(dto.getCapacidadActual())
+                .cantActual(dto.getCantActual())
                 .fechaDePuestaEnFuncionamiento(dto.getFechaDePuestaEnFuncionamiento())
                 .activa(dto.isActiva())
                 .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
@@ -107,14 +108,25 @@ public class Heladera implements IMqttMessageListener {
         colaboradores.forEach(colaborador -> colaborador.verificarEvento(this));
     }
 
-    public void modificarViandas(Integer cantidad) {
-        this.setCapacidadActual(this.getCapacidadActual() - cantidad);
-        this.notificarColaboradores();
+    public void agregarViandas(Integer cantidad) {
+        Integer resultado = this.getCantActual() + cantidad;
+        if (resultado > this.getCantActual()){
+            throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
+        } else{
+            this.setCantActual(resultado);
+            this.notificarColaboradores();
+        }
     }
 
     public void quitarViandas(Integer cantidad) {
-        this.setCapacidadActual(this.getCapacidadActual() + cantidad);
-        this.notificarColaboradores();
+        Integer resultado = this.getCantActual() - cantidad;
+        if (resultado > this.getCantActual()){
+            throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
+        } else{
+            this.setCantActual(resultado);
+            this.notificarColaboradores();
+        }
+
     }
 
     public Integer mesesActiva() {
@@ -138,22 +150,36 @@ public class Heladera implements IMqttMessageListener {
         Optional<MensajeSolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
         IntentoAperturaResuelto intento;
         ObjectMapper mapper = new ObjectMapper();
+        String jsonMensaje;
+        MqttMessage message;
         if (aviso.isPresent()) {
             MensajeSolicitudApertura aviso_posta = aviso.get();
             solicitudes.remove(aviso_posta);
             if (aviso_posta.getFecha().isBefore(fecha)) {
                 intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
+
+                jsonMensaje = mapper.writeValueAsString(intento);
+                message = new MqttMessage(jsonMensaje.getBytes());
+                message.setQos(1);
+
+                client_intentos.publish(topic_intentos, message);
                 throw new AccesoDenegadoHeladeraException("La solicitud de ingreso ya venció");
             } else {
                 intento = new IntentoAperturaResuelto(id, this.id, fecha, true);
             }
         } else{
             intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
+
+            jsonMensaje = mapper.writeValueAsString(intento);
+            message = new MqttMessage(jsonMensaje.getBytes());
+            message.setQos(1);
+
+            client_intentos.publish(topic_intentos, message);
             throw new AccesoDenegadoHeladeraException("No se encontró la solicitud de ingreso");
         }
-        String jsonMensaje = mapper.writeValueAsString(intento);
+        jsonMensaje = mapper.writeValueAsString(intento);
 
-        MqttMessage message = new MqttMessage(jsonMensaje.getBytes());
+        message = new MqttMessage(jsonMensaje.getBytes());
         message.setQos(1);
 
         client_intentos.publish(topic_intentos, message);

@@ -68,13 +68,13 @@ class ReporteMovimientoViandasTest {
                 .nombre(new PuntoDeHeladera())
                 .build();
         heladera1.getNombre().setNombreDePunto("Heladera1");
-        heladera1.setCapacidadActual(10);  // Inicializar capacidad actual
+        heladera1.setCantActual(10);  // Inicializar capacidad actual
 
         Heladera heladera2 = Heladera.builder()
                 .nombre(new PuntoDeHeladera())
                 .build();
         heladera2.getNombre().setNombreDePunto("Heladera2");
-        heladera2.setCapacidadActual(10);  // Inicializar capacidad actual
+        heladera2.setCantActual(10);  // Inicializar capacidad actual
 
         // Crear distribuciones de viandas
         DistribucionViandas distribucion1 = new DistribucionViandas(heladera1, heladera2, 5, "Motivo1", LocalDate.now());

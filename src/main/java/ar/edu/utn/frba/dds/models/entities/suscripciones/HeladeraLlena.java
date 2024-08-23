@@ -12,6 +12,6 @@ public class HeladeraLlena {
     public final String mensaje = "La heladera tiene la cantidad de viandas esperadas";
 
     public boolean validar(Heladera heladera) {
-        return heladera.getCapacidadActual() == cantidadViandasFaltantes;
+        return heladera.getCantActual() == cantidadViandasFaltantes;
     }
 }

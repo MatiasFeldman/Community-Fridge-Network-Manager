@@ -18,6 +18,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -38,7 +39,6 @@ public class Humano extends ObserverSuscripcion {
     private UUID idUsuario;
     private TarjetaHumano tarjeta = null;
     private Usuario user;
-    private ArrayList<ContribucionHumana> contribucionesPendientes;
 
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
@@ -112,7 +112,5 @@ public class Humano extends ObserverSuscripcion {
         return this.user.getUser();
     }
 
-    public void agregarContribucionPendiente(ContribucionHumana donacion) {
-        this.contribucionesPendientes.add(donacion);
-    }
+
 }

@@ -1,5 +1,5 @@
 
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.models.main;
 import ar.edu.utn.frba.dds.utils.cronjobs.RevisarConexionSensorTemperatura;
 import lombok.AllArgsConstructor;
 

@@ -7,7 +7,8 @@ import lombok.Getter;
 
 @Getter
 public class SufrioDesperfecto implements MotivoNotificacion {
-    public String mensaje = "La heladera sufrió un desperfecto";
+    public String cuerpo = "La heladera sufrió un desperfecto";
+    public  String destinatario;
     private final IncidentesRepository incidentesRepository;
 
     public SufrioDesperfecto(IncidentesRepository incidentesRepository){
@@ -19,4 +20,8 @@ public class SufrioDesperfecto implements MotivoNotificacion {
     }
 
     // falta implementar el metodo de getMensaje
+    @Override
+    public Mensaje getMensaje() {
+        return new Mensaje(destinatario, cuerpo);
+    }
 }

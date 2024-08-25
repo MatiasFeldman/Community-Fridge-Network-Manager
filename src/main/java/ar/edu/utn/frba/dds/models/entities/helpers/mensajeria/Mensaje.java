@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public abstract class Mensaje {
+public class Mensaje {
     public String destinatario;
     public String cuerpo;
 }

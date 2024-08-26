@@ -25,8 +25,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Setter
-@Data
-@EqualsAndHashCode(of = "tarjeta")//no lo temrino de entender
 public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
@@ -110,6 +108,15 @@ public class Humano extends ObserverSuscripcion {
 
     public String getUsername(){
         return this.user.getUser();
+    }
+
+    public String getMedioDeContacto(String medio){
+        return this.mediosDeContacto
+                .stream()
+                .filter(contacto -> contacto.getTipoContacto().equals(medio))
+                .findFirst()
+                .get()
+                .getValorContacto();
     }
 
 

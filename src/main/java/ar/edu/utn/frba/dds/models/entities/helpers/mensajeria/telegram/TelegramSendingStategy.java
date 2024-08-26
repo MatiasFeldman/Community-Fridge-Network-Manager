@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class TelegramSendingStategy implements SendingStrategy {
-    private ITelegramSender telegramSender;
+    private TelegramSender telegramSender;
 
     @Override
     public void enviarMensaje(Mensaje mensaje) throws IOException, MessagingException {

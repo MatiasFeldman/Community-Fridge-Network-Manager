@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_recept
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorTemperatura;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,7 @@ public class Heladera implements IMqttMessageListener {
     private Direccion direccion;
     private PuntoDeHeladera nombre;
     private Integer capacidadMaxima;
-    private Integer cantActual;
+    private Integer capActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
 
 
@@ -64,6 +65,7 @@ public class Heladera implements IMqttMessageListener {
     private static String topic_solicitudes = "heladeras/solicitudes_de_apertura";
     private static String topic_intentos = "heladeras/intentos_de_apertura";
 
+    private List<SuscripcionAHeladera> suscriptores;
 
     @SneakyThrows
     public static Heladera of(HeladeraDTO dto) {
@@ -72,7 +74,7 @@ public class Heladera implements IMqttMessageListener {
                 .coordenada(dto.getCoordenada())
                 .direccion(dto.getDireccion())
                 .capacidadMaxima(dto.getCapacidadMaxima())
-                .cantActual(dto.getCantActual())
+                .capActual(dto.getCantActual())
                 .fechaDePuestaEnFuncionamiento(dto.getFechaDePuestaEnFuncionamiento())
                 .activa(dto.isActiva())
                 .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
@@ -94,36 +96,39 @@ public class Heladera implements IMqttMessageListener {
         return this.nombre.getNombreDePunto();
     }
 
-    private final List<ObserverSuscripcion> colaboradores = new ArrayList<>();
 
-    public void suscribir(ObserverSuscripcion colaborador) {
-        colaboradores.add(colaborador);
+    public void suscribir(SuscripcionAHeladera suscripcion) {
+        suscriptores.add(suscripcion);
     }
 
-    public void desuscribir(ObserverSuscripcion colaborador) {
-        colaboradores.remove(colaborador);
+    public void desuscribir(SuscripcionAHeladera suscripcion) {
+        suscriptores.remove(suscripcion);
     }
 
     public void notificarColaboradores() {
-        colaboradores.forEach(colaborador -> colaborador.verificarEvento(this));
+        suscriptores.forEach(s -> s.notificar(this.capActual, this.cantActual()));
+    }
+
+    public void notificarFallaTecnica(){
+        suscriptores.forEach(s -> s.notificar(-1, -1));
     }
 
     public void agregarViandas(Integer cantidad) {
-        Integer resultado = this.getCantActual() + cantidad;
-        if (resultado > this.getCantActual()){
+        Integer resultado = this.getCapActual() + cantidad;
+        if (resultado > this.getCapacidadMaxima()){
             throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
         } else{
-            this.setCantActual(resultado);
+            this.setCapActual(resultado);
             this.notificarColaboradores();
         }
     }
 
     public void quitarViandas(Integer cantidad) {
-        Integer resultado = this.getCantActual() - cantidad;
-        if (resultado > this.getCantActual()){
-            throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
+        Integer resultado = this.getCapActual() - cantidad;
+        if (resultado > this.getCapActual()){
+            throw new EspacioInsuficienteException("No podes quitar esa cantidad de viandas");
         } else{
-            this.setCantActual(resultado);
+            this.setCapActual(resultado);
             this.notificarColaboradores();
         }
 
@@ -224,6 +229,10 @@ public class Heladera implements IMqttMessageListener {
         if (this.receptorMovimiento.isMovimiento()){
             this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
         }
+    }
+
+    public Integer cantActual(){
+        return this.capacidadMaxima - this.capActual;
     }
 }
 

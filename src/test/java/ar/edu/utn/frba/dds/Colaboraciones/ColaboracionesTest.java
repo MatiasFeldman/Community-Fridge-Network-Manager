@@ -30,7 +30,7 @@ public class ColaboracionesTest {
     public void setUp() {
         heladera = Heladera.builder()
                 .capacidadMaxima(100)
-                .cantActual(50)
+                .capActual(50)
                 .fechaDePuestaEnFuncionamiento(LocalDate.now().minusMonths(2))
                 .activa(true)
                 .solicitudes(new ArrayList<>())  // Inicializar la lista de solicitudes
@@ -38,7 +38,7 @@ public class ColaboracionesTest {
 
         heladeraDestino = Heladera.builder()
                 .capacidadMaxima(100)
-                .cantActual(30)
+                .capActual(30)
                 .fechaDePuestaEnFuncionamiento(LocalDate.now().minusMonths(1))
                 .activa(true)
                 .solicitudes(new ArrayList<>())  // Inicializar la lista de solicitudes
@@ -148,8 +148,8 @@ public class ColaboracionesTest {
         assertTrue(heladeraDestino.getRegistrosAperturas().get(0).isAcceso());
 
         //verificar que se modificaron las cantidades de viandas en la heladera
-        assertEquals(60, heladera.getCantActual());
-        assertEquals(20, heladeraDestino.getCantActual());
+        assertEquals(60, heladera.getCapActual());
+        assertEquals(20, heladeraDestino.getCapActual());
     }
 
     @Test

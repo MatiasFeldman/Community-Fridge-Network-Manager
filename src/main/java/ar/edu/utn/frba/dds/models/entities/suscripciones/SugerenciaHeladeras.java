@@ -13,6 +13,6 @@ public class SugerenciaHeladeras {
     }
 
     public List<Heladera> sugerirHeladeras(Heladera heladeraBase){
-        return heladerasRepository.buscarTodos().stream().filter(heladera -> heladera.getCoordenada().getDireccion().esCercaDe(heladeraBase.getCoordenada().getDireccion()) && heladera.getCantActual() > heladeraBase.getCantActual()).toList();
+        return heladerasRepository.buscarTodos().stream().filter(heladera -> heladera.getCoordenada().getDireccion().esCercaDe(heladeraBase.getCoordenada().getDireccion()) && heladera.getCapActual() > heladeraBase.getCapActual()).toList();
     }
 }

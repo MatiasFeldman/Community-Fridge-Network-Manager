@@ -9,7 +9,7 @@ import okhttp3.Request;
 import java.io.IOException;
 
 @AllArgsConstructor
-public class TelegramSender implements ITelegramSender {
+public class TelegramSender {
 
     public void enviarTelegram(String destinatario, String mensaje) throws IOException {
         String token = "TOKEN";

@@ -14,20 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 public class ObserverSuscripcion {
-    MotivoNotificacion motivo;
     SendingStrategy strategiaDeEnvio;
 
-    public void verificarEvento(Heladera heladera){
-        if (motivo.validar(heladera)){
-            try {
-                this.serNotificado(motivo.getMensaje());
-            } catch (MessagingException | IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
-    private void serNotificado(Mensaje mensaje) throws MessagingException, IOException {
+    public void serNotificado(Mensaje mensaje) throws MessagingException, IOException {
         strategiaDeEnvio.enviarMensaje(mensaje);
     }
 }

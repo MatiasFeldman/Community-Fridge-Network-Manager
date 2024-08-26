@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-@Data
-@EqualsAndHashCode(of = "id")
 public class TarjetaHumano implements Tarjeta{
     @Getter
     private String id;

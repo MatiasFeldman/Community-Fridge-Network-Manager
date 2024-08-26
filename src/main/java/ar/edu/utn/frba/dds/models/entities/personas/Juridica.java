@@ -58,4 +58,13 @@ public class Juridica extends ObserverSuscripcion {
     public UUID getId() {
         return user.getId();
     }
+
+    public String getMedioDeContacto(String medio){
+        return this.mediosDeContacto
+                .stream()
+                .filter(contacto -> contacto.getTipoContacto().equals(medio))
+                .findFirst()
+                .get()
+                .getValorContacto();
+    }
 }

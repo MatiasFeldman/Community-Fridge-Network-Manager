@@ -19,37 +19,24 @@ public class MainReportes {
         this.generarReportesCronJob = generarReportesCronJob;
     }
 
-    public void iniciarCronJob() {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long intervalo = 1; // Cada 7 días (una semana)
-        TimeUnit unit = TimeUnit.MINUTES;
-
-        scheduler.scheduleAtFixedRate(generarReportesCronJob, 0, intervalo, unit);
+    public void ejecutarUnaVez() {
+        generarReportesCronJob.run();
     }
 
+    // El método main acepta los repositorios como parámetros
     public static void main(String[] args) {
+        // Aquí se reciben las instancias de los repositorios desde otro lugar
+        HumanosRepository humanosRepository = new HumanosRepository(null);
+        IncidentesRepository incidentesRepository = new IncidentesRepository();
+        PersonasVulnerablesRepository personasVulnerablesRepository = new PersonasVulnerablesRepository(null);
+
         String filePath = "";
         GeneradorPDF generadorPDF = new PDFgenerator();
-        IncidentesRepository incidentesRepository = new IncidentesRepository(); // Cambiar por el repositorio real
-        HumanosRepository humanosRepository = new HumanosRepository(null);  // Cambiar por el repositorio real
-        PersonasVulnerablesRepository personasVulnerablesRepository = new PersonasVulnerablesRepository(null);  // Cambiar por el repositorio real
 
         GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath, incidentesRepository, humanosRepository, personasVulnerablesRepository);
 
         MainReportes main = new MainReportes(reportesCronJob);
-        main.iniciarCronJob();
+        main.ejecutarUnaVez();
     }
 }
-
-    /* public static void main(String[] args) throws PdfException {
-        String path = "/Users/matifeldman/Documentos/DDS";
-
-        GeneradorPDF pdfGenerator = new PDFgenerator();
-
-
-        GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(pdfGenerator, path);
-
-        MainReportes main = new MainReportes(reportesCronJob);
-        main.iniciarCronJob();
-    } */
 

@@ -234,5 +234,6 @@ public class Heladera implements IMqttMessageListener {
     public Integer cantActual(){
         return this.capacidadMaxima - this.capActual;
     }
+
 }
 

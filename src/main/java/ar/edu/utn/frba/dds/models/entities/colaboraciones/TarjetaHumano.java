@@ -2,16 +2,13 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
-import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 
 public class TarjetaHumano implements Tarjeta{
-    @Getter
     private String id;
     @Getter
     @Setter
@@ -25,5 +22,10 @@ public class TarjetaHumano implements Tarjeta{
     public void usarEn(Heladera heladera){
         heladera.verificarAcceso(this.id, LocalDateTime.now());
     }
-     // la fecha del parametro es now??
+
+    @Override
+    public String getId(){
+        return this.id;
+    }
+
 }

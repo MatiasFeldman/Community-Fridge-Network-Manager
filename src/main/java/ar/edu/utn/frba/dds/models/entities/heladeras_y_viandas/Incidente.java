@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.awt.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Getter
 @Builder
 public class Incidente {
@@ -14,9 +15,9 @@ public class Incidente {
     @Getter
     private Heladera heladera;
     private TipoEvento tipo;
-    private Object colaborador;
+    private UUID idColaborador;
     private String descripcion;
-    private Image foto;
+    private String foto;
     private boolean resuelto;
 
     public static Incidente of(IncidenteDTO dto){
@@ -25,7 +26,7 @@ public class Incidente {
                 .fecha(dto.getFecha())
                 .heladera(dto.getHeladera())
                 .tipo(dto.getTipo())
-                .colaborador(dto.getColaborador())
+                .idColaborador(dto.getColaborador())
                 .descripcion(dto.getDescripcion())
                 .foto(dto.getFoto())
                 .resuelto(false)
@@ -38,7 +39,7 @@ public class Incidente {
                 .fecha(denuncia.getFecha())
                 .heladera(denuncia.getHeladera())
                 .tipo(TipoEvento.FALLA_TECNICA)
-                .colaborador(denuncia.getDenunciante())
+                .idColaborador(denuncia.getDenunciante())
                 .descripcion(denuncia.getDescripcion())
                 .foto(denuncia.getFoto())
                 .resuelto(false)

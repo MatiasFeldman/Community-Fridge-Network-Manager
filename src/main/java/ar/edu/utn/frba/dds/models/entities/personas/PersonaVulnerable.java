@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
 public class PersonaVulnerable {
+    private UUID id;
     private String nombre;
     private LocalDate fechaNacimiento;
     private LocalDate fechaDeRegistro;

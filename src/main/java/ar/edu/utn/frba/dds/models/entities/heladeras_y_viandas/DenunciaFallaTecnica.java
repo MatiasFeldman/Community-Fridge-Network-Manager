@@ -1,33 +1,42 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
-import ar.edu.utn.frba.dds.dtos.incidentes.DenunciaFallaTecnicaDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class DenunciaFallaTecnica {
-    private Object denunciante;
+    private UUID denunciante;
     private String descripcion = null;
-    private Image foto = null;
+    private String foto = null;
     private LocalDateTime fecha;
+    @Setter
     private Heladera heladera;
 
-    public static DenunciaFallaTecnica of(DenunciaFallaTecnicaDTO dto){
+
+
+    public static DenunciaFallaTecnica of(UUID denunciante, String descripcion, String foto, LocalDateTime fecha, Heladera heladera){
         return DenunciaFallaTecnica
                 .builder()
-                .denunciante(dto.getDenunciante())
-                .fecha(dto.getFecha())
-                .descripcion(dto.getDescripcion())
-                .foto(dto.getFoto())
-                .heladera(dto.getHeladera())
+                .denunciante(denunciante)
+                .fecha(fecha)
+                .descripcion(descripcion)
+                .foto(foto)
+                .heladera(heladera)
+                .build();
+    }
+
+    public static DenunciaFallaTecnica of(UUID denunciante, String descripcion, String foto, LocalDateTime fecha){
+        return DenunciaFallaTecnica
+                .builder()
+                .denunciante(denunciante)
+                .fecha(fecha)
+                .descripcion(descripcion)
+                .foto(foto)
                 .build();
     }
 

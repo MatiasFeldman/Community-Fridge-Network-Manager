@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
@@ -15,9 +16,9 @@ public class IncidenteDTO {
     private LocalDateTime fecha;
     private Heladera heladera;
     private TipoEvento tipo;
-    private Object colaborador;
+    private UUID colaborador;
     private String descripcion;
-    private Image foto;
+    private String foto;
     private boolean resuelto;
 
     public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo) {
@@ -30,7 +31,7 @@ public class IncidenteDTO {
         this.resuelto = false;
     }
 
-    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, Object colaborador, String descripcion, Image foto) {
+    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, UUID colaborador, String descripcion, String foto) {
         this.fecha = fecha;
         this.heladera = heladera;
         this.tipo = tipo;

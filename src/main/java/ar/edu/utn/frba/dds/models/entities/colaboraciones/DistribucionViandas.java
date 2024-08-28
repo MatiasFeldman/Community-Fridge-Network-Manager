@@ -1,8 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.AccionSobreViandas;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

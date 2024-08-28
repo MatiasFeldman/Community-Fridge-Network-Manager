@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.factories;
+package ar.edu.utn.frba.dds.models.factories.accionador_de_comandos;
 
 import ar.edu.utn.frba.dds.models.entities.comandos.Alertar;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;

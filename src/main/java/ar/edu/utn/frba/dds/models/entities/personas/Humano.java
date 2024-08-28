@@ -3,22 +3,13 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
-import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecnica;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.factories.AccionadorFactory;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
-import java.awt.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter

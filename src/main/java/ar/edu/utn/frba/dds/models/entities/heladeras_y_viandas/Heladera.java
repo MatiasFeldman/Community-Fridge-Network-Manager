@@ -56,7 +56,7 @@ public class Heladera implements IMqttMessageListener {
     private Accionador accionadorParaMovimiento;
 
     private UUID id;
-    private List<MensajeSolicitudApertura> solicitudes;
+    private List<SolicitudApertura> solicitudes;
 
 
     private static String BROKER_URL;
@@ -90,6 +90,15 @@ public class Heladera implements IMqttMessageListener {
 
         builder.client_solicitudes(client1);
         return builder.build();
+    }
+
+    public static Heladera of(PuntoDeHeladera punto){
+        return Heladera
+                .builder()
+                .nombre(punto)
+                .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
+                .build();
     }
 
     public String nombrePunto(){
@@ -146,21 +155,21 @@ public class Heladera implements IMqttMessageListener {
         this.setActiva(true);
     }
 
-    public void agregarSolicitudApertura(MensajeSolicitudApertura soliApertura) {
+    public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
         solicitudes.add(soliApertura);
     }
 
     @SneakyThrows
     public void verificarAcceso(String id, LocalDateTime fecha) {
-        Optional<MensajeSolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
+        Optional<SolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
         IntentoAperturaResuelto intento;
         ObjectMapper mapper = new ObjectMapper();
         String jsonMensaje;
         MqttMessage message;
         if (aviso.isPresent()) {
-            MensajeSolicitudApertura aviso_posta = aviso.get();
+            SolicitudApertura aviso_posta = aviso.get();
             solicitudes.remove(aviso_posta);
-            if (aviso_posta.getFecha().isBefore(fecha)) {
+            if (aviso_posta.getFechaDeExpiracion().isBefore(fecha)) {
                 intento = new IntentoAperturaResuelto(id, this.id, fecha, false);
 
                 jsonMensaje = mapper.writeValueAsString(intento);
@@ -200,7 +209,7 @@ public class Heladera implements IMqttMessageListener {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String jsonMensaje = mqttMessage.toString();
         ObjectMapper mapper = new ObjectMapper();
-        MensajeSolicitudApertura msg = mapper.readValue(jsonMensaje, MensajeSolicitudApertura.class);
+        SolicitudApertura msg = mapper.readValue(jsonMensaje, SolicitudApertura.class);
 
         if (msg.getIdHeladera().equals(this.id)) {
             this.agregarSolicitudApertura(msg);

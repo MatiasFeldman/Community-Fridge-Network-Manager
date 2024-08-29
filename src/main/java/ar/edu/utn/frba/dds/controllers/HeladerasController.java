@@ -3,10 +3,9 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.HeladeraSinReceptorException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MensajeSolicitudApertura;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
@@ -28,7 +27,7 @@ public class HeladerasController {
     private Accionador accionador;
     private SolicitudesDeAperturaRepository solicitudes;
     private IntentosDeAperturaRepository intentos;
-    private TarjetasRepository tarjetasHumano;
+    private TarjetasRepository tarjetas;
     private ReceptoresDeAperturaRepository receptoresDeApertura;
     private HeladerasRepository heladeras;
 
@@ -75,20 +74,18 @@ public class HeladerasController {
             throw new HeladeraSinReceptorException("No se encontro el receptor de la heladera");
         }
 
-        Optional<TarjetaHumano> posibleTarjeta = tarjetasHumano.buscarTarjetaPorDuenio(idUsuario);
+        Optional<Tarjeta> posibleTarjeta = tarjetas.buscarTarjetaPorDuenio(idUsuario);
 
         if (posibleTarjeta.isEmpty()) {
             throw new UsuarioSinTarjetaException("El usuario no tiene una tarjeta");
         }
 
-        TarjetaHumano tarjeta = posibleTarjeta.get();
+        Tarjeta tarjeta = posibleTarjeta.get();
 
-        SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, tarjeta, heladeraObj, cantViandas);
-
-        MensajeSolicitudApertura msg = new MensajeSolicitudApertura(solicitud.getIdHeladera(), tarjeta.getId(), solicitud.getFechaDeExpiracion());
+        SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, tarjeta.getId(), heladeraObj.getId(), cantViandas);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMessage = objectMapper.writeValueAsString(msg);
+        String jsonMessage = objectMapper.writeValueAsString(solicitud);
 
         receptor.get().publicarSolicitudApertura(jsonMessage);
 

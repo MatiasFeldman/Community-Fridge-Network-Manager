@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
@@ -54,17 +55,20 @@ class ReporteViandasDonadasTest {
         // Crear humano con donaciones
         Humano humano1 = new Humano(null);
         humano1.setIdUsuario(UUID.randomUUID());  // Asegurarse de que tenga un id
-        humanosRepository.guardar(humano1);
-        DonacionDeVianda donacion1 = new DonacionDeVianda();
-        DonacionDeVianda donacion2 = new DonacionDeVianda();
+
+        DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
+        DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
+
         humano1.agregarContribucion(donacion1);
         humano1.agregarContribucion(donacion2);
+        humanosRepository.guardar(humano1);
 
         Humano humano2 = new Humano(null);
         humano2.setIdUsuario(UUID.randomUUID());  // Asegurarse de que tenga un id
-        humanosRepository.guardar(humano2);
-        DonacionDeVianda donacion3 = new DonacionDeVianda();
+
+        DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         humano2.agregarContribucion(donacion3);
+        humanosRepository.guardar(humano2);
 
         // Generar el contenido del reporte
         String contenido = reporteViandasDonadas.contenido();

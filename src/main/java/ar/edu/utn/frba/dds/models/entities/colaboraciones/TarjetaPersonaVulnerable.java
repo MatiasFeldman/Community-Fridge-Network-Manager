@@ -30,9 +30,15 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     private Integer usosDisponibles(){
         return 4 + duenio.getMenoresACargo() - usosDeHoy();
     }
+
     @Override
     public void usarEn(Heladera heladera){
-        heladera.agregarViandas(-1);
+        heladera.quitarViandas(1);
         historialDeUsos.add(new UsoTarjeta(heladera, LocalDate.now()));
+    }
+
+    @Override
+    public UUID getDuenioId() {
+        return this.duenio.getId();
     }
 }

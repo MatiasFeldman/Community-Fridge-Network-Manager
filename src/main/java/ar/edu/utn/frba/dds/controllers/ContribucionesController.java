@@ -15,7 +15,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
-import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.SneakyThrows;
@@ -27,7 +26,6 @@ public class ContribucionesController {
     private HumanosRepository humanos;
     private HeladerasRepository heladeras;
     private TarjetasRepository tarjetas;
-    private TarjetasVulnerablesRepository tarjetasVulnerables;
     private JuridicasRepository juridicas;
 
 
@@ -37,7 +35,7 @@ public class ContribucionesController {
         UUID id = UUID.fromString(node.get("id_usuario").asText());
 
         Optional<Humano> humano = humanos.buscarPorUUID(id);
-        Optional<TarjetaHumano> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
+        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
 
         if (humano.isPresent() && tarjeta.isPresent()) {
             Humano h = humano.get();
@@ -47,7 +45,7 @@ public class ContribucionesController {
 
             if (destino.isPresent()) {
                 Heladera heladera = destino.get();
-                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera, tarjeta.get());
+                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera, (TarjetaHumano) tarjeta.get());
                 heladera.agregarViandas(1);
                 h.agregarContribucion(donacion);
                 return;
@@ -65,7 +63,7 @@ public class ContribucionesController {
         UUID id = UUID.fromString(node.get("id_usuario").asText());
 
         Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
-        Optional<TarjetaHumano> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
+        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
             Humano h = posibleHumano.get();
@@ -85,7 +83,7 @@ public class ContribucionesController {
                 hOrigen.quitarViandas(cantidad);
                 hDestino.agregarViandas(cantidad);
 
-                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, tarjeta.get());
+                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, (TarjetaHumano) tarjeta.get());
                 h.agregarContribucion(distri);
                 return;
             }
@@ -131,15 +129,15 @@ public class ContribucionesController {
 
 
         Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
-        Optional<TarjetaPersonaVulnerable> tarjeta = tarjetasVulnerables.buscarPorId(idTarjetaRepartida);
+        Optional<Tarjeta> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
             Humano h = posibleHumano.get();
-            TarjetaPersonaVulnerable tarjetaPersona = tarjeta.get();
+            Tarjeta tarjetaPersona = tarjeta.get();
 
             PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
 
-            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable(tarjetaPersona, persona, h);
+            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable((TarjetaPersonaVulnerable) tarjetaPersona, persona, h);
             h.agregarContribucion(registro);
         } else if (posibleHumano.isEmpty()) {
             throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");

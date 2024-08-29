@@ -1,8 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,18 +15,18 @@ public class SolicitudApertura {
 
     private LocalDateTime fechaHoraSolicitud;
     private static Integer horasParaEjecutarAccion = 3;
-    private Tarjeta solicitante;
-    private Heladera heladera;
+    private String idTarjeta;
+    private UUID idHeladera;
     private Integer cantidadDeViandas;
     private LocalDateTime fechaDeExpiracion;
 
 
-    public static SolicitudApertura create(LocalDateTime fechaSoli, Tarjeta tarjetaSolicitante, Heladera heladera, Integer cantViandas){
+    public static SolicitudApertura create(LocalDateTime fechaSoli, String idTarjetaSolicitante, UUID idHeladera, Integer cantViandas){
         return SolicitudApertura
                 .builder()
                 .fechaHoraSolicitud(fechaSoli)
-                .solicitante(tarjetaSolicitante)
-                .heladera(heladera)
+                .idTarjeta(idTarjetaSolicitante)
+                .idHeladera(idHeladera)
                 .cantidadDeViandas(cantViandas)
                 .fechaDeExpiracion(fechaSoli.plusHours(horasParaEjecutarAccion))
                 .build();
@@ -38,11 +35,7 @@ public class SolicitudApertura {
 
 
     public UUID getIdHeladera(){
-        return heladera.getId();
-    }
-
-    public String getIdSolicitante(){
-        return solicitante.getId();
+        return this.getIdHeladera();
     }
 
     public boolean isDentroDeTiempo() {

@@ -52,15 +52,13 @@ class ReporteFallasTest {
     @Test
     void testContenido() {
         // Crear heladeras
-        Heladera heladera1 = Heladera.builder()
-                .nombre(new PuntoDeHeladera())
-                .build();
-        heladera1.getNombre().setNombreDePunto("Heladera1");
+        Heladera heladera1 = Heladera.of(new PuntoDeHeladera("Heladera1"));
+        heladera1.setCapActual(10);  // Inicializar capacidad actual
+        heladera1.setCapacidadMaxima(10);
 
-        Heladera heladera2 = Heladera.builder()
-                .nombre(new PuntoDeHeladera())
-                .build();
-        heladera2.getNombre().setNombreDePunto("Heladera2");
+        Heladera heladera2 = Heladera.of(new PuntoDeHeladera("Heladera2"));
+        heladera2.setCapActual(10);  // Inicializar capacidad actual
+        heladera2.setCapacidadMaxima(10);
 
         // Crear incidentes usando el builder
         Incidente incidente1 = Incidente.builder()

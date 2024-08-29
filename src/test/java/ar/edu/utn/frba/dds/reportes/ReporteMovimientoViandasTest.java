@@ -26,6 +26,7 @@ class ReporteMovimientoViandasTest {
     private HumanosRepository humanosRepository;
     private PersonasVulnerablesRepository personasVulnerablesRepository;
     private ReporteMovimientoViandas reporteMovimientoViandas;
+
     private List<Humano> humanos;
     private List<PersonaVulnerable> personasVulnerables;
 
@@ -64,35 +65,38 @@ class ReporteMovimientoViandasTest {
     @Test
     void testContenido() {
         // Crear heladeras
-        Heladera heladera1 = Heladera.builder()
-                .nombre(new PuntoDeHeladera())
-                .build();
-        heladera1.getNombre().setNombreDePunto("Heladera1");
+        Heladera heladera1 = Heladera.of(new PuntoDeHeladera("Heladera1"));
         heladera1.setCapActual(10);  // Inicializar capacidad actual
+        heladera1.setCapacidadMaxima(10);
 
-        Heladera heladera2 = Heladera.builder()
-                .nombre(new PuntoDeHeladera())
-                .build();
-        heladera2.getNombre().setNombreDePunto("Heladera2");
+        Heladera heladera2 = Heladera.of(new PuntoDeHeladera("Heladera2"));
         heladera2.setCapActual(10);  // Inicializar capacidad actual
+        heladera2.setCapacidadMaxima(10);
 
         // Crear distribuciones de viandas
-        DistribucionViandas distribucion1 = new DistribucionViandas(heladera1, heladera2, 5, "Motivo1", LocalDate.now());
-        DistribucionViandas distribucion2 = new DistribucionViandas(heladera2, heladera1, 3, "Motivo2", LocalDate.now());
+
 
         // Crear humano con contribuciones
         Humano humano1 = new Humano(null);
         humano1.setIdUsuario(UUID.randomUUID());
+
+        TarjetaHumano tarjetaHumano = new TarjetaHumano();
+        humano1.setTarjeta(tarjetaHumano);
+
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", tarjetaHumano);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2", tarjetaHumano);
+
         humano1.agregarContribucion(distribucion1);
         humano1.agregarContribucion(distribucion2);
+
         humanosRepository.guardar(humano1);
 
         // Crear tarjeta
-        TarjetaPersonaVulnerable tarjeta = new TarjetaPersonaVulnerable();
+        TarjetaPersonaVulnerable tarjetaVulnerable = new TarjetaPersonaVulnerable();
 
         // Usar la tarjeta para añadir usos
-        tarjeta.usarEn(heladera1); // Añadir un uso en heladera1
-        tarjeta.usarEn(heladera2); // Añadir un uso en heladera2
+        tarjetaVulnerable.usarEn(heladera1); // Añadir un uso en heladera1
+        tarjetaVulnerable.usarEn(heladera2); // Añadir un uso en heladera2
 
         // Crear donación de viandas
         DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1, humano1.getTarjeta());
@@ -103,7 +107,7 @@ class ReporteMovimientoViandasTest {
 
         // Crear persona vulnerable y asignar tarjeta
         PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, humano1);
-        personaVulnerable.setTarjeta(tarjeta);
+        personaVulnerable.setTarjeta(tarjetaVulnerable);
         personasVulnerablesRepository.guardar(personaVulnerable);
 
         // Generar el contenido del reporte

@@ -14,24 +14,17 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
-public class DistribucionViandas implements ContribucionHumana{
+public class DistribucionViandas implements ContribucionHumana {
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;
     private Integer cantidadViandas;
     private String motivo;
     private LocalDate fechaDistribucion;
     private TarjetaHumano solicitante;
+    private Boolean distribuidas;
 
 
-    public DistribucionViandas(Heladera heladeraOrigen, Heladera heladeraDestino, Integer cantidadViandas, String motivo, LocalDate fechaDistribucion) {
-        this.heladeraOrigen = heladeraOrigen;
-        this.heladeraDestino = heladeraDestino;
-        this.cantidadViandas = cantidadViandas;
-        this.motivo = motivo;
-        this.fechaDistribucion = fechaDistribucion;
-    }
-
-    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, TarjetaHumano tarjetaSoli){
+    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, TarjetaHumano tarjetaSoli) {
         return DistribucionViandas
                 .builder()
                 .heladeraOrigen(origen)
@@ -40,23 +33,29 @@ public class DistribucionViandas implements ContribucionHumana{
                 .motivo(motivo)
                 .fechaDistribucion(null)
                 .solicitante(tarjetaSoli)
+                .distribuidas(false)
                 .build();
     }
+
+    public static DistribucionViandas ofCargaMasiva(Integer cantViandas){
+        return DistribucionViandas
+                .builder()
+                .cantidadViandas(cantViandas)
+                .distribuidas(true)
+                .build();
+    }
+
 
     public DistribucionViandas(Integer cantidadViandas) {
         this.cantidadViandas = cantidadViandas;
     }
 
 
-
-
     @Override
     public double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
-        return constantes.getCteViandasDistribuidas() * cantidadViandas;
+        return distribuidas ? constantes.getCteViandasDistribuidas() * cantidadViandas : 0;
     }
-
-
 
 
 }

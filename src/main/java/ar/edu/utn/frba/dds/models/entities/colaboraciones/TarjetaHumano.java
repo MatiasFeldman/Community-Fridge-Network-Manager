@@ -18,6 +18,7 @@ public class TarjetaHumano implements Tarjeta{
     public TarjetaHumano() {
         this.id = UUID.randomUUID().toString();
     }
+
     @Override
     public void usarEn(Heladera heladera){
         heladera.verificarAcceso(this.id, LocalDateTime.now());
@@ -26,6 +27,11 @@ public class TarjetaHumano implements Tarjeta{
     @Override
     public String getId(){
         return this.id;
+    }
+
+    @Override
+    public UUID getDuenioId() {
+        return this.duenio.getIdUsuario();
     }
 
 }

@@ -7,10 +7,12 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDonacionDeDinero;
+import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.repositories.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
@@ -27,6 +29,7 @@ public class ContribucionesController {
     private HeladerasRepository heladeras;
     private TarjetasRepository tarjetas;
     private JuridicasRepository juridicas;
+    private OfertasRepository ofertas;
 
 
     @SneakyThrows
@@ -166,5 +169,21 @@ public class ContribucionesController {
             throw new HeladeraInexistenteException("La heladera ingresada no existe.");
         }
 
+    }
+
+    public void registrarOferta(String json){
+        JsonNode node = ConversorJSON.convertir(json);
+        UUID id = UUID.fromString(node.get("id_usuario").asText());
+
+        Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
+
+        if (posibleJuridica.isEmpty()) {
+            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
+        }
+        Juridica juridica = posibleJuridica.get();
+        Oferta oferta = JSONtoOferta.convertir(node);
+        OfrecerProductoOServicio contribucion = ContribucionJuridicaFactory.ofertar(oferta);
+        juridica.agregarContribucion(contribucion);
+        ofertas.guardar(oferta);
     }
 }

@@ -77,7 +77,7 @@ class ReporteMovimientoViandasTest {
 
 
         // Crear humano con contribuciones
-        Humano humano1 = new Humano(null);
+        Humano humano1 = new Humano();
         humano1.setIdUsuario(1L);
 
         TarjetaHumano tarjetaHumano = new TarjetaHumano();

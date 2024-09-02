@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import com.opencsv.CSVReader;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
 import javax.mail.MessagingException;
@@ -13,15 +15,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class ConversorCSVReader implements ConversorCSV {
     private HumanosRepository humanosRepository;
     private OfertasRepository ofertas;
+    private MailSender mailSender;
 
-    public ConversorCSVReader(HumanosRepository humanosRepository, OfertasRepository ofertas) {
-        this.humanosRepository = humanosRepository;
-        this.ofertas = ofertas;
-
-    }
 
     @Override
     @SneakyThrows
@@ -29,7 +28,12 @@ public class ConversorCSVReader implements ConversorCSV {
         CSVReader reader = new CSVReader(new FileReader(path));
         ValidadorCargaMasiva validador = new ValidadorCargaMasiva();
         String[] line;
+
+        reader.readNext();
+
+
         while ((line = reader.readNext()) != null) {
+
 
             if (!validador.validarLinea(line)) {
                 continue;
@@ -49,6 +53,7 @@ public class ConversorCSVReader implements ConversorCSV {
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
 
+
         Optional<Humano> humano = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
 
         if (humano.isEmpty()) {
@@ -56,7 +61,7 @@ public class ConversorCSVReader implements ConversorCSV {
 
             Usuario userCreado = registrador.registrarHumano(line);
 
-            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword());
+            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword(), mailSender);
         } else {
             Humano human = humano.get();
             human.agregarContribucion(ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad));

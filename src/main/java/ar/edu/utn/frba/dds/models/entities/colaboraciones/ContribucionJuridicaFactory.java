@@ -7,4 +7,9 @@ public class ContribucionJuridicaFactory {
     public static HacerseCargoHeladera hacerseCargoHeladera(Heladera heladera){
         return HacerseCargoHeladera.of(heladera);
     }
+
+    public static OfrecerProductoOServicio ofertar(Oferta oferta) {
+        return OfrecerProductoOServicio.of(oferta);
+    }
+
 }

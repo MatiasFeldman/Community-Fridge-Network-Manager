@@ -16,6 +16,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Builder
 @Setter
+@NoArgsConstructor
 public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;
@@ -23,8 +24,6 @@ public class Humano extends ObserverSuscripcion {
     private double puntosCanjeados;
     private double puntosGanados;
     private ArrayList<ContribucionHumana> contribuciones;
-    private OfertasRepository ofertasDisponibles;
-    private IncidentesRepository incidentesRepository;
     private Long idUsuario;
     private TarjetaHumano tarjeta = null;
     private Usuario user;
@@ -32,14 +31,6 @@ public class Humano extends ObserverSuscripcion {
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
         this.tarjeta.setDuenio(this);
-    }
-
-    public Humano(OfertasRepository ofertas) {
-        this.ofertasDisponibles = ofertas;
-        this.atributosObligatorios = new ArrayList<>();
-        this.mediosDeContacto = new ArrayList<>();
-        this.atributosOpcionales = new ArrayList<>();
-        this.contribuciones = new ArrayList<>();
     }
 
     public static Humano create(HumanoInputDTO dto) {
@@ -51,7 +42,6 @@ public class Humano extends ObserverSuscripcion {
                 .puntosCanjeados(0)
                 .puntosGanados(0)
                 .contribuciones(dto.getContribuciones())
-                .ofertasDisponibles(dto.getOfertasDisponibles())
                 .idUsuario(dto.getUser().getId())
                 .user(dto.getUser())
                 .build();
@@ -78,7 +68,6 @@ public class Humano extends ObserverSuscripcion {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
-        ofertasDisponibles.canjearOferta(oferta);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }

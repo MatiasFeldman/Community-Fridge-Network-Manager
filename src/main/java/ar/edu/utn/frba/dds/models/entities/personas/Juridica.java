@@ -23,13 +23,11 @@ public class Juridica extends ObserverSuscripcion {
     private Direccion direccion;
     private double puntosCanjeados;
     private ArrayList<ContribucionJuridica> contribuciones;
-    private OfertasRepository ofertasDisponibles;
     private RecomendarPuntos recomendador;
     private double puntosGanados;
     private Usuario user;
 
-    public Juridica(OfertasRepository ofertas, RecomendarPuntos recomendador) {
-        this.ofertasDisponibles = ofertas;
+    public Juridica(RecomendarPuntos recomendador) {
         this.recomendador = recomendador;
     }
 
@@ -45,7 +43,6 @@ public class Juridica extends ObserverSuscripcion {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
-        ofertasDisponibles.canjearOferta(oferta);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }

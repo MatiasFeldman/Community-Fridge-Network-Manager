@@ -19,7 +19,7 @@ public class HacerseCargoHeladera implements ContribucionJuridica {
 
     @Override
     public double calcularPuntaje() {
-        if (heladera.isActiva()) {
+        if (heladera.getActiva()) {
             ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
             return constantes.getCteHeladeras() * heladera.mesesActiva();
         } else {

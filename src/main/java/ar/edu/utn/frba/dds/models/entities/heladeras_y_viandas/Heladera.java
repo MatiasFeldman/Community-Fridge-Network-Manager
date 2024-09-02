@@ -46,11 +46,13 @@ public class Heladera implements IMqttMessageListener {
 
     private ReceptorTemperatura receptorTemperatura;
     private ReceptorMovimiento receptorMovimiento;
-    private boolean activa;
-    private double ultimaTemperaturaRegistrada;
-    private double tempMinima;
-    private double tempMaxima;
-    private boolean hayMovimiento;
+    private MqttReceptorApertura receptorApertura;
+
+    private Boolean activa;
+    private Double ultimaTemperaturaRegistrada;
+    private Double tempMinima;
+    private Double tempMaxima;
+    private Boolean hayMovimiento;
 
     private Accionador accionadorParaTemperatura;
     private Accionador accionadorParaMovimiento;

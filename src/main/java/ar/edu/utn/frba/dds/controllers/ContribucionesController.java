@@ -173,7 +173,7 @@ public class ContribucionesController {
 
     public void registrarOferta(String json){
         JsonNode node = ConversorJSON.convertir(json);
-        Long id = node.get("id_usuario").asLong();
+        UUID id = UUID.fromString(node.get("id_usuario").asText());
 
         Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
 

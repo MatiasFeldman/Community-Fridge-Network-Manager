@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class RegisterCargaMasiva {
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
+        this.guardarEnRepositorios(creado);
 
         return creado.getUser();
 
@@ -57,7 +59,7 @@ public class RegisterCargaMasiva {
     public Usuario crearUsuarioHumano(String nombre, String apellido, UUID id) throws IOException {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
-        String password = RandomStringUtils.randomAlphanumeric(16);
+        String password = GeneradorDeContrasenias.generateRandomString(16);
         return new Usuario(username, password, id, new ArrayList<>(List.of(new Rol("HUMANO"))));
     }
 
@@ -72,7 +74,7 @@ public class RegisterCargaMasiva {
         humano.agregarContribucion(contribucion);
     }
 
-    public void guardarEnRepositorios(Humano humano, Usuario userCreado){
+    public void guardarEnRepositorios(Humano humano){
 
         this.humanRepository.guardar(humano);
 

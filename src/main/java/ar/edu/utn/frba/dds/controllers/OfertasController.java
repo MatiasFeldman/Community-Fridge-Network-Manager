@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class OfertasController {
     private OfertasRepository ofertas;
@@ -18,7 +19,7 @@ public class OfertasController {
 
     public void canjearOferta(String json){
         JsonNode node = ConversorJSON.convertir(json);
-        Long id = node.get("id_usuario").asLong();
+        UUID id = UUID.fromString(node.get("id_usuario").asText());
         Long idOferta = node.get("id_oferta").asLong();
         String rol = node.get("rol").asText();
 

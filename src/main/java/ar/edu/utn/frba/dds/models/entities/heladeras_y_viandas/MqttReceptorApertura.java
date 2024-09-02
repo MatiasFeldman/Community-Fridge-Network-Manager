@@ -23,18 +23,23 @@ public class MqttReceptorApertura implements IMqttMessageListener {
     private MqttClient client_intentos;
     private Boolean conectado = false;
 
-    private static HeladerasController controller; // que todos los receptores tengan el mismo controller
+
+    private static HeladerasController controller;
 
     @Getter
-    private UUID idHeladera;
+    private Heladera heladera;
 
     @SneakyThrows
-    public MqttReceptorApertura(UUID idHeladera){
+    public MqttReceptorApertura(Heladera heladera){
         if (BROKER_URL != null){
             this.conectarseATopics();
-            this.idHeladera = idHeladera;
+            this.heladera = heladera;
         }
 
+    }
+
+    public void setController(HeladerasController c){
+        controller = c;
     }
 
     public String getUrl(){
@@ -51,9 +56,6 @@ public class MqttReceptorApertura implements IMqttMessageListener {
         }
     }
 
-    public void setController(HeladerasController controller){
-        controller = controller;
-    }
 
     @SneakyThrows
     public void conectarseATopics(){
@@ -92,5 +94,9 @@ public class MqttReceptorApertura implements IMqttMessageListener {
         IntentoAperturaResuelto intento = mapper.readValue(jsonMensaje, IntentoAperturaResuelto.class);
 
         controller.registrarIntentoDeApertura(intento);
+    }
+
+    public UUID getIdHeladera(){
+        return this.heladera.getId();
     }
 }

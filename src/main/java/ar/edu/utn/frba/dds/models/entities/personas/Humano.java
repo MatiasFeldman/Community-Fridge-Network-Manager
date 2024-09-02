@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Setter
+@NoArgsConstructor
 public class Humano extends ObserverSuscripcion {
     private ArrayList<AtributoHumano> atributosObligatorios;
     private ArrayList<Contacto> mediosDeContacto;

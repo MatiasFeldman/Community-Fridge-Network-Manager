@@ -28,6 +28,10 @@ public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositorie
         return ofertas.stream().filter(oferta -> oferta.getRubro().getNombre().equals(rubro)).findFirst();
     }
 
+    public Optional<Oferta> buscarPorId(Long id){
+        return ofertas.stream().filter(oferta -> oferta.getId().equals(id)).findFirst();
+    }
+
     @Override
     public List<Oferta> buscarTodos() {
         return ofertas;

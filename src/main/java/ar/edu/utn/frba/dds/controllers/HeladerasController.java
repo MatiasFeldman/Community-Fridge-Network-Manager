@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.HeladeraSinReceptorException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
@@ -82,7 +83,7 @@ public class HeladerasController {
 
         Tarjeta tarjeta = posibleTarjeta.get();
 
-        SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, tarjeta.getId(), heladeraObj.getId(), cantViandas);
+        SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, (TarjetaHumano) tarjeta, heladeraObj, cantViandas);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMessage = objectMapper.writeValueAsString(solicitud);

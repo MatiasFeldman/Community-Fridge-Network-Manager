@@ -16,7 +16,7 @@ public class IntentoApertura {
     private TarjetaHumano solicitante;
 
 
-    public String getIdTarjeta(){
+    public Long getIdTarjeta(){
         return solicitante.getId();
     }
 

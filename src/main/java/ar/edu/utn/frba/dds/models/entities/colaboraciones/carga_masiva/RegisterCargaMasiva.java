@@ -35,7 +35,6 @@ public class RegisterCargaMasiva {
         String mail = line[4];
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
-        UUID id = UUID.randomUUID();
 
         ArrayList<AtributoHumano> atributosObligatorios = new ArrayList<>(Arrays.asList(new AtributoHumano("Nombre", nombre), new AtributoHumano("Apellido", apellido)));
 
@@ -43,9 +42,9 @@ public class RegisterCargaMasiva {
 
         ArrayList<AtributoHumano> atributosOpcionales = new ArrayList<>(List.of(new AtributoHumano(tipoDocumento, documento)));
 
-        Usuario userCreado = this.crearUsuarioHumano(nombre, apellido, id);
+        Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
-        Humano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, id, userCreado);
+        Humano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, userCreado);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
@@ -54,15 +53,15 @@ public class RegisterCargaMasiva {
 
     }
 
-    public Usuario crearUsuarioHumano(String nombre, String apellido, UUID id) throws IOException {
+    public Usuario crearUsuarioHumano(String nombre, String apellido) throws IOException {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = RandomStringUtils.randomAlphanumeric(16);
-        return new Usuario(username, password, id, new ArrayList<>(List.of(new Rol("HUMANO"))));
+        return new Usuario(username, password, new ArrayList<>(List.of(new Rol("HUMANO"))));
     }
 
-    public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, UUID id, Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , id, userCreado);
+    public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , userCreado);
 
         return HumanoFactory.crear(dto);
     }

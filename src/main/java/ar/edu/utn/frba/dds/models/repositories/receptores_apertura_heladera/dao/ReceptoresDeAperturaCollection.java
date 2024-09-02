@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ReceptoresDeAperturaCollection implements ReceptoresDeAperturaDAO{
     private List<MqttReceptorApertura> receptores;
     @Override
-    public Optional<MqttReceptorApertura> buscarReceptorDeHeladera(UUID idHeladera) {
+    public Optional<MqttReceptorApertura> buscarReceptorDeHeladera(Long idHeladera) {
         return receptores
                 .stream()
                 .filter(r -> r.getIdHeladera().equals(idHeladera))

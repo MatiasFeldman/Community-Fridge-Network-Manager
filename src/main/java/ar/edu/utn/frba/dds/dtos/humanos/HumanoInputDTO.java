@@ -20,7 +20,6 @@ public class HumanoInputDTO {
     private ArrayList<AtributoHumano> atributosOpcionales;
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
-    private UUID idUsuario;
     private Usuario user;
 
 }

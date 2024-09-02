@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.UUID;
 @Getter
 public class TarjetaPersonaVulnerable implements Tarjeta{
-    private String id;
+    @Setter
+    private Long id;
     @Setter
     private PersonaVulnerable duenio;
     private List<UsoTarjeta> historialDeUsos;
 
     public TarjetaPersonaVulnerable() {
-        this.id = UUID.randomUUID().toString();
+        this.id = null;
         this.duenio = null;
         this.historialDeUsos = new ArrayList<>();
     }
@@ -38,7 +39,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     }
 
     @Override
-    public UUID getDuenioId() {
+    public Long getDuenioId() {
         return this.duenio.getId();
     }
 }

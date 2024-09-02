@@ -78,9 +78,10 @@ class ReporteMovimientoViandasTest {
 
         // Crear humano con contribuciones
         Humano humano1 = new Humano(null);
-        humano1.setIdUsuario(UUID.randomUUID());
+        humano1.setIdUsuario(1L);
 
         TarjetaHumano tarjetaHumano = new TarjetaHumano();
+        tarjetaHumano.setId(1L);
         humano1.setTarjeta(tarjetaHumano);
 
         DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", tarjetaHumano);
@@ -93,6 +94,7 @@ class ReporteMovimientoViandasTest {
 
         // Crear tarjeta
         TarjetaPersonaVulnerable tarjetaVulnerable = new TarjetaPersonaVulnerable();
+        tarjetaVulnerable.setId(2L);
 
         // Usar la tarjeta para añadir usos
         tarjetaVulnerable.usarEn(heladera1); // Añadir un uso en heladera1

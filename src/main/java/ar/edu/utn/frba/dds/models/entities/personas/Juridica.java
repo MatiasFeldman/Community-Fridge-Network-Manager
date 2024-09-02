@@ -13,7 +13,7 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 public class Juridica extends ObserverSuscripcion {
     private String razonSocial;
@@ -55,7 +55,7 @@ public class Juridica extends ObserverSuscripcion {
         puntosGanados += contribucion.calcularPuntaje();
     }
 
-    public UUID getId() {
+    public Long getId() {
         return user.getId();
     }
 

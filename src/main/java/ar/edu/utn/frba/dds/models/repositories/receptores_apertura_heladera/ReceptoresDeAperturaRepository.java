@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ReceptoresDeAperturaRepository {
     private ReceptoresDeAperturaDAO dao;
 
-    public Optional<MqttReceptorApertura> buscarReceptorDeHeladera(UUID idHeladera){
+    public Optional<MqttReceptorApertura> buscarReceptorDeHeladera(Long idHeladera){
         return dao.buscarReceptorDeHeladera(idHeladera);
     }
 }

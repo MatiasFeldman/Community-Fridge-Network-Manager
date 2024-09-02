@@ -86,6 +86,40 @@
       <artifactId>itextpdf</artifactId>
       <version>5.5.13.2</version>
     </dependency>
+
+    <!---DEPENDENCIAS DE PERSISTENCIA -->
+
+    <dependency>
+      <groupId>org.uqbar-project</groupId>
+      <artifactId>jpa-java8-extras</artifactId>
+      <version>1.0-alpha-1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.17</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uqbar-project</groupId>
+      <artifactId>jpa-java8-extras</artifactId>
+      <version>1.0-alpha-1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.flbulgarelli</groupId>
+      <artifactId>jpa-extras</artifactId>
+      <version>1.0.0-rc1</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

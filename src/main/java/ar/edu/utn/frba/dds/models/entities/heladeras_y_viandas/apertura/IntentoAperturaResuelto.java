@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class IntentoAperturaResuelto {
-    private String idTarjeta;
-    private UUID idHeladera;
+    private Long idTarjeta;
+    private Long idHeladera;
     private LocalDateTime fecha;
     private boolean exitoso;
 }

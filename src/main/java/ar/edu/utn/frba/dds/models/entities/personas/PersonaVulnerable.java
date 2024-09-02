@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class PersonaVulnerable {
-    private UUID id;
+    private Long id;
     private String nombre;
     private LocalDate fechaNacimiento;
     private LocalDate fechaDeRegistro;
@@ -50,7 +50,7 @@ public class PersonaVulnerable {
                 .build();
     }
 
-    public String getIdPersonaVulnerable() {
+    public Long getIdPersonaVulnerable() {
         return tarjeta.getId();
     }
 }

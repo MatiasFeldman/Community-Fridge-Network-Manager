@@ -23,10 +23,10 @@ public class SolicitudesDeAperturaRepository {
     }
 
     public Boolean existeSolicitud(TarjetaHumano tarjeta, Heladera heladera){
-        return solicitudes.stream().anyMatch(solicitud -> solicitud.getSolicitante().equals(tarjeta) && solicitud.getHeladera().equals(heladera));
+        return solicitudes.stream().anyMatch(solicitud -> solicitud.getIdTarjeta().equals(tarjeta.getId()) && solicitud.getIdHeladera().equals(heladera.getId()));
     }
 
     public Optional<SolicitudApertura> buscarSolicitud(TarjetaHumano tarjeta, Heladera heladera){
-        return solicitudes.stream().filter(solicitud -> solicitud.getSolicitante().equals(tarjeta) && solicitud.getHeladera().equals(heladera)).findFirst();
+        return solicitudes.stream().filter(solicitud -> solicitud.getIdTarjeta().equals(tarjeta.getId()) && solicitud.getIdHeladera().equals(heladera.getId())).findFirst();
     }
 }

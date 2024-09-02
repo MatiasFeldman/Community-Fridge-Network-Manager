@@ -5,10 +5,8 @@ import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.EspacioInsuficienteException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MensajeSolicitudApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorMovimiento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorTemperatura;
-import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
@@ -25,7 +23,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +52,7 @@ public class Heladera implements IMqttMessageListener {
     private Accionador accionadorParaTemperatura;
     private Accionador accionadorParaMovimiento;
 
-    private UUID id;
+    private Long id;
     private List<SolicitudApertura> solicitudes;
 
 
@@ -160,7 +157,7 @@ public class Heladera implements IMqttMessageListener {
     }
 
     @SneakyThrows
-    public void verificarAcceso(String id, LocalDateTime fecha) {
+    public void verificarAcceso(Long id, LocalDateTime fecha) {
         Optional<SolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(id)).findFirst();
         IntentoAperturaResuelto intento;
         ObjectMapper mapper = new ObjectMapper();

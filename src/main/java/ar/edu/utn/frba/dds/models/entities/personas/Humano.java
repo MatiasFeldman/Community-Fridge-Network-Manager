@@ -10,7 +10,7 @@ import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.UUID;
+
 
 @Getter
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class Humano extends ObserverSuscripcion {
     private ArrayList<ContribucionHumana> contribuciones;
     private OfertasRepository ofertasDisponibles;
     private IncidentesRepository incidentesRepository;
-    private UUID idUsuario;
+    private Long idUsuario;
     private TarjetaHumano tarjeta = null;
     private Usuario user;
 
@@ -52,7 +52,7 @@ public class Humano extends ObserverSuscripcion {
                 .puntosGanados(0)
                 .contribuciones(dto.getContribuciones())
                 .ofertasDisponibles(dto.getOfertasDisponibles())
-                .idUsuario(dto.getIdUsuario())
+                .idUsuario(dto.getUser().getId())
                 .user(dto.getUser())
                 .build();
     }

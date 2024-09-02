@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ReceptoresDeAperturaDAO {
-    Optional<MqttReceptorApertura> buscarReceptorDeHeladera(UUID idHeladera);
+    Optional<MqttReceptorApertura> buscarReceptorDeHeladera(Long idHeladera);
 }

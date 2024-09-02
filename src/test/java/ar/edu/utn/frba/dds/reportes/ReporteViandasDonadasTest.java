@@ -54,7 +54,7 @@ class ReporteViandasDonadasTest {
     void testContenido() {
         // Crear humano con donaciones
         Humano humano1 = new Humano(null);
-        humano1.setIdUsuario(UUID.randomUUID());  // Asegurarse de que tenga un id
+        humano1.setIdUsuario(1L);  // Asegurarse de que tenga un id
 
         DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
@@ -64,7 +64,7 @@ class ReporteViandasDonadasTest {
         humanosRepository.guardar(humano1);
 
         Humano humano2 = new Humano(null);
-        humano2.setIdUsuario(UUID.randomUUID());  // Asegurarse de que tenga un id
+        humano2.setIdUsuario(2L);  // Asegurarse de que tenga un id
 
         DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         humano2.agregarContribucion(donacion3);

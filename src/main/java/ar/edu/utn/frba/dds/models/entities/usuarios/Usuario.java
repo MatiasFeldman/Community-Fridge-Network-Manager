@@ -2,20 +2,36 @@ package ar.edu.utn.frba.dds.models.entities.usuarios;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 import java.io.IOException;
 
+import javax.persistence.*;
+
+@NoArgsConstructor(force = true)
 @Getter
+@Entity
+@Table(name = "usuario")
 public class Usuario {
+    @Column(name = "usuario",unique = true, nullable = false)
     private final String user;
+    @Column(name = "contrasenia", nullable = false)
     private String password;
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
+    private Long id;
+    @ManyToMany
+    @JoinTable(
+            name = "rol_de_usuario",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol")
+    )
     private List<Rol> roles;
 
-    public Usuario(String user, String password, UUID id ,List<Rol> roles) throws IOException {
+    public Usuario(String user, String password ,List<Rol> roles) throws IOException {
             ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
             validador.agregarCondiciones(new CumpleLongitud(8,64),
                                          new TieneMayuscula(),
@@ -30,10 +46,10 @@ public class Usuario {
                 this.user = user;
                 this.password = password;
                 this.roles = roles;
-                this.id = id;
             }
 
     }
+
     public boolean tienePermiso(Permiso permiso) {
         for (Rol rol : roles) {
             if (rol.tienePermiso(permiso)) {

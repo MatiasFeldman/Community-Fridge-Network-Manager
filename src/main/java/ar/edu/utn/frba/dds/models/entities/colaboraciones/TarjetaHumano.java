@@ -5,18 +5,20 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 
 public class TarjetaHumano implements Tarjeta{
-    private String id;
+    @Setter
+    private Long id;
     @Getter
     @Setter
     private Humano duenio;
 
     // Constructor
     public TarjetaHumano() {
-        this.id = UUID.randomUUID().toString();
+        this.id = null;
+        this.duenio = null;
     }
 
     @Override
@@ -25,12 +27,12 @@ public class TarjetaHumano implements Tarjeta{
     }
 
     @Override
-    public String getId(){
+    public Long getId(){
         return this.id;
     }
 
     @Override
-    public UUID getDuenioId() {
+    public Long getDuenioId() {
         return this.duenio.getIdUsuario();
     }
 

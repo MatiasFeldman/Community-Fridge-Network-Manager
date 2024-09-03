@@ -96,7 +96,7 @@ public class MqttReceptorApertura implements IMqttMessageListener {
         controller.registrarIntentoDeApertura(intento);
     }
 
-    public UUID getIdHeladera(){
+    public Long getIdHeladera(){
         return this.heladera.getId();
     }
 }

@@ -210,7 +210,7 @@ public class Heladera implements IMqttMessageListener {
         ObjectMapper mapper = new ObjectMapper();
         SolicitudApertura msg = mapper.readValue(jsonMensaje, SolicitudApertura.class);
 
-        if (msg.getIdHeladera().equals(this.id)) {
+        if (msg.getHeladera().getId().equals(this.id)) {
             this.agregarSolicitudApertura(msg);
         }
     }

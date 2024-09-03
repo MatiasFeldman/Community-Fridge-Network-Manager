@@ -39,4 +39,8 @@ public class SolicitudApertura {
     public Long getIdTarjeta() {
         return this.solicitante.getId();
     }
+
+    public Long getIdHeladera() {
+        return this.heladera.getId();
+    }
 }

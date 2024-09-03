@@ -59,7 +59,7 @@ public class RegisterCargaMasiva {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = GeneradorDeContrasenias.generateRandomString(16);
-        return new Usuario(username, password, id, new ArrayList<>(List.of(new Rol("HUMANO"))));
+        return new Usuario(username, password, new ArrayList<>(List.of(new Rol("HUMANO"))));
     }
 
     public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){

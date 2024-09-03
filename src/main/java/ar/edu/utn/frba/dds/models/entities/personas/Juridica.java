@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
+import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionJuridica;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
@@ -7,25 +8,54 @@ import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
-
+@NoArgsConstructor
+@Entity
+@Table(name = "juridica")
 public class Juridica extends ObserverSuscripcion {
-    private String razonSocial;
-    private Tipo tipo;
-    private String Rubro;
-    private ArrayList<Contacto> mediosDeContacto;
-    private Direccion direccion;
-    private double puntosCanjeados;
-    private ArrayList<ContribucionJuridica> contribuciones;
-    private RecomendarPuntos recomendador;
-    private double puntosGanados;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_juridica")
+    private Long idJuridica;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
+
+    @Column(name = "razon_social")
+    private String razonSocial;
+
+    @Column(name = "tipo")
+    private Tipo tipo;
+
+    @Column(name = "rubro")
+    private String Rubro;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
+    private ArrayList<Contacto> mediosDeContacto;
+
+    @Convert(converter = DireccionConverter.class)
+    @Column(name = "direccion")
+    private Direccion direccion;
+
+    @Column(name = "puntos_canjeados")
+    private double puntosCanjeados;
+
+    @Column(name = "puntos_ganados")
+    private double puntosGanados;
+
+    @Transient // x ahora
+    private ArrayList<ContribucionJuridica> contribuciones;
+
+    @Transient
+    private RecomendarPuntos recomendador;
 
     public Juridica(RecomendarPuntos recomendador) {
         this.recomendador = recomendador;

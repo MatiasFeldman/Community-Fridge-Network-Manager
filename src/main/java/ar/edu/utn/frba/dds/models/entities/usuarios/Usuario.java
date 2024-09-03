@@ -3,6 +3,7 @@ import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor(force = true)
 @Getter
+@Setter
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -23,7 +25,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "rol_de_usuario",
             joinColumns = @JoinColumn(name = "id_usuario"),

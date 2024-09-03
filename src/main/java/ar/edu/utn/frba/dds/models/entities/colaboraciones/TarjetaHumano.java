@@ -5,14 +5,21 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import javax.persistence.*;
 
-
-
+@Entity
+@Table(name = "tarjeta_humano")
 public class TarjetaHumano implements Tarjeta{
     @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_tarjeta")
     private Long id;
+
     @Getter
     @Setter
+    @OneToOne
+    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
     private Humano duenio;
 
     // Constructor

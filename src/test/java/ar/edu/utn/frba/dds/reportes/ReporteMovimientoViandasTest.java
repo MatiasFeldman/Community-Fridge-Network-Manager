@@ -6,12 +6,14 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +65,7 @@ class ReporteMovimientoViandasTest {
     }
 
     @Test
-    void testContenido() {
+    void testContenido() throws IOException {
         // Crear heladeras
         Heladera heladera1 = Heladera.of(new PuntoDeHeladera("Heladera1"));
         heladera1.setCapActual(10);  // Inicializar capacidad actual
@@ -77,8 +79,9 @@ class ReporteMovimientoViandasTest {
 
 
         // Crear humano con contribuciones
+        Usuario usuario = new Usuario("usuario1", "password", null);
         Humano humano1 = new Humano();
-        humano1.setIdUsuario(1L);
+        humano1.setUser(usuario);
 
         TarjetaHumano tarjetaHumano = new TarjetaHumano();
         tarjetaHumano.setId(1L);

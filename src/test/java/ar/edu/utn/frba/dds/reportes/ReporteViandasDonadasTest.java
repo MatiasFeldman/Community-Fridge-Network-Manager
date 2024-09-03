@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFact
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,10 +53,11 @@ class ReporteViandasDonadasTest {
     }
 
     @Test
-    void testContenido() {
+    void testContenido() throws IOException {
         // Crear humano con donaciones
+        Usuario usuario1 = new Usuario("usuario1", "password", null);
         Humano humano1 = new Humano();
-        humano1.setIdUsuario(1L);  // Asegurarse de que tenga un id
+        humano1.setUser(usuario1);
 
         DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
@@ -63,8 +66,9 @@ class ReporteViandasDonadasTest {
         humano1.agregarContribucion(donacion2);
         humanosRepository.guardar(humano1);
 
+        Usuario usuario2 = new Usuario("usuario2", "password", null);
         Humano humano2 = new Humano();
-        humano2.setIdUsuario(2L);  // Asegurarse de que tenga un id
+        humano2.setUser(usuario2);
 
         DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         humano2.agregarContribucion(donacion3);

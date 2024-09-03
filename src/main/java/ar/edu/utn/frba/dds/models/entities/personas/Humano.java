@@ -4,12 +4,12 @@ import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
 import java.util.ArrayList;
+
+import javax.persistence.*;
 
 
 @Getter
@@ -17,16 +17,39 @@ import java.util.ArrayList;
 @Builder
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "humano")
 public class Humano extends ObserverSuscripcion {
-    private ArrayList<AtributoHumano> atributosObligatorios;
-    private ArrayList<Contacto> mediosDeContacto;
-    private ArrayList<AtributoHumano> atributosOpcionales;
-    private double puntosCanjeados;
-    private double puntosGanados;
-    private ArrayList<ContribucionHumana> contribuciones;
-    private Long idUsuario;
-    private TarjetaHumano tarjeta = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_humano")
+    private Long idHumano;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tarjeta")
+    private TarjetaHumano tarjeta = null; // HAY BIDIRECCIONALIDAD DE DATOS
+
+    @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<AtributoHumano> atributosObligatorios;
+
+    @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<AtributoHumano> atributosOpcionales;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)
+    private ArrayList<Contacto> mediosDeContacto;
+
+    @Column(name = "puntos_canjeados")
+    private double puntosCanjeados;
+
+    @Column(name = "puntos_ganados")
+    private double puntosGanados;
+
+    @Transient // x ahora
+    private ArrayList<ContribucionHumana> contribuciones;
 
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
@@ -42,7 +65,7 @@ public class Humano extends ObserverSuscripcion {
                 .puntosCanjeados(0)
                 .puntosGanados(0)
                 .contribuciones(dto.getContribuciones())
-                .idUsuario(dto.getUser().getId())
+                .user(dto.getUser())
                 .user(dto.getUser())
                 .build();
     }
@@ -99,5 +122,8 @@ public class Humano extends ObserverSuscripcion {
                 .getValorContacto();
     }
 
+    public Long getIdUsuario(){
+        return this.user.getId();
+    }
 
 }

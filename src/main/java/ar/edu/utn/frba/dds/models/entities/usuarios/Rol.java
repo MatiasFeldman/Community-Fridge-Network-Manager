@@ -16,7 +16,7 @@ public class Rol {
     private Long id;
     @Column(name = "nombre", nullable = false)
     private String nombre;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "permiso_de_rol",
             joinColumns = @JoinColumn(name = "id_rol"),

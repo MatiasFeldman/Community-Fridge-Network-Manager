@@ -45,7 +45,7 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // Conteo de viandas distribuidas
         for (Humano humano : humanos) {
-            for (ContribucionHumana contribucion : humano.getContribuciones()) {
+            for (Contribucion contribucion : humano.getContribuciones()) {
                 if (contribucion instanceof DistribucionViandas) {
                     DistribucionViandas distribucion = (DistribucionViandas) contribucion;
                     Heladera origen = distribucion.getHeladeraOrigen();
@@ -84,7 +84,7 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // contar donaciones de viandas
         for (Humano humano : humanos) {
-            for (ContribucionHumana contribucion : humano.getContribuciones()) {
+            for (Contribucion contribucion : humano.getContribuciones()) {
                 if (contribucion instanceof DonacionDeVianda) {
                     DonacionDeVianda donacion = (DonacionDeVianda) contribucion;
                     Heladera destino = donacion.getHeladera();

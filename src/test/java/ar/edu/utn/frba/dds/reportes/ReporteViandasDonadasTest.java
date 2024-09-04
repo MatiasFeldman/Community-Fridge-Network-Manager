@@ -55,8 +55,9 @@ class ReporteViandasDonadasTest {
     @Test
     void testContenido() throws IOException {
         // Crear humano con donaciones
-        Usuario usuario1 = new Usuario("usuario1", "password", null);
-        Humano humano1 = new Humano();
+        Usuario usuario1 = new Usuario("usuario1", "Pedritoclavounclavito12122343@", null);
+        usuario1.setId(1L);
+        Humano humano1 = Humano.crearVacio();
         humano1.setUser(usuario1);
 
         DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
@@ -66,8 +67,9 @@ class ReporteViandasDonadasTest {
         humano1.agregarContribucion(donacion2);
         humanosRepository.guardar(humano1);
 
-        Usuario usuario2 = new Usuario("usuario2", "password", null);
-        Humano humano2 = new Humano();
+        Usuario usuario2 = new Usuario("usuario2", "Pedritoclavounclavito12122343#", null);
+        usuario2.setId(2L);
+        Humano humano2 = Humano.crearVacio();
         humano2.setUser(usuario2);
 
         DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();

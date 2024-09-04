@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana{
+public class DonacionDeDinero extends Contribucion{
     private LocalDate fechaDeDonacion;
     @Getter
     private double monto;
@@ -46,7 +46,7 @@ public class DonacionDeDinero implements ContribucionJuridica,ContribucionHumana
     }
 
     @Override
-    public double calcularPuntaje() {
+    public Double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
         return this.cantidadDonada() * constantes.getCtePesosDonados();
     }

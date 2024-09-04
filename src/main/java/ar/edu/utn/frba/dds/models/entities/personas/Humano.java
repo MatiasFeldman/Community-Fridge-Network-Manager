@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -25,7 +26,7 @@ public class Humano extends ObserverSuscripcion {
     @Column(name = "id_humano")
     private Long idHumano;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
@@ -34,22 +35,26 @@ public class Humano extends ObserverSuscripcion {
     private TarjetaHumano tarjeta = null; // HAY BIDIRECCIONALIDAD DE DATOS
 
     @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<AtributoHumano> atributosObligatorios;
+    @JoinColumn(name = "id_atributo")
+    private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
     @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<AtributoHumano> atributosOpcionales;
+    @JoinColumn(name = "id_atributo")
+    private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)
-    private ArrayList<Contacto> mediosDeContacto;
+    @JoinColumn(name = "id_contacto")
+    private List<Contacto> mediosDeContacto;
 
     @Column(name = "puntos_canjeados")
-    private double puntosCanjeados;
+    private Double puntosCanjeados;
 
     @Column(name = "puntos_ganados")
-    private double puntosGanados;
+    private Double puntosGanados;
 
-    @Transient // x ahora
-    private ArrayList<ContribucionHumana> contribuciones;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_contribucion")
+    private List<Contribucion> contribuciones = new ArrayList<>();
 
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
@@ -62,8 +67,8 @@ public class Humano extends ObserverSuscripcion {
                 .atributosObligatorios(dto.getAtributosObligatorios())
                 .atributosOpcionales(dto.getAtributosOpcionales())
                 .mediosDeContacto(dto.getMediosDeContacto())
-                .puntosCanjeados(0)
-                .puntosGanados(0)
+                .puntosCanjeados(0.0)
+                .puntosGanados(0.0)
                 .contribuciones(dto.getContribuciones())
                 .user(dto.getUser())
                 .user(dto.getUser())
@@ -76,9 +81,9 @@ public class Humano extends ObserverSuscripcion {
 
     public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor) {
         if (tipo == TipoAtributo.OBLIGATORIO) {
-            this.atributosObligatorios.add(new AtributoHumano(nombreAtributo, valor));
+            this.atributosObligatorios.add(AtributoHumanoRespondido.create(nombreAtributo, valor));
         } else {
-            this.atributosOpcionales.add(new AtributoHumano(nombreAtributo, valor));
+            this.atributosOpcionales.add(AtributoHumanoRespondido.create(nombreAtributo, valor));
         }
     }
 
@@ -95,7 +100,7 @@ public class Humano extends ObserverSuscripcion {
 
     }
 
-    public void agregarContribucion(ContribucionHumana contribucion) {
+    public void agregarContribucion(Contribucion contribucion) {
         this.contribuciones.add(contribucion);
         puntosGanados+= contribucion.calcularPuntaje();
     }
@@ -106,7 +111,7 @@ public class Humano extends ObserverSuscripcion {
                 .filter(atributo -> atributo.getNombreAtributo().equals(tipo))
                 .findFirst()
                 .get()
-                .getValorAtributo();
+                .getValor();
     }
 
     public String getUsername(){
@@ -124,6 +129,18 @@ public class Humano extends ObserverSuscripcion {
 
     public Long getIdUsuario(){
         return this.user.getId();
+    }
+
+    public static Humano crearVacio(){
+        return Humano
+                .builder()
+                .atributosObligatorios(new ArrayList<>())
+                .atributosOpcionales(new ArrayList<>())
+                .mediosDeContacto(new ArrayList<>())
+                .puntosCanjeados(0.0)
+                .puntosGanados(0.0)
+                .contribuciones(new ArrayList<>())
+                .build();
     }
 
 }

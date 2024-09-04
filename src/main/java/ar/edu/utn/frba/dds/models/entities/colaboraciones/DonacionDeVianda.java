@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Builder
-public class DonacionDeVianda implements ContribucionHumana {
+public class DonacionDeVianda extends Contribucion {
     private TarjetaHumano solicitante;
     @Setter
     private Boolean finalizada;
@@ -38,7 +38,7 @@ public class DonacionDeVianda implements ContribucionHumana {
     }
 
     @Override
-    public double calcularPuntaje() {
+    public Double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
 
         return finalizada ? constantes.getCteViandasDonadas() : 0;

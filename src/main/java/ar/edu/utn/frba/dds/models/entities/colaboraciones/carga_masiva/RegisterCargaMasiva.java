@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumana;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
@@ -11,13 +11,11 @@ import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class RegisterCargaMasiva {
     private HumanosRepository humanRepository;
@@ -37,11 +35,11 @@ public class RegisterCargaMasiva {
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
 
-        ArrayList<AtributoHumano> atributosObligatorios = new ArrayList<>(Arrays.asList(new AtributoHumano("Nombre", nombre), new AtributoHumano("Apellido", apellido)));
+        ArrayList<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create("Nombre", nombre), AtributoHumanoRespondido.create("Apellido", apellido)));
 
         ArrayList<Contacto> mediosDeContacto = new ArrayList<>(List.of(new Contacto("Mail", mail)));
 
-        ArrayList<AtributoHumano> atributosOpcionales = new ArrayList<>(List.of(new AtributoHumano(tipoDocumento, documento)));
+        ArrayList<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>(List.of(AtributoHumanoRespondido.create(tipoDocumento, documento)));
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
@@ -62,14 +60,13 @@ public class RegisterCargaMasiva {
         return new Usuario(username, password, new ArrayList<>(List.of(new Rol("HUMANO"))));
     }
 
-    public Humano crearHumano(ArrayList<AtributoHumano> obligatorios, ArrayList<AtributoHumano> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
+    public Humano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
         HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , userCreado);
-
         return HumanoFactory.crear(dto);
     }
 
     public void agregarContribucion(Humano humano, String formaColaboracion, Integer cantidad){
-        ContribucionHumana contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad);
+        Contribucion contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad);
         humano.agregarContribucion(contribucion);
     }
 

@@ -33,7 +33,9 @@ public class Rol {
         return new Rol(nombre);
     }
 
-    public boolean tienePermiso(Permiso permiso){
-        return permisos.contains(permiso);
+    public boolean tienePermiso(String permiso){
+        return permisos
+                .stream()
+                .anyMatch(p -> p.getNombre().equals(permiso));
     }
 }

@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import java.time.temporal.ChronoUnit;
 
 public class ContribucionHumanaFactory {
-    public static ContribucionHumana createForCargaMasiva(String strategy, Integer cant) {
+    public static Contribucion createForCargaMasiva(String strategy, Integer cant) {
         return switch (strategy) {
             case "DINERO" -> new DonacionDeDinero(cant);
             case "DONACION_VIANDA" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
-public class DistribucionViandas implements ContribucionHumana {
+public class DistribucionViandas extends Contribucion {
     private Heladera heladeraOrigen;
     private Heladera heladeraDestino;
     private Integer cantidadViandas;
@@ -52,7 +52,7 @@ public class DistribucionViandas implements ContribucionHumana {
 
 
     @Override
-    public double calcularPuntaje() {
+    public Double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
         return distribuidas ? constantes.getCteViandasDistribuidas() * cantidadViandas : 0;
     }

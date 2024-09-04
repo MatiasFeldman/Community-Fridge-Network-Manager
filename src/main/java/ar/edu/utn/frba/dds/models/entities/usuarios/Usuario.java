@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.persistence.*;
 
@@ -48,11 +49,12 @@ public class Usuario {
                 this.user = user;
                 this.password = password;
                 this.roles = roles;
+
             }
 
     }
 
-    public boolean tienePermiso(Permiso permiso) {
+    public boolean tienePermiso(String permiso) {
         for (Rol rol : roles) {
             if (rol.tienePermiso(permiso)) {
                 return true;
@@ -60,5 +62,7 @@ public class Usuario {
         }
         return false;
     }
+
+
 
 }

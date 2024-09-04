@@ -14,15 +14,9 @@ public class VerificadorDePermisos {
         this.permisosRepository = permisosRepository;
     }
 
-    public void verificarSiUsuarioPuede(String accion, Usuario usuario){
-        Optional<Permiso> permisoBuscado = this.permisosRepository.buscarPorNombre(accion);
-
-        if(permisoBuscado.isEmpty())
-            throw new PermisoInexistenteException("El permiso " + accion + " no existe");
-
-        Permiso permiso = permisoBuscado.get();
-
-        if(!usuario.tienePermiso(permiso))
-            throw new PermisoDenegadoException("El usuario no tiene permisos para realizar la accion " + accion);
+    public static void tienePermiso(Usuario usuario, String permiso) {
+        if (!usuario.tienePermiso(permiso)) {
+            throw new PermisoDenegadoException("El usuario no tiene permisos para realizar esta acción");
+        }
     }
 }

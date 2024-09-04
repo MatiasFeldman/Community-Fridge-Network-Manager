@@ -8,15 +8,13 @@ import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 
 public class TecnicosService {
-    private VerificadorDePermisos verificadorDePermisos;
     private TecnicosRepository tecnicosRepository;
 
     public TecnicosService(VerificadorDePermisos verificadorDePermisos, TecnicosRepository tecnicosRepository){
-        this.verificadorDePermisos = verificadorDePermisos;
         this.tecnicosRepository = tecnicosRepository;
     }
     public Object crearTecnico(TecnicoDTO dto, Usuario actual) {
-        verificadorDePermisos.verificarSiUsuarioPuede("CREAR_TECNICO", actual);
+        actual.tienePermiso("CREAR_TECNICO");
 
         Tecnico creado = (Tecnico) TecnicosFactory.crear(dto);
 

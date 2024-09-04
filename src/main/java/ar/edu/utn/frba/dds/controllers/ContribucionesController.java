@@ -18,6 +18,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
+import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.SneakyThrows;
 
@@ -42,6 +43,9 @@ public class ContribucionesController {
 
         if (humano.isPresent() && tarjeta.isPresent()) {
             Humano h = humano.get();
+
+            VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_VIANDAS");
+
             String heladera_destino = node.get("heladera_destino").asText();
             Optional<Heladera> destino = heladeras.buscarPorNombre(heladera_destino);
 
@@ -70,6 +74,8 @@ public class ContribucionesController {
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
             Humano h = posibleHumano.get();
+
+            VerificadorDePermisos.tienePermiso(h.getUser(), "DISTRIBUIR_VIANDAS");
 
             String punto_origen = node.get("heladera_origen").asText();
             String punto_destino = node.get("heladera_destino").asText();
@@ -108,6 +114,9 @@ public class ContribucionesController {
             Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
             if (posibleHumano.isPresent()) {
                 Humano h = posibleHumano.get();
+
+                VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_DINERO");
+
                 DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node);
                 h.agregarContribucion(donacion);
                 return;
@@ -116,6 +125,9 @@ public class ContribucionesController {
             Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
             if (posibleJuridica.isPresent()) {
                 Juridica j = posibleJuridica.get();
+
+                VerificadorDePermisos.tienePermiso(j.getUser(), "DONAR_DINERO");
+
                 DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node);
                 j.agregarContribucion(donacion);
                 return;
@@ -136,6 +148,9 @@ public class ContribucionesController {
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
             Humano h = posibleHumano.get();
+
+            VerificadorDePermisos.tienePermiso(h.getUser(), "REGISTRAR_PERSONA_VULNERABLE");
+
             Tarjeta tarjetaPersona = tarjeta.get();
 
             PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
@@ -159,6 +174,10 @@ public class ContribucionesController {
 
         if (posibleJuridica.isPresent() && heladeraOpt.isPresent()) {
             Juridica j = posibleJuridica.get();
+
+            VerificadorDePermisos.tienePermiso(j.getUser(), "HACERSE_CARGO_HELADERA");
+
+
             Heladera h = heladeraOpt.get();
 
             HacerseCargoHeladera contribucion = ContribucionJuridicaFactory.hacerseCargoHeladera(h);
@@ -171,16 +190,21 @@ public class ContribucionesController {
 
     }
 
-    public void registrarOferta(String json){
+    public void registrarOferta(String json) {
         JsonNode node = ConversorJSON.convertir(json);
         UUID id = UUID.fromString(node.get("id_usuario").asText());
 
         Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
 
+
         if (posibleJuridica.isEmpty()) {
             throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         }
         Juridica juridica = posibleJuridica.get();
+
+        VerificadorDePermisos.tienePermiso(juridica.getUser(), "HACERSE_CARGO_HELADERA");
+
+
         Oferta oferta = JSONtoOferta.convertir(node);
         OfrecerProductoOServicio contribucion = ContribucionJuridicaFactory.ofertar(oferta);
         juridica.agregarContribucion(contribucion);

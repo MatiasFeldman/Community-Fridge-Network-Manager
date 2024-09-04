@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 @AllArgsConstructor
-public class HacerseCargoHeladera implements ContribucionJuridica {
+public class HacerseCargoHeladera extends Contribucion {
     private Heladera heladera;
 
 
@@ -18,12 +18,12 @@ public class HacerseCargoHeladera implements ContribucionJuridica {
     }
 
     @Override
-    public double calcularPuntaje() {
+    public Double calcularPuntaje() {
         if (heladera.getActiva()) {
             ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
             return constantes.getCteHeladeras() * heladera.mesesActiva();
         } else {
-            return 0;
+            return 0.0;
         }
     }
 

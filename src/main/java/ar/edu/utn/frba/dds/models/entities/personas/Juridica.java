@@ -2,13 +2,14 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionJuridica;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "juridica")
+@Getter
 public class Juridica extends ObserverSuscripcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +54,7 @@ public class Juridica extends ObserverSuscripcion {
     private double puntosGanados;
 
     @Transient // x ahora
-    private ArrayList<ContribucionJuridica> contribuciones;
+    private ArrayList<Contribucion> contribuciones;
 
     @Transient
     private RecomendarPuntos recomendador;
@@ -77,7 +79,7 @@ public class Juridica extends ObserverSuscripcion {
 
     }
 
-    public void agregarContribucion(ContribucionJuridica contribucion) {
+    public void agregarContribucion(Contribucion contribucion) {
         this.contribuciones.add(contribucion);
         puntosGanados += contribucion.calcularPuntaje();
     }

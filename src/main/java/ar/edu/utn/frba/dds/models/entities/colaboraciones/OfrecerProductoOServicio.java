@@ -4,7 +4,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class OfrecerProductoOServicio implements ContribucionJuridica {
+public class OfrecerProductoOServicio extends Contribucion {
 
     private Oferta oferta;
 
@@ -13,7 +13,7 @@ public class OfrecerProductoOServicio implements ContribucionJuridica {
     }
 
     @Override
-    public double calcularPuntaje() {
-        return 0;
+    public Double calcularPuntaje() {
+        return 0.0;
     }
 }

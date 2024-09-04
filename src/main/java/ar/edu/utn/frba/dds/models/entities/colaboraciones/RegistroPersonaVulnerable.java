@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroPersonaVulnerable implements ContribucionHumana {
+public class RegistroPersonaVulnerable extends Contribucion {
     private TarjetaPersonaVulnerable tarjetaRepartida;
 
     public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida) {
@@ -18,7 +18,7 @@ public class RegistroPersonaVulnerable implements ContribucionHumana {
     }
 
     @Override
-    public double calcularPuntaje() {
+    public Double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
         return constantes.getCteTarjetas();
     }

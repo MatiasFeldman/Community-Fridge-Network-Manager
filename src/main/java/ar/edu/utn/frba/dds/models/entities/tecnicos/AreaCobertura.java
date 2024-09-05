@@ -1,14 +1,19 @@
 package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.Getter;
 
+@Getter
 public class AreaCobertura {
-    private Direccion Direccion;
-    private int maxDistanciaAComunas;
+    private Direccion direccionRaiz;
+    private Double maxDistanciaEnMetros;
 
-    public boolean seEncuentraEnRango(int comuna) {
-        int comuna_minima = Direccion.getComuna() - maxDistanciaAComunas;
-        int comuna_maxima = Direccion.getComuna() + maxDistanciaAComunas;
-        return comuna >= comuna_minima && comuna <= comuna_maxima;
+    public boolean seEncuentraEnRango(Direccion direc) {
+        return this.distanciaA(direc) <= maxDistanciaEnMetros;
+    }
+
+    public Double distanciaA(Direccion direccion) {
+        return CalculadoraDistancia.calcularDistancia(direccionRaiz.getCoordenadas(), direccion.getCoordenadas());
     }
 }

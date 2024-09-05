@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.comandos;
 
+import ar.edu.utn.frba.dds.exceptions.NoHayTecnicosDisponiblesException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
@@ -23,7 +24,7 @@ public class AvisarTecnico implements Comando{
             //Mandarle al técnico q tiene q ir a arreglar la heladera
         }
         else {
-            // Avisar q no hay técnicos disponibles
+           throw new NoHayTecnicosDisponiblesException("No hay técnicos disponibles por la zona");
         }
     }
 }

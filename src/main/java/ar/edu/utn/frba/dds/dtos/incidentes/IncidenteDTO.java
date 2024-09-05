@@ -16,7 +16,7 @@ public class IncidenteDTO {
     private LocalDateTime fecha;
     private Heladera heladera;
     private TipoEvento tipo;
-    private UUID colaborador;
+    private Long colaborador;
     private String descripcion;
     private String foto;
     private boolean resuelto;
@@ -31,7 +31,7 @@ public class IncidenteDTO {
         this.resuelto = false;
     }
 
-    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, UUID colaborador, String descripcion, String foto) {
+    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, Long colaborador, String descripcion, String foto) {
         this.fecha = fecha;
         this.heladera = heladera;
         this.tipo = tipo;

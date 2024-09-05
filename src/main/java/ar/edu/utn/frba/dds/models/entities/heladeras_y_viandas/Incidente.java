@@ -15,7 +15,7 @@ public class Incidente {
     @Getter
     private Heladera heladera;
     private TipoEvento tipo;
-    private UUID idColaborador;
+    private Long idColaborador;
     private String descripcion;
     private String foto;
     private boolean resuelto;

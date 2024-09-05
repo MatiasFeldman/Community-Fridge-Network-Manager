@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class DenunciaFallaTecnica {
-    private UUID denunciante;
+    private Long denunciante;
     private String descripcion = null;
     private String foto = null;
     private LocalDateTime fecha;
@@ -19,7 +19,7 @@ public class DenunciaFallaTecnica {
 
 
 
-    public static DenunciaFallaTecnica of(UUID denunciante, String descripcion, String foto, LocalDateTime fecha, Heladera heladera){
+    public static DenunciaFallaTecnica of(Long denunciante, String descripcion, String foto, LocalDateTime fecha, Heladera heladera){
         return DenunciaFallaTecnica
                 .builder()
                 .denunciante(denunciante)
@@ -30,7 +30,7 @@ public class DenunciaFallaTecnica {
                 .build();
     }
 
-    public static DenunciaFallaTecnica of(UUID denunciante, String descripcion, String foto, LocalDateTime fecha){
+    public static DenunciaFallaTecnica of(Long denunciante, String descripcion, String foto, LocalDateTime fecha){
         return DenunciaFallaTecnica
                 .builder()
                 .denunciante(denunciante)

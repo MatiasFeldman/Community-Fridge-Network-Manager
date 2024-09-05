@@ -45,7 +45,7 @@ public class Heladera implements IMqttMessageListener {
     private PuntoDeHeladera nombre;
 
     @Transient
-    private Coordenada coordenada; // x ahora
+    private Coordenada coordenada; // la direccion ya tiene a la coordenada
 
     @Setter
     @Convert(converter = DireccionConverter.class)

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositories.OfertasRepository {
+public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository {
     private List<Oferta> ofertas;
 
     public OfertasRepository() {

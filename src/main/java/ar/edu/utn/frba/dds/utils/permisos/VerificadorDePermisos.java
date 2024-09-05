@@ -1,10 +1,7 @@
 package ar.edu.utn.frba.dds.utils.permisos;
 
-import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.PermisosRepository;
-
-import java.util.Optional;
+import ar.edu.utn.frba.dds.models.repositories.permisos.PermisosRepository;
 
 public class VerificadorDePermisos {
 

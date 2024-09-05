@@ -20,6 +20,10 @@ public class PersonaVulnerable {
     @Column(name = "id_persona_vulnerable")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_humano", nullable = false)
+    private Humano registradaPor;
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
@@ -38,9 +42,6 @@ public class PersonaVulnerable {
 
     @Column(name = "menores_a_cargo")
     private Integer menoresACargo;
-
-    @Transient
-    private Humano registradaPor;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tarjeta")

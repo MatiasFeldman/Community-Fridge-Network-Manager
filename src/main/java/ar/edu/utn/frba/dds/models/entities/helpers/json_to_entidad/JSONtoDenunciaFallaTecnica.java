@@ -4,12 +4,12 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.DenunciaFallaTecn
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 public class JSONtoDenunciaFallaTecnica {
 
     public static DenunciaFallaTecnica convertir(JsonNode node){
-        UUID idDenunciante = UUID.fromString(node.get("id_usuario").asText());
+        Long idDenunciante = Long.parseLong(node.get("id_usuario").asText());
         String nombreHeladera = node.get("heladera").asText();
         String descripcion = node.get("descripcion").asText();
         String foto = node.get("foto").asText();

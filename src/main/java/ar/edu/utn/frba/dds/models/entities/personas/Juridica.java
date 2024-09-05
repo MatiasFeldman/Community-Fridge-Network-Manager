@@ -35,6 +35,7 @@ public class Juridica extends ObserverSuscripcion {
     private String razonSocial;
 
     @Column(name = "tipo")
+    @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
     @Column(name = "rubro")
@@ -53,7 +54,8 @@ public class Juridica extends ObserverSuscripcion {
     @Column(name = "puntos_ganados")
     private double puntosGanados;
 
-    @Transient // x ahora
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_contribucion")
     private ArrayList<Contribucion> contribuciones;
 
     @Transient

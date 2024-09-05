@@ -26,6 +26,10 @@ public class UsoTarjeta {
     @Column(name = "fecha_uso", nullable = false)
     private LocalDate fecha;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tarjeta", nullable = false)
+    private TarjetaPersonaVulnerable tarjeta;
+
     public UsoTarjeta(Heladera heladera, LocalDate fecha) {
         this.heladera = heladera;
         this.fecha = fecha;

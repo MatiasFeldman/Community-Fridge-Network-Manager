@@ -29,7 +29,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta{
     @JoinColumn(name = "id_persona_vulnerable", referencedColumnName = "id_persona_vulnerable")
     private PersonaVulnerable duenio;
 
-    @Transient
+    @OneToMany(mappedBy = "TarjetaPersonaVulnerable", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UsoTarjeta> historialDeUsos;
 
     public TarjetaPersonaVulnerable() {

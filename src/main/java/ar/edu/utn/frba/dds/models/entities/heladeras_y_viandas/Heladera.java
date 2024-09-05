@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
+import ar.edu.utn.frba.dds.converter.DireccionConverter;
+import ar.edu.utn.frba.dds.converter.PuntoDeHeladeraConverter;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.EspacioInsuficienteException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
@@ -12,10 +14,7 @@ import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -26,45 +25,84 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.persistence.*;
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
+@Entity
+@Table(name = "heladera")
 public class Heladera implements IMqttMessageListener {
 
-    private Coordenada coordenada;
-    @Setter
-    private Direccion direccion;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_heladera")
+    private Long id;
+
+    @Convert(converter = PuntoDeHeladeraConverter.class)
+    @Column(name = "nombre")
     private PuntoDeHeladera nombre;
+
+    @Transient
+    private Coordenada coordenada; // x ahora
+
+    @Setter
+    @Convert(converter = DireccionConverter.class)
+    @Column(name = "direccion")
+    private Direccion direccion;
+
+    @Column(name = "capacidad_maxima")
     private Integer capacidadMaxima;
+
+    @Column(name = "capacidad_actual")
     private Integer capActual;
+
+    @Column(name = "fecha_alta")
     private LocalDate fechaDePuestaEnFuncionamiento;
 
-
-    private ReceptorTemperatura receptorTemperatura;
-    private ReceptorMovimiento receptorMovimiento;
-    private MqttReceptorApertura receptorApertura;
-
+    @Column(name = "esta_activa")
     private Boolean activa;
-    private Double ultimaTemperaturaRegistrada;
-    private Double tempMinima;
-    private Double tempMaxima;
-    private Boolean hayMovimiento;
 
+    @Column(name = "temperatura_minima")
+    private Double tempMinima;
+
+    @Column(name = "temperatura_maxima")
+    private Double tempMaxima;
+
+    @Transient
+    private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
+
+    @Transient
+    private List<SuscripcionAHeladera> suscriptores; // x ahora, si debe ser persistido
+
+    @Transient
+    private ReceptorTemperatura receptorTemperatura;
+    @Transient
+    private ReceptorMovimiento receptorMovimiento;
+    @Transient
+    private MqttReceptorApertura receptorApertura;
+    @Transient
+    private Double ultimaTemperaturaRegistrada;
+    @Transient
+    private Boolean hayMovimiento;
+    @Transient
     private Accionador accionadorParaTemperatura;
+    @Transient
     private Accionador accionadorParaMovimiento;
 
-    private Long id;
-    private List<SolicitudApertura> solicitudes;
-
-
+    @Transient
     private static String BROKER_URL;
+    @Transient
     private MqttClient client_solicitudes;
+    @Transient
     private MqttClient client_intentos;
+    @Transient
     private static String topic_solicitudes = "heladeras/solicitudes_de_apertura";
+    @Transient
     private static String topic_intentos = "heladeras/intentos_de_apertura";
 
-    private List<SuscripcionAHeladera> suscriptores;
+
 
     @SneakyThrows
     public static Heladera of(HeladeraDTO dto) {

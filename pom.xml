@@ -108,12 +108,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.uqbar-project</groupId>
-      <artifactId>jpa-java8-extras</artifactId>
-      <version>1.0-alpha-1</version>
-    </dependency>
-
-    <dependency>
       <groupId>io.github.flbulgarelli</groupId>
       <artifactId>jpa-extras</artifactId>
       <version>1.0.0-rc1</version>

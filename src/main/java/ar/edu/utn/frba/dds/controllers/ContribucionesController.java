@@ -36,10 +36,10 @@ public class ContribucionesController {
     @SneakyThrows
     public void crearDonacionDeViandas(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
 
         Optional<Humano> humano = humanos.buscarPorUUID(id);
-        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
+        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id, TipoTarjeta.HUMANO);
 
         if (humano.isPresent() && tarjeta.isPresent()) {
             Humano h = humano.get();
@@ -66,10 +66,10 @@ public class ContribucionesController {
 
     public void crearDistribucionDeViandas(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
 
         Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
-        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id);
+        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id, TipoTarjeta.HUMANO);
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
             Humano h = posibleHumano.get();
@@ -106,7 +106,7 @@ public class ContribucionesController {
 
     public void crearDonacionDeDinero(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
         String rol = node.get("rol").asText();
 
         if (rol.equals("HUMANO")) {
@@ -138,7 +138,7 @@ public class ContribucionesController {
 
     public void registrarPersonaVulnerable(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
         String idTarjetaRepartida = node.get("id_tarjeta").asText();
 
 
@@ -165,7 +165,7 @@ public class ContribucionesController {
 
     public void registrarHeladeraACargo(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
         String heladera = node.get("heladera").asText();
 
         Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
@@ -191,7 +191,7 @@ public class ContribucionesController {
 
     public void registrarOferta(String json) {
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
 
         Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
 

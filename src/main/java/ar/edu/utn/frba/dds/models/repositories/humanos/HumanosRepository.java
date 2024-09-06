@@ -18,8 +18,8 @@ public class HumanosRepository {
         humanos.guardar(humano);
     }
 
-    public Optional<Humano> buscarPorUUID(UUID uuid) {
-        return humanos.buscarPorId(uuid);
+    public Optional<Humano> buscarPorUUID(Long id) {
+        return humanos.buscarPorId(id);
     }
 
     public List<Humano> buscarTodos() {

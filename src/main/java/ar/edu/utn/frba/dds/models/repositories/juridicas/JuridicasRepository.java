@@ -10,7 +10,7 @@ import java.util.UUID;
 public class JuridicasRepository {
     private JuridicasDAO dao;
 
-    public Optional<Juridica> buscarPorId(UUID id) {
+    public Optional<Juridica> buscarPorId(Long id) {
         return dao.buscarPorId(id);
     }
 }

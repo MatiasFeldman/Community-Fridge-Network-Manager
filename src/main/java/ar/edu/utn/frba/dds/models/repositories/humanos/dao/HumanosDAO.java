@@ -11,7 +11,7 @@ public interface HumanosDAO {
 
     public List<Humano> buscarTodos();
 
-    public Optional<Humano> buscarPorId(UUID id);
+    public Optional<Humano> buscarPorId(Long id);
 
     public void eliminar(Humano humano);
 

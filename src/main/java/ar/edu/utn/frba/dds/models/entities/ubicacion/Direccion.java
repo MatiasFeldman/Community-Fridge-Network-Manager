@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,9 +8,9 @@ import lombok.Getter;
 @Getter
 public class Direccion {
     private Calle calle;
-    private int altura;
+    private Integer altura;
     private Coordenada coordenadas;
-    private int comuna;
+    private Integer comuna;
 
     public static Direccion of(DireccionDTO dto){
         return Direccion
@@ -20,7 +21,7 @@ public class Direccion {
                 .build();
     }
 
-    public static Direccion of(String calle, int altura){
+    public static Direccion of(String calle, Integer altura){
         return Direccion
                 .builder()
                 .calle(new Calle(calle))
@@ -33,7 +34,15 @@ public class Direccion {
     }
 
     public boolean esCercaDe(Direccion dire) {
-        return (this.calle.equals(dire.getCalle()) && Math.abs(this.altura - dire.getAltura()) < 10);
+        return CalculadoraDistancia.calcularDistancia(this.coordenadas, dire.coordenadas) <= 100.0;
+    }
+
+    public Double getLatitud() {
+        return coordenadas.getLatitud();
+    }
+
+    public Double getLongitud() {
+        return coordenadas.getLongitud();
     }
 
 }

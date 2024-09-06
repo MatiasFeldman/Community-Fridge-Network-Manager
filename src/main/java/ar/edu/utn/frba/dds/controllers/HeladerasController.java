@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.exceptions.HeladeraSinReceptorException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TipoTarjeta;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
@@ -59,7 +60,7 @@ public class HeladerasController {
 
         LocalDateTime fechaSoli = LocalDateTime.parse(node.get("fechaHoraSolicitud").asText());
         Integer cantViandas = node.get("cantidadDeViandas").asInt();
-        UUID idUsuario = UUID.fromString(node.get("id_usuario").asText());
+        Long idUsuario = Long.parseLong(node.get("id_usuario").asText());
         String rol = node.get("rol").asText();
         String heladera = node.get("heladera").asText();
 
@@ -75,7 +76,7 @@ public class HeladerasController {
             throw new HeladeraSinReceptorException("No se encontro el receptor de la heladera");
         }
 
-        Optional<Tarjeta> posibleTarjeta = tarjetas.buscarTarjetaPorDuenio(idUsuario);
+        Optional<Tarjeta> posibleTarjeta = tarjetas.buscarTarjetaPorDuenio(idUsuario, TipoTarjeta.HUMANO);
 
         if (posibleTarjeta.isEmpty()) {
             throw new UsuarioSinTarjetaException("El usuario no tiene una tarjeta");

@@ -19,12 +19,7 @@ import javax.persistence.*;
 @Table(name = "tarjeta_persona_vulnerable")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TarjetaPersonaVulnerable implements Tarjeta{
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tarjeta")
-    private Long id;
+public class TarjetaPersonaVulnerable extends Tarjeta{
 
     @Setter
     @OneToOne(mappedBy = "persona_vulnerable")

@@ -1,21 +1,49 @@
 package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
+import ar.edu.utn.frba.dds.converter.AreaDeCoberturaConverter;
 import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Entity
+@Table(name = "tecnico")
 public class Tecnico {
+    @Id
+    @GeneratedValue
+    @Column(name = "id_tecnico")
+    private Long id;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @OneToOne
+    @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto")
     private Contacto medioContacto;
+
+    @Embedded
     private TipoTecnico tipo;
+
+    @Column(name = "nro_documento")
     private String nroDocumento;
+
+    @Column(name = "nro_cuil")
     private String nroCUIL;
+
+    @Convert(converter = AreaDeCoberturaConverter.class)
     private AreaCobertura areaCobertura;
 
     public static Tecnico create(TecnicoDTO dto) {

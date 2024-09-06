@@ -8,11 +8,14 @@ import java.util.List;
 public class SugerenciaHeladeras {
     private HeladerasRepository heladerasRepository;
 
-    public SugerenciaHeladeras(HeladerasRepository heladerasRepository){
+    public SugerenciaHeladeras(HeladerasRepository heladerasRepository) {
         this.heladerasRepository = heladerasRepository;
     }
 
-    public List<Heladera> sugerirHeladeras(Heladera heladeraBase){
-        return heladerasRepository.buscarTodos().stream().filter(heladera -> heladera.getCoordenada().getDireccion().esCercaDe(heladeraBase.getCoordenada().getDireccion()) && heladera.getCapActual() > heladeraBase.getCapActual()).toList();
+    public List<Heladera> sugerirHeladeras(Heladera heladeraBase) {
+        return heladerasRepository.buscarTodos()
+                .stream()
+                .filter(heladera -> heladera.getDireccion().esCercaDe(heladeraBase.getDireccion()) && heladera.getCapActual() > heladeraBase.getCapActual())
+                .toList();
     }
 }

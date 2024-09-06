@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.dtos.incidentes;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,7 +17,7 @@ public class IncidenteDTO {
     private LocalDateTime fecha;
     private Heladera heladera;
     private TipoEvento tipo;
-    private Long colaborador;
+    private Usuario colaborador;
     private String descripcion;
     private String foto;
     private boolean resuelto;
@@ -31,7 +32,7 @@ public class IncidenteDTO {
         this.resuelto = false;
     }
 
-    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, Long colaborador, String descripcion, String foto) {
+    public IncidenteDTO(LocalDateTime fecha, Heladera heladera, TipoEvento tipo, Usuario colaborador, String descripcion, String foto) {
         this.fecha = fecha;
         this.heladera = heladera;
         this.tipo = tipo;

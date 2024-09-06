@@ -27,8 +27,10 @@ public class DireccionConverter implements AttributeConverter<Direccion, String>
         }
 
         Calle calle = new Calle(parts[0]);
-        int altura = Integer.parseInt(parts[1]);
-        int comuna = Integer.parseInt(parts[2]);
+        Integer altura = Integer.valueOf(parts[1]);
+        Integer comuna = Integer.valueOf(parts[2]);
+
+        Coordenada coordenada = new Coordenada(Double.valueOf(parts[3]), Double.valueOf(parts[4]));
 
         Direccion direccion = Direccion.of(new DireccionDTO(calle, altura, comuna));
 

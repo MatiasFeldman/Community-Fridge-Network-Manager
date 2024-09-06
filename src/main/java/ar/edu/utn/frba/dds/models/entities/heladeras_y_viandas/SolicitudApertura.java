@@ -15,8 +15,16 @@ public class SolicitudApertura {
 
     private LocalDateTime fechaHoraSolicitud;
     private static Integer horasParaEjecutarAccion = 3;
+
+    @ManyToOne
+    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaHumano solicitante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
     private Heladera heladera;
+
+    @Column(name = "cantidad_viandas", nullable = false)
     private Integer cantidadDeViandas;
     private LocalDateTime fechaDeExpiracion;
 

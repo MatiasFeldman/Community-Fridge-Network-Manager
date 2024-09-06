@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.converter.RubroConverter;
 import ar.edu.utn.frba.dds.exceptions.OfertaAgotadaException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +26,7 @@ public class Oferta {
     @Column(name = "puntos_necesarios")
     private Double puntosNecesarios;
 
-    @Convert(converter = RubroConverter.class)
-    @Column(name = "rubro")
+    @Embedded
     private Rubro rubro;
 
     @Column(name = "canjes_totales")

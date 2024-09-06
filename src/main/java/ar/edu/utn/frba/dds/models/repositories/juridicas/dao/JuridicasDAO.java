@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface JuridicasDAO {
 
-    public Optional<Juridica> buscarPorId(UUID id);
+    public Optional<Juridica> buscarPorId(Long id);
 }

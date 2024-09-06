@@ -6,12 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 public class HeladeraDTO {
-    @Setter
-    private Coordenada coordenada;
     @Setter
     private Direccion direccion;
     private Integer capacidadMaxima;
@@ -19,12 +16,11 @@ public class HeladeraDTO {
     private Integer cantActual;
     private LocalDate fechaDePuestaEnFuncionamiento;
     @Setter
-    private boolean activa;
+    private Boolean activa;
     @Setter
-    private double ultimaTemperaturaRegistrada;
-    private double tempMinima;
-    private double tempMaxima;
+    private Double ultimaTemperaturaRegistrada;
+    private Double tempMinima;
+    private Double tempMaxima;
     @Setter
-    private boolean hayMovimiento;
-    private UUID id;
+    private Boolean hayMovimiento;
 }

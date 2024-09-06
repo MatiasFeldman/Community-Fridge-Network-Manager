@@ -1,30 +1,53 @@
 package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 
-
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "servicio_a_heladera")
 public class VisitaAHeladera {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_incidente", referencedColumnName = "id_incidente")
+    private Incidente incidenteAResolver;
+
+    @ManyToOne
+    @JoinColumn(name = "id_tecnico", referencedColumnName = "id_tecnico")
     private Tecnico tecnico;
-    @Getter
-    private Heladera heladeraFallada;
+
+    @Column(name = "fecha_visita")
     private LocalDateTime fechaDeVisita;
-    @Getter
-    private boolean solucionado;
+
+    @Column(name = "solucionado")
+    private Boolean solucionado;
+
+    @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
-    private Image foto = null;
+
+    @Column(name = "foto")
+    private String foto = null;
 
 
-    public static VisitaAHeladera crear(Tecnico tecnico, Heladera heladeraFallada, LocalDateTime fechaDeVisita, boolean solucionado, String descripcion, Image foto){
+    public static VisitaAHeladera crear(Incidente incidente, Tecnico tecnico, LocalDateTime fechaDeVisita, Boolean solucionado, String descripcion, String foto){
         return VisitaAHeladera
                 .builder()
+                .incidenteAResolver(incidente)
                 .tecnico(tecnico)
-                .heladeraFallada(heladeraFallada)
                 .fechaDeVisita(fechaDeVisita)
                 .solucionado(solucionado)
                 .foto(foto)
@@ -32,11 +55,11 @@ public class VisitaAHeladera {
                 .build();
     }
 
-    public static VisitaAHeladera crear(Tecnico tecnico, Heladera heladeraFallada, LocalDateTime fechaDeVisita, boolean solucionado, String descripcion){
+    public static VisitaAHeladera crear(Incidente incidente, Tecnico tecnico, LocalDateTime fechaDeVisita, Boolean solucionado, String descripcion){
         return VisitaAHeladera
                 .builder()
+                .incidenteAResolver(incidente)
                 .tecnico(tecnico)
-                .heladeraFallada(heladeraFallada)
                 .fechaDeVisita(fechaDeVisita)
                 .solucionado(solucionado)
                 .descripcion(descripcion)

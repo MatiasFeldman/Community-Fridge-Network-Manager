@@ -19,7 +19,7 @@ public class HumanosCollection implements HumanosDAO{
     }
 
     @Override
-    public Optional<Humano> buscarPorId(UUID id){
+    public Optional<Humano> buscarPorId(Long id){
         return humanos
                 .stream()
                 .filter(humano -> humano.getIdUsuario().equals(id))

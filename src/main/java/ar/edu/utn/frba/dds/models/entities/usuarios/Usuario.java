@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.usuarios;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.io.IOException;
 import java.util.Random;
 
+import javax.mail.MessagingException;
 import javax.persistence.*;
 
 @NoArgsConstructor(force = true)
@@ -17,6 +20,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "usuario")
+
 public class Usuario {
     @Column(name = "usuario",unique = true, nullable = false)
     private final String user;
@@ -33,6 +37,9 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_rol")
     )
     private List<Rol> roles;
+
+    @Transient
+    private SendingStrategy strategiaDeEnvio; //TODO: Service Locator
 
     public Usuario(String user, String password ,List<Rol> roles) throws IOException {
             ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
@@ -63,6 +70,9 @@ public class Usuario {
         return false;
     }
 
+    public void serNotificado(Mensaje mensaje) throws MessagingException, IOException {
+        strategiaDeEnvio.enviarMensaje(mensaje);
+    }
 
 
 }

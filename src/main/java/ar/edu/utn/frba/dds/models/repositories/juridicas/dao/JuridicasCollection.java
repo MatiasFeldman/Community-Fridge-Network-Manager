@@ -10,7 +10,7 @@ public class JuridicasCollection implements JuridicasDAO{
     private List<Juridica> juridicas;
 
     @Override
-    public Optional<Juridica> buscarPorId(UUID id) {
+    public Optional<Juridica> buscarPorId(Long id) {
         return juridicas
                 .stream()
                 .filter(juridica -> juridica.getId().equals(id))

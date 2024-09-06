@@ -11,26 +11,16 @@ import javax.persistence.*;
 @Table(name = "tarjeta_humano")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TarjetaHumano implements Tarjeta{
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tarjeta")
-    private Long id;
+@Getter
+@Setter
+public class TarjetaHumano extends Tarjeta{
 
-    @Getter
-    @Setter
     @OneToOne(mappedBy = "humano")
     private Humano duenio;
 
     @Override
     public void usarEn(Heladera heladera){
-        heladera.verificarAcceso(this.id, LocalDateTime.now());
-    }
-
-    @Override
-    public Long getId(){
-        return this.id;
+        heladera.verificarAcceso(this, LocalDateTime.now());
     }
 
     @Override

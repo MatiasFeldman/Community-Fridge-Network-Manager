@@ -14,8 +14,10 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
     private Long id;
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "permiso_de_rol",

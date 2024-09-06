@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
-import ar.edu.utn.frba.dds.models.entities.suscripciones.ObserverSuscripcion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -21,13 +20,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "juridica")
 @Getter
-public class Juridica extends ObserverSuscripcion {
+public class Juridica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_juridica")
     private Long idJuridica;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
@@ -39,7 +38,7 @@ public class Juridica extends ObserverSuscripcion {
     private Tipo tipo;
 
     @Column(name = "rubro")
-    private String Rubro;
+    private String rubro;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
     private ArrayList<Contacto> mediosDeContacto;
@@ -49,10 +48,10 @@ public class Juridica extends ObserverSuscripcion {
     private Direccion direccion;
 
     @Column(name = "puntos_canjeados")
-    private double puntosCanjeados;
+    private Double puntosCanjeados;
 
     @Column(name = "puntos_ganados")
-    private double puntosGanados;
+    private Double puntosGanados;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contribucion")

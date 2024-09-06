@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -21,9 +18,12 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "distribucion_viandas")
 public class DistribucionViandas extends Contribucion {
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "id_heladera_origen", referencedColumnName = "id_heladera")
     private Heladera heladeraOrigen;
-    @Transient
+
+    @ManyToOne
+    @JoinColumn(name = "id_heladera_destino", referencedColumnName = "id_heladera")
     private Heladera heladeraDestino;
 
     @Column(name = "cantidad_viandas")

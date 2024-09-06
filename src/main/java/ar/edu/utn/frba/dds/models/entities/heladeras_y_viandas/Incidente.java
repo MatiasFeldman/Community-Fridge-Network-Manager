@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,8 +36,9 @@ public class Incidente {
     @Enumerated(EnumType.STRING)
     private TipoEvento tipo;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long idColaborador; // no seria mas practico tener al usuario/persona en vez del id
+    @ManyToOne
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id_usuario",nullable = false)
+    private Usuario colaborador;
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;

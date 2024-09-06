@@ -5,33 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ViandasDisponibles implements Suscripcion {
+@SuperBuilder
+@Entity
+@DiscriminatorValue("heladera_llena")
+public class ViandasDisponibles extends Suscripcion {
+    @Column(name="cantidad_de_viandas_disponibles")
     public int cantidadViandasDisponibles;
-    @Getter
-    public final String cuerpo = "La heladera tiene la cantidad de viandas esperadas";
-    public String destinatario;
 
     public static ViandasDisponibles of(String destinatario, int cantidadViandasDisponibles) {
         return ViandasDisponibles
                 .builder()
                 .destinatario(destinatario)
+                .cuerpo("La heladera tiene la cantidad de viandas esperadas")
                 .cantidadViandasDisponibles(cantidadViandasDisponibles)
                 .build();
     }
 
-    @Override
-    public Mensaje getMensaje() {
-        return new Mensaje(destinatario, cuerpo);
-    }
+
 
 
 
     @Override
-    public boolean verificarCondicion(Integer capacidadActualHeladera, Integer cantidadActual) {
+    public Boolean verificarCondicion(Integer capacidadActualHeladera, Integer cantidadActual) {
         return cantidadActual == cantidadViandasDisponibles;
     }
 }

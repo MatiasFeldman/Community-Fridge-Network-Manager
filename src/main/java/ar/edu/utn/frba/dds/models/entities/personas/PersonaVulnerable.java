@@ -43,8 +43,8 @@ public class PersonaVulnerable {
     @Column(name = "menores_a_cargo")
     private Integer menoresACargo;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tarjeta")
+    @OneToOne
+    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaPersonaVulnerable tarjeta;
 
     public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, Humano registradaPor) {

@@ -49,10 +49,9 @@ public class ContribucionesController {
             String heladera_destino = node.get("heladera_destino").asText();
             Optional<Heladera> destino = heladeras.buscarPorNombre(heladera_destino);
 
-
             if (destino.isPresent()) {
                 Heladera heladera = destino.get();
-                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera, (TarjetaHumano) tarjeta.get());
+                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera);
                 heladera.agregarViandas(1);
                 h.agregarContribucion(donacion);
                 return;
@@ -92,7 +91,7 @@ public class ContribucionesController {
                 hOrigen.quitarViandas(cantidad);
                 hDestino.agregarViandas(cantidad);
 
-                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, (TarjetaHumano) tarjeta.get());
+                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo);
                 h.agregarContribucion(distri);
                 return;
             }

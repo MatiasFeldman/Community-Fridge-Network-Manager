@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 public class ContribucionHumanaFactory {
     public static Contribucion createForCargaMasiva(String strategy, Integer cant) {
         return switch (strategy) {
-            case "DINERO" -> new DonacionDeDinero(cant);
+            case "DINERO" -> ContribucionHumanaFactory.crearDonacionDeDinero(cant);
             case "DONACION_VIANDA" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
             case "REDISTRIBUCION_VIANDAS" -> ContribucionHumanaFactory.crearDistribucionDeViandaFinalizada(cant);
             case "ENTREGA_TARJETAS" -> new RegistroPersonaVulnerable();
@@ -18,12 +18,12 @@ public class ContribucionHumanaFactory {
         };
     }
 
-    public static DonacionDeVianda crearDonacionDeVianda(Heladera destino, TarjetaHumano tarjeta) {
-        return DonacionDeVianda.of(destino, tarjeta);
+    public static DonacionDeVianda crearDonacionDeVianda(Heladera destino) {
+        return DonacionDeVianda.of(destino);
     }
 
-    public static DistribucionViandas crearDistribucionDeViandas(Heladera origen, Heladera destino, Integer cant, String motivo, TarjetaHumano tarjeta) {
-        return DistribucionViandas.of(origen, destino, cant, motivo, tarjeta);
+    public static DistribucionViandas crearDistribucionDeViandas(Heladera origen, Heladera destino, Integer cant, String motivo) {
+        return DistribucionViandas.of(origen, destino, cant, motivo);
     }
 
     public static DonacionDeDinero crearDonacionDeDineroPeriodica(double monto, ChronoUnit unidad, Integer frecuencia) {

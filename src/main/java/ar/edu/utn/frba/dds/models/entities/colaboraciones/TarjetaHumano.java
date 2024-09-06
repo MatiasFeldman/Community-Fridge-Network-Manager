@@ -9,6 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tarjeta_humano")
+@NoArgsConstructor
+@AllArgsConstructor
 public class TarjetaHumano implements Tarjeta{
     @Setter
     @Id
@@ -18,15 +20,8 @@ public class TarjetaHumano implements Tarjeta{
 
     @Getter
     @Setter
-    @OneToOne
-    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
+    @OneToOne(mappedBy = "humano")
     private Humano duenio;
-
-    // Constructor
-    public TarjetaHumano() {
-        this.id = null;
-        this.duenio = null;
-    }
 
     @Override
     public void usarEn(Heladera heladera){

@@ -31,15 +31,15 @@ public class Humano extends ObserverSuscripcion {
     private Usuario user;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tarjeta")
-    private TarjetaHumano tarjeta = null; // HAY BIDIRECCIONALIDAD DE DATOS
+    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
+    private TarjetaHumano tarjeta = null;
 
     @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_atributo")
+    @JoinColumn(name = "id_atributo_obligatorio")
     private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
     @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_atributo")
+    @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)

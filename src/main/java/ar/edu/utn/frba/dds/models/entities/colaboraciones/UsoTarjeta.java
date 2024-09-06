@@ -27,7 +27,7 @@ public class UsoTarjeta {
     private LocalDate fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tarjeta", nullable = false)
+    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta", nullable = false)
     private TarjetaPersonaVulnerable tarjeta;
 
     public UsoTarjeta(Heladera heladera, LocalDate fecha) {

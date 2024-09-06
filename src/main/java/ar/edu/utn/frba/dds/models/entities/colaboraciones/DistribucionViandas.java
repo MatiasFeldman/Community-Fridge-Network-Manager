@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -14,17 +18,28 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
+@Entity
+@Table(name = "distribucion_viandas")
 public class DistribucionViandas extends Contribucion {
+    @Transient
     private Heladera heladeraOrigen;
+    @Transient
     private Heladera heladeraDestino;
+
+    @Column(name = "cantidad_viandas")
     private Integer cantidadViandas;
+
+    @Column(name = "motivo")
     private String motivo;
+
+    @Column(name = "fecha_distribucion")
     private LocalDate fechaDistribucion;
-    private TarjetaHumano solicitante;
+
+    @Column(name = "distribuidas")
     private Boolean distribuidas;
 
 
-    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, TarjetaHumano tarjetaSoli) {
+    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo) {
         return DistribucionViandas
                 .builder()
                 .heladeraOrigen(origen)
@@ -32,7 +47,6 @@ public class DistribucionViandas extends Contribucion {
                 .cantidadViandas(cant)
                 .motivo(motivo)
                 .fechaDistribucion(null)
-                .solicitante(tarjetaSoli)
                 .distribuidas(false)
                 .build();
     }

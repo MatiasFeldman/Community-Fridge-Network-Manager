@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,19 +14,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Builder
+@Entity
+@Table(name = "donacion_de_vianda")
 public class DonacionDeVianda extends Contribucion {
-    private TarjetaHumano solicitante;
     @Setter
+    @Column(name = "finalizada")
     private Boolean finalizada;
+
     @Getter
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", referencedColumnName = "id_heladera")
     private Heladera heladera;
 
 
-    public static DonacionDeVianda of(Heladera heladera, TarjetaHumano solicitante) {
+    public static DonacionDeVianda of(Heladera heladera) {
         return DonacionDeVianda
                 .builder()
                 .heladera(heladera)
-                .solicitante(solicitante)
                 .finalizada(false)
                 .build();
     }

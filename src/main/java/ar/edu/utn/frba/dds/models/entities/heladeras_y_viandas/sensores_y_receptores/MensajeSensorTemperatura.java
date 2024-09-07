@@ -3,11 +3,12 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_recep
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @Getter
 public class MensajeSensorTemperatura {
-    private double temperatura;
-    private UUID idHeladera;
+    private Double temperatura;
+    private Long idHeladera;
 }

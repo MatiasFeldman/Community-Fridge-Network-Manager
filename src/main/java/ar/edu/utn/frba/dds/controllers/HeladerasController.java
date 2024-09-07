@@ -10,8 +10,11 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
+import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.receptores_apertura_heladera.ReceptoresDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,16 +36,24 @@ public class HeladerasController {
     private TarjetasRepository tarjetas;
     private ReceptoresDeAperturaRepository receptoresDeApertura;
     private HeladerasRepository heladeras;
+    private HumanosRepository humanos;
+    private JuridicasRepository juridicas;
 
 
     public void reportarFallaTecnica(String json) {
         JsonNode node = ConversorJSON.convertir(json);
+        Long idDenunciante = Long.parseLong(node.get("id_usuario").asText());
+        String rol = node.get("rol").asText();
+        Usuario usuario;
+
+        if (Objects.equals(rol, "HUMANO")) usuario = humanos.buscarPorUUID(idDenunciante).get().getUser();
+        else usuario = juridicas.buscarPorId(idDenunciante).get().getUser();
 
         String nombreHeladera = node.get("heladera").asText();
         if (heladeras.buscarPorNombre(nombreHeladera).isEmpty()) {
             throw new HeladeraInexistenteException("No se encontro la heladera");
         } else {
-            DenunciaFallaTecnica denuncia = JSONtoDenunciaFallaTecnica.convertir(node);
+            DenunciaFallaTecnica denuncia = JSONtoDenunciaFallaTecnica.convertir(node, usuario);
             Heladera heladera = heladeras.buscarPorNombre(nombreHeladera).get();
             heladera.desactivar();
 

@@ -31,4 +31,12 @@ public class HeladerasCollection implements HeladerasDAO {
                 .filter(h -> h.nombrePunto().equalsIgnoreCase(name))
                 .findFirst();
     }
+
+    @Override
+    public Optional<Heladera> buscarPorId(Long id) {
+        return heladeras
+                .stream()
+                .filter(h -> h.getId().equals(id))
+                .findFirst();
+    }
 }

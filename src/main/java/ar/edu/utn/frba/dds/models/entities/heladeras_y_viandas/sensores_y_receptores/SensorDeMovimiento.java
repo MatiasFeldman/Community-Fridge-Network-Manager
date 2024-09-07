@@ -14,15 +14,15 @@ public class SensorDeMovimiento {
     private static String BROKER_URL;
     private static String topic = "heladera/movimiento";
     private MqttClient client;
-    private UUID idHeladera;
+    private Long idHeladera;
 
-    public SensorDeMovimiento(UUID idHeladera) throws MqttException {
+    public SensorDeMovimiento(Long idHeladera) throws MqttException {
         this.idHeladera = idHeladera;
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client.connect();
     }
 
-    public SensorDeMovimiento(UUID idHeladera, String url) throws MqttException {
+    public SensorDeMovimiento(Long idHeladera, String url) throws MqttException {
         BROKER_URL = url;
         this.idHeladera = idHeladera;
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
@@ -30,7 +30,7 @@ public class SensorDeMovimiento {
     }
 
     @SneakyThrows
-    public void enviarMovimiento() throws MqttException {
+    public void enviarMovimiento() {
         ObjectMapper mapper = new ObjectMapper();
         String jsonMessage = mapper.writeValueAsString(new MensajeSensorMovimiento(this.idHeladera));
         MqttMessage message = new MqttMessage(jsonMessage.getBytes());

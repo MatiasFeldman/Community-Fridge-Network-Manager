@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,21 +11,21 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.util.UUID;
+import java.util.Optional;
 
 @Builder
 public class ReceptorMovimiento implements IMqttMessageListener {
-    private UUID idHeladera;
+    private HeladerasRepository heladeras;
     private static String BROKER_URL;
     @Setter
     @Getter
     private boolean movimiento = false;
 
 
-    public ReceptorMovimiento create(UUID idHeladera) throws MqttException {
+    public ReceptorMovimiento create(HeladerasRepository heladeras) throws MqttException {
         ReceptorMovimiento receptor = ReceptorMovimiento
                 .builder()
-                .idHeladera(idHeladera)
+                .heladeras(heladeras)
                 .build();
 
         receptor.suscribirseATopic(receptor);
@@ -40,8 +42,7 @@ public class ReceptorMovimiento implements IMqttMessageListener {
         ObjectMapper mapper = new ObjectMapper();
         String jsonMessage = new String(mqttMessage.getPayload());
         MensajeSensorMovimiento mensaje = mapper.readValue(jsonMessage, MensajeSensorMovimiento.class);
-        if (mensaje.getIdHeladera().equals(idHeladera)) {
-            setMovimiento(true);
-        }
+        Optional<Heladera> posibleHeladera = heladeras.buscarPorId(mensaje.getIdHeladera());
+        posibleHeladera.ifPresent(Heladera::hayMovimiento);
     }
 }

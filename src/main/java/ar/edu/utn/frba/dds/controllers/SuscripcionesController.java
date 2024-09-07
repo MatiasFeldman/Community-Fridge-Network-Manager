@@ -24,7 +24,7 @@ public class SuscripcionesController {
 
     public void suscribirseAHeladera(String json){
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id_usuario = UUID.fromString(node.get("id_usuario").asText());
+        Long id_usuario = Long.parseLong(node.get("id_usuario").asText());
         String tipo_colaborador = node.get("tipo_colaborador").asText();
         String punto_heladera = node.get("heladera").asText();
         String medioDeContacto = node.get("medio_de_contacto").asText();

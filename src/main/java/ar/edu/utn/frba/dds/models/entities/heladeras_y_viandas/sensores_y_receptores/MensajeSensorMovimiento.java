@@ -8,5 +8,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 public class MensajeSensorMovimiento {
-    private UUID idHeladera;
+    private Long idHeladera;
 }

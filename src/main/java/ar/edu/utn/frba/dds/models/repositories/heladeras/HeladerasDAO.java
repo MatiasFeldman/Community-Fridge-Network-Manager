@@ -11,4 +11,5 @@ public interface HeladerasDAO {
     List<Heladera> buscarTodos();
     void eliminar(Heladera heladera);
     Optional<Heladera> buscarPorNombre(String name);
+    Optional<Heladera> buscarPorId(Long id);
 }

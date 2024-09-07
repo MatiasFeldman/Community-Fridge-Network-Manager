@@ -67,4 +67,7 @@ public class VisitaAHeladera {
     }
 
 
+    public Heladera getHeladeraFallada() {
+        return this.incidenteAResolver.getHeladera();
+    }
 }

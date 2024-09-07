@@ -19,7 +19,7 @@ public class OfertasController {
 
     public void canjearOferta(String json){
         JsonNode node = ConversorJSON.convertir(json);
-        UUID id = UUID.fromString(node.get("id_usuario").asText());
+        Long id = Long.parseLong(node.get("id_usuario").asText());
         Long idOferta = node.get("id_oferta").asLong();
         String rol = node.get("rol").asText();
 

@@ -139,7 +139,7 @@ public class ContribucionesController {
     public void registrarPersonaVulnerable(String json) {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
-        String idTarjetaRepartida = node.get("id_tarjeta").asText();
+        Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());
 
 
         Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);

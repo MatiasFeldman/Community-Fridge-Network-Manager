@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.*;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -70,26 +71,20 @@ public class Heladera implements IMqttMessageListener {
     @Transient
     private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
 
-    @Transient
+    @OneToMany
+    @JoinColumn(name = "id_suscriptor", referencedColumnName = "id_suscriptor")
     private List<SuscripcionAHeladera> suscriptores;
 
-    @Transient
-    private ReceptorTemperatura receptorTemperatura;
-    @Transient
-    private ReceptorMovimiento receptorMovimiento;
+
     @Transient
     private MqttReceptorApertura receptorApertura;
-    @Transient
-    private Double ultimaTemperaturaRegistrada;
-    @Transient
-    private Boolean hayMovimiento;
+
     @Transient
     private Accionador accionadorParaTemperatura;
     @Transient
     private Accionador accionadorParaMovimiento;
 
-    @Transient
-    private static String BROKER_URL;
+
     @Transient
     private MqttClient client_solicitudes;
     @Transient
@@ -98,7 +93,6 @@ public class Heladera implements IMqttMessageListener {
     private static String topic_solicitudes = "heladeras/solicitudes_de_apertura";
     @Transient
     private static String topic_intentos = "heladeras/intentos_de_apertura";
-
 
 
     @SneakyThrows
@@ -112,8 +106,7 @@ public class Heladera implements IMqttMessageListener {
                 .activa(dto.getActiva())
                 .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
                 .tempMinima(dto.getTempMinima())
-                .tempMaxima(dto.getTempMaxima())
-                .hayMovimiento(dto.getHayMovimiento());
+                .tempMaxima(dto.getTempMaxima());
 
         MqttClient client1 = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client1.subscribe(topic_solicitudes);
@@ -125,7 +118,7 @@ public class Heladera implements IMqttMessageListener {
         return builder.build();
     }
 
-    public static Heladera of(PuntoDeHeladera punto){
+    public static Heladera of(PuntoDeHeladera punto) {
         return Heladera
                 .builder()
                 .nombre(punto)
@@ -134,7 +127,7 @@ public class Heladera implements IMqttMessageListener {
                 .build();
     }
 
-    public String nombrePunto(){
+    public String nombrePunto() {
         return this.nombre.getNombreDePunto();
     }
 
@@ -151,15 +144,15 @@ public class Heladera implements IMqttMessageListener {
         suscriptores.forEach(s -> s.notificar(this.capActual, this.cantActual()));
     }
 
-    public void notificarFallaTecnica(){
+    public void notificarFallaTecnica() {
         suscriptores.forEach(s -> s.notificar(-1, -1));
     }
 
     public void agregarViandas(Integer cantidad) {
         Integer resultado = this.getCapActual() + cantidad;
-        if (resultado > this.getCapacidadMaxima()){
+        if (resultado > this.getCapacidadMaxima()) {
             throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
-        } else{
+        } else {
             this.setCapActual(resultado);
             this.notificarColaboradores();
         }
@@ -167,9 +160,9 @@ public class Heladera implements IMqttMessageListener {
 
     public void quitarViandas(Integer cantidad) {
         Integer resultado = this.getCapActual() - cantidad;
-        if (resultado > this.getCapActual()){
+        if (resultado > this.getCapActual()) {
             throw new EspacioInsuficienteException("No podes quitar esa cantidad de viandas");
-        } else{
+        } else {
             this.setCapActual(resultado);
             this.notificarColaboradores();
         }
@@ -214,7 +207,7 @@ public class Heladera implements IMqttMessageListener {
             } else {
                 intento = new IntentoAperturaResuelto(tarjeta, this, fecha, true);
             }
-        } else{
+        } else {
             intento = new IntentoAperturaResuelto(tarjeta, this, fecha, false);
 
             jsonMensaje = mapper.writeValueAsString(intento);
@@ -249,31 +242,31 @@ public class Heladera implements IMqttMessageListener {
         }
     }
 
-    public boolean temperaturaValida(Double temp){
+    public boolean temperaturaValida(Double temp) {
         return temp >= this.tempMinima && temp <= this.tempMaxima;
     }
 
-    public void evaluarTemperatura(){
-        Double ultimaTemp = this.receptorTemperatura.getTemperaturaRegistrada();
-        if (!this.temperaturaValida(ultimaTemp)){
+    public void evaluarTemperatura(Double temp) {
+        this.ultimaTemperaturaRegistrada = temp;
+        this.ultFechaRegistrada = LocalDateTime.now();
+        if (!this.temperaturaValida(temp)) {
             this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
         }
     }
 
-    public void evaluarConexion(){
-        LocalDateTime ultFecha = this.receptorTemperatura.getUltFechaRegistrada();
-        if (ultFecha.plusMinutes(5).isBefore(LocalDateTime.now())){
+    public void evaluarConexion() {
+        if (this.ultFechaRegistrada.plusMinutes(5).isBefore(LocalDateTime.now())) {
             this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.FALLA_CONEXION, LocalDateTime.now(), this);
         }
     }
 
-    public void evaluarMovimiento(){
-        if (this.receptorMovimiento.isMovimiento()){
-            this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
-        }
+    public void hayMovimiento() {
+        this.activa = false;
+        this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
+
     }
 
-    public Integer cantActual(){
+    public Integer cantActual() {
         return this.capacidadMaxima - this.capActual;
     }
 

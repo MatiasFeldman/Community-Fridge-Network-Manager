@@ -12,7 +12,7 @@ public class SensorTemperatura {
     private static String BROKER_URL;
     private String topic;
     private MqttClient client;
-    private UUID idHeladera;
+    private Long idHeladera;
 
     public SensorTemperatura(UUID idHeladera) throws MqttException {
         this.topic = "heladera/temperatura";

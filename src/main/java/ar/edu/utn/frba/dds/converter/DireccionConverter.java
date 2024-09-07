@@ -3,9 +3,11 @@ package ar.edu.utn.frba.dds.converter;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Calle;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.DireccionDTO;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.AttributeConverter;
 
+@NoArgsConstructor
 public class DireccionConverter implements AttributeConverter<Direccion, String> {
     @Override
     public String convertToDatabaseColumn(Direccion direccion) {

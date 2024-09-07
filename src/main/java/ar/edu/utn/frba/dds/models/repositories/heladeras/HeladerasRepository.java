@@ -27,4 +27,8 @@ public class HeladerasRepository {
     public Optional<Heladera> buscarPorNombre(String name){
         return heladeras.buscarPorNombre(name);
     }
+
+    public Optional<Heladera> buscarPorId(Long id){
+        return heladeras.buscarPorId(id);
+    }
 }

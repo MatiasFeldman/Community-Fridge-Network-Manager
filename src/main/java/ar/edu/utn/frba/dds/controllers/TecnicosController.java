@@ -25,7 +25,7 @@ public class TecnicosController {
 
     public void registrarVisitaAHeladera(VisitaAHeladera visita) {
         visitasAHeladeraRepository.guardar(visita);
-        if (visita.isSolucionado()) {
+        if (visita.getSolucionado()) {
             visita.getHeladeraFallada().activar();
         }
 

@@ -23,7 +23,7 @@ public class SuscripcionesFactory {
         }
 
         Suscripcion suscripcion = create(tipo, cantidad, valorMedioDeContacto);
-        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(humano, suscripcion);
+        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(humano.getUser(), suscripcion);
 
         heladera.suscribir(suscripcionAHeladera);
 
@@ -39,7 +39,7 @@ public class SuscripcionesFactory {
         }
 
         Suscripcion suscripcion = create(tipo, cantidad, valorMedioDeContacto);
-        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(juridica, suscripcion);
+        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(juridica.getUser(), suscripcion);
 
         heladera.suscribir(suscripcionAHeladera);
 

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 @Getter
@@ -26,7 +27,7 @@ public class TarjetaPersonaVulnerable extends Tarjeta{
     private PersonaVulnerable duenio;
 
     @OneToMany(mappedBy = "uso_de_tarjeta_vulnerable")
-    private List<UsoTarjeta> historialDeUsos;
+    private List<UsoTarjeta> historialDeUsos = new ArrayList<>();
 
 
 

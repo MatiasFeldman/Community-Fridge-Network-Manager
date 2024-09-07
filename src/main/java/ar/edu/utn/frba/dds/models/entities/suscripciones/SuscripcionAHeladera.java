@@ -18,12 +18,12 @@ public class SuscripcionAHeladera {
     @Column(name = "id_suscriptor")
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Usuario observerSuscripcion;
 
     @ManyToOne
+    @JoinColumn(name = "id_suscripcion", referencedColumnName = "id_suscripcion")
     private Suscripcion suscripcion;
 
 
@@ -32,5 +32,10 @@ public class SuscripcionAHeladera {
         if (suscripcion.verificarCondicion(capActual, cantActual)){
             observerSuscripcion.serNotificado(suscripcion.getMensaje());
         }
+    }
+
+    public SuscripcionAHeladera(Usuario observerSuscripcion, Suscripcion suscripcion) {
+        this.observerSuscripcion = observerSuscripcion;
+        this.suscripcion = suscripcion;
     }
 }

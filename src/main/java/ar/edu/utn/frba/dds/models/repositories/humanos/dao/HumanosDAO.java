@@ -15,6 +15,8 @@ public interface HumanosDAO {
 
     public void eliminar(Humano humano);
 
+    public Optional<Humano> buscarPorDocumento(String tipo, String nro);
+
     public boolean existeUsername(String username);
 
 }

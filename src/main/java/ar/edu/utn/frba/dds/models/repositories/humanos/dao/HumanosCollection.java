@@ -10,11 +10,10 @@ import java.util.UUID;
 
 public class HumanosCollection implements HumanosDAO, WithSimplePersistenceUnit {
 
-
     private List<Humano> humanos;
     public HumanosCollection(List<Humano> humanos) {
         this.humanos = humanos;
-    } // ESTO SE DEBE ELIMINAR, LO DEJE PARA DISCUTIRLO DESPUES
+    } // ESTO SE DEBE QUITAR, YA QUE LA LISTA NO SE USA MAS
 
     @Override
     public void guardar(Humano humano) {
@@ -47,10 +46,18 @@ public class HumanosCollection implements HumanosDAO, WithSimplePersistenceUnit 
     @Override
     public boolean existeUsername(String username) {
         Long count = entityManager()
-                .createQuery("SELECT COUNT(h) FROM Humano h WHERE h.username = :username", Long.class)
+                .createQuery("SELECT COUNT(h) FROM Humano h WHERE h.user.user = :username", Long.class)
                 .setParameter("username", username)
                 .getSingleResult();
 
         return count > 0;
     }
+
+    @Override
+    public Optional<Humano> buscarPorDocumento(String tipo, String nro) {
+        return humanos
+                .stream()
+                .filter(humano -> humano.getDocumento(tipo).equals(nro))
+                .findFirst();
+    } // HAY DOCUMENTO EN HUMANO?
 }

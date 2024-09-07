@@ -68,8 +68,8 @@ public class Heladera implements IMqttMessageListener {
     @Column(name = "temperatura_maxima")
     private Double tempMaxima;
 
-    @Transient
-    private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
+    @OneToMany(mappedBy = "heladera", fetch = FetchType.LAZY)
+    private List<SolicitudApertura> solicitudes;
 
     @OneToMany
     @JoinColumn(name = "id_suscriptor", referencedColumnName = "id_suscriptor")

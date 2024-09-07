@@ -4,14 +4,20 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
+import javax.persistence.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "solicitud_apertura")
 public class SolicitudApertura {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_solicitud")
+    private Long id;
 
     private LocalDateTime fechaHoraSolicitud;
     private static Integer horasParaEjecutarAccion = 3;

@@ -4,6 +4,11 @@ package ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @AllArgsConstructor
 @SuperBuilder

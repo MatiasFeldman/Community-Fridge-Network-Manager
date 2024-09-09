@@ -6,13 +6,13 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
 public class OfertasController {
-    private OfertasCollection ofertas;
+    private OfertasRepository ofertas;
     private HumanosRepository humanos;
     private JuridicasRepository juridicas;
 
@@ -29,7 +29,7 @@ public class OfertasController {
         Oferta oferta = posibleOferta.get();
 
         if (rol.equals("HUMANO")){
-            Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
+            Optional<Humano> posibleHumano = humanos.buscarPorId(id);
             if (posibleHumano.isEmpty()){
                 throw new RuntimeException("No se encontro el humano");
             }

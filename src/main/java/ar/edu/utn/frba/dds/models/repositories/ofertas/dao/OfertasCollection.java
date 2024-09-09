@@ -38,9 +38,6 @@ public class OfertasCollection implements OfertasDAO {
         });
     }
 
-    public Optional<Oferta> buscarPorId(Long id){
-        return ofertas.stream().filter(oferta -> oferta.getId().equals(id)).findFirst();
-    }
 
     @Override
     public List<Oferta> buscarTodos() {
@@ -50,6 +47,14 @@ public class OfertasCollection implements OfertasDAO {
     @Override
     public void eliminar(Oferta oferta) {
         ofertas.remove(oferta);
+    }
+
+    @Override
+    public Optional<Oferta> buscarPorId(Long id) {
+        return ofertas
+                .stream()
+                .filter(o -> o.getId().equals(id))
+                .findFirst();
     }
 
     public void canjearOferta(Oferta oferta) {

@@ -17,4 +17,6 @@ public interface OfertasDAO {
     public List<Oferta> buscarTodos();
 
     public void eliminar(Oferta oferta);
+
+    public Optional<Oferta> buscarPorId(Long id);
 }

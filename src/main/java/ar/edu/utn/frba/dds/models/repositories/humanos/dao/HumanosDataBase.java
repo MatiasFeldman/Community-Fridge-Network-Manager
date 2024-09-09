@@ -10,18 +10,22 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Humano humano) {
-        entityManager().persist(humano);    //INSERT
+        beginTransaction();
+        entityManager().persist(humano);
+        commitTransaction();
     }
 
     public void modificar(Humano humano) {
         withTransaction(() -> {
-            entityManager().merge(humano);  //UPDATE
+            entityManager().merge(humano);
         });
     }
 
     @Override
     public void eliminar(Humano humano) {
-        entityManager().remove(humano);     //DELETE
+        beginTransaction();
+        entityManager().remove(humano);
+        commitTransaction();
     }
 
     @Override
@@ -50,5 +54,5 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
     @Override
     public Optional<Humano> buscarPorDocumento(String tipo, String nro) {
         return Optional.empty(); //TODO
-    } // HAY DOCUMENTO EN HUMANO?
+    }
 }

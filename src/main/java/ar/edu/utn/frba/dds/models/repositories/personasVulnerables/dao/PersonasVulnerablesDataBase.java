@@ -23,7 +23,9 @@ public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSi
 
     @Override
     public void eliminar(PersonaVulnerable personaVulnerable) {
+        beginTransaction();
         entityManager().remove(personaVulnerable);
+        commitTransaction();
     }
 
     @Override

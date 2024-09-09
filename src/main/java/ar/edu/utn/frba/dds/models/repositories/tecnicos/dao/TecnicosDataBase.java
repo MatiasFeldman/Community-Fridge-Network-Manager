@@ -10,7 +10,9 @@ import java.util.Optional;
 
 public class TecnicosDataBase implements TecnicosDAO, WithSimplePersistenceUnit {
     public void guardar(Tecnico tecnico) {
+        beginTransaction();
         entityManager().persist(tecnico);
+        commitTransaction();
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +25,9 @@ public class TecnicosDataBase implements TecnicosDAO, WithSimplePersistenceUnit 
 
     @Override
     public void eliminar(Tecnico tecnico) {
+        beginTransaction();
         entityManager().remove(tecnico);
+        commitTransaction();
     }
 
     @Override

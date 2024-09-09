@@ -23,6 +23,7 @@ public class SolicitudApertura {
     @Column(name = "fecha_hora_solicitud", nullable = false)
     private LocalDateTime fechaHoraSolicitud;
 
+    @Transient
     private static Integer horasParaEjecutarAccion = 3;
 
     @ManyToOne
@@ -35,6 +36,8 @@ public class SolicitudApertura {
 
     @Column(name = "cantidad_viandas", nullable = false)
     private Integer cantidadDeViandas;
+
+    @Column(name = "fecha_expiracion", nullable = false)
     private LocalDateTime fechaDeExpiracion;
 
     public static SolicitudApertura create(LocalDateTime fechaSoli, TarjetaHumano tarjetaHumano, Heladera heladera, Integer cantViandas){

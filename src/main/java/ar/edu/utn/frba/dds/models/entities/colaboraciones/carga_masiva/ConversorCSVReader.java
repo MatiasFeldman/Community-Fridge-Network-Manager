@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import com.opencsv.CSVReader;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ConversorCSVReader implements ConversorCSV {
     private HumanosRepository humanosRepository;
-    private OfertasCollection ofertas;
+    private OfertasRepository ofertas;
     private MailSender mailSender;
 
 

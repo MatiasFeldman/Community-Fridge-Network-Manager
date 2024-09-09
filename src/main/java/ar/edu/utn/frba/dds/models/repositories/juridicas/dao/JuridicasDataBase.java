@@ -9,12 +9,16 @@ import java.util.Optional;
 public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Juridica juridica) {
+        beginTransaction();
         entityManager().persist(juridica);
+        commitTransaction();
     }
 
     @Override
     public void eliminar(Juridica juridica) {
+        beginTransaction();
         entityManager().remove(juridica);
+        commitTransaction();
     }
 
     @Override

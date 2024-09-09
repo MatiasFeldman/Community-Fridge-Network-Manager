@@ -10,7 +10,9 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Oferta oferta) {
+        beginTransaction();
         entityManager().persist(oferta);
+        commitTransaction();
     }
 
     @Override
@@ -48,6 +50,13 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public void eliminar(Oferta oferta) {
+        beginTransaction();
         entityManager().remove(oferta);
+        commitTransaction();
+    }
+
+    @Override
+    public Optional<Oferta> buscarPorId(Long id) {
+        return Optional.ofNullable(entityManager().find(Oferta.class, id));
     }
 }

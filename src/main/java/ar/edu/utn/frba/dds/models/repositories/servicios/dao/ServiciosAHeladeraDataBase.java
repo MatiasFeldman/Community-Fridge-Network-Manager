@@ -8,28 +8,34 @@ import java.util.Optional;
 
 public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersistenceUnit {
     @Override
-    public void guardar(VisitaAHeladera visita){entityManager().persist(visita);}
+    public void guardar(VisitaAHeladera visita) {
+        beginTransaction();
+        entityManager().persist(visita);
+        commitTransaction();
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<VisitaAHeladera> buscarTodos(){
+    public List<VisitaAHeladera> buscarTodos() {
         return entityManager()
                 .createQuery("from " + VisitaAHeladera.class.getName())
                 .getResultList();
     }
 
     @Override
-    public void eliminar(VisitaAHeladera visita){
+    public void eliminar(VisitaAHeladera visita) {
+        beginTransaction();
         entityManager().remove(visita);
+        commitTransaction();;
     }
 
     @Override
-    public Optional<VisitaAHeladera> buscarPorId(Long id){
+    public Optional<VisitaAHeladera> buscarPorId(Long id) {
         return Optional.ofNullable(entityManager().find(VisitaAHeladera.class, id));
     }
 
     @Override
-    public void modificar(VisitaAHeladera visita){
+    public void modificar(VisitaAHeladera visita) {
         withTransaction(() -> {
             entityManager().merge(visita);
         });

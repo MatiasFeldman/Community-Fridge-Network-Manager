@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.TarjetaInexistenteException;
-import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
@@ -23,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.SneakyThrows;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class ContribucionesController {
     private HumanosRepository humanos;
@@ -38,10 +36,9 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<Humano> humano = humanos.buscarPorUUID(id);
-        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id, TipoTarjeta.HUMANO);
+        Optional<Humano> humano = humanos.buscarPorId(id);
 
-        if (humano.isPresent() && tarjeta.isPresent()) {
+        if (humano.isPresent()) {
             Humano h = humano.get();
 
             VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_VIANDAS");
@@ -57,10 +54,8 @@ public class ContribucionesController {
                 return;
             }
             throw new HeladeraInexistenteException("No se encontró la heladera");
-        } else if (humano.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         } else {
-            throw new UsuarioSinTarjetaException("Debes tener una tarjeta para realizar esta acción");
+            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         }
     }
 
@@ -68,10 +63,9 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
-        Optional<Tarjeta> tarjeta = tarjetas.buscarTarjetaPorDuenio(id, TipoTarjeta.HUMANO);
+        Optional<Humano> posibleHumano = humanos.buscarPorId(id);
 
-        if (posibleHumano.isPresent() && tarjeta.isPresent()) {
+        if (posibleHumano.isPresent()) {
             Humano h = posibleHumano.get();
 
             VerificadorDePermisos.tienePermiso(h.getUser(), "DISTRIBUIR_VIANDAS");
@@ -97,10 +91,8 @@ public class ContribucionesController {
             }
             throw new HeladeraInexistenteException("No se encontró alguna de las heladeras");
 
-        } else if (posibleHumano.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         } else {
-            throw new UsuarioSinTarjetaException("Debes tener una tarjeta para realizar esta acción");
+            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         }
     }
 
@@ -110,7 +102,7 @@ public class ContribucionesController {
         String rol = node.get("rol").asText();
 
         if (rol.equals("HUMANO")) {
-            Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
+            Optional<Humano> posibleHumano = humanos.buscarPorId(id);
             if (posibleHumano.isPresent()) {
                 Humano h = posibleHumano.get();
 
@@ -142,7 +134,7 @@ public class ContribucionesController {
         Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());
 
 
-        Optional<Humano> posibleHumano = humanos.buscarPorUUID(id);
+        Optional<Humano> posibleHumano = humanos.buscarPorId(id);
         Optional<Tarjeta> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {

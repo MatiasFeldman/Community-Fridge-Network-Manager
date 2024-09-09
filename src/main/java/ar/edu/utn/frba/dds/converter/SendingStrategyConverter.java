@@ -1,8 +1,7 @@
 package ar.edu.utn.frba.dds.converter;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.ServiceLocator;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
-import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.EnviarMail;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSendingStrategy;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSendingStategy;
 

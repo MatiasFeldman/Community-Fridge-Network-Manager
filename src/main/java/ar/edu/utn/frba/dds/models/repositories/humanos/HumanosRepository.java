@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.dao.HumanosDAO;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class HumanosRepository {
     private HumanosDAO humanos;
@@ -18,7 +17,7 @@ public class HumanosRepository {
         humanos.guardar(humano);
     }
 
-    public Optional<Humano> buscarPorUUID(Long id) {
+    public Optional<Humano> buscarPorId(Long id) {
         return humanos.buscarPorId(id);
     }
 

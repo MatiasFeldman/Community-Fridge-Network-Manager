@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.helpers;
+package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
-import lombok.Setter;
 
 public class ServiceLocator {
 

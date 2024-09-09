@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
 
@@ -19,9 +20,9 @@ import java.util.List;
 
 public class RegisterCargaMasiva {
     private HumanosRepository humanRepository;
-    private OfertasCollection ofertas;
+    private OfertasRepository ofertas;
 
-    public RegisterCargaMasiva(HumanosRepository humanRepository, OfertasCollection ofertas) {
+    public RegisterCargaMasiva(HumanosRepository humanRepository, OfertasRepository ofertas) {
         this.humanRepository = humanRepository;
         this.ofertas = ofertas;
     }
@@ -61,7 +62,7 @@ public class RegisterCargaMasiva {
     }
 
     public Humano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>(), ofertas , userCreado);
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>() , userCreado);
         return HumanoFactory.crear(dto);
     }
 

@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.main;
 
-import ar.edu.utn.frba.dds.models.entities.helpers.ServiceLocator;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.GenerarReportesCronJob;

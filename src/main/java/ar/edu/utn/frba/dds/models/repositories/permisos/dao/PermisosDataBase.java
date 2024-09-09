@@ -10,7 +10,9 @@ import java.util.Optional;
 public class PermisosDataBase implements PermisosDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Permiso permiso) {
+        beginTransaction();
         entityManager().persist(permiso);
+        commitTransaction();
     }
 
     @Override

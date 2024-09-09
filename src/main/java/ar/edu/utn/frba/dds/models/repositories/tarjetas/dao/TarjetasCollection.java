@@ -13,27 +13,6 @@ public class TarjetasCollection implements TarjetasDAO {
     private List<Tarjeta> tarjetas;
 
     @Override
-    public Optional<Tarjeta> buscarPorDuenio(Long id, TipoTarjeta tipo) {
-        switch (tipo) {
-            case HUMANO -> {
-                return tarjetas
-                        .stream()
-                        .filter(t -> (t.getDuenioId().equals(id) && t.getTipoTarjeta() == TipoTarjeta.HUMANO))
-                        .findFirst();
-            }
-            case VULNERABLE -> {
-                return tarjetas
-                        .stream()
-                        .filter(t -> (t.getDuenioId().equals(id) && t.getTipoTarjeta() == TipoTarjeta.VULNERABLE))
-                        .findFirst();
-            }
-            default -> {
-                return Optional.empty();
-            }
-        }
-    }
-
-    @Override
     public Optional<Tarjeta> buscarPorId(Long idTarjetaRepartida) {
         return tarjetas
                 .stream()

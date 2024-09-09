@@ -9,6 +9,8 @@ import java.util.Optional;
 public class OfertasRepository {
     private OfertasDAO ofertas;
 
+    public Optional<Oferta> buscarPorId(Long id){return ofertas.buscarPorId(id);}
+
     public void guardar(Oferta oferta){ofertas.guardar(oferta);}
 
     public Optional<Oferta> buscarPorNombre(String nombre){return ofertas.buscarPorNombre(nombre);}

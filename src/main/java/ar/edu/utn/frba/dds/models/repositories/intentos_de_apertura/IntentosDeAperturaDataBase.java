@@ -8,19 +8,26 @@ import java.util.List;
 public class IntentosDeAperturaDataBase implements IntentosDeAperturaDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(IntentoAperturaResuelto intento) {
-        entityManager().persist(intento);}
-
-        @Override
-    public List<IntentoAperturaResuelto> buscarTodos(){
-            return entityManager()
-                    .createQuery("from " + IntentoAperturaResuelto.class.getName())
-                    .getResultList();
-        }
+        beginTransaction();
+        entityManager().persist(intento);
+        commitTransaction();
+    }
 
     @Override
-    public void eliminar(IntentoAperturaResuelto intento){
-        entityManager().remove(intento);
+    @SuppressWarnings("unchecked")
+    public List<IntentoAperturaResuelto> buscarTodos() {
+        return entityManager()
+                .createQuery("from " + IntentoAperturaResuelto.class.getName())
+                .getResultList();
     }
+
+    @Override
+    public void eliminar(IntentoAperturaResuelto intento) {
+        beginTransaction();
+        entityManager().remove(intento);
+        commitTransaction();
+    }
+
     @Override
     public void modficar(IntentoAperturaResuelto intento) {
         withTransaction(() -> {

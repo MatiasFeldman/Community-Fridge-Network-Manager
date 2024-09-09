@@ -9,7 +9,9 @@ import java.util.Optional;
 public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Heladera heladera) {
+        beginTransaction();
         entityManager().persist(heladera);
+        commitTransaction();
     }
 
     @Override
@@ -23,13 +25,15 @@ public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUni
     @Override
     public void modificar(Heladera heladera) {
         withTransaction(() -> {
-            entityManager().merge(heladera);  //UPDATE
+            entityManager().merge(heladera);
         });
     }
 
     @Override
     public void eliminar(Heladera heladera) {
+        beginTransaction();
         entityManager().remove(heladera);
+        commitTransaction();
     }
 
     @Override

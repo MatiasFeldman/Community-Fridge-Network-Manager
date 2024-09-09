@@ -17,7 +17,6 @@ public class HumanoInputDTO {
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumanoRespondido> atributosOpcionales;
     private ArrayList<Contribucion> contribuciones;
-    private OfertasCollection ofertasDisponibles;
     private Usuario user;
 
 }

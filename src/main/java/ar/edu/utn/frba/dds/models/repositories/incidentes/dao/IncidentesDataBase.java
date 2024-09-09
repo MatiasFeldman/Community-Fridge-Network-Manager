@@ -10,7 +10,9 @@ import java.util.Optional;
 public class IncidentesDataBase implements WithSimplePersistenceUnit, IncidentesDAO {
     @Override
     public void guardar(Incidente incidente) {
+        beginTransaction();
         entityManager().persist(incidente);
+        commitTransaction();
     }
 
     @Override
@@ -23,13 +25,15 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
 
     @Override
     public void eliminar(Incidente incidente) {
+        beginTransaction();
         entityManager().remove(incidente);
+        commitTransaction();
     }
 
     @Override
     public void modificar(Incidente incidente) {
         withTransaction(() -> {
-            entityManager().merge(incidente);  //UPDATE
+            entityManager().merge(incidente);
         });
     }
 

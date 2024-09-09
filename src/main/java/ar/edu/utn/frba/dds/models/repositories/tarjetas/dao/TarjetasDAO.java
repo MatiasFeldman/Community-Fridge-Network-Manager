@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TarjetasDAO {
-    Optional<Tarjeta> buscarPorDuenio(Long id, TipoTarjeta tipo);
 
     Optional<Tarjeta> buscarPorId(Long idTarjetaRepartida);
 

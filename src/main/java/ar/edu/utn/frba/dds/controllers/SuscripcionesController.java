@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class SuscripcionesController {
@@ -37,7 +36,7 @@ public class SuscripcionesController {
             Heladera h = heladera.get();
             JsonNode suscripcionesNode = node.get("suscripciones");
             if (Objects.equals(tipo_colaborador, "HUMANO")){
-                Optional<Humano> posibleHumano = humanos.buscarPorUUID(id_usuario);
+                Optional<Humano> posibleHumano = humanos.buscarPorId(id_usuario);
                 if (posibleHumano.isPresent()){
                     Humano humano = posibleHumano.get();
                     for (JsonNode suscripcion : suscripcionesNode){

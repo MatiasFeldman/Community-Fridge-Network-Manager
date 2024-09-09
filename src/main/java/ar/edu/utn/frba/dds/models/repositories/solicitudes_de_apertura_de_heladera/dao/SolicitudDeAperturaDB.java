@@ -11,12 +11,16 @@ import java.util.Optional;
 public class SolicitudDeAperturaDB implements WithSimplePersistenceUnit, SolicitudDeAperturaDAO {
     @Override
     public void guardar(SolicitudApertura solicitud) {
+        beginTransaction();
         entityManager().persist(solicitud);
+        commitTransaction();
     }
 
     @Override
     public void eliminar(SolicitudApertura solicitud) {
+        beginTransaction();
         entityManager().remove(solicitud);
+        commitTransaction();
     }
 
     @Override

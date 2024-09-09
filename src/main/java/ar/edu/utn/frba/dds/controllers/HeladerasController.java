@@ -15,7 +15,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaCollection;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
-import ar.edu.utn.frba.dds.models.repositories.receptores_apertura_heladera.ReceptoresDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;

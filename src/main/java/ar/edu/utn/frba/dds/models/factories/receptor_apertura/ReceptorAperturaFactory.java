@@ -6,13 +6,12 @@ import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 
 public class ReceptorAperturaFactory {
 
-    public MqttReceptorApertura create(String url, Heladera heladera){
+    public MqttReceptorApertura create(String url){
         Boolean hayQueConectarse = false;
         MqttReceptorApertura receptor1 = new MqttReceptorApertura();
         if (receptor1.getUrl() == null){
             hayQueConectarse = true;
         }
-        receptor1.setHeladera(heladera);
         receptor1.setUrl(url);
 
         if (hayQueConectarse){
@@ -21,24 +20,18 @@ public class ReceptorAperturaFactory {
         return receptor1;
     }
 
-    public MqttReceptorApertura create(Heladera heladera){
-        return new MqttReceptorApertura(heladera);
-    }
-
-    public MqttReceptorApertura create(HeladerasController controller, Heladera heladera){
-        MqttReceptorApertura receptor1 = new MqttReceptorApertura(heladera);
+    public MqttReceptorApertura create(HeladerasController controller){
+        MqttReceptorApertura receptor1 = new MqttReceptorApertura();
         receptor1.setController(controller);
         return receptor1;
     }
 
-    public MqttReceptorApertura create(String url, Heladera heladera, HeladerasController controller){
+    public MqttReceptorApertura create(String url, HeladerasController controller){
         Boolean hayQueConectarse = false;
         MqttReceptorApertura receptor1 = new MqttReceptorApertura();
         if (receptor1.getUrl() == null){
             hayQueConectarse = true;
         }
-
-        receptor1.setHeladera(heladera);
         receptor1.setUrl(url);
         receptor1.setController(controller);
 

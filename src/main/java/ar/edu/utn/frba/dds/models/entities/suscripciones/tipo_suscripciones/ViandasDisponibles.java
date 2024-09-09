@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,23 +17,18 @@ import javax.persistence.*;
 @DiscriminatorValue("heladera_llena")
 public class ViandasDisponibles extends Suscripcion {
     @Column(name="cantidad_de_viandas_disponibles")
-    public int cantidadViandasDisponibles;
 
     public static ViandasDisponibles of(String destinatario, int cantidadViandasDisponibles) {
         return ViandasDisponibles
                 .builder()
                 .destinatario(destinatario)
                 .cuerpo("La heladera tiene la cantidad de viandas esperadas")
-                .cantidadViandasDisponibles(cantidadViandasDisponibles)
+                .cantidad(cantidadViandasDisponibles)
                 .build();
     }
 
-
-
-
-
     @Override
     public Boolean verificarCondicion(Integer capacidadActualHeladera, Integer cantidadActual) {
-        return cantidadActual == cantidadViandasDisponibles;
+        return Objects.equals(cantidadActual, super.cantidad);
     }
 }

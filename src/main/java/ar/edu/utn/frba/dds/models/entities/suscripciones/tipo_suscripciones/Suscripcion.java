@@ -26,6 +26,9 @@ public abstract class Suscripcion {
     @Column(name = "destinatario")
     private String destinatario;
 
+    @Column(name = "cantidad")
+    protected Integer cantidad;
+
     public Mensaje getMensaje(){
         return new Mensaje(cuerpo, destinatario);
     }

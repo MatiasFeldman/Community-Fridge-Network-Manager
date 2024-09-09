@@ -18,7 +18,7 @@ public class PersonasVulnerablesRepository {
         personaVulnerables.guardar(personaVulnerable);
     }
 
-    public Optional<PersonaVulnerable> buscarPorUUID(String id) {
+    public Optional<PersonaVulnerable> buscarPorUUID(Long id) {
         return personaVulnerables.buscarPorId(id);
     }
 

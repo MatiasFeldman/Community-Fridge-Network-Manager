@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -19,11 +20,12 @@ public class SufrioDesperfecto extends Suscripcion {
                 .builder()
                 .destinatario(destinatario)
                 .cuerpo("La heladera sufrió un desperfecto")
+                .cantidad(-1)
                 .build();
     }
 
     @Override
     public Boolean verificarCondicion(Integer capActual, Integer cantActual) {
-        return capActual == -1 || cantActual == -1;
+        return Objects.equals(capActual, super.cantidad) || Objects.equals(cantActual, super.cantidad);
     }
 }

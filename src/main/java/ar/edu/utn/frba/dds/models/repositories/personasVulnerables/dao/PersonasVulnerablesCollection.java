@@ -19,7 +19,7 @@ public class PersonasVulnerablesCollection implements PersonaVulnerableDAO{
     }
 
     @Override
-    public Optional<PersonaVulnerable> buscarPorId(String id){
+    public Optional<PersonaVulnerable> buscarPorId(Long id){
         return personaVulnerables
                 .stream()
                 .filter(personaVulnerable -> personaVulnerable.getIdPersonaVulnerable().equals(id))

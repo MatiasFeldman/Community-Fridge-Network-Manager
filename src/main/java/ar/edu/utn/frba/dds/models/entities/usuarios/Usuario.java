@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.usuarios;
 
+import ar.edu.utn.frba.dds.converter.SendingStrategyConverter;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import java.util.List;
 
 import java.io.IOException;
-import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.persistence.*;
@@ -39,8 +39,9 @@ public class Usuario {
     )
     private List<Rol> roles;
 
-    @Transient
-    private SendingStrategy strategiaDeEnvio; //TODO: Service Locator
+    @Convert(converter = SendingStrategyConverter.class)
+    @Column(name = "estrategia_de_envio")
+    private SendingStrategy strategiaDeEnvio;
 
     public Usuario(String user, String password, List<Rol> roles) throws IOException {
         ValidadorDeContrasenias validador = new ValidadorDeContrasenias();

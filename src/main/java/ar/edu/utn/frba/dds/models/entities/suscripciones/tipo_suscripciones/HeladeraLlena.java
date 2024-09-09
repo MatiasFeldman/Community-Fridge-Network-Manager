@@ -17,20 +17,17 @@ import java.util.Objects;
 @DiscriminatorValue("heladera_llena")
 public class HeladeraLlena extends Suscripcion {
 
-    @Column(name="cantidad_de_viandas_faltantes")
-    private Integer cantidadViandasFaltantes;
-
     public static HeladeraLlena of(String destinatario, int cantidadViandasFaltantes) {
         return HeladeraLlena
                 .builder()
                 .destinatario(destinatario)
                 .cuerpo("La heladera tiene la cantidad de viandas esperadas")
-                .cantidadViandasFaltantes(cantidadViandasFaltantes)
+                .cantidad(cantidadViandasFaltantes)
                 .build();
     }
 
     @Override
     public Boolean verificarCondicion(Integer capActual, Integer cantActual) {
-        return Objects.equals(cantidadViandasFaltantes, capActual);
+        return Objects.equals(super.cantidad, capActual);
     }
 }

@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.main;
+package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;

@@ -21,17 +21,16 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "usuario")
-
 public class Usuario {
     @Column(name = "usuario", unique = true, nullable = false)
     private final String user;
     @Column(name = "contrasenia", nullable = false)
     private String password;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id_usuario")
     private Long id;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "rol_de_usuario",
             joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario"),
@@ -41,7 +40,7 @@ public class Usuario {
 
     @Convert(converter = SendingStrategyConverter.class)
     @Column(name = "estrategia_de_envio")
-    private SendingStrategy strategiaDeEnvio;
+    private SendingStrategy strategiaDeEnvio = null;
 
     public Usuario(String user, String password, List<Rol> roles) throws IOException {
         ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
@@ -58,7 +57,7 @@ public class Usuario {
             this.user = user;
             this.password = password;
             this.roles = roles;
-
+            this.strategiaDeEnvio = null;
         }
 
     }

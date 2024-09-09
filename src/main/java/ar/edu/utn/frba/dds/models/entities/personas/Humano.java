@@ -33,15 +33,15 @@ public class Humano {
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaHumano tarjeta = null;
 
-    @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_atributo_obligatorio")
     private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
-    @OneToMany(mappedBy = "humano", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contacto")
     private List<Contacto> mediosDeContacto;
 
@@ -51,7 +51,7 @@ public class Humano {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "humano", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contribucion")
     private List<Contribucion> contribuciones = new ArrayList<>();
 

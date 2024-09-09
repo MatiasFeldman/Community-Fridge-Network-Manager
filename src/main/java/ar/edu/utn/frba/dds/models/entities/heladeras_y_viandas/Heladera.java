@@ -77,8 +77,7 @@ public class Heladera implements IMqttMessageListener {
     @Transient
     private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
 
-    @OneToMany
-    @JoinColumn(name = "id_suscriptor", referencedColumnName = "id_suscriptor")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SuscripcionAHeladera> suscriptores;
 
 

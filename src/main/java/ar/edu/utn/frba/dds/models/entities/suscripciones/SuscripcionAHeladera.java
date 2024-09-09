@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.suscripciones;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.Suscripcion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,10 @@ public class SuscripcionAHeladera {
     @ManyToOne
     @JoinColumn(name = "id_suscripcion", referencedColumnName = "id_suscripcion")
     private Suscripcion suscripcion;
+
+    @ManyToOne
+    @JoinColumn(name = "heladera_id")
+    private Heladera heladera;
 
 
     @SneakyThrows

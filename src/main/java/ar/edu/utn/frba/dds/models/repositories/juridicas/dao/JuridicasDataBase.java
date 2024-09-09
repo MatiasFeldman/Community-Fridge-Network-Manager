@@ -6,6 +6,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 
+
 public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Juridica juridica) {

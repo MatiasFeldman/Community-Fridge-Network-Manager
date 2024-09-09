@@ -9,7 +9,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@DiscriminatorValue("heladera_llena")
+@DiscriminatorValue("viandas_disponibles")
 public class ViandasDisponibles extends Suscripcion {
     @Column(name="cantidad_de_viandas_disponibles")
 

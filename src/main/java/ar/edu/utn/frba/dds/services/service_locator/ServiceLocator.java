@@ -18,7 +18,7 @@ public class ServiceLocator {
     private PersonasVulnerablesRepository personasVulnerables;
     private static ServiceLocator instance = null;
 
-    public ServiceLocator getInstance() {
+    public static ServiceLocator getInstance() {
         if (instance == null) {
             instance = new ServiceLocator();
         }

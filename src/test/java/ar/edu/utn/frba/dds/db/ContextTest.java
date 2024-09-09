@@ -1,4 +1,4 @@
-package db;
+package ar.edu.utn.frba.dds.db;
 
 
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;

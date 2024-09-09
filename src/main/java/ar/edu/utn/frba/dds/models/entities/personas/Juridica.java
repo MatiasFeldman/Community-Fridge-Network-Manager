@@ -40,8 +40,8 @@ public class Juridica {
     @Column(name = "rubro")
     private String rubro;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
-    private ArrayList<Contacto> mediosDeContacto;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Contacto> mediosDeContacto;
 
     @Convert(converter = DireccionConverter.class)
     @Column(name = "direccion")
@@ -53,9 +53,9 @@ public class Juridica {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "juridica", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contribucion")
-    private ArrayList<Contribucion> contribuciones;
+    private List<Contribucion> contribuciones = new ArrayList<>();
 
     @Transient
     private RecomendarPuntos recomendador;

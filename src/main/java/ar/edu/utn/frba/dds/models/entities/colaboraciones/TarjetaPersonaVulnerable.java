@@ -23,12 +23,12 @@ import javax.persistence.*;
 public class TarjetaPersonaVulnerable extends Tarjeta{
 
     @Setter
-    @OneToOne(mappedBy = "id_duenio")
+    @OneToOne(mappedBy = "tarjeta")
     private PersonaVulnerable duenio;
 
-    @OneToMany(mappedBy = "uso_de_tarjeta_vulnerable")
-    private List<UsoTarjeta> historialDeUsos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "tarjeta")
+    private List<UsoTarjeta> historialDeUsos = new ArrayList<>();
 
 
     private Integer usosDeHoy(){

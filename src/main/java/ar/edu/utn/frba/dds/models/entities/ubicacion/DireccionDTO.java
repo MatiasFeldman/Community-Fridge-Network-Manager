@@ -9,4 +9,5 @@ public class DireccionDTO {
     private Calle calle;
     private int altura;
     private int comuna;
+    private Coordenada coordenada;
 }

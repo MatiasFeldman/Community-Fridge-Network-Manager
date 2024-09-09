@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Setter
 public class TarjetaHumano extends Tarjeta{
 
-    @OneToOne(mappedBy = "humano")
+    @OneToOne(mappedBy = "id_duenio")
     private Humano duenio;
 
     @Override

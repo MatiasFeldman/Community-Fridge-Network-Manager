@@ -21,8 +21,8 @@ public class Rol {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "permiso_de_rol",
-            joinColumns = @JoinColumn(name = "id_rol"),
-            inverseJoinColumns = @JoinColumn(name = "id_permiso")
+            joinColumns = @JoinColumn(name = "id_rol", referencedColumnName = "id_rol"),
+            inverseJoinColumns = @JoinColumn(name = "id_permiso", referencedColumnName = "id_usuario")
     )
     private ArrayList<Permiso> permisos;
 

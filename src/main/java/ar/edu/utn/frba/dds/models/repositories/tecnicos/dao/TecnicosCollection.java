@@ -7,12 +7,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class TecnicosCollection {
+public class TecnicosCollection implements TecnicosDAO{
     private List<Tecnico> tecnicos;
 
+    @Override
     public void guardar(Tecnico creado) {
+        this.tecnicos.add(creado);
     }
 
+    @Override
+    public List<Tecnico> buscarTodos() {
+        return tecnicos;
+    }
+
+    @Override
+    public void eliminar(Tecnico tecnico) {
+        tecnicos.remove(tecnico);
+    }
+
+    @Override
+    public Optional<Tecnico> buscarPorId(Long id) {
+        return tecnicos.stream().filter(tecnico -> tecnico.getId().equals(id)).findFirst();
+    }
+
+    @Override
     public Optional<Tecnico> buscarMasCercano(Direccion origen) {
         Optional<Tecnico> tecnicoConMismaDirec = tecnicos.stream().filter(tecnico -> tecnico.getAreaCobertura().getDireccionRaiz().equals(origen)).findFirst();
         if (tecnicoConMismaDirec.isPresent()) {
@@ -30,5 +48,14 @@ public class TecnicosCollection {
                         .min(Comparator.comparing(t -> t.distanciaA(origen)));
             }
         }
+    }
+
+    @Override
+    public void modificar(Tecnico tecnico) {
+        Optional<Tecnico> t1 = this.buscarPorId(tecnico.getId());
+        t1.ifPresent(t -> {
+            tecnicos.remove(t);
+            tecnicos.add(tecnico);
+        });
     }
 }

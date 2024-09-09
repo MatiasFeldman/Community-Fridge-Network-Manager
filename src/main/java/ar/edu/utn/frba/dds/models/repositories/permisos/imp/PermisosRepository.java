@@ -1,47 +1,33 @@
 package ar.edu.utn.frba.dds.models.repositories.permisos.imp;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Permiso;
+import ar.edu.utn.frba.dds.models.repositories.permisos.dao.PermisosDAO;
+import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PermisosRepository implements ar.edu.utn.frba.dds.models.repositories.permisos.PermisosRepository {
-    private List<Permiso> permisos;
+@AllArgsConstructor
+public class PermisosRepository {
+    private PermisosDAO dao;
 
-    public PermisosRepository() {
-        permisos = new ArrayList<>();
+    public void guardar(Permiso permiso){
+        dao.guardar(permiso);
     }
 
-    @Override
-    public void guardar(Permiso permiso) {
-        if (!this.existePermiso(permiso)) {
-            permisos.add(permiso);
-        }
+    public Optional<Permiso> buscarPorNombre(String nombre){
+        return dao.buscarPorNombre(nombre);
     }
 
-    @Override
-    public Optional<Permiso> buscarPorNombre(String nombre) {
-        return this.permisos
-                .stream()
-                .filter(c -> c.getNombre().equals(nombre))
-                .findFirst();
+    public List<Permiso> buscarTodos(){
+        return dao.buscarTodos();
     }
 
-    @Override
-    public List<Permiso> buscarTodos() {
-        return permisos;
+    public boolean existePermiso(Long id){
+        return dao.existePermiso(id);
     }
 
-    @Override
-    public boolean existePermiso(Permiso permiso) {
-        return permisos.contains(permiso);
+    public void eliminar(Permiso permiso){
+        dao.eliminar(permiso);
     }
-
-    @Override
-    public void eliminar(Permiso permiso) {
-        permisos.remove(permiso);
-    }
-
-
 }

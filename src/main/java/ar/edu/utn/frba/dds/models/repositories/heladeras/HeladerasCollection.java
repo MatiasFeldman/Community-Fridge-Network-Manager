@@ -39,4 +39,10 @@ public class HeladerasCollection implements HeladerasDAO {
                 .filter(h -> h.getId().equals(id))
                 .findFirst();
     }
+
+    @Override
+    public void modificar(Heladera heladera) {
+        Optional<Heladera> heladera1 = buscarPorId(heladera.getId());
+        heladera1.ifPresent(heladera2 -> heladeras.set(heladeras.indexOf(heladera2), heladera));
+    }
 }

@@ -1,7 +1,11 @@
-package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
+package ar.edu.utn.frba.dds.services.receptores;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
+import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +15,7 @@ import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.util.UUID;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Setter
@@ -23,17 +27,13 @@ public class MqttReceptorApertura implements IMqttMessageListener {
     private MqttClient client_intentos;
     private Boolean conectado = false;
 
-
+    private HeladerasRepository heladeras;
     private static HeladerasController controller;
-
-    @Getter
-    private Heladera heladera;
 
     @SneakyThrows
     public MqttReceptorApertura(Heladera heladera){
         if (BROKER_URL != null){
             this.conectarseATopics();
-            this.heladera = heladera;
         }
 
     }
@@ -80,10 +80,16 @@ public class MqttReceptorApertura implements IMqttMessageListener {
 
     @SneakyThrows
     public void publicarSolicitudApertura(String json){
-        MqttMessage message = new MqttMessage(json.getBytes());
-        message.setQos(1);
+        ObjectMapper mapper = new ObjectMapper();
+        SolicitudApertura solicitud = mapper.readValue(json, SolicitudApertura.class);
 
-        client_solicitudes.publish(topic_solicitudes, message);
+        Optional<Heladera> posibleHeladera = this.buscarHeladeraDestino(solicitud.getIdHeladera());
+        if (posibleHeladera.isPresent()){
+            posibleHeladera.get().agregarSolicitudApertura(solicitud);
+        } else{
+            throw new HeladeraInexistenteException("No se encontro la heladera");
+        }
+
     }
 
 
@@ -96,7 +102,7 @@ public class MqttReceptorApertura implements IMqttMessageListener {
         controller.registrarIntentoDeApertura(intento);
     }
 
-    public Long getIdHeladera(){
-        return this.heladera.getId();
+    public Optional<Heladera> buscarHeladeraDestino(Long id){
+        return this.heladeras.buscarPorId(id);
     }
 }

@@ -5,9 +5,13 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoA
 import java.util.List;
 
 public class IntentosDeAperturaRepository {
-    private List<IntentoAperturaResuelto> intentos;
+    private IntentosDeAperturaDAO intentos;
 
-    public void guardar(IntentoAperturaResuelto intento){
-        intentos.add(intento);
-    }
+    public void guardar(IntentoAperturaResuelto intento){intentos.guardar(intento);}
+
+    public List<IntentoAperturaResuelto> buscarTodos(){return intentos.buscarTodos();}
+
+    public void eliminar(IntentoAperturaResuelto intento){intentos.eliminar(intento);}
+
+    void modficar(IntentoAperturaResuelto intento){intentos.modficar(intento);}
 }

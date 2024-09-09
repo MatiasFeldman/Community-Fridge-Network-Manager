@@ -2,9 +2,7 @@ package ar.edu.utn.frba.dds.models.factories.receptor_apertura;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.MqttReceptorApertura;
-
-import java.util.UUID;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 
 public class ReceptorAperturaFactory {
 

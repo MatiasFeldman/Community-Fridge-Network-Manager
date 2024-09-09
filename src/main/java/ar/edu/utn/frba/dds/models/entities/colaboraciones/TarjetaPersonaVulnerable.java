@@ -23,7 +23,7 @@ import javax.persistence.*;
 public class TarjetaPersonaVulnerable extends Tarjeta{
 
     @Setter
-    @OneToOne(mappedBy = "persona_vulnerable")
+    @OneToOne(mappedBy = "id_duenio")
     private PersonaVulnerable duenio;
 
     @OneToMany(mappedBy = "uso_de_tarjeta_vulnerable")

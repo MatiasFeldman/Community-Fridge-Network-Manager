@@ -3,8 +3,9 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -12,14 +13,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "solicitud_apertura")
+@Table(name = "solicitud_de_apertura")
 public class SolicitudApertura {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_solicitud")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "fecha_hora_solicitud", nullable = false)
     private LocalDateTime fechaHoraSolicitud;
+
     private static Integer horasParaEjecutarAccion = 3;
 
     @ManyToOne

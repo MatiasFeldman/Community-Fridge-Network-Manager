@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.converter;
 
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Calle;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.DireccionDTO;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,7 @@ public class DireccionConverter implements AttributeConverter<Direccion, String>
         if (direccion == null) {
             return null;
         }
-        return direccion.getCalle() + "," + direccion.getAltura() + "," +
-                direccion.getComuna();
+        return direccion.getCalle() + "," + direccion.getAltura() + "," + direccion.getComuna() + "," + direccion.getLatitud() + "," + direccion.getLongitud();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DireccionConverter implements AttributeConverter<Direccion, String>
             return null;
         }
         String[] parts = dbData.split(",");
-        if (parts.length < 3) {
+        if (parts.length < 5) {
             throw new IllegalArgumentException("Datos de dirección inválidos");
         }
 
@@ -34,7 +34,7 @@ public class DireccionConverter implements AttributeConverter<Direccion, String>
 
         Coordenada coordenada = new Coordenada(Double.valueOf(parts[3]), Double.valueOf(parts[4]));
 
-        Direccion direccion = Direccion.of(new DireccionDTO(calle, altura, comuna));
+        Direccion direccion = Direccion.of(new DireccionDTO(calle, altura, comuna, coordenada));
 
         return direccion;
     }

@@ -12,4 +12,5 @@ public interface HeladerasDAO {
     void eliminar(Heladera heladera);
     Optional<Heladera> buscarPorNombre(String name);
     Optional<Heladera> buscarPorId(Long id);
+    void modificar(Heladera heladera);
 }

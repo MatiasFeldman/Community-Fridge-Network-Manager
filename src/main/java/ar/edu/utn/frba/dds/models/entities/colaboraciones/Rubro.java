@@ -12,5 +12,6 @@ import javax.persistence.Embeddable;
 @Getter
 @Embeddable
 public class Rubro {
+    @Column(name = "rubro")
     private String nombre;
 }

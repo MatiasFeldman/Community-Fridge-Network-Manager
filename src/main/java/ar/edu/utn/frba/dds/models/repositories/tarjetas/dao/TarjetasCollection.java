@@ -40,4 +40,23 @@ public class TarjetasCollection implements TarjetasDAO {
                 .filter(t -> t.getId().equals(idTarjetaRepartida))
                 .findFirst();
     }
+
+    @Override
+    public void modificar(Tarjeta tarjeta) {
+        Optional<Tarjeta> tarjetaOptional = buscarPorId(tarjeta.getId());
+        tarjetaOptional.ifPresent(t -> {
+            tarjetas.remove(t);
+            tarjetas.add(tarjeta);
+        });
+    }
+
+    @Override
+    public void guardar(Tarjeta tarjeta) {
+        tarjetas.add(tarjeta);
+    }
+
+    @Override
+    public void eliminar(Tarjeta tarjeta) {
+        tarjetas.remove(tarjeta);
+    }
 }

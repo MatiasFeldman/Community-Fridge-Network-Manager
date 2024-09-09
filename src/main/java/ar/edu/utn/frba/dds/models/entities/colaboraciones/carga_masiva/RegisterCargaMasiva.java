@@ -9,7 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
 
 import java.io.IOException;
@@ -19,9 +19,9 @@ import java.util.List;
 
 public class RegisterCargaMasiva {
     private HumanosRepository humanRepository;
-    private OfertasRepository ofertas;
+    private OfertasCollection ofertas;
 
-    public RegisterCargaMasiva(HumanosRepository humanRepository, OfertasRepository ofertas) {
+    public RegisterCargaMasiva(HumanosRepository humanRepository, OfertasCollection ofertas) {
         this.humanRepository = humanRepository;
         this.ofertas = ofertas;
     }

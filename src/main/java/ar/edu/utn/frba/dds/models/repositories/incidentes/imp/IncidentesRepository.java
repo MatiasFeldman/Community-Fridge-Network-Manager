@@ -22,11 +22,15 @@ public class IncidentesRepository {
         this.incidentes.eliminar(incidente);
     }
 
-    public Optional<Incidente> buscarIncidente(Incidente incidente){
-        return this.incidentes.buscarIncidente(incidente);
+    public Optional<Incidente> buscarIncidente(Long id){
+        return this.incidentes.buscarIncidente(id);
     }
 
     public boolean buscarFallaTecnicaEnHeladera(Heladera heladera) {
         return this.incidentes.buscarFallaTecnicaEnHeladera(heladera);
+    }
+
+    public void modificar(Incidente incidente){
+        this.incidentes.modificar(incidente);
     }
 }

@@ -6,19 +6,18 @@ import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.dao.HumanosCollection;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class ConversorCsvTest {
     private HumanosRepository humanos;
-    private OfertasRepository ofertas;
+    private OfertasCollection ofertas;
     private MailSender mailSender;
     private ConversorCSVReader conversor;
     private String path;
@@ -27,7 +26,7 @@ public class ConversorCsvTest {
     @BeforeEach
     public void setUp() {
         humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>()));
-        ofertas = Mockito.mock(OfertasRepository.class);
+        ofertas = Mockito.mock(OfertasCollection.class);
         mailSender = Mockito.mock(MailSender.class);
         conversor = new ConversorCSVReader(humanos, ofertas, mailSender);
         path = "/Users/juanc/Downloads/colaboradores.csv";

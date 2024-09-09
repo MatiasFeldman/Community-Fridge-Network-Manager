@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao;
 
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 
 import java.util.List;
@@ -34,5 +35,14 @@ public class PersonasVulnerablesCollection implements PersonaVulnerableDAO{
     @Override
     public void eliminar(PersonaVulnerable personaVulnerable) {
         personaVulnerables.remove(personaVulnerable);
+    }
+
+    @Override
+    public void modificar(PersonaVulnerable personaVulnerable){
+        Optional<PersonaVulnerable> personaVulnerableOptional = this.buscarPorId(personaVulnerable.getId());
+        personaVulnerableOptional.ifPresent(personaVulnerable1 -> {
+            this.personaVulnerables.remove(personaVulnerable1);
+            this.personaVulnerables.add(personaVulnerable);
+        });
     }
 }

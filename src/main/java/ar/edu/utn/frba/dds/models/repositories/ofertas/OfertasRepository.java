@@ -1,18 +1,23 @@
 package ar.edu.utn.frba.dds.models.repositories.ofertas;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDAO;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OfertasRepository {
-    public void guardar(Oferta oferta);
+public class OfertasRepository {
+    private OfertasDAO ofertas;
 
-    public Optional<Oferta> buscarPorNombre(String nombre);
+    public void guardar(Oferta oferta){ofertas.guardar(oferta);}
 
-    public Optional<Oferta> buscarPorRubro(String rubro);
+    public Optional<Oferta> buscarPorNombre(String nombre){return ofertas.buscarPorNombre(nombre);}
 
-    public List<Oferta> buscarTodos();
+    public List<Oferta> buscarPorRubro(String rubro){return ofertas.buscarPorRubro(rubro);}
 
-    public void eliminar(Oferta oferta);
+    public List<Oferta> buscarTodos(){return ofertas.buscarTodos();}
+
+    public void eliminar(Oferta oferta){ofertas.eliminar(oferta);}
+
+    public void modificar(Oferta oferta){ofertas.modficar(oferta);}
 }

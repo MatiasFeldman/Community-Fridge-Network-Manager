@@ -14,7 +14,7 @@ public class JSONtoDenunciaFallaTecnica {
         String foto = node.get("foto").asText();
         LocalDateTime fecha = LocalDateTime.parse(node.get("fecha").asText());
 
-        return DenunciaFallaTecnica.of(user.getId(), descripcion, foto, fecha);
+        return DenunciaFallaTecnica.of(user, descripcion, foto, fecha);
 
 
     }

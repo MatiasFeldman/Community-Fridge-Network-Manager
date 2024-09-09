@@ -20,6 +20,8 @@ public abstract class Tarjeta {
     @Enumerated(EnumType.STRING)
     private TipoTarjeta tipoTarjeta;
 
+
+
     public abstract void usarEn(Heladera heladera);
 
 

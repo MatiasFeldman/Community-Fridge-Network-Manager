@@ -30,8 +30,16 @@ public class IncidentesCollection implements IncidentesDAO{
     }
 
     @Override
-    public Optional<Incidente> buscarIncidente(Incidente incidente) {
-        return incidentes.stream().filter(incidente1 -> incidente1.equals(incidente)).findFirst();
+    public void modificar(Incidente incidente) {
+        Optional<Incidente> incidente1 = buscarIncidente(incidente.getId());
+        incidente1.ifPresent(incidente2 -> incidentes.set(incidentes.indexOf(incidente2), incidente));
+    }
+
+    @Override
+    public Optional<Incidente> buscarIncidente(Long id) {
+        return incidentes
+                .stream()
+                .filter(incidente1 -> incidente1.getId().equals(id)).findFirst();
     }
 
     @Override

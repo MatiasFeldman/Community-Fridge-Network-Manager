@@ -18,6 +18,7 @@ public class Direccion {
                 .calle(dto.getCalle())
                 .altura(dto.getAltura())
                 .comuna(dto.getComuna())
+                .coordenadas(dto.getCoordenada())
                 .build();
     }
 

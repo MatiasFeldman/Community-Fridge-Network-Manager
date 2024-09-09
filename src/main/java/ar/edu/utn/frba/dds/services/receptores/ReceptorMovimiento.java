@@ -1,6 +1,7 @@
-package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores;
+package ar.edu.utn.frba.dds.services.receptores;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.MensajeSensorMovimiento;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
@@ -16,10 +17,7 @@ import java.util.Optional;
 @Builder
 public class ReceptorMovimiento implements IMqttMessageListener {
     private HeladerasRepository heladeras;
-    private static String BROKER_URL;
-    @Setter
-    @Getter
-    private boolean movimiento = false;
+    private static final String BROKER_URL = "";
 
 
     public ReceptorMovimiento create(HeladerasRepository heladeras) throws MqttException {

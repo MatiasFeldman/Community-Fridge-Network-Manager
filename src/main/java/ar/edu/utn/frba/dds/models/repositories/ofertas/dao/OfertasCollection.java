@@ -1,15 +1,16 @@
-package ar.edu.utn.frba.dds.models.repositories.ofertas.imp;
+package ar.edu.utn.frba.dds.models.repositories.ofertas.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository {
+public class OfertasCollection implements OfertasDAO {
     private List<Oferta> ofertas;
 
-    public OfertasRepository() {
+    public OfertasCollection() {
         this.ofertas = new ArrayList<>();
     }
 
@@ -24,8 +25,17 @@ public class OfertasRepository implements ar.edu.utn.frba.dds.models.repositorie
     }
 
     @Override
-    public Optional<Oferta> buscarPorRubro(String rubro) {
-        return ofertas.stream().filter(oferta -> oferta.getRubro().getNombre().equals(rubro)).findFirst();
+    public List<Oferta> buscarPorRubro(String rubro) {
+        return ofertas.stream().filter(oferta -> oferta.getRubro().getNombre().equals(rubro)).toList();
+    }
+
+    @Override
+    public void modficar(Oferta oferta){
+        Optional<Oferta> ofertaOptional = this.buscarPorId(oferta.getId());
+        ofertaOptional.ifPresent(oferta1 -> {
+            this.ofertas.remove(oferta1);
+            this.ofertas.add(oferta);
+        });
     }
 
     public Optional<Oferta> buscarPorId(Long id){

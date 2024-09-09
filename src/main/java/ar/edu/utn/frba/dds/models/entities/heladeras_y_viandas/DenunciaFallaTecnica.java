@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class DenunciaFallaTecnica {
-    private Long denunciante;
+    private Usuario denunciante;
     private String descripcion = null;
     private String foto = null;
     private LocalDateTime fecha;
@@ -19,7 +20,7 @@ public class DenunciaFallaTecnica {
 
 
 
-    public static DenunciaFallaTecnica of(Long denunciante, String descripcion, String foto, LocalDateTime fecha, Heladera heladera){
+    public static DenunciaFallaTecnica of(Usuario denunciante, String descripcion, String foto, LocalDateTime fecha, Heladera heladera){
         return DenunciaFallaTecnica
                 .builder()
                 .denunciante(denunciante)
@@ -30,7 +31,7 @@ public class DenunciaFallaTecnica {
                 .build();
     }
 
-    public static DenunciaFallaTecnica of(Long denunciante, String descripcion, String foto, LocalDateTime fecha){
+    public static DenunciaFallaTecnica of(Usuario denunciante, String descripcion, String foto, LocalDateTime fecha){
         return DenunciaFallaTecnica
                 .builder()
                 .denunciante(denunciante)

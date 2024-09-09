@@ -13,7 +13,9 @@ public interface IncidentesDAO {
 
     public void eliminar(Incidente incidente);
 
-    public Optional<Incidente> buscarIncidente(Incidente incidente);
+    void modificar(Incidente incidente);
+
+    public Optional<Incidente> buscarIncidente(Long id);
 
     boolean buscarFallaTecnicaEnHeladera(Heladera heladera);
 }

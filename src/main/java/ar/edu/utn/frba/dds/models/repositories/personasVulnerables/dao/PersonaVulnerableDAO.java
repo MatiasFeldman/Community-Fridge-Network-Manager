@@ -16,4 +16,6 @@ public interface PersonaVulnerableDAO {
     public void eliminar(PersonaVulnerable personaVulnerable);
 
     public Optional<PersonaVulnerable> buscarPorId(Long id);
+
+    public void modificar(PersonaVulnerable personaVulnerable);
 }

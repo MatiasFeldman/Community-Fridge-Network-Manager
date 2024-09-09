@@ -2,18 +2,16 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
 import ar.edu.utn.frba.dds.converter.DireccionConverter;
-import ar.edu.utn.frba.dds.converter.PuntoDeHeladeraConverter;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.EspacioInsuficienteException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorMovimiento;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorTemperatura;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
@@ -68,8 +66,16 @@ public class Heladera implements IMqttMessageListener {
     @Column(name = "temperatura_maxima")
     private Double tempMaxima;
 
-    @OneToMany(mappedBy = "heladera", fetch = FetchType.LAZY)
-    private List<SolicitudApertura> solicitudes;
+    @Column(name = "ultima_temperatura_registrada")
+    private Double ultimaTemperaturaRegistrada;
+
+    @Column(name = "ultima_fecha_registrada")
+    private LocalDateTime ultFechaRegistrada;
+
+    private static final String BROKER_URL = "";
+
+    @Transient
+    private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
 
     @OneToMany
     @JoinColumn(name = "id_suscriptor", referencedColumnName = "id_suscriptor")
@@ -228,7 +234,7 @@ public class Heladera implements IMqttMessageListener {
 
     public void intentoAcceso(Object solicitud) {
         IntentoApertura intento = (IntentoApertura) solicitud;
-        this.verificarAcceso(intento.getIdTarjeta(), intento.getFechaHoraDeIntento());
+        this.verificarAcceso(intento.getSolicitante(), intento.getFechaHoraDeIntento());
     }
 
     @Override
@@ -274,4 +280,3 @@ public class Heladera implements IMqttMessageListener {
         return this.direccion.getCoordenadas();
     }
 }
-

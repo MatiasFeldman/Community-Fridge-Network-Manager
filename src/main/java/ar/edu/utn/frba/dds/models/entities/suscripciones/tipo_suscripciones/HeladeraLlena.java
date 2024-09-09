@@ -10,9 +10,8 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.Objects;
 
-@AllArgsConstructor
 @SuperBuilder
-@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @DiscriminatorValue("heladera_llena")
 public class HeladeraLlena extends Suscripcion {

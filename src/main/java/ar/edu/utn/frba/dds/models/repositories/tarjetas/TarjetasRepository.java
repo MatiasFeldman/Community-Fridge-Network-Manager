@@ -18,4 +18,10 @@ public class TarjetasRepository {
     public Optional<Tarjeta> buscarPorId(Long idTarjetaRepartida) {
         return tarjetas.buscarPorId(idTarjetaRepartida);
     }
+
+    public void modificar(Tarjeta tarjeta){tarjetas.modificar(tarjeta);}
+
+    public void guardar(Tarjeta tarjeta){tarjetas.guardar(tarjeta);}
+
+    public void eliminar(Tarjeta tarjeta){tarjetas.eliminar(tarjeta);}
 }

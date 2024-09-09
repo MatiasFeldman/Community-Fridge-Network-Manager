@@ -29,4 +29,6 @@ public class PersonasVulnerablesRepository {
     public void eliminar(PersonaVulnerable personaVulnerable) {
         personaVulnerables.eliminar(personaVulnerable);
     }
+
+    void modificar(PersonaVulnerable personaVulnerable){personaVulnerables.modificar(personaVulnerable);}
 }

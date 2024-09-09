@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ public class HumanoInputDTO {
     private ArrayList<Contacto> mediosDeContacto;
     private ArrayList<AtributoHumanoRespondido> atributosOpcionales;
     private ArrayList<Contribucion> contribuciones;
-    private OfertasRepository ofertasDisponibles;
+    private OfertasCollection ofertasDisponibles;
     private Usuario user;
 
 }

@@ -13,11 +13,12 @@ import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunci
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
-import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
+import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaCollection;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.receptores_apertura_heladera.ReceptoresDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -31,9 +32,8 @@ import java.util.Optional;
 public class HeladerasController {
     private Accionador accionador;
     private SolicitudesDeAperturaRepository solicitudes;
-    private IntentosDeAperturaRepository intentos;
+    private IntentosDeAperturaCollection intentos;
     private TarjetasRepository tarjetas;
-    private ReceptoresDeAperturaRepository receptoresDeApertura;
     private HeladerasRepository heladeras;
     private HumanosRepository humanos;
     private JuridicasRepository juridicas;
@@ -81,11 +81,7 @@ public class HeladerasController {
 
         Heladera heladeraObj = heladeras.buscarPorNombre(heladera).get();
 
-        Optional<MqttReceptorApertura> receptor = receptoresDeApertura.buscarReceptorDeHeladera(heladeraObj.getId());
-
-        if (receptor.isEmpty()) {
-            throw new HeladeraSinReceptorException("No se encontro el receptor de la heladera");
-        }
+        MqttReceptorApertura receptor = new MqttReceptorApertura();
 
         Optional<Tarjeta> posibleTarjeta = tarjetas.buscarTarjetaPorDuenio(idUsuario, TipoTarjeta.HUMANO);
 
@@ -100,7 +96,7 @@ public class HeladerasController {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMessage = objectMapper.writeValueAsString(solicitud);
 
-        receptor.get().publicarSolicitudApertura(jsonMessage);
+        receptor.publicarSolicitudApertura(jsonMessage);
 
         solicitudes.guardar(solicitud);
     }

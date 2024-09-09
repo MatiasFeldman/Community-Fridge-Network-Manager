@@ -6,14 +6,13 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.imp.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class OfertasController {
-    private OfertasRepository ofertas;
+    private OfertasCollection ofertas;
     private HumanosRepository humanos;
     private JuridicasRepository juridicas;
 

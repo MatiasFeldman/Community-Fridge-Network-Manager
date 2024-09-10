@@ -1,0 +1,63 @@
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Títulos de secciones y atributos */
+h1.display-4, h2.h4, h3.h5 {
+    color: #333;
+    font-weight: bold;
+}
+
+/* Contenedor de las heladeras */
+#heladera-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Asegura que las columnas estén espaciadas */
+}
+
+/* Elemento de la lista de heladeras */
+.heladera-item {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 48%; /* Asegura que ocupe el 48% del contenedor para que se vean dos columnas */
+    transition: box-shadow 0.3s ease; /* Efecto de transición para hover */
+}
+
+/* Hover para mejorar la apariencia */
+.heladera-item:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada en hover */
+    cursor: pointer;
+}
+
+/* Título y descripción de la heladera */
+.heladera-item h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.heladera-item p {
+    margin: 0;
+    color: #555;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .heladera-item {
+        width: 100%; /* En pantallas pequeñas, las heladeras ocuparán el 100% del ancho */
+    }
+}
+.btn {
+    margin-bottom: 30px;
+}	

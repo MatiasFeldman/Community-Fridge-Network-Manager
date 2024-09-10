@@ -1,0 +1,88 @@
+/* style-reporte-falla.css */
+
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;  /* Cambiar el color de texto global si es necesario */
+}
+
+/* Título principal */
+h1.display-4 {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;  /* Asegúrate de que el título principal tenga un color visible */
+    margin-bottom: 20px;
+}
+
+/* Estilos para los inputs */
+input.form-control, 
+select.form-control,
+textarea.form-control {
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+textarea.form-control {
+    border-radius: 20px; /* Ajuste para textareas */
+}
+
+input.form-control:focus, 
+select.form-control:focus,
+textarea.form-control:focus {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+/* Estilos para títulos secundarios */
+h3.h5 {
+    color: #333;  /* Cambia el color de los títulos secundarios a un color visible */
+    font-weight: bold;
+}
+
+/* Botón Reportar */
+button#reportar-btn {
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    background-color: #27ae60;
+    transition: background-color 0.3s ease;
+    margin-bottom: 50px; /* Espacio adicional para el botón */
+}
+
+/* Margen inferior para separar el contenido del footer */
+main.container.mt-5 {
+    margin-bottom: 50px; /* Ajusta este valor según sea necesario */
+}
+
+button#reportar-btn:hover {
+    background-color: #2ecc71;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    input.form-control, 
+    select.form-control,
+    textarea.form-control {
+        font-size: 0.9rem;
+    }
+
+    button#reportar-btn {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}

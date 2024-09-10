@@ -1,0 +1,94 @@
+/* style-donar-dinero.css */
+
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Contenedor de la imagen */
+.image-container {
+    width: 100%;
+    max-width: 500px; /* Ajuste según el tamaño de la imagen */
+    margin: 0 auto;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+h1.display-4 {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif; /* Fuente moderna */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los selectores */
+select.form-control ,input.form-control {
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+}
+
+select.form-control:focus ,input.form-control:focus {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+/* Estilos para títulos secundarios */
+h3.h5 {
+    color: #555;
+    font-weight: bold;
+}
+
+/* Botón Donar */
+button#donar-btn {
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    background-color: #27ae60;
+    transition: background-color 0.3s ease;
+    margin-bottom: 50px; /* Margen inferior añadido para separar del footer */
+}
+
+button#donar-btn:hover {
+    background-color: #2ecc71;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .image-container,
+    .col-md-6 {
+        max-width: 100%;
+    }
+
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    select.form-control {
+        font-size: 0.9rem;
+    }
+
+    button#donar-btn {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}

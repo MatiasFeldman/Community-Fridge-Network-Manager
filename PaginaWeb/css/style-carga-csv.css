@@ -1,0 +1,70 @@
+/* style-carga-masiva.css */
+
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Título principal */
+h1.display-4 {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilos para el formulario */
+form#carga-masiva-form {
+    background-color: #f7f7f7;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+    margin-bottom: 50px; /* Añade margen inferior para separar del footer */
+}
+
+label.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+input.form-control {
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input.form-control:focus {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+/* Botón Subir Archivo */
+button.btn-success {
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    background-color: #27ae60;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-success:hover {
+    background-color: #2ecc71;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    form#carga-masiva-form {
+        padding: 20px;
+    }
+
+    button.btn-success {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,68 @@
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Título principal */
+h1.display-4 {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Títulos de secciones */
+h2.h3 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Contenedores de las listas */
+#heladera-list .item, #colaborador-list .item {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+#colaborador-list .item {
+    justify-content: flex-start;
+}
+
+/* Asegurando que ambos listados tengan el mismo tamaño */
+#heladera-list .item, #colaborador-list .item {
+    height: 50px;
+}
+
+/* Ajustes de texto en los elementos */
+#heladera-list .item h3, #colaborador-list .item h3 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+#heladera-list .item p, #colaborador-list .item p {
+    margin: 0;
+    color: #666;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    h1.display-4 {
+        font-size: 2rem;
+    }
+
+    #heladera-list .item, #colaborador-list .item {
+        padding: 10px;
+    }
+}

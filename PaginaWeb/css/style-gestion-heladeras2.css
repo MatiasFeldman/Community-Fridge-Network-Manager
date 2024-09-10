@@ -1,0 +1,235 @@
+
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+main {
+    width: 90%; 
+    margin: 0 auto; 
+    
+}
+
+
+/* Estilo para el título */
+h1.display-4 {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+/* Estilo del botón de filtro */
+.btn-outline-secondary {
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.btn-outline-secondary i {
+    font-size: 1.2rem;
+}
+
+.container-page {
+    display: flex;
+    gap: 20px; 
+}
+
+/* Ajustar tamaño del mapa */
+#map {
+    position: sticky;
+    height: 500px;
+    width: 40%;
+    margin-bottom: 30px;
+}
+
+/* Ajustar el listado de heladeras */
+.lista-heladeras {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Múltiples columnas y tamaño min y max de columna */
+    grid-auto-rows: minmax(170px, 32%);
+    gap: 20px; 
+    max-height: 500px; 
+    overflow-y: auto; /* Hacer que sea scrollable si supera la altura */
+}
+.lista-heladeras h5{
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+
+/* Estilo para la lista de heladeras */
+.list-group-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    transition: transform 0.2s;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item:hover {
+    transform: scale(1.01); 
+}
+
+.list-group-item h5 {
+    margin-left: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.list-group-item p {
+    margin-bottom: 5px;
+    margin-left: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+/* Ocultar/mostrar filtros de alerta */
+#alertFilters {
+    display: none;
+}
+
+#estadoHeladera {
+    margin-bottom: 15px;
+}
+
+/* Estilos adicionales para la sección de alertas */
+#alertFilters .form-check-label {
+    color: #333; 
+    font-weight: bold; 
+}
+
+#alertFilters .form-check-input {
+    margin-right: 10px; 
+}
+
+#filterCollapse {
+    background-color: #f8f9fa; 
+    border-radius: 10px;
+    padding: 15px;
+}
+
+#filterCollapse .card {
+    border: none;
+}
+
+/* Formulario de suscripción */
+#form-suscripcion {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 80%;
+}
+
+#form-suscripcion .form-group {
+    margin-bottom: 15px;
+}
+
+#form-suscripcion .btn-primary {
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+}
+
+/* Estilos del botón de suscripción */
+.suscribirse-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    align-self: flex-end;
+}
+/* Estado de la heladera (activa/inactiva) */
+.estado-heladera {
+    position: absolute;
+    
+    top: 5px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.estado-activa {
+    font-weight: bold;
+    color: #28a745;
+}
+.estado-inactiva {
+    font-weight: bold;
+    color: #dc3545;
+}
+h3.h5 {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+#nViandasMinContainer, #nViandasMaxContainer {
+    transition: all 0.3s ease;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#nViandasMinContainer.show, #nViandasMaxContainer.show {
+    opacity: 1;
+    max-height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: visible;
+}
+.col-12 {
+    display: flex;
+    justify-content: center; 
+}
+
+.filter-container {
+    background-color: #6c757d;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.filter-icon {
+    width: 20px;
+    margin-right: 10px;
+}
+
+#filter-options {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#filter-options .form-check {
+    margin-bottom: 10px;
+}
+
+.sub-filtro {
+    margin-left: 20px;
+}
+
+#filter-form .btn-primary {
+    margin-top: 15px;
+}
+
+.form-check-label{
+    color: #333;
+}

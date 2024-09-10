@@ -1,0 +1,162 @@
+/* Estilos generales */
+body, html {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para las páginas de formularios y selección */
+.register-page, .form-humano, .form-juridico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+p {
+    font-size: 16px;
+    color: #333;
+}
+.login{
+    
+    margin-bottom: 20px;
+}
+.login a{
+    color: #333;
+}
+
+/* Contenedores */
+.register-container, .form-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Títulos */
+.register-page h2, .form-humano h2, .form-juridico h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+.register-page h2{
+    margin-bottom: 3px;
+}
+
+/* Espaciado adicional entre el texto y las opciones de tipo de usuario */
+.option-group {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px 0 20px 0; /* Añadimos un margen superior mayor */
+}
+
+.option-group label {
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.option-group input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+}
+
+
+/* Botón Siguiente alineado a la derecha */
+.register-page button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 150px;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    transition: background-color 0.3s ease;
+    align-self: flex-end; /* Alinea el botón a la derecha */
+}
+/* Botón Registrar alineado a la derecha */
+form button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 150px;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    transition: background-color 0.3s ease;
+    align-self: center; /* Alinea el botón en el centro */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+}

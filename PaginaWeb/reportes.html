@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="css/style-reportes.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <script src="js/header-log.js"></script>
+    <script src="js/autenticacion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkUserRole(['admin'], false, false);
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="container-fluid bg-light border-bottom">
+        <div class="container d-flex justify-content-between align-items-center py-2">
+            <div class="logo">
+                <a class="nav-link text-dark" href="index.html">
+                    <img src="imagenes/logoEmpresa.png" alt="Logo" class="img-fluid">
+                </a>
+            </div>
+            <div class="search-bar d-flex flex-grow-1 mx-3 position-relative">
+                <input type="text" class="form-control rounded-pill ps-4" placeholder="Buscar...">
+                <span class="position-absolute end-0 top-50 translate-middle-y pe-3">
+                    <img src="imagenes/lupa.png" alt="Buscar" class="img-fluid search-icon">
+                </span>
+            </div>
+            <nav class="navigation">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#quienes-somos">Quienes Somos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#que-hacemos">Qué Hacemos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="donacion.html">Colaborar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="gestion-heladeras2.html">Heladeras</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="profile ms-3 d-flex align-items-center position-relative">
+
+                <span id="user-name" class="me-2 text-dark"></span>
+
+                <a class="nav-link text-dark" href="#" id="profile-icon">
+                    <img src="imagenes/user.png" alt="Perfil" class="img-fluid rounded-circle">
+                </a>
+
+                <div class="dropdown" id="profile-dropdown" style="display: none;">
+                    <div class="dropdown-content">
+                        <a href="/mi-cuenta.html">Mi Cuenta</a>
+                        <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="container mt-5">
+        <h1 class="display-4 text-center mb-5">Reporte</h1>
+        <div class="row">
+            <!-- Sección de Heladeras -->
+            <div class="col-md-6">
+                <h2 class="h3 text-center">Heladeras</h2>
+                <div id="heladera-list">
+                    <!-- Las heladeras se agregarán aca dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección de Colaboradores -->
+            <div class="col-md-6">
+                <h2 class="h3 text-center">Colaboradores</h2>
+                <div id="colaborador-list">
+                    <!-- Los colaboradores se agregarán aca dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/reportes.js"></script>
+
+
+
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-dark text-light py-4">
+        <div class="container d-flex">
+
+            <div class="footer-logo me-5">
+                <a href="index.html"><img src="imagenes/logoEmpresa.png" alt="Logo" class="img-fluid mb-2"
+                        style="max-width: 100px;"></a>
+            </div>
+
+            <div class="footer-content d-flex flex-grow-1 justify-content-between">
+
+                <div class="footer-column text-center">
+                    <h5>Ayúdanos a ayudar</h5>
+                    <p>Ayudemos a las personas vulnerables</p>
+                    <a href="donacion.html"><button class="btn btn-primary">Donar</button></a>
+                </div>
+
+                <div class="footer-column text-center">
+                    <h5>Contacto</h5>
+                    <p>Email: <a href="mailto:info@example.com" class="text-light">info@example.com</a></p>
+                    <p>Teléfono: +123456789</p>
+                    <div class="social-icons d-flex justify-content-center mt-3">
+                        <a href="#" class="mx-2">
+                            <img src="imagenes/isntagramLogo.png" alt="Instagram" class="img-fluid social-icon">
+                        </a>
+                        <a href="#" class="mx-2">
+                            <img src="imagenes/facebookLogo.png" alt="Facebook" class="img-fluid social-icon">
+                        </a>
+                        <a href="#" class="mx-2">
+                            <img src="imagenes/Youtube_logo.png" alt="YouTube" class="img-fluid social-icon">
+                        </a>
+                        <a href="#" class="mx-2">
+                            <img src="imagenes/X-Logo.png" alt="X" class="img-fluid social-icon">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-column text-center">
+                    <h5>Explora</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Quienes Somos</a></li>
+                        <li><a href="#" class="text-light">Qué Hacemos</a></li>
+                        <li><a href="gestion-heladeras2.html" class="text-light">Heladeras</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

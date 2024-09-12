@@ -5,17 +5,17 @@ import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSendingSt
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSendingStategy;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSendingStrategy;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
 public class SendingStrategyFactory {
 
     public static SendingStrategy create(String strategy){
-        switch (strategy){
-            case "TELEGRAM":
-                return new TelegramSendingStategy(new TelegramSender());
-            case "EMAIL":
-                return new MailSendingStrategy(new MimeMailSender());
-            default:
-                return new MailSendingStrategy(new MimeMailSender());
-        }
+        return switch (strategy) {
+            case "TELEGRAM" -> new TelegramSendingStategy(ServiceLocator.getTelegramSender());
+            case "EMAIL" -> new MailSendingStrategy(ServiceLocator.getMimeMailSender());
+            case "WHATSAPP" -> new WhatsAppSendingStrategy(ServiceLocator.getWhatsAppSender());
+            default -> new MailSendingStrategy(new MimeMailSender());
+        };
     }
 }

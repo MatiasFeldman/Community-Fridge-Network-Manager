@@ -48,9 +48,9 @@ public class ContribucionesController {
 
             if (destino.isPresent()) {
                 Heladera heladera = destino.get();
-                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(heladera);
+                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(h,heladera);
                 heladera.agregarViandas(1);
-                h.agregarContribucion(donacion);
+                h.sumarPuntaje(donacion);
                 return;
             }
             throw new HeladeraInexistenteException("No se encontró la heladera");
@@ -85,8 +85,8 @@ public class ContribucionesController {
                 hOrigen.quitarViandas(cantidad);
                 hDestino.agregarViandas(cantidad);
 
-                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo);
-                h.agregarContribucion(distri);
+                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, h);
+                h.sumarPuntaje(distri);
                 return;
             }
             throw new HeladeraInexistenteException("No se encontró alguna de las heladeras");
@@ -108,8 +108,8 @@ public class ContribucionesController {
 
                 VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_DINERO");
 
-                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node);
-                h.agregarContribucion(donacion);
+                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node, h);
+                h.sumarPuntaje(donacion);
                 return;
             }
         } else if (rol.equals("JURIDICA")) {
@@ -119,8 +119,8 @@ public class ContribucionesController {
 
                 VerificadorDePermisos.tienePermiso(j.getUser(), "DONAR_DINERO");
 
-                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node);
-                j.agregarContribucion(donacion);
+                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node, j);
+                j.sumarPuntaje(donacion);
                 return;
             }
         }
@@ -147,7 +147,7 @@ public class ContribucionesController {
             PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
 
             RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable((TarjetaPersonaVulnerable) tarjetaPersona, persona, h);
-            h.agregarContribucion(registro);
+            h.sumarPuntaje(registro);
         } else if (posibleHumano.isEmpty()) {
             throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         } else {
@@ -171,8 +171,8 @@ public class ContribucionesController {
 
             Heladera h = heladeraOpt.get();
 
-            HacerseCargoHeladera contribucion = ContribucionJuridicaFactory.hacerseCargoHeladera(h);
-            j.agregarContribucion(contribucion);
+            HacerseCargoHeladera contribucion = ContribucionJuridicaFactory.hacerseCargoHeladera(h,j);
+            j.sumarPuntaje(contribucion);
         } else if (posibleJuridica.isEmpty()) {
             throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
         } else {
@@ -197,8 +197,8 @@ public class ContribucionesController {
 
 
         Oferta oferta = JSONtoOferta.convertir(node);
-        OfrecerProductoOServicio contribucion = ContribucionJuridicaFactory.ofertar(oferta);
-        juridica.agregarContribucion(contribucion);
+        OfrecerProductoOServicio contribucion = ContribucionJuridicaFactory.ofertar(oferta, juridica);
+        juridica.sumarPuntaje(contribucion);
         ofertas.guardar(oferta);
     }
 }

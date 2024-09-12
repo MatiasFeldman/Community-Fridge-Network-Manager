@@ -7,6 +7,8 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +20,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +27,8 @@ import static org.mockito.Mockito.*;
 
 class ReporteMovimientoViandasTest {
     private HumanosRepository humanosRepository;
+    private DonacionesDeViandaRepository donacionesDeViandaRepository;
+    private DistribucionesDeViandasRepository distribucionesDeViandasRepository;
     private PersonasVulnerablesRepository personasVulnerablesRepository;
     private ReporteMovimientoViandas reporteMovimientoViandas;
 
@@ -36,7 +39,10 @@ class ReporteMovimientoViandasTest {
     void setUp() {
         humanosRepository = Mockito.mock(HumanosRepository.class);
         personasVulnerablesRepository = Mockito.mock(PersonasVulnerablesRepository.class);
-        reporteMovimientoViandas = new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository);
+        donacionesDeViandaRepository = Mockito.mock(DonacionesDeViandaRepository.class);
+        distribucionesDeViandasRepository = Mockito.mock(DistribucionesDeViandasRepository.class);
+        reporteMovimientoViandas = new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository, donacionesDeViandaRepository, distribucionesDeViandasRepository);
+
 
         // Inicializar listas simuladas
         humanos = new ArrayList<>();
@@ -82,14 +88,16 @@ class ReporteMovimientoViandasTest {
         Usuario usuario = new Usuario("usuario1", "Pedritoclavounclavito123@", null);
         Humano humano1 = Humano.crearVacio();
         humano1.setUser(usuario);
-        humano1.setContribuciones(new ArrayList<>());
 
 
-        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1");
-        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2");
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", humano1);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2", humano1);
 
-        humano1.agregarContribucion(distribucion1);
-        humano1.agregarContribucion(distribucion2);
+        distribucionesDeViandasRepository.guardar(distribucion1);
+        distribucionesDeViandasRepository.guardar(distribucion2);
+
+        humano1.sumarPuntaje(distribucion1);
+        humano1.sumarPuntaje(distribucion2);
 
         humanosRepository.guardar(humano1);
 
@@ -102,11 +110,14 @@ class ReporteMovimientoViandasTest {
         tarjetaVulnerable.usarEn(heladera2); // Añadir un uso en heladera2
 
         // Crear donación de viandas
-        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1);
-        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera2);
+        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1, humano1);
+        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera2, humano1);
 
-        humano1.agregarContribucion(donacion1);
-        humano1.agregarContribucion(donacion2);
+        donacionesDeViandaRepository.guardar(donacion1);
+        donacionesDeViandaRepository.guardar(donacion2);
+
+        humano1.sumarPuntaje(donacion1);
+        humano1.sumarPuntaje(donacion2);
 
         // Crear persona vulnerable y asignar tarjeta
         PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, humano1);

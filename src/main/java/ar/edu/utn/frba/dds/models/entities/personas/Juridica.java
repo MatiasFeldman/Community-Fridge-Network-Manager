@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -53,10 +52,6 @@ public class Juridica {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_contribucion")
-    private List<Contribucion> contribuciones = new ArrayList<>();
-
     @Transient
     private RecomendarPuntos recomendador;
 
@@ -80,8 +75,7 @@ public class Juridica {
 
     }
 
-    public void agregarContribucion(Contribucion contribucion) {
-        this.contribuciones.add(contribucion);
+    public void sumarPuntaje(Contribucion contribucion) {
         puntosGanados += contribucion.calcularPuntaje();
     }
 

@@ -4,21 +4,23 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 public class ReporteMovimientoViandas implements Reporte {
     private HumanosRepository humanosRepository;
     private PersonasVulnerablesRepository personasVulnerablesRepository;
+    private DonacionesDeViandaRepository donacionesDeViandaRepository;
+    private DistribucionesDeViandasRepository distribucionesDeViandasRepository;
 
-    public ReporteMovimientoViandas(HumanosRepository humanosRepository, PersonasVulnerablesRepository personasVulnerablesRepository) {
-        this.humanosRepository = humanosRepository;
-        this.personasVulnerablesRepository = personasVulnerablesRepository;
-    }
 
     public String generarReporteMovimientoViandas() {
         Map<String, Integer[]> viandasPorHeladera = contarViandasPorHeladera();
@@ -45,28 +47,27 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // Conteo de viandas distribuidas
         for (Humano humano : humanos) {
-            for (Contribucion contribucion : humano.getContribuciones()) {
-                if (contribucion instanceof DistribucionViandas) {
-                    DistribucionViandas distribucion = (DistribucionViandas) contribucion;
-                    Heladera origen = distribucion.getHeladeraOrigen();
-                    Heladera destino = distribucion.getHeladeraDestino();
+            List<DistribucionViandas> distribuciones = distribucionesDeViandasRepository.buscarPorColaborador(humano.getIdHumano());
+            for (DistribucionViandas distribucion : distribuciones) {
+                Heladera origen = distribucion.getHeladeraOrigen();
+                Heladera destino = distribucion.getHeladeraDestino();
 
-                    // Contar viandas que salen de la heladera origen
-                    Integer[] conteoOrigen = viandasPorHeladera.get(origen.getNombre().getNombreDePunto());
-                    if (conteoOrigen == null) {
-                        conteoOrigen = new Integer[]{0, 0};
-                    }
-                    conteoOrigen[0] += distribucion.getCantidadViandas();
-                    viandasPorHeladera.put(origen.getNombre().getNombreDePunto(), conteoOrigen);
-
-                    // Contar viandas que llegan a la heladera destino
-                    Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
-                    if (conteoDestino == null) {
-                        conteoDestino = new Integer[]{0, 0};
-                    }
-                    conteoDestino[1] += distribucion.getCantidadViandas();
-                    viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+                // Contar viandas que salen de la heladera origen
+                Integer[] conteoOrigen = viandasPorHeladera.get(origen.getNombre().getNombreDePunto());
+                if (conteoOrigen == null) {
+                    conteoOrigen = new Integer[]{0, 0};
                 }
+                conteoOrigen[0] += distribucion.getCantidadViandas();
+                viandasPorHeladera.put(origen.getNombre().getNombreDePunto(), conteoOrigen);
+
+                // Contar viandas que llegan a la heladera destino
+                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
+                if (conteoDestino == null) {
+                    conteoDestino = new Integer[]{0, 0};
+                }
+                conteoDestino[1] += distribucion.getCantidadViandas();
+                viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+
             }
         }
 
@@ -84,19 +85,18 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // contar donaciones de viandas
         for (Humano humano : humanos) {
-            for (Contribucion contribucion : humano.getContribuciones()) {
-                if (contribucion instanceof DonacionDeVianda) {
-                    DonacionDeVianda donacion = (DonacionDeVianda) contribucion;
-                    Heladera destino = donacion.getHeladera();
+            List<DonacionDeVianda> viandasDonadas = donacionesDeViandaRepository.buscarPorColaborador(humano.getIdHumano());
+            for (DonacionDeVianda donacion : viandasDonadas) {
+                Heladera destino = donacion.getHeladera();
 
-                    // Contar viandas que llegan a la heladera destino
-                    Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
-                    if (conteoDestino == null) {
-                        conteoDestino = new Integer[]{0, 0};
-                    }
-                    conteoDestino[1] += 1;
-                    viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+                // Contar viandas que llegan a la heladera destino
+                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
+                if (conteoDestino == null) {
+                    conteoDestino = new Integer[]{0, 0};
                 }
+                conteoDestino[1] += 1;
+                viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+
             }
         }
 

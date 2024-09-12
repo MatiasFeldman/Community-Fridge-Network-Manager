@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.converter;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSendingStrategy;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSendingStrategy;
@@ -16,19 +17,22 @@ public class SendingStrategyConverter implements AttributeConverter<SendingStrat
             return "MAIL";
         } else if (sendingStrategy instanceof TelegramSendingStategy){
             return "TELEGRAM";
-        } else {
+        }
+        else if (sendingStrategy instanceof WhatsAppSendingStrategy){
+            return "WHATSAPP";
+        }
+        else {
             return null;
         }
     }
 
     @Override
     public SendingStrategy convertToEntityAttribute(String s) {
-        if (s.equals("MAIL")){
-            return new MailSendingStrategy(ServiceLocator.getMimeMailSender());
-        } else if (s.equals("TELEGRAM")){
-            return new TelegramSendingStategy(ServiceLocator.getTelegramSender());
-        } else {
-            return null;
-        }
+        return switch (s) {
+            case "MAIL" -> new MailSendingStrategy(ServiceLocator.getMimeMailSender());
+            case "TELEGRAM" -> new TelegramSendingStategy(ServiceLocator.getTelegramSender());
+            case "WHATSAPP" -> new WhatsAppSendingStrategy(ServiceLocator.getWhatsAppSender());
+            default -> null;
+        };
     }
 }

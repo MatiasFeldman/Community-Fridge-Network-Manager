@@ -51,10 +51,6 @@ public class Humano {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_contribucion")
-    private List<Contribucion> contribuciones = new ArrayList<>();
-
     public void setTarjeta(TarjetaHumano tarjeta) {
         this.tarjeta = tarjeta;
         this.tarjeta.setDuenio(this);
@@ -68,7 +64,6 @@ public class Humano {
                 .mediosDeContacto(dto.getMediosDeContacto())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
-                .contribuciones(dto.getContribuciones())
                 .user(dto.getUser())
                 .user(dto.getUser())
                 .build();
@@ -99,8 +94,7 @@ public class Humano {
 
     }
 
-    public void agregarContribucion(Contribucion contribucion) {
-        this.contribuciones.add(contribucion);
+    public void sumarPuntaje(Contribucion contribucion) {
         puntosGanados+= contribucion.calcularPuntaje();
     }
 
@@ -138,7 +132,6 @@ public class Humano {
                 .mediosDeContacto(new ArrayList<>())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
-                .contribuciones(new ArrayList<>())
                 .build();
     }
 

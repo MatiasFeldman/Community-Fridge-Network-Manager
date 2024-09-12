@@ -4,25 +4,37 @@ import ar.edu.utn.frba.dds.exceptions.TarjetasAgotadasException;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "registro_persona_vulnerable")
-public class RegistroPersonaVulnerable extends Contribucion {
+@Builder
+public class RegistroPersonaVulnerable implements Contribucion{
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_contribucion")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
+    private Humano colaborador;
+
     @OneToOne
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaPersonaVulnerable tarjetaRepartida;
 
-    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida) {
-        return new RegistroPersonaVulnerable(tarjetaRepartida);
+    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida, Humano h) {
+        return RegistroPersonaVulnerable
+                .builder()
+                .colaborador(h)
+                .tarjetaRepartida(tarjetaRepartida)
+                .build();
     }
 
     @Override

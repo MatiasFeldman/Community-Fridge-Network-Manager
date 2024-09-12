@@ -2,6 +2,9 @@ package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
@@ -12,11 +15,16 @@ public class ServiceLocator {
 
     private MimeMailSender mimeMailSender;
     private TelegramSender telegramSender;
+    private WhatsAppSender whatsAppSender;
     private HeladerasRepository heladeras;
     private IncidentesRepository incidentes;
     private HumanosRepository humanos;
     private PersonasVulnerablesRepository personasVulnerables;
+    private DistribucionesDeViandasRepository distribucionesDeViandas;
+    private DonacionesDeViandaRepository donacionesDeVianda;
+
     private static ServiceLocator instance = null;
+
 
     public static ServiceLocator getInstance() {
         if (instance == null) {
@@ -73,4 +81,27 @@ public class ServiceLocator {
         instance.personasVulnerables = personasVulnerables;
     }
 
+    public static WhatsAppSender getWhatsAppSender() {
+        return instance.whatsAppSender;
+    }
+
+    public static void setWhatsAppSender(WhatsAppSender whatsAppSender) {
+        instance.whatsAppSender = whatsAppSender;
+    }
+
+    public static DistribucionesDeViandasRepository getDistribucionesDeViandasRepository() {
+        return instance.distribucionesDeViandas;
+    }
+
+    public static void setDistribucionesDeViandasRepository(DistribucionesDeViandasRepository distribucionesDeViandas) {
+        instance.distribucionesDeViandas = distribucionesDeViandas;
+    }
+
+    public static DonacionesDeViandaRepository getDonacionesDeViandaRepository() {
+        return instance.donacionesDeVianda;
+    }
+
+    public static void setDonacionesDeViandaRepository(DonacionesDeViandaRepository donacionesDeVianda) {
+        instance.donacionesDeVianda = donacionesDeVianda;
+    }
 }

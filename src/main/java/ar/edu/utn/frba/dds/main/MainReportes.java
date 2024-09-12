@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.main;
 
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
@@ -24,11 +26,13 @@ public class MainReportes {
         HumanosRepository humanosRepository = ServiceLocator.getHumanosRepository();
         IncidentesRepository incidentesRepository = ServiceLocator.getIncidentesRepository();
         PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.getPersonasVulnerablesRepository();
+        DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.getDistribucionesDeViandasRepository();
+        DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.getDonacionesDeViandaRepository();
 
         String filePath = "";
         GeneradorPDF generadorPDF = new PDFgenerator();
 
-        GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath, incidentesRepository, humanosRepository, personasVulnerablesRepository);
+        GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath, incidentesRepository, humanosRepository, personasVulnerablesRepository, donacionesDeViandaRepository, distribucionesDeViandasRepository);
 
         MainReportes main = new MainReportes(reportesCronJob);
         main.ejecutarUnaVez();

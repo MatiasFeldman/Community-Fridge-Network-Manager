@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.converter.FrecuenciaConverter;
+import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +18,26 @@ import java.time.temporal.ChronoUnit;
 @Builder
 @Entity
 @Table(name = "donacion_de_dinero")
-public class DonacionDeDinero extends Contribucion{
+@Getter
+public class DonacionDeDinero implements Contribucion{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_contribucion")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
+    private Humano colaboradorHumano;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_juridica", referencedColumnName = "id_juridica")
+    private Juridica colaboradorJuridico;
 
     @Column(name = "fecha_de_donacion")
     private LocalDate fechaDeDonacion;
-    @Getter
+
+
     @Column(name = "monto")
     private Double monto;
 
@@ -32,20 +49,44 @@ public class DonacionDeDinero extends Contribucion{
     private Boolean esPeriodica;
 
 
-    public static DonacionDeDinero of(Double monto, ChronoUnit unidad, Integer frecuencia){
+    public static DonacionDeDinero of(Humano humano, Double monto, ChronoUnit unidad, Integer frecuencia) {
         return DonacionDeDinero
                 .builder()
                 .monto(monto)
-                .frecuenciaDeDonacion(new Frecuencia(unidad,frecuencia, LocalDate.now()))
+                .colaboradorHumano(humano)
+                .frecuenciaDeDonacion(new Frecuencia(unidad, frecuencia, LocalDate.now()))
                 .esPeriodica(true)
                 .fechaDeDonacion(LocalDate.now())
                 .build();
     }
 
-    public static DonacionDeDinero of(double monto){
+    public static DonacionDeDinero of(Humano humano, double monto) {
         return DonacionDeDinero
                 .builder()
                 .monto(monto)
+                .colaboradorHumano(humano)
+                .esPeriodica(false)
+                .frecuenciaDeDonacion(null)
+                .fechaDeDonacion(LocalDate.now())
+                .build();
+    }
+
+    public static DonacionDeDinero of(Juridica juridica, Double monto, ChronoUnit unidad, Integer frecuencia) {
+        return DonacionDeDinero
+                .builder()
+                .monto(monto)
+                .colaboradorJuridico(juridica)
+                .frecuenciaDeDonacion(new Frecuencia(unidad, frecuencia, LocalDate.now()))
+                .esPeriodica(true)
+                .fechaDeDonacion(LocalDate.now())
+                .build();
+    }
+
+    public static DonacionDeDinero of(Juridica juridica, double monto) {
+        return DonacionDeDinero
+                .builder()
+                .monto(monto)
+                .colaboradorJuridico(juridica)
                 .esPeriodica(false)
                 .frecuenciaDeDonacion(null)
                 .fechaDeDonacion(LocalDate.now())
@@ -59,18 +100,16 @@ public class DonacionDeDinero extends Contribucion{
     }
 
 
-
-    public long vecesCumplidas(){
-        if(!esPeriodica){
+    public long vecesCumplidas() {
+        if (!esPeriodica) {
             return 1;
         }
         return frecuenciaDeDonacion.vecesCumplidas();
     }
 
-    public double cantidadDonada(){
+    public double cantidadDonada() {
         return monto * vecesCumplidas();
     }
-
 
 
 }

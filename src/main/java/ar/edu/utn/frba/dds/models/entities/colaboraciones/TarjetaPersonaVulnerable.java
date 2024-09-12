@@ -24,7 +24,7 @@ public class TarjetaPersonaVulnerable extends Tarjeta{
 
     @Setter
     @OneToOne(mappedBy = "tarjeta")
-    private PersonaVulnerable duenio;
+    private PersonaVulnerable duenio; // que tenga varias
 
 
     @OneToMany(mappedBy = "tarjeta")

@@ -18,7 +18,7 @@ public abstract class Tarjeta {
 
     @Column(name = "tipo_tarjeta")
     @Enumerated(EnumType.STRING)
-    private TipoTarjeta tipoTarjeta;
+    private TipoTarjeta tipoTarjeta; //contradictorio
 
 
 

@@ -46,10 +46,13 @@ document.addEventListener("DOMContentLoaded", function() {
             item.href = "#";
             item.className = "list-group-item list-group-item-action ";
             item.innerHTML = `
-                <h5>${heladera.nombre}</h5>
+            <p>
+                            <h5>${heladera.nombre}</h5>
+                            
+            </p>
                 <p>${heladera.direccion}</p>
                 <p>Viandas disponibles: ${heladera.viandas}</p>
-                ${userRole ? `<button class="btn ${heladera.suscrito ? 'btn-danger' : 'btn-success'} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button>` : ''}
+                ${userRole ? `<button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button>` : ''}
                 <span class="estado-heladera ${heladera.estado === 'activa' ? 'estado-activa' : 'estado-inactiva'}">${heladera.estado === 'activa' ? 'Activa' : 'Inactiva'}</span>
             `;
 

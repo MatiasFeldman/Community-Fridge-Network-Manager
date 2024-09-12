@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeDinero;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
@@ -10,7 +11,6 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
 
 import java.io.IOException;
@@ -67,8 +67,7 @@ public class RegisterCargaMasiva {
     }
 
     public void agregarContribucion(Humano humano, String formaColaboracion, Integer cantidad){
-        Contribucion contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad);
-        humano.agregarContribucion(contribucion);
+        Contribucion contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad,humano);
     }
 
     public void guardarEnRepositorios(Humano humano){

@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import com.opencsv.CSVReader;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -65,7 +64,7 @@ public class ConversorCSVReader implements ConversorCSV {
             MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword(), mailSender);
         } else {
             Humano human = humano.get();
-            human.agregarContribucion(ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad));
+            ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad, human);
 
         }
     }

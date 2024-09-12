@@ -14,7 +14,6 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -33,7 +32,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "heladera")
-public class Heladera implements IMqttMessageListener {
+public class Heladera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,8 +80,6 @@ public class Heladera implements IMqttMessageListener {
     private List<SuscripcionAHeladera> suscriptores;
 
 
-    @Transient
-    private MqttReceptorApertura receptorApertura;
 
     @Transient
     private Accionador accionadorParaTemperatura;
@@ -192,7 +189,7 @@ public class Heladera implements IMqttMessageListener {
 
     @SneakyThrows
     public void verificarAcceso(TarjetaHumano tarjeta, LocalDateTime fecha) {
-        Optional<SolicitudApertura> aviso = solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(tarjeta.getId())).findFirst();
+        Optional<SolicitudApertura> aviso = this.buscarSolicitud(tarjeta);
         IntentoAperturaResuelto intento;
         ObjectMapper mapper = new ObjectMapper();
         String jsonMensaje;
@@ -231,21 +228,15 @@ public class Heladera implements IMqttMessageListener {
 
     }
 
+    public Optional<SolicitudApertura> buscarSolicitud(TarjetaHumano tarjeta){
+        return solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(tarjeta.getId())).findFirst();
+    }
+
     public void intentoAcceso(Object solicitud) {
         IntentoApertura intento = (IntentoApertura) solicitud;
         this.verificarAcceso(intento.getSolicitante(), intento.getFechaHoraDeIntento());
     }
 
-    @Override
-    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        String jsonMensaje = mqttMessage.toString();
-        ObjectMapper mapper = new ObjectMapper();
-        SolicitudApertura msg = mapper.readValue(jsonMensaje, SolicitudApertura.class);
-
-        if (msg.getHeladera().getId().equals(this.id)) {
-            this.agregarSolicitudApertura(msg);
-        }
-    }
 
     public boolean temperaturaValida(Double temp) {
         return temp >= this.tempMinima && temp <= this.tempMaxima;

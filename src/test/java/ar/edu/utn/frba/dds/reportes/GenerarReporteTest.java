@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.*;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
@@ -22,7 +24,8 @@ public class GenerarReporteTest {
         IncidentesRepository incidentesRepository = Mockito.mock(IncidentesRepository.class);
         HumanosRepository humanosRepository = Mockito.mock(HumanosRepository.class);
         PersonasVulnerablesRepository personasVulnerablesRepository = Mockito.mock(PersonasVulnerablesRepository.class);
-
+        DistribucionesDeViandasRepository distribucionesDeViandasRepository = Mockito.mock(DistribucionesDeViandasRepository.class);
+        DonacionesDeViandaRepository donacionesDeViandaRepository = Mockito.mock(DonacionesDeViandaRepository.class);
 
 
         String filePath = "/Users/matifeldman/Documentos/DDS";
@@ -32,7 +35,7 @@ public class GenerarReporteTest {
         List<Reporte> reportes = List.of(
                 new ReporteFallas(incidentesRepository),
                 new ReporteViandasDonadas(humanosRepository),
-                new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository));
+                new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository, donacionesDeViandaRepository, distribucionesDeViandasRepository));
 
         pdfGeneratorMock.generarPDF(reportes, filePath);
 

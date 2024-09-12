@@ -2,14 +2,18 @@ package ar.edu.utn.frba.dds.models.entities.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 public class ReporteViandasDonadas implements Reporte {
     private HumanosRepository humanosRepository;
+    private DonacionesDeViandaRepository donacionesDeViandaRepository;
 
     public ReporteViandasDonadas(HumanosRepository humanosRepository) {
         this.humanosRepository = humanosRepository;
@@ -38,14 +42,15 @@ public class ReporteViandasDonadas implements Reporte {
 
     private Map<String, Integer> contarViandasPorHumano() {
         List<Humano> humanos = humanosRepository.buscarTodos();
+
         Map<String, Integer> viandasPorHumano = new HashMap<>();
 
         for (Humano humano : humanos) {
+            Long id = humano.getIdHumano();
             String idUsuario = humano.getIdUsuario().toString();
-            int conteo = (int) humano.getContribuciones().stream()
-                    .filter(contribucion -> contribucion instanceof DonacionDeVianda)
-                    .count();
-            viandasPorHumano.put(idUsuario, conteo);
+            List<DonacionDeVianda> donacionesDeVianda = donacionesDeViandaRepository.buscarPorColaborador(id);
+
+            viandasPorHumano.put(idUsuario, donacionesDeVianda.size());
         }
 
         return viandasPorHumano;

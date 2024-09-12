@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,8 +62,8 @@ class ReporteViandasDonadasTest {
         DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
 
-        humano1.agregarContribucion(donacion1);
-        humano1.agregarContribucion(donacion2);
+        humano1.sumarPuntaje(donacion1);
+        humano1.sumarPuntaje(donacion2);
         humanosRepository.guardar(humano1);
 
         Usuario usuario2 = new Usuario("usuario2", "Pedritoclavounclavito12122343#", null);
@@ -73,7 +72,7 @@ class ReporteViandasDonadasTest {
         humano2.setUser(usuario2);
 
         DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
-        humano2.agregarContribucion(donacion3);
+        humano2.sumarPuntaje(donacion3);
         humanosRepository.guardar(humano2);
 
         // Generar el contenido del reporte

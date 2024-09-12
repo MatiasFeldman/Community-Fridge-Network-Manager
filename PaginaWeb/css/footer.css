@@ -2,9 +2,8 @@
 
 /* Colores de la empresa o relacionados */
 :root {
-    --primary-color: #0d6efd; /* Azul */
-    --secondary-color: #6c757d; /* Gris */
-    --text-color: #ffffff; /* Texto claro para el footer */
+    --primary-color: #778DA9; /* Azul */
+    --text-color: #E0E1DD; /* Texto claro para el footer */
 }
 
 body {
@@ -14,7 +13,7 @@ body {
 
 footer {
     color: var(--text-color);
-    --background-color: #343a40; /* Fondo oscuro para el footer */
+    background-color: var(--primary-color); /* Fondo oscuro para el footer */
 }
 
 .footer-logo {
@@ -42,10 +41,11 @@ footer {
 .footer-column a {
     color: var(--text-color);
     margin-bottom: 8px;
+    transition: all .3s;
 }
 
 .footer-column a:hover {
-    color: var(--primary-color);
+    color: #0D1B2A;
 }
 
 .social-icons a {

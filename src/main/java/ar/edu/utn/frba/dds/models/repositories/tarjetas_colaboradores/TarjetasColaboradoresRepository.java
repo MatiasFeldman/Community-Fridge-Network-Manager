@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDAO;
 

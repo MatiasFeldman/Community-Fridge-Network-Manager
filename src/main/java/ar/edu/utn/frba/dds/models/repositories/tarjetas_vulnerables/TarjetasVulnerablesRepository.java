@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesDAO;
 import lombok.AllArgsConstructor;

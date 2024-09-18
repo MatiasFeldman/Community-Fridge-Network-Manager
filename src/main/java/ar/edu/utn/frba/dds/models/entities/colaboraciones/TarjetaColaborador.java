@@ -13,18 +13,21 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TarjetaColaborador extends Tarjeta{
+public class TarjetaColaborador{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_tarjeta")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
     private ColaboradorHumano duenio;
 
-    @Override
     public void usarEn(Heladera heladera){
         heladera.verificarAcceso(this, LocalDateTime.now());
     }
 
-    @Override
     public Long getDuenioId() {
         return this.duenio.getIdUsuario();
     }

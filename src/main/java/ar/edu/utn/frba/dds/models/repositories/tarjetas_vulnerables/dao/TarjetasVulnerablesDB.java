@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 

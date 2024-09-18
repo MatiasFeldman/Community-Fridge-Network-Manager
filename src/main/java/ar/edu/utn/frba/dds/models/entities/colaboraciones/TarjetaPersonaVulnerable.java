@@ -15,13 +15,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+
 @Getter
 @Entity
 @Table(name = "tarjeta_persona_vulnerable")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class TarjetaPersonaVulnerable extends Tarjeta{
+public class TarjetaPersonaVulnerable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_tarjeta")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_persona_vulnerable", referencedColumnName = "id_persona_vulnerable")
@@ -32,22 +38,22 @@ public class TarjetaPersonaVulnerable extends Tarjeta{
     private List<UsoTarjeta> historialDeUsos = new ArrayList<>();
 
 
-    private Integer usosDeHoy(){
+    private Integer usosDeHoy() {
         LocalDate hoy = LocalDate.now();
         return Math.toIntExact(historialDeUsos.stream().filter(uso -> uso.getFecha().isEqual(hoy)).count());
     }
 
-    private Integer usosDisponibles(){
+    private Integer usosDisponibles() {
         return 4 + duenio.getMenoresACargo() - usosDeHoy();
     }
 
-    @Override
-    public void usarEn(Heladera heladera){
+
+    public void usarEn(Heladera heladera) {
         heladera.quitarViandas(1);
         historialDeUsos.add(new UsoTarjeta(heladera, LocalDate.now()));
     }
 
-    @Override
+
     public Long getDuenioId() {
         return this.duenio.getId();
     }

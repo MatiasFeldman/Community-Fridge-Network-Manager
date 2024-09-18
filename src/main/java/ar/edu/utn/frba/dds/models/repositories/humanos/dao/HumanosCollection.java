@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.humanos.dao;
 
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -8,43 +8,43 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class HumanosCollection implements HumanosDAO {
-    private List<Humano> humanos;
+    private List<ColaboradorHumano> colaboradorHumanos;
 
 
     @Override
-    public void guardar(Humano humano) {
-        this.humanos.add(humano);
+    public void guardar(ColaboradorHumano colaboradorHumano) {
+        this.colaboradorHumanos.add(colaboradorHumano);
     }
 
     @Override
-    public List<Humano> buscarTodos() {
-        return this.humanos;
+    public List<ColaboradorHumano> buscarTodos() {
+        return this.colaboradorHumanos;
     }
 
     @Override
-    public Optional<Humano> buscarPorId(Long id) {
-        return this.humanos
+    public Optional<ColaboradorHumano> buscarPorId(Long id) {
+        return this.colaboradorHumanos
                 .stream()
                 .filter(humano -> humano.getIdUsuario().equals(id)).findFirst();
     }
 
     @Override
-    public void eliminar(Humano humano) {
-        this.humanos.remove(humano);
+    public void eliminar(ColaboradorHumano colaboradorHumano) {
+        this.colaboradorHumanos.remove(colaboradorHumano);
     }
 
     @Override
-    public void modificar(Humano humano) {
-        Optional<Humano> humanoOptional = this.buscarPorId(humano.getIdUsuario());
+    public void modificar(ColaboradorHumano colaboradorHumano) {
+        Optional<ColaboradorHumano> humanoOptional = this.buscarPorId(colaboradorHumano.getIdUsuario());
         humanoOptional.ifPresent(humano1 -> {
             this.eliminar(humano1);
-            this.guardar(humano);
+            this.guardar(colaboradorHumano);
         });
     }
 
     @Override
-    public Optional<Humano> buscarPorDocumento(String tipo, String nro) {
-        return this.humanos
+    public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro) {
+        return this.colaboradorHumanos
                 .stream()
                 .filter(humano -> humano.getDocumento(tipo).equals(nro))
                 .findFirst();
@@ -52,7 +52,7 @@ public class HumanosCollection implements HumanosDAO {
 
     @Override
     public boolean existeUsername(String username) {
-        return this.humanos
+        return this.colaboradorHumanos
                 .stream()
                 .anyMatch(humano -> humano.getUsername().equals(username));
     }

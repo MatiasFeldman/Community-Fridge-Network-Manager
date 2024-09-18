@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
@@ -54,7 +54,7 @@ public class ConversorCSVReader implements ConversorCSV {
         Integer cantidad = Integer.parseInt(line[7]);
 
 
-        Optional<Humano> humano = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
+        Optional<ColaboradorHumano> humano = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
 
         if (humano.isEmpty()) {
             RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, ofertas);
@@ -63,7 +63,7 @@ public class ConversorCSVReader implements ConversorCSV {
 
             MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword(), mailSender);
         } else {
-            Humano human = humano.get();
+            ColaboradorHumano human = humano.get();
             ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad, human);
 
         }

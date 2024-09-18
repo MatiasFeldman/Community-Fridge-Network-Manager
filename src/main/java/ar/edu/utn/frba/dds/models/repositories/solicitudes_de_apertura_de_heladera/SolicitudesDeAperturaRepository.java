@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaDAO;
@@ -23,7 +23,7 @@ public class SolicitudesDeAperturaRepository {
         dao.eliminar(solicitud);
     }
 
-    public Boolean existeSolicitud(TarjetaHumano tarjeta, Heladera heladera){
+    public Boolean existeSolicitud(TarjetaColaborador tarjeta, Heladera heladera){
         return dao.existeSolicitud(tarjeta, heladera);
     }
 

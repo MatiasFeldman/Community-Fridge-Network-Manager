@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class DireccionDTO {
     private Calle calle;
-    private int altura;
-    private int comuna;
+    private Integer altura;
     private Coordenada coordenada;
 }

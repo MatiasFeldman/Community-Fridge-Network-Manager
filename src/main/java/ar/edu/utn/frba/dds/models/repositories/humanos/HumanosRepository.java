@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.humanos;
 
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.repositories.humanos.dao.HumanosDAO;
 import lombok.AllArgsConstructor;
 
@@ -11,23 +11,23 @@ import java.util.Optional;
 public class HumanosRepository {
     private HumanosDAO humanos;
 
-    public void guardar(Humano humano) {
-        humanos.guardar(humano);
+    public void guardar(ColaboradorHumano colaboradorHumano) {
+        humanos.guardar(colaboradorHumano);
     }
 
-    public Optional<Humano> buscarPorId(Long id) {
+    public Optional<ColaboradorHumano> buscarPorId(Long id) {
         return humanos.buscarPorId(id);
     }
 
-    public List<Humano> buscarTodos() {
+    public List<ColaboradorHumano> buscarTodos() {
         return humanos.buscarTodos();
     }
 
-    public void eliminar(Humano humano) {
-        humanos.eliminar(humano);
+    public void eliminar(ColaboradorHumano colaboradorHumano) {
+        humanos.eliminar(colaboradorHumano);
     }
 
-    public Optional<Humano> buscarPorDocumento(String tipo, String nro){
+    public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro){
         return humanos.buscarPorDocumento(tipo, nro);
     }
 

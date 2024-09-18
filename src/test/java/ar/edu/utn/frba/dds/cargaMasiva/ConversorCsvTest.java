@@ -3,11 +3,10 @@ package ar.edu.utn.frba.dds.cargaMasiva;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.dao.HumanosCollection;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
-import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,10 +38,10 @@ public class ConversorCsvTest {
         cargaMasiva.cargar();
 
         String dni1 = "12345678";
-        Optional<Humano> h = humanos.buscarPorDocumento("DNI", dni1);
+        Optional<ColaboradorHumano> h = humanos.buscarPorDocumento("DNI", dni1);
 
         String dni2 = "9101112";
-        Optional<Humano> h2 = humanos.buscarPorDocumento("DNI", dni2);
+        Optional<ColaboradorHumano> h2 = humanos.buscarPorDocumento("DNI", dni2);
 
         Double puntaje1Supuesto = 100.0;
         Double puntaje2Supuesto = 175.0;

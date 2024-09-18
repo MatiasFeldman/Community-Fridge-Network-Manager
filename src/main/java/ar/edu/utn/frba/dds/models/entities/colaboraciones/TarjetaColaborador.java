@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,10 +13,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TarjetaHumano extends Tarjeta{
+public class TarjetaColaborador extends Tarjeta{
 
-    @OneToOne(mappedBy = "tarjeta")
-    private Humano duenio;
+    @ManyToOne
+    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
+    private ColaboradorHumano duenio;
 
     @Override
     public void usarEn(Heladera heladera){

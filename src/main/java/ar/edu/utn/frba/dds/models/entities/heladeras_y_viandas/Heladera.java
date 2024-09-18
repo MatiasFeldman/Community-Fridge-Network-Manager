@@ -1,17 +1,15 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 
-import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.EspacioInsuficienteException;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -42,9 +40,7 @@ public class Heladera {
     @Embedded
     private PuntoDeHeladera nombre;
 
-    @Setter
-    @Convert(converter = DireccionConverter.class)
-    @Column(name = "direccion")
+    @Embedded
     private Direccion direccion;
 
     @Column(name = "capacidad_maxima")
@@ -78,7 +74,6 @@ public class Heladera {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SuscripcionAHeladera> suscriptores;
-
 
 
     @Transient
@@ -188,7 +183,7 @@ public class Heladera {
     }
 
     @SneakyThrows
-    public void verificarAcceso(TarjetaHumano tarjeta, LocalDateTime fecha) {
+    public void verificarAcceso(TarjetaColaborador tarjeta, LocalDateTime fecha) {
         Optional<SolicitudApertura> aviso = this.buscarSolicitud(tarjeta);
         IntentoAperturaResuelto intento;
         ObjectMapper mapper = new ObjectMapper();
@@ -228,7 +223,7 @@ public class Heladera {
 
     }
 
-    public Optional<SolicitudApertura> buscarSolicitud(TarjetaHumano tarjeta){
+    public Optional<SolicitudApertura> buscarSolicitud(TarjetaColaborador tarjeta) {
         return solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(tarjeta.getId())).findFirst();
     }
 

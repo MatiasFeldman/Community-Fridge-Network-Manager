@@ -1315,7 +1315,7 @@
 											"top": 1436,
 											"width": 341.716796875,
 											"height": 13,
-											"text": "+actualizarSolicitud(Humano humano, bool resultado): void",
+											"text": "+actualizarSolicitud(Humano colaboradorHumano, bool resultado): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -13507,7 +13507,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGQcuPDPjuAU8U="
 									},
-									"name": "Humano humano",
+									"name": "Humano colaboradorHumano",
 									"type": ""
 								},
 								{

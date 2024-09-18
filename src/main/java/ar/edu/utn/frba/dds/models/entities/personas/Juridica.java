@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
-import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
@@ -25,7 +24,7 @@ public class Juridica {
     @Column(name = "id_juridica")
     private Long idJuridica;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
@@ -42,8 +41,7 @@ public class Juridica {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Contacto> mediosDeContacto;
 
-    @Convert(converter = DireccionConverter.class)
-    @Column(name = "direccion")
+    @Embedded
     private Direccion direccion;
 
     @Column(name = "puntos_canjeados")

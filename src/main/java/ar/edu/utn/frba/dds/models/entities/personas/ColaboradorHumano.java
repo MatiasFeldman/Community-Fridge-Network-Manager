@@ -19,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "humano")
-public class Humano {
+public class ColaboradorHumano {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_humano")
@@ -29,15 +29,14 @@ public class Humano {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
-    private TarjetaHumano tarjeta = null;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "duenio")
+    private List<TarjetaColaborador> tarjetas = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_atributo_obligatorio")
     private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
@@ -51,13 +50,13 @@ public class Humano {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    public void setTarjeta(TarjetaHumano tarjeta) {
-        this.tarjeta = tarjeta;
-        this.tarjeta.setDuenio(this);
+    public void agregarTarejta(TarjetaColaborador tarjeta) {
+        tarjeta.setDuenio(this);
+        this.tarjetas.add(tarjeta);
     }
 
-    public static Humano create(HumanoInputDTO dto) {
-        return Humano
+    public static ColaboradorHumano create(HumanoInputDTO dto) {
+        return ColaboradorHumano
                 .builder()
                 .atributosObligatorios(dto.getAtributosObligatorios())
                 .atributosOpcionales(dto.getAtributosOpcionales())
@@ -124,8 +123,8 @@ public class Humano {
         return this.user.getId();
     }
 
-    public static Humano crearVacio(){
-        return Humano
+    public static ColaboradorHumano crearVacio(){
+        return ColaboradorHumano
                 .builder()
                 .atributosObligatorios(new ArrayList<>())
                 .atributosOpcionales(new ArrayList<>())

@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeDinero;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
@@ -44,7 +43,7 @@ public class RegisterCargaMasiva {
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
-        Humano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, userCreado);
+        ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, userCreado);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
@@ -61,18 +60,18 @@ public class RegisterCargaMasiva {
         return new Usuario(username, password, new ArrayList<>(List.of(new Rol("HUMANO"))));
     }
 
-    public Humano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
+    public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
         HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>() , userCreado);
         return HumanoFactory.crear(dto);
     }
 
-    public void agregarContribucion(Humano humano, String formaColaboracion, Integer cantidad){
-        Contribucion contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad,humano);
+    public void agregarContribucion(ColaboradorHumano colaboradorHumano, String formaColaboracion, Integer cantidad){
+        Contribucion contribucion = ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad, colaboradorHumano);
     }
 
-    public void guardarEnRepositorios(Humano humano){
+    public void guardarEnRepositorios(ColaboradorHumano colaboradorHumano){
 
-        this.humanRepository.guardar(humano);
+        this.humanRepository.guardar(colaboradorHumano);
 
     }
 

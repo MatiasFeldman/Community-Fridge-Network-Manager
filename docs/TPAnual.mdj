@@ -11709,7 +11709,7 @@
 							"top": 136,
 							"width": 216,
 							"height": 88,
-							"text": "Tendria que haber una lsita con los elementos que se deben solicitar del usuario o el sistema ya lo sabe y nos los pasa directametne cuando crea el el humano?"
+							"text": "Tendria que haber una lsita con los elementos que se deben solicitar del usuario o el sistema ya lo sabe y nos los pasa directametne cuando crea el el colaboradorHumano?"
 						},
 						{
 							"_type": "UMLTextView",

@@ -1,14 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
-import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.UUID;
 
 
 @NoArgsConstructor
@@ -26,7 +22,7 @@ public class DonacionDeVianda implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
-    private Humano colaborador;
+    private ColaboradorHumano colaborador;
 
     @Column(name = "finalizada")
     private Boolean finalizada;
@@ -39,7 +35,7 @@ public class DonacionDeVianda implements Contribucion{
     private Boolean activa;
 
 
-    public static DonacionDeVianda of(Heladera heladera, Humano colaborador) {
+    public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador) {
         return DonacionDeVianda
                 .builder()
                 .heladera(heladera)
@@ -49,7 +45,7 @@ public class DonacionDeVianda implements Contribucion{
                 .build();
     }
 
-    public static DonacionDeVianda of(Heladera heladera, Humano colaborador, Boolean finalizada) {
+    public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador, Boolean finalizada) {
         return DonacionDeVianda
                 .builder()
                 .heladera(heladera)

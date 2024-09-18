@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
-import ar.edu.utn.frba.dds.converter.AreaDeCoberturaConverter;
 import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
@@ -30,7 +29,7 @@ public class Tecnico {
     @Column(name = "apellido")
     private String apellido;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto")
     private Contacto medioContacto;
 
@@ -43,7 +42,7 @@ public class Tecnico {
     @Column(name = "nro_cuil")
     private String nroCUIL;
 
-    @Convert(converter = AreaDeCoberturaConverter.class)
+    @Embedded
     private AreaCobertura areaCobertura;
 
     public static Tecnico create(TecnicoDTO dto) {

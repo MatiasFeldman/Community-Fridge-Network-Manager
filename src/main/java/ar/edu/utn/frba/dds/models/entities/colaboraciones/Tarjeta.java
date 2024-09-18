@@ -16,10 +16,6 @@ public abstract class Tarjeta {
     @Column(name = "id_tarjeta")
     private Long id;
 
-    @Column(name = "tipo_tarjeta")
-    @Enumerated(EnumType.STRING)
-    private TipoTarjeta tipoTarjeta; //contradictorio
-
 
 
     public abstract void usarEn(Heladera heladera);

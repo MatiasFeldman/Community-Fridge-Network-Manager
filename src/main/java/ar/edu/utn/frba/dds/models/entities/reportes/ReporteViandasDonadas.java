@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class ReporteViandasDonadas implements Reporte {
         Map<String, Integer> viandasPorHumano = contarViandasPorHumano();
         StringBuilder contenido = new StringBuilder();
         contenido.append("Reporte de viandas donadas\n");
-        contenido.append("Humano\tCantidad de viandas\n");
+        contenido.append("ColaboradorHumano\tCantidad de viandas\n");
         for (Map.Entry<String, Integer> entry : viandasPorHumano.entrySet()) {
             contenido.append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
         }
@@ -41,13 +41,13 @@ public class ReporteViandasDonadas implements Reporte {
     }
 
     private Map<String, Integer> contarViandasPorHumano() {
-        List<Humano> humanos = humanosRepository.buscarTodos();
+        List<ColaboradorHumano> colaboradorHumanos = humanosRepository.buscarTodos();
 
         Map<String, Integer> viandasPorHumano = new HashMap<>();
 
-        for (Humano humano : humanos) {
-            Long id = humano.getIdHumano();
-            String idUsuario = humano.getIdUsuario().toString();
+        for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
+            Long id = colaboradorHumano.getIdHumano();
+            String idUsuario = colaboradorHumano.getIdUsuario().toString();
             List<DonacionDeVianda> donacionesDeVianda = donacionesDeViandaRepository.buscarPorColaborador(id);
 
             viandasPorHumano.put(idUsuario, donacionesDeVianda.size());

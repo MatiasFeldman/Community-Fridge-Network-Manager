@@ -2,19 +2,20 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
-import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,7 +32,7 @@ public class HeladerasController {
     private Accionador accionador;
     private SolicitudesDeAperturaRepository solicitudes;
     private IntentosDeAperturaRepository intentos;
-    private TarjetasRepository tarjetas;
+    private TarjetasColaboradoresRepository tarjetas;
     private HeladerasRepository heladeras;
     private HumanosRepository humanos;
     private JuridicasRepository juridicas;
@@ -70,6 +71,7 @@ public class HeladerasController {
         LocalDateTime fechaSoli = LocalDateTime.parse(node.get("fechaHoraSolicitud").asText());
         Integer cantViandas = node.get("cantidadDeViandas").asInt();
         Long idUsuario = Long.parseLong(node.get("id_usuario").asText());
+        Long idTarjeta = Long.parseLong(node.get("id_tarjeta").asText());
         String rol = node.get("rol").asText();
         String heladera = node.get("heladera").asText();
 
@@ -85,13 +87,13 @@ public class HeladerasController {
             throw new PermisoDenegadoException("No tiene permisos para realizar esta accion");
         }
 
-        Optional<Humano> posibleHumano = humanos.buscarPorId(idUsuario);
+        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(idUsuario);
 
         if (posibleHumano.isEmpty()) {
             throw new UsuarioSinTarjetaException("No se encontro el usuario");
         }
 
-        TarjetaHumano tarjeta = posibleHumano.get().getTarjeta();
+        TarjetaColaborador tarjeta = tarjetas.buscarPorId(idTarjeta).get();
 
 
         SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, tarjeta, heladeraObj, cantViandas);

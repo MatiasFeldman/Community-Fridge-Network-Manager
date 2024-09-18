@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.factories.Suscripciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.TIPOSUSCRIPCION;
@@ -13,17 +13,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class SuscripcionesFactory {
 
-    public static void crearSuscripcion(Humano humano, Heladera heladera, JsonNode suscripcionNode, String medioDeContacto){
+    public static void crearSuscripcion(ColaboradorHumano colaboradorHumano, Heladera heladera, JsonNode suscripcionNode, String medioDeContacto){
         TIPOSUSCRIPCION tipo = TIPOSUSCRIPCION.valueOf(suscripcionNode.get("tipo").asText());
         Integer cantidad = suscripcionNode.get("cantidad").asInt();
-        String valorMedioDeContacto = humano.getMedioDeContacto(medioDeContacto);
+        String valorMedioDeContacto = colaboradorHumano.getMedioDeContacto(medioDeContacto);
 
         if (medioDeContacto == null){
             throw new IllegalArgumentException("Medio de contacto no valido");
         }
 
         Suscripcion suscripcion = create(tipo, cantidad, valorMedioDeContacto);
-        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(humano.getUser(), suscripcion);
+        SuscripcionAHeladera suscripcionAHeladera = new SuscripcionAHeladera(colaboradorHumano.getUser(), suscripcion);
 
         heladera.suscribir(suscripcionAHeladera);
 

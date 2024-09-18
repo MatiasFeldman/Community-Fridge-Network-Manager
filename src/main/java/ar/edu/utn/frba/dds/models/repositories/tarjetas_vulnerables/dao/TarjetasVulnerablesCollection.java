@@ -1,19 +1,16 @@
-package ar.edu.utn.frba.dds.models.repositories.tarjetas.dao;
+package ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Tarjeta;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TipoTarjeta;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public class TarjetasCollection implements TarjetasDAO {
-    private List<Tarjeta> tarjetas;
+public class TarjetasVulnerablesCollection implements TarjetasVulnerablesDAO {
+    private List<TarjetaPersonaVulnerable> tarjetas;
 
     @Override
-    public Optional<Tarjeta> buscarPorId(Long idTarjetaRepartida) {
+    public Optional<TarjetaPersonaVulnerable> buscarPorId(Long idTarjetaRepartida) {
         return tarjetas
                 .stream()
                 .filter(t -> t.getId().equals(idTarjetaRepartida))
@@ -21,8 +18,8 @@ public class TarjetasCollection implements TarjetasDAO {
     }
 
     @Override
-    public void modificar(Tarjeta tarjeta) {
-        Optional<Tarjeta> tarjetaOptional = buscarPorId(tarjeta.getId());
+    public void modificar(TarjetaPersonaVulnerable tarjeta) {
+        Optional<TarjetaPersonaVulnerable> tarjetaOptional = buscarPorId(tarjeta.getId());
         tarjetaOptional.ifPresent(t -> {
             tarjetas.remove(t);
             tarjetas.add(tarjeta);
@@ -30,12 +27,12 @@ public class TarjetasCollection implements TarjetasDAO {
     }
 
     @Override
-    public void guardar(Tarjeta tarjeta) {
+    public void guardar(TarjetaPersonaVulnerable tarjeta) {
         tarjetas.add(tarjeta);
     }
 
     @Override
-    public void eliminar(Tarjeta tarjeta) {
+    public void eliminar(TarjetaPersonaVulnerable tarjeta) {
         tarjetas.remove(tarjeta);
     }
 }

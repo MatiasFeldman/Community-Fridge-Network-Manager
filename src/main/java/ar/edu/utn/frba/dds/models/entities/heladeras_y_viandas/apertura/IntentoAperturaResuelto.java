@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class IntentoAperturaResuelto {
 
     @ManyToOne
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
-    private TarjetaHumano tarjeta;
+    private TarjetaColaborador tarjeta;
 
     @ManyToOne
     @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
@@ -32,7 +32,7 @@ public class IntentoAperturaResuelto {
     @Column(name = "exitoso")
     private Boolean exitoso;
 
-    public IntentoAperturaResuelto(TarjetaHumano idTarjeta, Heladera idHeladera, LocalDateTime fecha, Boolean exitoso) {
+    public IntentoAperturaResuelto(TarjetaColaborador idTarjeta, Heladera idHeladera, LocalDateTime fecha, Boolean exitoso) {
         this.tarjeta = idTarjeta;
         this.heladera = idHeladera;
         this.fecha = fecha;

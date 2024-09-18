@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class DistribucionViandas implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
-    private Humano colaborador;
+    private ColaboradorHumano colaborador;
 
     @ManyToOne
     @JoinColumn(name = "id_heladera_origen", referencedColumnName = "id_heladera")
@@ -53,10 +53,10 @@ public class DistribucionViandas implements Contribucion{
     private Boolean activa;
 
 
-    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, Humano humano) {
+    public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, ColaboradorHumano colaboradorHumano) {
         return DistribucionViandas
                 .builder()
-                .colaborador(humano)
+                .colaborador(colaboradorHumano)
                 .heladeraOrigen(origen)
                 .heladeraDestino(destino)
                 .cantidadViandas(cant)
@@ -66,10 +66,10 @@ public class DistribucionViandas implements Contribucion{
                 .build();
     }
 
-    public static DistribucionViandas ofCargaMasiva(Integer cantViandas, Humano humano) {
+    public static DistribucionViandas ofCargaMasiva(Integer cantViandas, ColaboradorHumano colaboradorHumano) {
         return DistribucionViandas
                 .builder()
-                .colaborador(humano)
+                .colaborador(colaboradorHumano)
                 .cantidadViandas(cantViandas)
                 .distribuidas(true)
                 .build();

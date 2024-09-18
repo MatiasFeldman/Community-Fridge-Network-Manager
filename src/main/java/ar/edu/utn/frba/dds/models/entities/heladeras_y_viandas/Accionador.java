@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
-import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.comandos.Comando;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import lombok.Builder;
 

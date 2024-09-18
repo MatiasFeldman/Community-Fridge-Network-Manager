@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
@@ -29,13 +29,13 @@ public class OfertasController {
         Oferta oferta = posibleOferta.get();
 
         if (rol.equals("HUMANO")){
-            Optional<Humano> posibleHumano = humanos.buscarPorId(id);
+            Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
             if (posibleHumano.isEmpty()){
-                throw new RuntimeException("No se encontro el humano");
+                throw new RuntimeException("No se encontro el colaboradorHumano");
             }
 
-            Humano humano = posibleHumano.get();
-            humano.canjearOferta(oferta);
+            ColaboradorHumano colaboradorHumano = posibleHumano.get();
+            colaboradorHumano.canjearOferta(oferta);
         } else if (rol.equals("JURIDICA")){
             Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
             if (posibleJuridica.isEmpty()){

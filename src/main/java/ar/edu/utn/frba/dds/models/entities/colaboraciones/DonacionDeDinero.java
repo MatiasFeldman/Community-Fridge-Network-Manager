@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.converter.FrecuenciaConverter;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public class DonacionDeDinero implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
-    private Humano colaboradorHumano;
+    private ColaboradorHumano colaboradorHumano;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_juridica", referencedColumnName = "id_juridica")
@@ -49,22 +48,22 @@ public class DonacionDeDinero implements Contribucion{
     private Boolean esPeriodica;
 
 
-    public static DonacionDeDinero of(Humano humano, Double monto, ChronoUnit unidad, Integer frecuencia) {
+    public static DonacionDeDinero of(ColaboradorHumano colaboradorHumano, Double monto, ChronoUnit unidad, Integer frecuencia) {
         return DonacionDeDinero
                 .builder()
                 .monto(monto)
-                .colaboradorHumano(humano)
+                .colaboradorHumano(colaboradorHumano)
                 .frecuenciaDeDonacion(new Frecuencia(unidad, frecuencia, LocalDate.now()))
                 .esPeriodica(true)
                 .fechaDeDonacion(LocalDate.now())
                 .build();
     }
 
-    public static DonacionDeDinero of(Humano humano, double monto) {
+    public static DonacionDeDinero of(ColaboradorHumano colaboradorHumano, double monto) {
         return DonacionDeDinero
                 .builder()
                 .monto(monto)
-                .colaboradorHumano(humano)
+                .colaboradorHumano(colaboradorHumano)
                 .esPeriodica(false)
                 .frecuenciaDeDonacion(null)
                 .fechaDeDonacion(LocalDate.now())

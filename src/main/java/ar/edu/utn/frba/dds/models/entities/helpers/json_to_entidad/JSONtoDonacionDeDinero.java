@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeDinero;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 
 public class JSONtoDonacionDeDinero {
 
-    public static DonacionDeDinero convertir(JsonNode node, Humano h) {
+    public static DonacionDeDinero convertir(JsonNode node, ColaboradorHumano h) {
         double monto = node.get("monto").asDouble();
         boolean esPeriodica = node.get("esPeriodica").asBoolean();
         if (esPeriodica) {

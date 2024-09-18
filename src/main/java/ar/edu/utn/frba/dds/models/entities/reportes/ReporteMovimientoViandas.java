@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
@@ -41,13 +41,13 @@ public class ReporteMovimientoViandas implements Reporte {
     }
 
     public Map<String, Integer[]> contarViandasPorHeladera() {
-        List<Humano> humanos = humanosRepository.buscarTodos();
+        List<ColaboradorHumano> colaboradorHumanos = humanosRepository.buscarTodos();
         List<PersonaVulnerable> personasVulnerables = personasVulnerablesRepository.buscarTodos();
         Map<String, Integer[]> viandasPorHeladera = new HashMap<>();
 
         // Conteo de viandas distribuidas
-        for (Humano humano : humanos) {
-            List<DistribucionViandas> distribuciones = distribucionesDeViandasRepository.buscarPorColaborador(humano.getIdHumano());
+        for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
+            List<DistribucionViandas> distribuciones = distribucionesDeViandasRepository.buscarPorColaborador(colaboradorHumano.getIdHumano());
             for (DistribucionViandas distribucion : distribuciones) {
                 Heladera origen = distribucion.getHeladeraOrigen();
                 Heladera destino = distribucion.getHeladeraDestino();
@@ -73,19 +73,20 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // Contar viandas retiradas por personas vulnerables
         for (PersonaVulnerable persona : personasVulnerables) {
-            TarjetaPersonaVulnerable tarjeta = persona.getTarjeta();
-            List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
-            for (UsoTarjeta uso : historialUso) {
-                Heladera heladera = uso.getHeladera();
-                Integer[] conteo = viandasPorHeladera.getOrDefault(heladera.getNombre().getNombreDePunto(), new Integer[]{0, 0});
-                conteo[1] += 1; // Cada uso de tarjeta cuenta como una vianda saliente
-                viandasPorHeladera.put(heladera.getNombre().getNombreDePunto(), conteo);
+            for (TarjetaPersonaVulnerable tarjeta : persona.getTarjetas()) {
+                List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
+                for (UsoTarjeta uso : historialUso) {
+                    Heladera heladera = uso.getHeladera();
+                    Integer[] conteo = viandasPorHeladera.getOrDefault(heladera.getNombre().getNombreDePunto(), new Integer[]{0, 0});
+                    conteo[1] += 1; // Cada uso de tarjeta cuenta como una vianda saliente
+                    viandasPorHeladera.put(heladera.getNombre().getNombreDePunto(), conteo);
+                }
             }
         }
 
         // contar donaciones de viandas
-        for (Humano humano : humanos) {
-            List<DonacionDeVianda> viandasDonadas = donacionesDeViandaRepository.buscarPorColaborador(humano.getIdHumano());
+        for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
+            List<DonacionDeVianda> viandasDonadas = donacionesDeViandaRepository.buscarPorColaborador(colaboradorHumano.getIdHumano());
             for (DonacionDeVianda donacion : viandasDonadas) {
                 Heladera destino = donacion.getHeladera();
 

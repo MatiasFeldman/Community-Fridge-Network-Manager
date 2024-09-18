@@ -1,12 +1,14 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
-import ar.edu.utn.frba.dds.converter.DireccionConverter;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,9 +22,9 @@ public class PersonaVulnerable {
     @Column(name = "id_persona_vulnerable")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_humano", nullable = false)
-    private Humano registradaPor;
+    private ColaboradorHumano registradaPor;
 
     @Column(name = "nombre", nullable = false)
     private String nombre;
@@ -33,8 +35,7 @@ public class PersonaVulnerable {
     @Column(name = "fecha_registro")
     private LocalDate fechaDeRegistro;
 
-    @Convert(converter = DireccionConverter.class)
-    @Column(name = "direccion")
+    @Embedded
     private Direccion domicilio;
 
     @Column(name = "numero_documento", nullable = false)
@@ -43,11 +44,10 @@ public class PersonaVulnerable {
     @Column(name = "menores_a_cargo")
     private Integer menoresACargo;
 
-    @OneToOne
-    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
-    private TarjetaPersonaVulnerable tarjeta;
+    @OneToMany(mappedBy = "duenio")
+    private List<TarjetaPersonaVulnerable> tarjetas;
 
-    public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, Humano registradaPor) {
+    public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, ColaboradorHumano registradaPor) {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.fechaDeRegistro = fechaDeRegistro;
@@ -55,10 +55,10 @@ public class PersonaVulnerable {
         this.nroDocumento = nroDocumento;
         this.menoresACargo = menoresACargo;
         this.registradaPor = registradaPor;
-        this.tarjeta = null;
+        this.tarjetas = null;
     }
 
-    public static PersonaVulnerable of(String nombre, LocalDate fechaNacimiento, Direccion domicilio, String nroDocumento, Integer menoresACargo){
+    public static PersonaVulnerable of(String nombre, LocalDate fechaNacimiento, Direccion domicilio, String nroDocumento, Integer menoresACargo) {
         return PersonaVulnerable
                 .builder()
                 .nombre(nombre)
@@ -68,11 +68,11 @@ public class PersonaVulnerable {
                 .nroDocumento(nroDocumento)
                 .registradaPor(null)
                 .menoresACargo(menoresACargo)
-                .tarjeta(null)
+                .tarjetas(new ArrayList<>())
                 .build();
     }
 
     public Long getIdPersonaVulnerable() {
-        return tarjeta.getId();
+        return this.id;
     }
 }

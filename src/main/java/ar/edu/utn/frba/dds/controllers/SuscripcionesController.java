@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.factories.Suscripciones.SuscripcionesFactory;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
@@ -36,11 +36,11 @@ public class SuscripcionesController {
             Heladera h = heladera.get();
             JsonNode suscripcionesNode = node.get("suscripciones");
             if (Objects.equals(tipo_colaborador, "HUMANO")){
-                Optional<Humano> posibleHumano = humanos.buscarPorId(id_usuario);
+                Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id_usuario);
                 if (posibleHumano.isPresent()){
-                    Humano humano = posibleHumano.get();
+                    ColaboradorHumano colaboradorHumano = posibleHumano.get();
                     for (JsonNode suscripcion : suscripcionesNode){
-                        SuscripcionesFactory.crearSuscripcion(humano, h, suscripcion, medioDeContacto);
+                        SuscripcionesFactory.crearSuscripcion(colaboradorHumano, h, suscripcion, medioDeContacto);
                     }
                 }
             } else if(Objects.equals(tipo_colaborador, "JURIDICA")){

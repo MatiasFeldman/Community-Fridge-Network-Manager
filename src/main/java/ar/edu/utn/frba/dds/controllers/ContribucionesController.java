@@ -8,14 +8,14 @@ import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDonacionDeDinero;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoPersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
-import ar.edu.utn.frba.dds.models.repositories.tarjetas.TarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class ContribucionesController {
     private HumanosRepository humanos;
     private HeladerasRepository heladeras;
-    private TarjetasRepository tarjetas;
+    private TarjetasVulnerablesRepository tarjetas;
     private JuridicasRepository juridicas;
     private OfertasRepository ofertas;
 
@@ -36,10 +36,10 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<Humano> humano = humanos.buscarPorId(id);
+        Optional<ColaboradorHumano> humano = humanos.buscarPorId(id);
 
         if (humano.isPresent()) {
-            Humano h = humano.get();
+            ColaboradorHumano h = humano.get();
 
             VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_VIANDAS");
 
@@ -63,10 +63,10 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<Humano> posibleHumano = humanos.buscarPorId(id);
+        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
 
         if (posibleHumano.isPresent()) {
-            Humano h = posibleHumano.get();
+            ColaboradorHumano h = posibleHumano.get();
 
             VerificadorDePermisos.tienePermiso(h.getUser(), "DISTRIBUIR_VIANDAS");
 
@@ -102,9 +102,9 @@ public class ContribucionesController {
         String rol = node.get("rol").asText();
 
         if (rol.equals("HUMANO")) {
-            Optional<Humano> posibleHumano = humanos.buscarPorId(id);
+            Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
             if (posibleHumano.isPresent()) {
-                Humano h = posibleHumano.get();
+                ColaboradorHumano h = posibleHumano.get();
 
                 VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_DINERO");
 
@@ -134,19 +134,19 @@ public class ContribucionesController {
         Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());
 
 
-        Optional<Humano> posibleHumano = humanos.buscarPorId(id);
-        Optional<Tarjeta> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
+        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
+        Optional<TarjetaPersonaVulnerable> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
 
         if (posibleHumano.isPresent() && tarjeta.isPresent()) {
-            Humano h = posibleHumano.get();
+            ColaboradorHumano h = posibleHumano.get();
 
             VerificadorDePermisos.tienePermiso(h.getUser(), "REGISTRAR_PERSONA_VULNERABLE");
 
-            Tarjeta tarjetaPersona = tarjeta.get();
+            TarjetaPersonaVulnerable tarjetaPersona = tarjeta.get();
 
             PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
 
-            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable((TarjetaPersonaVulnerable) tarjetaPersona, persona, h);
+            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable(tarjetaPersona, persona, h);
             h.sumarPuntaje(registro);
         } else if (posibleHumano.isEmpty()) {
             throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");

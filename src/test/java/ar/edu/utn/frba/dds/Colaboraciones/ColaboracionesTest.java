@@ -1,21 +1,6 @@
 package ar.edu.utn.frba.dds.Colaboraciones;
 
-import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /*
 public class ColaboracionesTest {
@@ -23,8 +8,8 @@ public class ColaboracionesTest {
 
     private Heladera heladera;
     private Heladera heladeraDestino;
-    private Humano humano;
-    private TarjetaHumano tarjeta;
+    private ColaboradorHumano humano;
+    private TarjetaColaborador tarjeta;
     //private Vianda viandaMock;
 
     @BeforeEach
@@ -45,8 +30,8 @@ public class ColaboracionesTest {
                 .solicitudes(new ArrayList<>())  // Inicializar la lista de solicitudes
                 .build();
 
-        humano = mock(Humano.class);
-        tarjeta = new TarjetaHumano();
+        humano = mock(ColaboradorHumano.class);
+        tarjeta = new TarjetaColaborador();
         tarjeta.setDuenio(humano);
         when(humano.getTarjeta()).thenReturn(tarjeta);
     }

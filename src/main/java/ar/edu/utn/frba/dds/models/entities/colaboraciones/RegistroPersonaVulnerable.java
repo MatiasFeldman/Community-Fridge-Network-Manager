@@ -1,14 +1,11 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.exceptions.TarjetasAgotadasException;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
-import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,13 +20,13 @@ public class RegistroPersonaVulnerable implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
-    private Humano colaborador;
+    private ColaboradorHumano colaborador;
 
     @OneToOne
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaPersonaVulnerable tarjetaRepartida;
 
-    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida, Humano h) {
+    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida, ColaboradorHumano h) {
         return RegistroPersonaVulnerable
                 .builder()
                 .colaborador(h)

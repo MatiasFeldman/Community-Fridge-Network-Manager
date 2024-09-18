@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaHumano;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,7 +28,7 @@ public class SolicitudApertura {
 
     @ManyToOne
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
-    private TarjetaHumano solicitante;
+    private TarjetaColaborador solicitante;
 
     @ManyToOne
     @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
@@ -40,11 +40,11 @@ public class SolicitudApertura {
     @Column(name = "fecha_expiracion", nullable = false)
     private LocalDateTime fechaDeExpiracion;
 
-    public static SolicitudApertura create(LocalDateTime fechaSoli, TarjetaHumano tarjetaHumano, Heladera heladera, Integer cantViandas){
+    public static SolicitudApertura create(LocalDateTime fechaSoli, TarjetaColaborador tarjetaColaborador, Heladera heladera, Integer cantViandas){
         return SolicitudApertura
                 .builder()
                 .fechaHoraSolicitud(fechaSoli)
-                .solicitante(tarjetaHumano)
+                .solicitante(tarjetaColaborador)
                 .heladera(heladera)
                 .cantidadDeViandas(cantViandas)
                 .fechaDeExpiracion(fechaSoli.plusHours(horasParaEjecutarAccion))

@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 class ReporteViandasDonadasTest {
     private HumanosRepository humanosRepository;
     private ReporteViandasDonadas reporteViandasDonadas;
-    private List<Humano> humanos;
+    private List<ColaboradorHumano> colaboradorHumanos;
 
     @BeforeEach
     void setUp() {
@@ -34,16 +34,16 @@ class ReporteViandasDonadasTest {
         reporteViandasDonadas = new ReporteViandasDonadas(humanosRepository);
 
         // Inicializar lista simulada
-        humanos = new ArrayList<>();
+        colaboradorHumanos = new ArrayList<>();
 
         // Configurar comportamiento de los mocks
         doAnswer(invocation -> {
-            Humano humano = invocation.getArgument(0);
-            humanos.add(humano);
+            ColaboradorHumano colaboradorHumano = invocation.getArgument(0);
+            colaboradorHumanos.add(colaboradorHumano);
             return null;
-        }).when(humanosRepository).guardar(any(Humano.class));
+        }).when(humanosRepository).guardar(any(ColaboradorHumano.class));
 
-        when(humanosRepository.buscarTodos()).thenReturn(humanos);
+        when(humanosRepository.buscarTodos()).thenReturn(colaboradorHumanos);
     }
 
     @Test
@@ -56,24 +56,24 @@ class ReporteViandasDonadasTest {
         // Crear humano con donaciones
         Usuario usuario1 = new Usuario("usuario1", "Pedritoclavounclavito12122343@", null);
         usuario1.setId(1L);
-        Humano humano1 = Humano.crearVacio();
-        humano1.setUser(usuario1);
+        ColaboradorHumano colaboradorHumano1 = ColaboradorHumano.crearVacio();
+        colaboradorHumano1.setUser(usuario1);
 
         DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
         DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
 
-        humano1.sumarPuntaje(donacion1);
-        humano1.sumarPuntaje(donacion2);
-        humanosRepository.guardar(humano1);
+        colaboradorHumano1.sumarPuntaje(donacion1);
+        colaboradorHumano1.sumarPuntaje(donacion2);
+        humanosRepository.guardar(colaboradorHumano1);
 
         Usuario usuario2 = new Usuario("usuario2", "Pedritoclavounclavito12122343#", null);
         usuario2.setId(2L);
-        Humano humano2 = Humano.crearVacio();
-        humano2.setUser(usuario2);
+        ColaboradorHumano colaboradorHumano2 = ColaboradorHumano.crearVacio();
+        colaboradorHumano2.setUser(usuario2);
 
         DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
-        humano2.sumarPuntaje(donacion3);
-        humanosRepository.guardar(humano2);
+        colaboradorHumano2.sumarPuntaje(donacion3);
+        humanosRepository.guardar(colaboradorHumano2);
 
         // Generar el contenido del reporte
         String contenido = reporteViandasDonadas.contenido();
@@ -81,9 +81,9 @@ class ReporteViandasDonadasTest {
         // Crear contenido esperado y ordenarlo
         List<String> expectedLines = Arrays.asList(
                 "Reporte de viandas donadas",
-                "Humano\tCantidad de viandas",
-                humano1.getIdUsuario() + "\t2",
-                humano2.getIdUsuario() + "\t1"
+                "ColaboradorHumano\tCantidad de viandas",
+                colaboradorHumano1.getIdUsuario() + "\t2",
+                colaboradorHumano2.getIdUsuario() + "\t1"
         );
         String expected = expectedLines.stream().sorted().collect(Collectors.joining("\n"));
 

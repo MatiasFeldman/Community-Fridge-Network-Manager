@@ -41,7 +41,7 @@
 									"top": 333,
 									"width": 217.08447265625,
 									"height": 13,
-									"text": "humano"
+									"text": "colaboradorHumano"
 								},
 								{
 									"_type": "ERDColumnCompartmentView",
@@ -6354,7 +6354,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFLzntJC6EktCk="
 					},
-					"name": "humano",
+					"name": "colaboradorHumano",
 					"ownedElements": [
 						{
 							"_type": "ERDRelationship",

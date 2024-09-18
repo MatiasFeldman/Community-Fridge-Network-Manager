@@ -1,23 +1,36 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Builder
 @Getter
+@Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class Direccion {
+
+    @Embedded
     private Calle calle;
+
+    @Column(name = "altura")
     private Integer altura;
+
+    @Embedded
     private Coordenada coordenadas;
-    private Integer comuna;
 
     public static Direccion of(DireccionDTO dto){
         return Direccion
                 .builder()
                 .calle(dto.getCalle())
                 .altura(dto.getAltura())
-                .comuna(dto.getComuna())
                 .coordenadas(dto.getCoordenada())
                 .build();
     }

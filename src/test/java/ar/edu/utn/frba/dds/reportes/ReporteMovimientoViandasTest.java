@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.reportes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
-import ar.edu.utn.frba.dds.models.entities.personas.Humano;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -32,7 +32,7 @@ class ReporteMovimientoViandasTest {
     private PersonasVulnerablesRepository personasVulnerablesRepository;
     private ReporteMovimientoViandas reporteMovimientoViandas;
 
-    private List<Humano> humanos;
+    private List<ColaboradorHumano> colaboradorHumanos;
     private List<PersonaVulnerable> personasVulnerables;
 
     @BeforeEach
@@ -45,15 +45,15 @@ class ReporteMovimientoViandasTest {
 
 
         // Inicializar listas simuladas
-        humanos = new ArrayList<>();
+        colaboradorHumanos = new ArrayList<>();
         personasVulnerables = new ArrayList<>();
 
         // Configurar comportamiento de los mocks
         doAnswer(invocation -> {
-            Humano humano = invocation.getArgument(0);
-            humanos.add(humano);
+            ColaboradorHumano colaboradorHumano = invocation.getArgument(0);
+            colaboradorHumanos.add(colaboradorHumano);
             return null;
-        }).when(humanosRepository).guardar(any(Humano.class));
+        }).when(humanosRepository).guardar(any(ColaboradorHumano.class));
 
         doAnswer(invocation -> {
             PersonaVulnerable personaVulnerable = invocation.getArgument(0);
@@ -61,7 +61,7 @@ class ReporteMovimientoViandasTest {
             return null;
         }).when(personasVulnerablesRepository).guardar(any(PersonaVulnerable.class));
 
-        when(humanosRepository.buscarTodos()).thenReturn(humanos);
+        when(humanosRepository.buscarTodos()).thenReturn(colaboradorHumanos);
         when(personasVulnerablesRepository.buscarTodos()).thenReturn(personasVulnerables);
     }
 
@@ -86,20 +86,20 @@ class ReporteMovimientoViandasTest {
 
         // Crear humano con contribuciones
         Usuario usuario = new Usuario("usuario1", "Pedritoclavounclavito123@", null);
-        Humano humano1 = Humano.crearVacio();
-        humano1.setUser(usuario);
+        ColaboradorHumano colaboradorHumano1 = ColaboradorHumano.crearVacio();
+        colaboradorHumano1.setUser(usuario);
 
 
-        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", humano1);
-        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2", humano1);
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", colaboradorHumano1);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2", colaboradorHumano1);
 
         distribucionesDeViandasRepository.guardar(distribucion1);
         distribucionesDeViandasRepository.guardar(distribucion2);
 
-        humano1.sumarPuntaje(distribucion1);
-        humano1.sumarPuntaje(distribucion2);
+        colaboradorHumano1.sumarPuntaje(distribucion1);
+        colaboradorHumano1.sumarPuntaje(distribucion2);
 
-        humanosRepository.guardar(humano1);
+        humanosRepository.guardar(colaboradorHumano1);
 
         // Crear tarjeta
         TarjetaPersonaVulnerable tarjetaVulnerable = new TarjetaPersonaVulnerable();
@@ -110,18 +110,18 @@ class ReporteMovimientoViandasTest {
         tarjetaVulnerable.usarEn(heladera2); // Añadir un uso en heladera2
 
         // Crear donación de viandas
-        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1, humano1);
-        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera2, humano1);
+        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1, colaboradorHumano1);
+        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera2, colaboradorHumano1);
 
         donacionesDeViandaRepository.guardar(donacion1);
         donacionesDeViandaRepository.guardar(donacion2);
 
-        humano1.sumarPuntaje(donacion1);
-        humano1.sumarPuntaje(donacion2);
+        colaboradorHumano1.sumarPuntaje(donacion1);
+        colaboradorHumano1.sumarPuntaje(donacion2);
 
         // Crear persona vulnerable y asignar tarjeta
-        PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, humano1);
-        personaVulnerable.setTarjeta(tarjetaVulnerable);
+        PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, colaboradorHumano1);
+        personaVulnerable.setTarjetas(List.of(tarjetaVulnerable));
         personasVulnerablesRepository.guardar(personaVulnerable);
 
         // Generar el contenido del reporte

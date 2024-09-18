@@ -26,10 +26,12 @@ public class Usuario {
     private final String user;
     @Column(name = "contrasenia", nullable = false)
     private String password;
+
     @Id
     @GeneratedValue
     @Column(name = "id_usuario")
     private Long id;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "rol_de_usuario",

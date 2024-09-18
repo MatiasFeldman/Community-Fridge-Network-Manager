@@ -20,11 +20,12 @@ import javax.persistence.*;
 @Table(name = "tarjeta_persona_vulnerable")
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class TarjetaPersonaVulnerable extends Tarjeta{
 
-    @Setter
-    @OneToOne(mappedBy = "tarjeta")
-    private PersonaVulnerable duenio; // que tenga varias
+    @ManyToOne
+    @JoinColumn(name = "id_persona_vulnerable", referencedColumnName = "id_persona_vulnerable")
+    private PersonaVulnerable duenio;
 
 
     @OneToMany(mappedBy = "tarjeta")

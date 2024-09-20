@@ -23,16 +23,15 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
 
     @Override
     public void eliminar(ColaboradorHumano colaboradorHumano) {
-        beginTransaction();
-        entityManager().remove(colaboradorHumano);
-        commitTransaction();
+        colaboradorHumano.setPresente(false);
+        this.modificar(colaboradorHumano);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<ColaboradorHumano> buscarTodos() {
         return entityManager()
-                .createQuery("from " + ColaboradorHumano.class.getName())
+                .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.presente = true ", ColaboradorHumano.class)
                 .getResultList();
     }
     @Override
@@ -43,7 +42,7 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
     @Override
     public boolean existeUsername(String username) {
         Long count = entityManager()
-                .createQuery("SELECT COUNT(h) FROM ColaboradorHumano h WHERE h.user.user = :username", Long.class)
+                .createQuery("SELECT COUNT(h) FROM ColaboradorHumano h WHERE h.user.user = :username AND h.presente = true", Long.class)
                 .setParameter("username", username)
                 .getSingleResult();
 

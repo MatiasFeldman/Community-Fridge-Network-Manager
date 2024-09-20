@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TarjetasColaboradoresDAO {
@@ -12,4 +13,6 @@ public interface TarjetasColaboradoresDAO {
     void guardar(TarjetaColaborador tarjeta);
 
     void eliminar(TarjetaColaborador tarjeta);
+
+    List<TarjetaColaborador> buscarTodas();
 }

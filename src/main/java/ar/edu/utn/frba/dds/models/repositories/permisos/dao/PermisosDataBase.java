@@ -18,7 +18,7 @@ public class PermisosDataBase implements PermisosDAO, WithSimplePersistenceUnit 
     @Override
     public Optional<Permiso> buscarPorNombre(String nombre) {
         return entityManager()
-                .createQuery("SELECT p FROM Permiso p WHERE p.nombre = :nombre", Permiso.class)
+                .createQuery("SELECT p FROM Permiso p WHERE p.nombre = :nombre and p.presente = true", Permiso.class)
                 .setParameter("nombre", nombre)
                 .getResultList()
                 .stream()
@@ -29,21 +29,22 @@ public class PermisosDataBase implements PermisosDAO, WithSimplePersistenceUnit 
     @SuppressWarnings("unchecked")
     public List<Permiso> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Permiso.class.getName())
+                .createQuery("select p from Permiso p where p.presente = true ", Permiso.class)
                 .getResultList();
     }
 
     @Override
     public boolean existePermiso(Long id) {
         return entityManager()
-                .createQuery("SELECT COUNT(p) FROM Permiso p WHERE p.id = :id", Long.class)
+                .createQuery("SELECT COUNT(p) FROM Permiso p WHERE p.id = :id and p.presente = true", Long.class)
                 .setParameter("id", id)
                 .getSingleResult() > 0;
     }
 
     @Override
     public void eliminar(Permiso permiso) {
-        entityManager().remove(permiso);
+        permiso.setPresente(false);
+        this.modificar(permiso);
     }
 
     public void modificar(Permiso permiso) {

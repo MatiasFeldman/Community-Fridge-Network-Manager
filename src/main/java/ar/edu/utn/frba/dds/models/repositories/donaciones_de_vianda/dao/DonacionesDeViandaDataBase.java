@@ -19,7 +19,7 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
     @Override
     public List<DonacionDeVianda> buscarTodas() {
         return entityManager()
-                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.activa = true", DonacionDeVianda.class)
+                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.presente = true", DonacionDeVianda.class)
                 .getResultList();
     }
 
@@ -38,7 +38,7 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
 
     @Override
     public void eliminar(DonacionDeVianda donacionDeVianda) {
-        donacionDeVianda.setActiva(false);
+        donacionDeVianda.setPresente(false);
         this.actualizar(donacionDeVianda);
 
     }
@@ -46,7 +46,7 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
     @Override
     public List<DonacionDeVianda> buscarPorColaborador(Long id) {
         return entityManager()
-                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.id = :id AND d.activa = true", DonacionDeVianda.class)
+                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.id = :id AND d.presente = true", DonacionDeVianda.class)
                 .setParameter("id", id)
                 .getResultList();
     }

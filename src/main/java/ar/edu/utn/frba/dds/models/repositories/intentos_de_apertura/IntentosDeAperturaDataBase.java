@@ -17,15 +17,14 @@ public class IntentosDeAperturaDataBase implements IntentosDeAperturaDAO, WithSi
     @SuppressWarnings("unchecked")
     public List<IntentoAperturaResuelto> buscarTodos() {
         return entityManager()
-                .createQuery("from " + IntentoAperturaResuelto.class.getName())
+                .createQuery("SELECT i FROM IntentoAperturaResuelto i WHERE i.presente = true ", IntentoAperturaResuelto.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(IntentoAperturaResuelto intento) {
-        beginTransaction();
-        entityManager().remove(intento);
-        commitTransaction();
+        intento.setPresente(false);
+        this.modficar(intento);
     }
 
     @Override

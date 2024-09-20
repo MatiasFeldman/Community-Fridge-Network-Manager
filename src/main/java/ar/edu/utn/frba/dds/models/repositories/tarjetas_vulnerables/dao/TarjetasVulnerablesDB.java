@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TarjetasVulnerablesDB implements TarjetasVulnerablesDAO, WithSimplePersistenceUnit {
@@ -28,8 +29,14 @@ public class TarjetasVulnerablesDB implements TarjetasVulnerablesDAO, WithSimple
 
     @Override
     public void eliminar(TarjetaPersonaVulnerable tarjeta) {
-        withTransaction(() -> {
-            entityManager().remove(tarjeta);
-        });
+        tarjeta.setPresente(false);
+        this.modificar(tarjeta);
+    }
+
+    @Override
+    public List<TarjetaPersonaVulnerable> buscarTodas() {
+        return entityManager()
+                .createQuery("select t from TarjetaPersonaVulnerable t where t.presente = true", TarjetaPersonaVulnerable.class)
+                .getResultList();
     }
 }

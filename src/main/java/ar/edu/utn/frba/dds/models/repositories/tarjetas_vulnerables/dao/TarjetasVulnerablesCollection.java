@@ -34,4 +34,9 @@ public class TarjetasVulnerablesCollection implements TarjetasVulnerablesDAO {
     public void eliminar(TarjetaPersonaVulnerable tarjeta) {
         tarjetas.remove(tarjeta);
     }
+
+    @Override
+    public List<TarjetaPersonaVulnerable> buscarTodas() {
+        return tarjetas;
+    }
 }

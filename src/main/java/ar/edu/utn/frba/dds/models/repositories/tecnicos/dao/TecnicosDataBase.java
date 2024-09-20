@@ -19,15 +19,14 @@ public class TecnicosDataBase implements TecnicosDAO, WithSimplePersistenceUnit 
     @Override
     public List<Tecnico> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Tecnico.class.getName())
+                .createQuery("from Tecnico where presente = true", Tecnico.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(Tecnico tecnico) {
-        beginTransaction();
-        entityManager().remove(tecnico);
-        commitTransaction();
+        tecnico.setPresente(false);
+        this.modificar(tecnico);
     }
 
     @Override

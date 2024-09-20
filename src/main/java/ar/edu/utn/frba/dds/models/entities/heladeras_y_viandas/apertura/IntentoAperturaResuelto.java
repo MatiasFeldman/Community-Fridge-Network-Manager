@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "intento_apertura_resuelto")
-public class IntentoAperturaResuelto {
-    @Id
-    @GeneratedValue
-    @Column(name = "id_intento")
-    private Long id;
+public class IntentoAperturaResuelto extends Persistente {
 
     @ManyToOne
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
@@ -31,13 +28,6 @@ public class IntentoAperturaResuelto {
 
     @Column(name = "exitoso")
     private Boolean exitoso;
-
-    public IntentoAperturaResuelto(TarjetaColaborador idTarjeta, Heladera idHeladera, LocalDateTime fecha, Boolean exitoso) {
-        this.tarjeta = idTarjeta;
-        this.heladera = idHeladera;
-        this.fecha = fecha;
-        this.exitoso = exitoso;
-    }
 
     public Long getIdTarjeta(){
         return this.tarjeta.getId();

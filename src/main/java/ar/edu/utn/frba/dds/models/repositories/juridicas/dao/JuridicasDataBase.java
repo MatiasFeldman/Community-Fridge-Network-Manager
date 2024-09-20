@@ -17,9 +17,8 @@ public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUni
 
     @Override
     public void eliminar(Juridica juridica) {
-        beginTransaction();
-        entityManager().remove(juridica);
-        commitTransaction();
+        juridica.setPresente(false);
+        this.modificar(juridica);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUni
     @SuppressWarnings("unchecked")
     public List<Juridica> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Juridica.class.getName())
+                .createQuery("SELECT j FROM Juridica j WHERE j.presente = true ", Juridica.class)
                 .getResultList();
     }
 

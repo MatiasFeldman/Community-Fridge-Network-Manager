@@ -19,15 +19,14 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
     @SuppressWarnings("unchecked")
     public List<Incidente> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Incidente.class.getName())
+                .createQuery("SELECT i FROM Incidente i WHERE i.presente = true ", Incidente.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(Incidente incidente) {
-        beginTransaction();
-        entityManager().remove(incidente);
-        commitTransaction();
+        incidente.setPresente(false);
+        this.modificar(incidente);
     }
 
     @Override

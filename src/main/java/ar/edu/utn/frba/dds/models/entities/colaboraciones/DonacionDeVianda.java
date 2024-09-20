@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "donacion_de_vianda")
 public class DonacionDeVianda extends Persistente implements Contribucion{
@@ -28,9 +29,6 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
     @JoinColumn(name = "heladera_id", referencedColumnName = "id")
     private Heladera heladera;
 
-    @Column(name = "activa")
-    private Boolean activa;
-
 
     public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador) {
         return DonacionDeVianda
@@ -38,7 +36,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(false)
-                .activa(true)
+                .presente(true)
                 .build();
     }
 
@@ -48,7 +46,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(finalizada)
-                .activa(true)
+                .presente(true)
                 .build();
     }
 
@@ -56,7 +54,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
         return DonacionDeVianda
                 .builder()
                 .finalizada(true)
-                .activa(true)
+                .presente(true)
                 .build();
     }
 
@@ -69,6 +67,6 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
 
 
     public Long getColaboradorId() {
-        return this.colaborador.getIdHumano();
+        return this.colaborador.getId();
     }
 }

@@ -45,9 +45,6 @@ public class DistribucionViandas extends Persistente implements Contribucion{
     @Column(name = "distribuidas")
     private Boolean distribuidas;
 
-    @Column(name = "activa")
-    private Boolean activa;
-
 
     public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, ColaboradorHumano colaboradorHumano) {
         return DistribucionViandas
@@ -79,7 +76,7 @@ public class DistribucionViandas extends Persistente implements Contribucion{
 
 
     public Long getColaboradorId() {
-        return this.colaborador.getIdHumano();
+        return this.colaborador.getId();
     }
 
 }

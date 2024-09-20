@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSimplePersistenceUnit {
@@ -27,8 +28,14 @@ public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSi
 
     @Override
     public void eliminar(TarjetaColaborador tarjeta) {
-        withTransaction(() -> {
-            entityManager().remove(tarjeta);
-        });
+        tarjeta.setPresente(false);
+        this.modificar(tarjeta);
+    }
+
+    @Override
+    public List<TarjetaColaborador> buscarTodas() {
+        return entityManager()
+                .createQuery("select t from TarjetaColaborador t where t.presente = true", TarjetaColaborador.class)
+                .getResultList();
     }
 }

@@ -18,7 +18,7 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
     @Override
     public Optional<Oferta> buscarPorNombre(String nombre) {
         return entityManager()
-                .createQuery("select o from Oferta o where o.nombre = :nombre", Oferta.class)
+                .createQuery("select o from Oferta o where o.nombre = :nombre and o.presente = true", Oferta.class)
                 .setParameter("nombre", nombre)
                 .getResultList()
                 .stream()
@@ -35,7 +35,7 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
     @Override
     public List<Oferta> buscarPorRubro(String rubro) {
         return entityManager()
-                .createQuery("select o from Oferta o where o.rubro.nombre = :rubro", Oferta.class)
+                .createQuery("select o from Oferta o where o.rubro.nombre = :rubro and o.presente = true", Oferta.class)
                 .setParameter("rubro", rubro)
                 .getResultList();
     }
@@ -44,15 +44,14 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
     @SuppressWarnings("unchecked")
     public List<Oferta> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Oferta.class.getName())
+                .createQuery("select o from Oferta o where o.presente = true ", Oferta.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(Oferta oferta) {
-        beginTransaction();
-        entityManager().remove(oferta);
-        commitTransaction();
+        oferta.setPresente(false);
+        this.modficar(oferta);
     }
 
     @Override

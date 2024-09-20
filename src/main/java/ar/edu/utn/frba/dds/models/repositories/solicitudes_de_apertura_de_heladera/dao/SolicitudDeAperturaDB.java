@@ -18,9 +18,8 @@ public class SolicitudDeAperturaDB implements WithSimplePersistenceUnit, Solicit
 
     @Override
     public void eliminar(SolicitudApertura solicitud) {
-        beginTransaction();
-        entityManager().remove(solicitud);
-        commitTransaction();
+        solicitud.setPresente(false);
+        this.modificar(solicitud);
     }
 
     @Override
@@ -33,14 +32,14 @@ public class SolicitudDeAperturaDB implements WithSimplePersistenceUnit, Solicit
     @Override
     public List<SolicitudApertura> buscarTodas() {
         return entityManager()
-                .createQuery("from SolicitudApertura", SolicitudApertura.class)
+                .createQuery("from SolicitudApertura where presente = true", SolicitudApertura.class)
                 .getResultList();
     }
 
     @Override
     public Boolean existeSolicitud(TarjetaColaborador idTarjeta, Heladera idHeladera) {
         return !entityManager()
-                .createQuery("from SolicitudApertura where solicitante = :idTarjeta and heladera = :idHeladera", SolicitudApertura.class)
+                .createQuery("from SolicitudApertura where solicitante = :idTarjeta and heladera = :idHeladera and presente = true", SolicitudApertura.class)
                 .setParameter("idTarjeta", idTarjeta)
                 .setParameter("idHeladera", idHeladera)
                 .getResultList().isEmpty();

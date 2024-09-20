@@ -35,4 +35,9 @@ public class TarjetasColaboradoresCollection implements TarjetasColaboradoresDAO
     public void eliminar(TarjetaColaborador tarjeta) {
         tarjetas.remove(tarjeta);
     }
+
+    @Override
+    public List<TarjetaColaborador> buscarTodas() {
+        return tarjetas;
+    }
 }

@@ -17,15 +17,14 @@ public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSi
     @Override
     public List<PersonaVulnerable> buscarTodos() {
         return entityManager()
-                .createQuery("from PersonaVulnerable", PersonaVulnerable.class)
+                .createQuery("select p from PersonaVulnerable p where p.presente = true", PersonaVulnerable.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(PersonaVulnerable personaVulnerable) {
-        beginTransaction();
-        entityManager().remove(personaVulnerable);
-        commitTransaction();
+        personaVulnerable.setPresente(false);
+        this.modificar(personaVulnerable);
     }
 
     @Override

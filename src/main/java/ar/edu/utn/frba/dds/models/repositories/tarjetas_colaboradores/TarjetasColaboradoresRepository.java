@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDAO;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TarjetasColaboradoresRepository {
@@ -22,5 +23,9 @@ public class TarjetasColaboradoresRepository {
 
     public void eliminar(TarjetaColaborador tarjeta) {
         tarjetas.eliminar(tarjeta);
+    }
+
+    public List<TarjetaColaborador> buscarTodas(){
+        return tarjetas.buscarTodas();
     }
 }

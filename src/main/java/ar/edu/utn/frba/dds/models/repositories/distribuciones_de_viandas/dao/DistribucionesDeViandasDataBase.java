@@ -19,7 +19,7 @@ public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUni
     @Override
     public List<DistribucionViandas> buscarTodas() {
         return entityManager()
-                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.activa = true", DistribucionViandas.class)
+                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.presente = true", DistribucionViandas.class)
                 .getResultList();
     }
 
@@ -38,14 +38,14 @@ public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUni
 
     @Override
     public void eliminar(DistribucionViandas donacionDeVianda) {
-        donacionDeVianda.setActiva(false);
+        donacionDeVianda.setPresente(false);
         this.actualizar(donacionDeVianda);
     }
 
     @Override
     public List<DistribucionViandas> buscarPorColaborador(Long id) {
         return entityManager()
-                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.colaborador.id = :id AND d.activa = true", DistribucionViandas.class)
+                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.colaborador.id = :id AND d.presente = true", DistribucionViandas.class)
                 .setParameter("id", id)
                 .getResultList();
     }

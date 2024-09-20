@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerab
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesDAO;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -24,5 +25,9 @@ public class TarjetasVulnerablesRepository {
 
     public void eliminar(TarjetaPersonaVulnerable tarjeta) {
         tarjetas.eliminar(tarjeta);
+    }
+
+    public List<TarjetaPersonaVulnerable> buscarTodas(){
+        return tarjetas.buscarTodas();
     }
 }

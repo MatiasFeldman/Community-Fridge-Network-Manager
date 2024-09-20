@@ -18,15 +18,14 @@ public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersist
     @Override
     public List<VisitaAHeladera> buscarTodos() {
         return entityManager()
-                .createQuery("from " + VisitaAHeladera.class.getName())
+                .createQuery("select v from VisitaAHeladera v where v.presente = true ", VisitaAHeladera.class)
                 .getResultList();
     }
 
     @Override
     public void eliminar(VisitaAHeladera visita) {
-        beginTransaction();
-        entityManager().remove(visita);
-        commitTransaction();;
+        visita.setPresente(false);
+        this.modificar(visita);
     }
 
     @Override

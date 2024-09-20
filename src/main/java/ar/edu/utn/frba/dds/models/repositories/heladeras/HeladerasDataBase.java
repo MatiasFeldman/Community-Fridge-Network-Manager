@@ -18,7 +18,7 @@ public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUni
     @SuppressWarnings("unchecked")
     public List<Heladera> buscarTodos() {
         return entityManager()
-                .createQuery("from " + Heladera.class.getName())
+                .createQuery("SELECT h FROM Heladera h WHERE h.presente = true ", Heladera.class)
                 .getResultList();
     }
 
@@ -31,15 +31,14 @@ public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUni
 
     @Override
     public void eliminar(Heladera heladera) {
-        beginTransaction();
-        entityManager().remove(heladera);
-        commitTransaction();
+        heladera.setPresente(false);
+        this.modificar(heladera);
     }
 
     @Override
     public Optional<Heladera> buscarPorNombre(String name) {
         Heladera h = entityManager()
-                .createQuery("SELECT h FROM Heladera h WHERE h.nombre.nombreDePunto = :name", Heladera.class)
+                .createQuery("SELECT h FROM Heladera h WHERE h.nombre = :name AND h.presente = true ", Heladera.class)
                 .setParameter("name", name)
                 .getSingleResult();
 

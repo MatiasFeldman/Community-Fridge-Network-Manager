@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,15 +23,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class TarjetaPersonaVulnerable {
+public class TarjetaPersonaVulnerable extends Persistente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_tarjeta")
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_persona_vulnerable", referencedColumnName = "id_persona_vulnerable")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_persona_vulnerable", referencedColumnName = "id")
     private PersonaVulnerable duenio;
 
 

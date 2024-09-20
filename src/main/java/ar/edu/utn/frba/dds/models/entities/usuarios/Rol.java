@@ -5,16 +5,13 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
 @Table(name = "rol")
-public class Rol {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rol")
-    private Long id;
+public class Rol extends Persistente {
 
     @Column(name = "nombre", nullable = false)
     private String nombre;

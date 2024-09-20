@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,19 +10,14 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @Table(name = "contacto")
-public class Contacto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_contacto")
-    private Long id_contacto;
+public class Contacto extends Persistente {
 
-    @Setter
     @Column(name = "tipo")
     private String tipoContacto;
 
-    @Setter
     @Column(name = "valor")
     private String valorContacto;
 

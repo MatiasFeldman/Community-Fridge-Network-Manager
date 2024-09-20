@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
 
@@ -13,20 +14,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TarjetaColaborador{
+public class TarjetaColaborador extends Persistente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_tarjeta")
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_humano", referencedColumnName = "id")
     private ColaboradorHumano duenio;
 
     public void usarEn(Heladera heladera){
         heladera.verificarAcceso(this, LocalDateTime.now());
     }
+
+
 
     public Long getDuenioId() {
         return this.duenio.getIdUsuario();

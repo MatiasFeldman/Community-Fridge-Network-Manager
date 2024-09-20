@@ -23,7 +23,7 @@ public class PersonasVulnerablesCollection implements PersonaVulnerableDAO{
     public Optional<PersonaVulnerable> buscarPorId(Long id){
         return personaVulnerables
                 .stream()
-                .filter(personaVulnerable -> personaVulnerable.getIdPersonaVulnerable().equals(id))
+                .filter(personaVulnerable -> personaVulnerable.getId().equals(id))
                 .findFirst();
     }
 

@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.converter.SendingStrategyConverter;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,16 +22,12 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario extends Persistente {
+
     @Column(name = "usuario", unique = true, nullable = false)
     private final String user;
     @Column(name = "contrasenia", nullable = false)
     private String password;
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id_usuario")
-    private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

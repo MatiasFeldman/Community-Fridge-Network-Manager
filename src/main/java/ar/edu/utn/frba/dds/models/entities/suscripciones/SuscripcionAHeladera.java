@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.suscripciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.Suscripcion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
@@ -13,21 +14,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "suscriptor_heladera")
-public class SuscripcionAHeladera {
-    @Id
-    @GeneratedValue
-    @Column(name = "id_suscriptor")
-    private Long id;
+public class SuscripcionAHeladera extends Persistente {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Usuario observerSuscripcion;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_suscripcion", referencedColumnName = "id_suscripcion")
     private Suscripcion suscripcion;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "heladera_id")
     private Heladera heladera;
 

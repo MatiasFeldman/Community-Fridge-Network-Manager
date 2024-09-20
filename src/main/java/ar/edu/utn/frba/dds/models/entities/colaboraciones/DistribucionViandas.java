@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,23 +19,18 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "distribucion_viandas")
-public class DistribucionViandas implements Contribucion{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_contribucion")
-    private Long id;
+public class DistribucionViandas extends Persistente implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
     private ColaboradorHumano colaborador;
 
     @ManyToOne
-    @JoinColumn(name = "id_heladera_origen", referencedColumnName = "id_heladera")
+    @JoinColumn(name = "id_heladera_origen", referencedColumnName = "id")
     private Heladera heladeraOrigen;
 
     @ManyToOne
-    @JoinColumn(name = "id_heladera_destino", referencedColumnName = "id_heladera")
+    @JoinColumn(name = "id_heladera_destino", referencedColumnName = "id")
     private Heladera heladeraDestino;
 
     @Column(name = "cantidad_viandas")

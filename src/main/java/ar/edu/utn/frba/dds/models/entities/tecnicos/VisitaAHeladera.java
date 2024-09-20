@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,16 +18,13 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "servicio_a_heladera")
-public class VisitaAHeladera {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class VisitaAHeladera extends Persistente {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_incidente", referencedColumnName = "id_incidente")
     private Incidente incidenteAResolver;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tecnico", referencedColumnName = "id_tecnico")
     private Tecnico tecnico;
 

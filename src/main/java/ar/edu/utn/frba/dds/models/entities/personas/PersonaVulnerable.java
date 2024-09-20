@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.*;
 
@@ -16,11 +17,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "persona_vulnerable")
-public class PersonaVulnerable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_persona_vulnerable")
-    private Long id;
+public class PersonaVulnerable extends Persistente {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_humano", nullable = false)
@@ -70,9 +67,5 @@ public class PersonaVulnerable {
                 .menoresACargo(menoresACargo)
                 .tarjetas(new ArrayList<>())
                 .build();
-    }
-
-    public Long getIdPersonaVulnerable() {
-        return this.id;
     }
 }

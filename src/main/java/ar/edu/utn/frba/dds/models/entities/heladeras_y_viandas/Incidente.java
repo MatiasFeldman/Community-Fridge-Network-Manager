@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,17 +19,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "incidente")
-public class Incidente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_incidente")
-    private Long id;
+public class Incidente extends Persistente {
 
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
-    @Getter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_heladera", nullable = false)
     private Heladera heladera;
 
@@ -36,7 +32,7 @@ public class Incidente {
     @Enumerated(EnumType.STRING)
     private TipoEvento tipo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id_usuario",nullable = false)
     private Usuario colaborador;
 

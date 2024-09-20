@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteFallas;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
@@ -13,7 +11,6 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,11 +49,11 @@ class ReporteFallasTest {
     @Test
     void testContenido() {
         // Crear heladeras
-        Heladera heladera1 = Heladera.of(new PuntoDeHeladera("Heladera1"));
+        Heladera heladera1 = Heladera.of("Heladera1");
         heladera1.setCapActual(10);  // Inicializar capacidad actual
         heladera1.setCapacidadMaxima(10);
 
-        Heladera heladera2 = Heladera.of(new PuntoDeHeladera("Heladera2"));
+        Heladera heladera2 = Heladera.of("Heladera2");
         heladera2.setCapActual(10);  // Inicializar capacidad actual
         heladera2.setCapacidadMaxima(10);
 

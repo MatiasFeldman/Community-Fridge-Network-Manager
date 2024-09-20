@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.converter.FrecuenciaConverter;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
@@ -18,19 +19,15 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @Table(name = "donacion_de_dinero")
 @Getter
-public class DonacionDeDinero implements Contribucion{
+public class DonacionDeDinero extends Persistente implements Contribucion{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_contribucion")
-    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_humano", referencedColumnName = "id_humano")
+    @JoinColumn(name = "id_humano", referencedColumnName = "id")
     private ColaboradorHumano colaboradorHumano;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_juridica", referencedColumnName = "id_juridica")
+    @JoinColumn(name = "id_juridica", referencedColumnName = "id")
     private Juridica colaboradorJuridico;
 
     @Column(name = "fecha_de_donacion")

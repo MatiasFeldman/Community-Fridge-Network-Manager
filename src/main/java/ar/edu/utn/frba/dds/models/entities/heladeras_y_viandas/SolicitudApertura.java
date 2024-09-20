@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,11 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "solicitud_de_apertura")
-public class SolicitudApertura {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class SolicitudApertura extends Persistente {
 
     @Column(name = "fecha_hora_solicitud", nullable = false)
     private LocalDateTime fechaHoraSolicitud;
@@ -26,11 +23,11 @@ public class SolicitudApertura {
     @Transient
     private static Integer horasParaEjecutarAccion = 3;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
     private TarjetaColaborador solicitante;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
     private Heladera heladera;
 

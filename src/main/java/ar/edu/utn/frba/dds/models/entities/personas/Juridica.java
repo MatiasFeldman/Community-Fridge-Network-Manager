@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -18,11 +19,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "juridica")
 @Getter
-public class Juridica {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_juridica")
-    private Long idJuridica;
+public class Juridica extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", nullable = false)

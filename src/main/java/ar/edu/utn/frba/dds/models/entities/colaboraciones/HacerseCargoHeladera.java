@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,18 +14,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "heladera_a_cargo")
-public class HacerseCargoHeladera implements Contribucion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_contribucion")
-    private Long id;
+public class HacerseCargoHeladera extends Persistente implements Contribucion {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_juridica", referencedColumnName = "id_juridica")
+    @JoinColumn(name = "id_juridica", referencedColumnName = "id")
     private Juridica juridica;
 
-    @ManyToOne
-    @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_heladera", referencedColumnName = "id")
     private Heladera heladera;
 
     public static HacerseCargoHeladera of(Heladera heladera, Juridica colaborador) {

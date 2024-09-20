@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
 
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,11 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "atributo_humano")
 @Setter
-public class AtributoHumanoRespondido {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_atributo_humano")
-    private Long id;
+public class AtributoHumanoRespondido extends Persistente {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_atributo")

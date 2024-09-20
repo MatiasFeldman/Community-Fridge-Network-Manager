@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
@@ -19,11 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "humano")
-public class ColaboradorHumano {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_humano")
-    private Long idHumano;
+public class ColaboradorHumano extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)

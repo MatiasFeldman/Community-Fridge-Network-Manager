@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
 
@@ -14,21 +15,17 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "donacion_de_vianda")
-public class DonacionDeVianda implements Contribucion{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_contribucion")
-    private Long id;
+public class DonacionDeVianda extends Persistente implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_colaborador", referencedColumnName = "id_humano")
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
     private ColaboradorHumano colaborador;
 
     @Column(name = "finalizada")
     private Boolean finalizada;
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", referencedColumnName = "id_heladera")
+    @ManyToOne()
+    @JoinColumn(name = "heladera_id", referencedColumnName = "id")
     private Heladera heladera;
 
     @Column(name = "activa")

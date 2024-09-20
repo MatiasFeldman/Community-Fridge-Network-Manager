@@ -47,26 +47,26 @@ public class ReporteMovimientoViandas implements Reporte {
 
         // Conteo de viandas distribuidas
         for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
-            List<DistribucionViandas> distribuciones = distribucionesDeViandasRepository.buscarPorColaborador(colaboradorHumano.getIdHumano());
+            List<DistribucionViandas> distribuciones = distribucionesDeViandasRepository.buscarPorColaborador(colaboradorHumano.getId());
             for (DistribucionViandas distribucion : distribuciones) {
                 Heladera origen = distribucion.getHeladeraOrigen();
                 Heladera destino = distribucion.getHeladeraDestino();
 
                 // Contar viandas que salen de la heladera origen
-                Integer[] conteoOrigen = viandasPorHeladera.get(origen.getNombre().getNombreDePunto());
+                Integer[] conteoOrigen = viandasPorHeladera.get(origen.getNombre());
                 if (conteoOrigen == null) {
                     conteoOrigen = new Integer[]{0, 0};
                 }
                 conteoOrigen[0] += distribucion.getCantidadViandas();
-                viandasPorHeladera.put(origen.getNombre().getNombreDePunto(), conteoOrigen);
+                viandasPorHeladera.put(origen.getNombre(), conteoOrigen);
 
                 // Contar viandas que llegan a la heladera destino
-                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
+                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre());
                 if (conteoDestino == null) {
                     conteoDestino = new Integer[]{0, 0};
                 }
                 conteoDestino[1] += distribucion.getCantidadViandas();
-                viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+                viandasPorHeladera.put(destino.getNombre(), conteoDestino);
 
             }
         }
@@ -77,26 +77,26 @@ public class ReporteMovimientoViandas implements Reporte {
                 List<UsoTarjeta> historialUso = tarjeta.getHistorialDeUsos();
                 for (UsoTarjeta uso : historialUso) {
                     Heladera heladera = uso.getHeladera();
-                    Integer[] conteo = viandasPorHeladera.getOrDefault(heladera.getNombre().getNombreDePunto(), new Integer[]{0, 0});
+                    Integer[] conteo = viandasPorHeladera.getOrDefault(heladera.getNombre(), new Integer[]{0, 0});
                     conteo[1] += 1; // Cada uso de tarjeta cuenta como una vianda saliente
-                    viandasPorHeladera.put(heladera.getNombre().getNombreDePunto(), conteo);
+                    viandasPorHeladera.put(heladera.getNombre(), conteo);
                 }
             }
         }
 
         // contar donaciones de viandas
         for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
-            List<DonacionDeVianda> viandasDonadas = donacionesDeViandaRepository.buscarPorColaborador(colaboradorHumano.getIdHumano());
+            List<DonacionDeVianda> viandasDonadas = donacionesDeViandaRepository.buscarPorColaborador(colaboradorHumano.getId());
             for (DonacionDeVianda donacion : viandasDonadas) {
                 Heladera destino = donacion.getHeladera();
 
                 // Contar viandas que llegan a la heladera destino
-                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre().getNombreDePunto());
+                Integer[] conteoDestino = viandasPorHeladera.get(destino.getNombre());
                 if (conteoDestino == null) {
                     conteoDestino = new Integer[]{0, 0};
                 }
                 conteoDestino[1] += 1;
-                viandasPorHeladera.put(destino.getNombre().getNombreDePunto(), conteoDestino);
+                viandasPorHeladera.put(destino.getNombre(), conteoDestino);
 
             }
         }

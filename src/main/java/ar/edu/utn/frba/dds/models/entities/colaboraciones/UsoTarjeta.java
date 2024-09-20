@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "uso_de_tarjeta_vulnerable")
-public class UsoTarjeta {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_uso")
-    private Long id;
+public class UsoTarjeta extends Persistente {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_heladera", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_heladera", nullable = false, referencedColumnName = "id")
     private Heladera heladera;
 
     @Column(name = "fecha_uso", nullable = false)

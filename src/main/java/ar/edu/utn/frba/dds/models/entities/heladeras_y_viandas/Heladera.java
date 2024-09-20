@@ -7,6 +7,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.exceptions.AccesoDenegadoHeladeraException;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
@@ -30,15 +31,10 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "heladera")
-public class Heladera {
+public class Heladera extends Persistente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_heladera")
-    private Long id;
-
-    @Embedded
-    private PuntoDeHeladera nombre;
+    @Column(name = "nombre")
+    private String nombre;
 
     @Embedded
     private Direccion direccion;
@@ -115,7 +111,7 @@ public class Heladera {
         return builder.build();
     }
 
-    public static Heladera of(PuntoDeHeladera punto) {
+    public static Heladera of(String punto) {
         return Heladera
                 .builder()
                 .nombre(punto)
@@ -124,9 +120,6 @@ public class Heladera {
                 .build();
     }
 
-    public String nombrePunto() {
-        return this.nombre.getNombreDePunto();
-    }
 
 
     public void suscribir(SuscripcionAHeladera suscripcion) {

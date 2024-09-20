@@ -46,7 +46,7 @@ public class ReporteViandasDonadas implements Reporte {
         Map<String, Integer> viandasPorHumano = new HashMap<>();
 
         for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
-            Long id = colaboradorHumano.getIdHumano();
+            Long id = colaboradorHumano.getId();
             String idUsuario = colaboradorHumano.getIdUsuario().toString();
             List<DonacionDeVianda> donacionesDeVianda = donacionesDeViandaRepository.buscarPorColaborador(id);
 

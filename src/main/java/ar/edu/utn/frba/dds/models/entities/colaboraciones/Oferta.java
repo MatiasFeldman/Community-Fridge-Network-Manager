@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.exceptions.OfertaAgotadaException;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,11 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "oferta")
 @Getter
-public class Oferta {
-    @Id
-    @GeneratedValue
-    @Column(name = "id_oferta")
-    private Long id;
+public class Oferta extends Persistente {
 
     @Column(name = "nombre")
     private String nombre;

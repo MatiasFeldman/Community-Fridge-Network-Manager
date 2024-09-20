@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.usuarios;
 
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,12 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "permiso")
-public class Permiso {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_permiso")
-    private Long id;
-
+public class Permiso extends Persistente {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 }

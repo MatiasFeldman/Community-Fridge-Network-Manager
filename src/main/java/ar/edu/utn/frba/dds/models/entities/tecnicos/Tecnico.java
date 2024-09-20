@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.tecnicos;
 
 import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "tecnico")
-public class Tecnico {
-    @Id
-    @GeneratedValue
-    @Column(name = "id_tecnico")
-    private Long id;
+public class Tecnico extends Persistente {
 
     @Column(name = "nombre")
     private String nombre;

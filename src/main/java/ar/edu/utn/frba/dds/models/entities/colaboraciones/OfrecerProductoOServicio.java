@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 
+import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,18 +14,14 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "ofrecimiento_producto")
-public class OfrecerProductoOServicio implements Contribucion{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_contribucion")
-    private Long id;
+public class OfrecerProductoOServicio extends Persistente implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_juridica", referencedColumnName = "id_juridica")
+    @JoinColumn(name = "id_juridica", referencedColumnName = "id")
     private Juridica juridica;
 
-    @OneToOne
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_oferta", referencedColumnName = "id")
     private Oferta oferta;
 
     public static OfrecerProductoOServicio of(Oferta oferta, Juridica colaborador) {

@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.PuntoDeHeladera;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
@@ -73,11 +72,11 @@ class ReporteMovimientoViandasTest {
     @Test
     void testContenido() throws IOException {
         // Crear heladeras
-        Heladera heladera1 = Heladera.of(new PuntoDeHeladera("Heladera1"));
+        Heladera heladera1 = Heladera.of("Heladera1");
         heladera1.setCapActual(10);  // Inicializar capacidad actual
         heladera1.setCapacidadMaxima(10);
 
-        Heladera heladera2 = Heladera.of(new PuntoDeHeladera("Heladera2"));
+        Heladera heladera2 = Heladera.of("Heladera2");
         heladera2.setCapActual(10);  // Inicializar capacidad actual
         heladera2.setCapacidadMaxima(10);
 

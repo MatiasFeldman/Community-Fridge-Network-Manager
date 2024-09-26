@@ -1,0 +1,52 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff; /* Cambia el fondo a blanco */
+    color: #333;
+}
+main {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 100%; /* Ocupar todo el espacio horizontal */
+    background-color: #ffffff; /* Cambia el fondo de la sección principal a blanco */
+}
+.info {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-inner img {
+    width: 100%; /* Asegura que la imagen ocupa todo el ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    max-height: 400px; /* Establece una altura máxima para todas las imágenes */
+    object-fit: cover; /* Ajusta la imagen sin distorsionarla */
+}
+
+
+/* Info Section */
+.info {
+    background-color: #ffffff;
+    color: rgb(48, 45, 45);
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Collaborate Section */
+.collaborate {
+    margin: 20px auto;
+}
+
+

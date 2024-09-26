@@ -19,18 +19,21 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasCo
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
+import ar.edu.utn.frba.dds.utils.server.CrudViewsHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class HeladerasController {
+public class HeladerasController implements CrudViewsHandler {
     private Accionador accionador;
     private SolicitudesDeAperturaRepository solicitudes;
     private IntentosDeAperturaRepository intentos;
@@ -113,6 +116,7 @@ public class HeladerasController {
         intentos.guardar(intento);
     }
 
+    @Override
     // Devolver todas las heladeras del sistema
     public void index(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
@@ -126,6 +130,48 @@ public class HeladerasController {
         model.put("heladeras", heladeras);
 
         context.render("heladeras/heladeras.hbs", model);
+    }
+
+    @Override
+    public void show(Context context) {
+        Optional<Heladera> buscada = this.heladeras.buscarPorId(Long.parseLong(context.pathParam("id")));
+        if (buscada.isEmpty()) {
+            context.status(HttpStatus.NOT_FOUND);
+            context.result("Heladera no encontrada");
+        } else {
+            Heladera heladera = buscada.get();
+            HeladeraOutputDTO dto = new HeladeraOutputDTO(heladera.direccionCompleta(), heladera.getCapActual(), heladera.getCapacidadMaxima(), heladera.getActiva());
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("heladera", dto);
+
+            context.render("heladeras/heladera.hbs", model);
+        }
+    }
+
+    @Override
+    public void create(Context context) {
+
+    }
+
+    @Override
+    public void save(Context context) {
+
+    }
+
+    @Override
+    public void edit(Context context) {
+
+    }
+
+    @Override
+    public void update(Context context) {
+
+    }
+
+    @Override
+    public void delete(Context context) {
+
     }
 
 }

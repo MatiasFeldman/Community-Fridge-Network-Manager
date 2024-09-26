@@ -5,7 +5,7 @@ function checkUserRole(allowedRoles = [], allowUnauthenticated = false, blockLog
     if (!userRole) {
         if (allowUnauthenticated) {
             console.log('Acceso permitido a usuarios no autenticados');
-            return; 
+            return;
         } else {
             window.location.href = 'login.html'; // O una página de acceso denegado
             return;
@@ -14,13 +14,12 @@ function checkUserRole(allowedRoles = [], allowUnauthenticated = false, blockLog
 
     if (blockLoggedIn) {
         console.log('Acceso bloqueado a usuarios autenticados, redirigiendo...');
-        // window.location.href = 'access-denied.html'; 
-        window.location.href = 'index.html';
+        window.location.href = 'access-denied.html';
         return;
     }
-   
+
     if (!allowedRoles.includes(userRole)) {
-        window.location.href = 'index.html'; 
+        window.location.href = 'access-denied.html';
         return;
     }
 

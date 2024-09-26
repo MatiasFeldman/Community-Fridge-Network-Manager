@@ -201,4 +201,6 @@ public class ContribucionesController {
         juridica.sumarPuntaje(contribucion);
         ofertas.guardar(oferta);
     }
+
+
 }

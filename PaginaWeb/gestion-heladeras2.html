@@ -131,8 +131,18 @@
 
             <!-- Lista de heladeras -->
             <div class="lista-heladeras " id="lista-heladeras">
-                <!-- Cada heladera -->
-            </div>
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="text-black">${heladera.nombre}</h5>
+                        <!-- <span class="${heladera.estado === 'activa' ? 'estado-activa' : 'estado-inactiva'}">${heladera.estado === 'activa' ? 'Activa' : 'Inactiva'}</span> -->
+                        <span class="${heladera.estado === 'activa' ? 'estado-activa' : 'estado-inactiva'}">Activa</span>
+                    </div>
+                    <div>
+                        <p>${heladera.direccion}</p>
+                        <p>Viandas disponibles: ${heladera.viandas}</p>
+                        ${userRole ? `<button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button>` : ''}
+                    </div>
+                    <
         </div>
 
 

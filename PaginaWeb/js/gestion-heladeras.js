@@ -29,7 +29,11 @@ document.addEventListener("DOMContentLoaded", function() {
         { id: 1, nombre: 'Heladera UTN Lugano', direccion: 'Mozart 2300', viandas: 50, estado: 'activa', alerta: null, lat: -34.662, lng: -58.469, suscrito: false },
         { id: 2, nombre: 'Heladera Parque Patricios', direccion: 'Pepiri 1234', viandas: 30, estado: 'inactiva', alerta: 'falla', lat: -34.634, lng: -58.392, suscrito: true },
         { id: 3, nombre: 'Heladera Villa Urquiza', direccion: 'Avenida Triunvirato 4000', viandas: 20, estado: 'inactiva', alerta: 'temperatura', lat: -34.573, lng: -58.475, suscrito: false },
-        { id: 4, nombre: 'Heladera Flores', direccion: 'Nazca 2000', viandas: 70, estado: 'activa', alerta: 'conexion', lat: -34.625, lng: -58.467, suscrito: true }
+        { id: 4, nombre: 'Heladera Flores', direccion: 'Nazca 2000', viandas: 70, estado: 'activa', alerta: 'conexion', lat: -34.625, lng: -58.467, suscrito: true },
+        { id: 5, nombre: 'Heladera UTN Lugano', direccion: 'Mozart 2300', viandas: 50, estado: 'activa', alerta: null, lat: -34.662, lng: -58.469, suscrito: false },
+        { id: 6, nombre: 'Heladera Parque Patricios', direccion: 'Pepiri 1234', viandas: 30, estado: 'inactiva', alerta: 'falla', lat: -34.634, lng: -58.392, suscrito: true },
+        { id: 7, nombre: 'Heladera Villa Urquiza', direccion: 'Avenida Triunvirato 4000', viandas: 20, estado: 'inactiva', alerta: 'temperatura', lat: -34.573, lng: -58.475, suscrito: false },
+        { id: 8, nombre: 'Heladera Flores', direccion: 'Nazca 2000', viandas: 70, estado: 'activa', alerta: 'conexion', lat: -34.625, lng: -58.467, suscrito: true }
     ];
 
     const contactosGuardados = { email: "colaborador@example.com", whatsapp: null, telegram: null };
@@ -42,18 +46,18 @@ document.addEventListener("DOMContentLoaded", function() {
     function renderizarHeladeras(heladerasAListar = heladeras) {
         listaHeladeras.innerHTML = '';  // Limpiar la lista existente
         heladerasAListar.forEach(heladera => {
-            const item = document.createElement('a');
-            item.href = "#";
-            item.className = "list-group-item list-group-item-action ";
+            const item = document.createElement('div');
+            item.className = "p-3 d-flex flex-column justify-content-between rounded heladera-card";
             item.innerHTML = `
-            <p>
-                            <h5>${heladera.nombre}</h5>
-                            
-            </p>
-                <p>${heladera.direccion}</p>
-                <p>Viandas disponibles: ${heladera.viandas}</p>
-                ${userRole ? `<button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button>` : ''}
-                <span class="estado-heladera ${heladera.estado === 'activa' ? 'estado-activa' : 'estado-inactiva'}">${heladera.estado === 'activa' ? 'Activa' : 'Inactiva'}</span>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="text-dark fs-5">${heladera.nombre}</h5>
+                        <span class="${heladera.estado === 'activa' ? 'estado-activa' : 'estado-inactiva'}">${heladera.estado === 'activa' ? 'Activa' : 'Inactiva'}</span>
+                    </div>
+                    <div>
+                        <p class="text-black fs-5 fw-semibold mb-1">${heladera.direccion}</p>
+                        <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas disponibles: ${heladera.viandas}</p>
+                        ${userRole ? `<button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button>` : ''}
+                    </div>
             `;
 
             item.addEventListener('click', function(e) {

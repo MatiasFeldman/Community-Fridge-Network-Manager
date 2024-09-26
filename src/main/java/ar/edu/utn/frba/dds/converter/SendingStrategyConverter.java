@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.converter;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSendingStrategy;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
@@ -29,9 +32,9 @@ public class SendingStrategyConverter implements AttributeConverter<SendingStrat
     @Override
     public SendingStrategy convertToEntityAttribute(String s) {
         return switch (s) {
-            case "MAIL" -> new MailSendingStrategy(ServiceLocator.getMimeMailSender());
-            case "TELEGRAM" -> new TelegramSendingStategy(ServiceLocator.getTelegramSender());
-            case "WHATSAPP" -> new WhatsAppSendingStrategy(ServiceLocator.getWhatsAppSender());
+            case "MAIL" -> new MailSendingStrategy(ServiceLocator.instanceOf(MimeMailSender.class));
+            case "TELEGRAM" -> new TelegramSendingStategy(ServiceLocator.instanceOf(TelegramSender.class));
+            case "WHATSAPP" -> new WhatsAppSendingStrategy(ServiceLocator.instanceOf(WhatsAppSender.class));
             default -> null;
         };
     }

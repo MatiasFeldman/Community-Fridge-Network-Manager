@@ -23,11 +23,11 @@ public class MainReportes {
     }
 
     public static void main(String[] args) {
-        HumanosRepository humanosRepository = ServiceLocator.getHumanosRepository();
-        IncidentesRepository incidentesRepository = ServiceLocator.getIncidentesRepository();
-        PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.getPersonasVulnerablesRepository();
-        DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.getDistribucionesDeViandasRepository();
-        DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.getDonacionesDeViandaRepository();
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
+        PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
+        DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
+        DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
 
         String filePath = "";
         GeneradorPDF generadorPDF = new PDFgenerator();

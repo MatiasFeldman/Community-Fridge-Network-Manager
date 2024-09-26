@@ -5,25 +5,21 @@ import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramS
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao.DonacionesDeViandaCollection;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ServiceLocator {
 
-
-    private MimeMailSender mimeMailSender;
-    private TelegramSender telegramSender;
-    private WhatsAppSender whatsAppSender;
-    private HeladerasRepository heladeras;
-    private IncidentesRepository incidentes;
-    private HumanosRepository humanos;
-    private PersonasVulnerablesRepository personasVulnerables;
-    private DistribucionesDeViandasRepository distribucionesDeViandas;
-    private DonacionesDeViandaRepository donacionesDeVianda;
-
     private static ServiceLocator instance = null;
+
+    private static Map<String, Object> instances = new HashMap<>();
 
 
     public static ServiceLocator getInstance() {
@@ -33,75 +29,20 @@ public class ServiceLocator {
         return instance;
     }
 
-    public static MimeMailSender getMimeMailSender() {
-        return instance.mimeMailSender;
-    }
 
-    public static TelegramSender getTelegramSender() {
-        return instance.telegramSender;
-    }
+    @SuppressWarnings("unchecked")
+    public static <T> T instanceOf(Class<T> componentClass) {
+        String componentName = componentClass.getName();
 
-    public static void setMimeMailSender(MimeMailSender mimeMailSender) {
-        instance.mimeMailSender = mimeMailSender;
-    }
+        if (!instances.containsKey(componentName)) {
+            if (componentName.equals(DistribucionesDeViandasRepository.class.getName())) {
+                DistribucionesDeViandasRepository instance = new DistribucionesDeViandasRepository(new);
+                instances.put(componentName, instance);
+            } caelse {
+                throw new RuntimeException("No se encontro el componente");
+            }
+        }
 
-    public static void setTelegramSender(TelegramSender telegramSender) {
-        instance.telegramSender = telegramSender;
-    }
-
-    public static HeladerasRepository getHeladerasRepository() {
-        return instance.heladeras;
-    }
-
-    public static void setHeladerasRepository(HeladerasRepository heladeras) {
-        instance.heladeras = heladeras;
-    }
-
-    public static IncidentesRepository getIncidentesRepository() {
-        return instance.incidentes;
-    }
-
-    public static void setIncidentesRepository(IncidentesRepository incidentes) {
-        instance.incidentes = incidentes;
-    }
-
-    public static HumanosRepository getHumanosRepository() {
-        return instance.humanos;
-    }
-
-    public static void setHumanosRepository(HumanosRepository humanos) {
-        instance.humanos = humanos;
-    }
-
-    public static PersonasVulnerablesRepository getPersonasVulnerablesRepository() {
-        return instance.personasVulnerables;
-    }
-
-    public static void setPersonasVulnerablesRepository(PersonasVulnerablesRepository personasVulnerables) {
-        instance.personasVulnerables = personasVulnerables;
-    }
-
-    public static WhatsAppSender getWhatsAppSender() {
-        return instance.whatsAppSender;
-    }
-
-    public static void setWhatsAppSender(WhatsAppSender whatsAppSender) {
-        instance.whatsAppSender = whatsAppSender;
-    }
-
-    public static DistribucionesDeViandasRepository getDistribucionesDeViandasRepository() {
-        return instance.distribucionesDeViandas;
-    }
-
-    public static void setDistribucionesDeViandasRepository(DistribucionesDeViandasRepository distribucionesDeViandas) {
-        instance.distribucionesDeViandas = distribucionesDeViandas;
-    }
-
-    public static DonacionesDeViandaRepository getDonacionesDeViandaRepository() {
-        return instance.donacionesDeVianda;
-    }
-
-    public static void setDonacionesDeViandaRepository(DonacionesDeViandaRepository donacionesDeVianda) {
-        instance.donacionesDeVianda = donacionesDeVianda;
+        return (T) instances.get(componentName);
     }
 }

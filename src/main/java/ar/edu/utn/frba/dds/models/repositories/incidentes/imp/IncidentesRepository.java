@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.models.repositories.incidentes.imp;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.dao.IncidentesDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class IncidentesRepository {
     private IncidentesDAO incidentes;
 

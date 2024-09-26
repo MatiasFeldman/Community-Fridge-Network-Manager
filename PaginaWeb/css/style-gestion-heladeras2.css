@@ -52,12 +52,12 @@ h1.display-4 {
 .lista-heladeras {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Múltiples columnas y tamaño min y max de columna */
-    grid-auto-rows: minmax(170px, 32%);
+    grid-template-columns: repeat(2, 1fr); /* Múltiples columnas y tamaño min y max de columna */
     gap: 20px; 
-    max-height: 500px; 
+    row-gap: 20px;
     overflow-y: auto; /* Hacer que sea scrollable si supera la altura */
     padding: 10px;
+    max-height: 500px;
 }
 .lista-heladeras h5{
     font-weight: bold;
@@ -65,24 +65,19 @@ h1.display-4 {
     margin-bottom: 20px;
 }
 
-
-/* Estilo para la lista de heladeras */
-.list-group-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px !important;
-    background-color: #fff;
-    transition: transform 0.2s;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.heladera-card{
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
     transition: all 0.3s;
+    cursor: pointer;
 }
 
-.list-group-item:hover {
+.heladera-card:hover {
     transform: scale(1.01); 
 }
+
+/* Estilo para la lista de heladeras */
+
+
 
 .list-group-item h5 {
     margin-left: 8px;
@@ -146,10 +141,8 @@ h1.display-4 {
 
 /* Estilos del botón de suscripción */
 .suscribirse-btn {
-    padding: 6px 12px;
+    font-weight: bold;
     font-size: 0.9rem;
-    margin-left: 8px;
-    margin-bottom: 8px;
     align-self: flex-end;
 }
 /* Estado de la heladera (activa/inactiva) */

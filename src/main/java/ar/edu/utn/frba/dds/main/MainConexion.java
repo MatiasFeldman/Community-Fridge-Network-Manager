@@ -7,7 +7,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 public class MainConexion {
 
     public static void main(String[] args){
-        HeladerasRepository heladeras = ServiceLocator.getHeladerasRepository();
+        HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
 
         heladeras
                 .buscarTodos()

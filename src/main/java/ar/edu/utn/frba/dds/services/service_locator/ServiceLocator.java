@@ -38,7 +38,7 @@ public class ServiceLocator {
             if (componentName.equals(DistribucionesDeViandasRepository.class.getName())) {
                 DistribucionesDeViandasRepository instance = new DistribucionesDeViandasRepository(new);
                 instances.put(componentName, instance);
-            } caelse {
+            } else {
                 throw new RuntimeException("No se encontro el componente");
             }
         }

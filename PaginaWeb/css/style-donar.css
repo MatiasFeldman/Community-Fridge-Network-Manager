@@ -66,16 +66,10 @@ select.form-control:focus {
 
 /* Botón siguiente */
 button#siguiente-btn {
-    padding: 10px 20px;
+    margin-bottom: 50px; /* Añadir más espacio debajo del botón */
     border-radius: 50px;
     font-size: 1rem;
-    background-color: #27ae60;
-    transition: background-color 0.3s ease;
-    margin-bottom: 50px; /* Añadir más espacio debajo del botón */
-}
-
-button#siguiente-btn:hover {
-    background-color: #2ecc71;
+    font-weight: bold;
 }
 
 /* Ajustes responsivos */

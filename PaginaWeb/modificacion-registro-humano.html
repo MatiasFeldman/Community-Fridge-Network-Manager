@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="css/style-modif-colaboradorHumano.css">
+    <link rel="stylesheet" href="css/style-modif-humano.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/style-btn.css">
     <script src="js/header-log.js"></script>
     <script src="js/autenticacion.js"></script>
     <script>
@@ -89,18 +90,18 @@
 
         <!-- Sección para Agregar o Editar Campo -->
         <div class="mb-4">
-            <h2 class="h4" id="form-titulo">Agregar Nuevo Campo</h2>
+            <h2 class="h4 text-dark" id="form-titulo fw-semibold">Agregar Nuevo Campo</h2>
             <form id="form-campo">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="campo-nombre" class="form-label">Nombre del Campo</label>
-                            <input type="text" id="campo-nombre" name="campo-nombre" class="form-control" required>
+                            <label for="campo-nombre" class="form-label text-dark fw-medium">Nombre del Campo</label>
+                            <input type="text" placeholder="Ingrese el nombre del campo aquí" id="campo-nombre" name="campo-nombre" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="campo-tipo" class="form-label">Tipo de Campo</label>
+                            <label for="campo-tipo" class="form-label text-dark fw-medium">Tipo de Campo</label>
                             <select id="campo-tipo" name="campo-tipo" class="form-select" required>
                                 <option value="text">Texto</option>
                                 <option value="email">Correo Electrónico</option>
@@ -111,23 +112,23 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="campo-placeholder" class="form-label">Placeholder</label>
+                            <label for="campo-placeholder" class="form-label text-dark fw-medium">Placeholder</label>
                             <input type="text" id="campo-placeholder" name="campo-placeholder" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3 form-check">
                             <input type="checkbox" id="campo-requerido" name="campo-requerido" class="form-check-input">
-                            <label for="campo-requerido" class="form-check-label">Requerido</label>
+                            <label for="campo-requerido" class="form-check-label text-dark fw-medium">Requerido</label>
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Guardar Campo</button>
-                <button type="button" class="btn btn-secondary" id="cancelar-edicion">Cancelar</button>
+                <button type="submit" class="boton me-2 fw-bold">Guardar Campo</button>
+                <button type="button" class="boton fw-bold" id="cancelar-edicion">Cancelar</button>
             </form>
         </div>
     </main>
-    <script src="js/modif-registro-colaboradorHumano.js"></script>
+    <script src="js/modif-registro-humano.js"></script>
     
     <!-- Footer -->
     <footer class="container-fluid bg-dark text-light py-4">

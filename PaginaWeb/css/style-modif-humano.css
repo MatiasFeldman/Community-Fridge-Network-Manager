@@ -30,26 +30,14 @@ table.table {
     margin-left: 5px;
 }
 
-/* Botones */
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-    margin-right: 10px;
+.btn-editar{
+    background-color: #415A77;
+    transition: all 0.3s;
+    border: none;
 }
 
-.btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
+.btn-editar:hover{
+    background-color: #1B263B;
 }
 
 /* Ajustes responsivos */

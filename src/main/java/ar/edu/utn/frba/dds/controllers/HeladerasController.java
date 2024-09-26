@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
@@ -26,6 +27,7 @@ import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class HeladerasController {
@@ -83,7 +85,7 @@ public class HeladerasController {
 
         MqttReceptorApertura receptor = new MqttReceptorApertura();
 
-        if (!Objects.equals(rol, "HUMANO")){
+        if (!Objects.equals(rol, "HUMANO")) {
             throw new PermisoDenegadoException("No tiene permisos para realizar esta accion");
         }
 
@@ -107,13 +109,18 @@ public class HeladerasController {
     }
 
 
-    public void registrarIntentoDeApertura(IntentoAperturaResuelto intento){
+    public void registrarIntentoDeApertura(IntentoAperturaResuelto intento) {
         intentos.guardar(intento);
     }
 
     // Devolver todas las heladeras del sistema
-    public void index(Context context){
+    public void index(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
+        List<HeladeraOutputDTO> dtos = new ArrayList<>();
+
+        heladeras.forEach(h -> {
+            dtos.add(new HeladeraOutputDTO(h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva()));
+        });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
         model.put("heladeras", heladeras);

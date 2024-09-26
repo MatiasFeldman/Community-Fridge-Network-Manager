@@ -13,6 +13,7 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -25,7 +26,7 @@ import java.util.Optional;
 import javax.persistence.*;
 
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -248,6 +249,10 @@ public class Heladera extends Persistente {
         this.activa = false;
         this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
 
+    }
+
+    public String direccionCompleta(){
+        return this.direccion.getCalle().getNombre() + " " + this.direccion.getAltura();
     }
 
     public Integer cantActual() {

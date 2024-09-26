@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "registro_persona_vulnerable")
-@Builder
+@SuperBuilder
 public class RegistroPersonaVulnerable extends Persistente implements Contribucion{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

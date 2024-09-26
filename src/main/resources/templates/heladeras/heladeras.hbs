@@ -1,0 +1,19 @@
+{{#partial "contenido"}}
+    <div>
+        {{#each heladeras}}
+            <div class="d-flex justify-content-between">
+                <h5 class="text-dark fs-5">{{this.nombre}}</h5>
+                <span class="{{#if this.activa}}estado-activa{{else}}estado-inactiva{{/if}}">
+                    {{#if this.activa}}Activa{{else}}Inactiva{{/if}}
+                </span>
+            </div>
+            <div>
+                <p class="text-black fs-5 fw-semibold mb-1">{{this.direccionCompleta}}</p>
+                <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas disponibles: {{this.capActual}}</p>
+                 <!-- <button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button> -->
+                <button class="boton suscribirse-btn">Suscribirse</button>
+            </div>
+        {{/each}}
+    </div>
+{{/partial}}
+{{> templates/base }}

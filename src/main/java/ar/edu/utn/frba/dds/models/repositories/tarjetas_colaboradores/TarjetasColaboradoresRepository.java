@@ -2,10 +2,12 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class TarjetasColaboradoresRepository {
     private TarjetasColaboradoresDAO tarjetas;
 

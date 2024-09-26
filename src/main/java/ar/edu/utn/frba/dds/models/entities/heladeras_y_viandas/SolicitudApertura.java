@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "solicitud_de_apertura")
 public class SolicitudApertura extends Persistente {

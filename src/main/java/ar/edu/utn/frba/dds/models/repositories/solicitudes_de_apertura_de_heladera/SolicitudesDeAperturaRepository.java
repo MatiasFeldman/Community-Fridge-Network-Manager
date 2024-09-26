@@ -4,10 +4,12 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class SolicitudesDeAperturaRepository {
     private SolicitudDeAperturaDAO dao;
 

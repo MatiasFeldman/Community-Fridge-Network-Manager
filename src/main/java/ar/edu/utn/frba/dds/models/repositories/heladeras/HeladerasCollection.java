@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.models.repositories.heladeras;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class HeladerasCollection implements HeladerasDAO {
     private List<Heladera> heladeras;
 
@@ -28,7 +30,7 @@ public class HeladerasCollection implements HeladerasDAO {
     public Optional<Heladera> buscarPorNombre(String name) {
         return heladeras
                 .stream()
-                .filter(h -> h.nombrePunto().equalsIgnoreCase(name))
+                .filter(h -> h.getNombre().equalsIgnoreCase(name))
                 .findFirst();
     }
 

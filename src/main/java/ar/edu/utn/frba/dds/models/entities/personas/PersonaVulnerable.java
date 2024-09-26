@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerab
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "persona_vulnerable")
 public class PersonaVulnerable extends Persistente {

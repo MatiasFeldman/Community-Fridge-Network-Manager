@@ -20,12 +20,12 @@ import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @AllArgsConstructor
 public class HeladerasController {
@@ -109,6 +109,16 @@ public class HeladerasController {
 
     public void registrarIntentoDeApertura(IntentoAperturaResuelto intento){
         intentos.guardar(intento);
+    }
+
+    // Devolver todas las heladeras del sistema
+    public void index(Context context){
+        List<Heladera> heladeras = this.heladeras.buscarTodos();
+
+        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+        model.put("heladeras", heladeras);
+
+        context.render("heladeras/heladeras.hbs", model);
     }
 
 }

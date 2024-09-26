@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helad
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class SolicitudDeAperturaCollection implements SolicitudDeAperturaDAO{
     private List<SolicitudApertura> solicitudes;
 

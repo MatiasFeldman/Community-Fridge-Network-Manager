@@ -1,0 +1,50 @@
+:root{
+    --rich-black: #0D1B2A; /* para textos oscuros*/
+    --oxford-blue: #1B263B;
+    --yinmn-blue: #415A77;
+    --silver-lake-blue: #778DA9;
+    --platinum: #E0E1DD; /* para fondos y textos claros */
+}
+
+.boton{
+    background-color: var(--yinmn-blue);
+    border: 2px solid var(--yinmn-blue);
+    border-radius: 6px;
+    color: var(--platinum);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    transition: all 0.3s;
+}
+
+.boton:hover{
+    background-color: var(--oxford-blue);
+    border-color: var(--oxford-blue);
+}
+
+.boton-colaborar{
+    background-color: var(--yinmn-blue);
+    border: 2px solid var(--yinmn-blue);
+    border-radius: 6px;
+    color: var(--platinum);
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 5px 15px;
+    transition: all 0.3s;
+}
+
+.boton-colaborar:hover{
+    background-color: var(--oxford-blue);
+    border-color: var(--oxford-blue);
+}
+
+.boton-desuscribirse{
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.boton-desuscribirse:hover{
+    background-color: #c82333;
+    border-color: #bd2130;
+}

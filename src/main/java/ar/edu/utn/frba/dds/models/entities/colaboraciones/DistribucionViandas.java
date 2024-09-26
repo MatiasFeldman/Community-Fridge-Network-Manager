@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "distribucion_viandas")
 public class DistribucionViandas extends Persistente implements Contribucion{

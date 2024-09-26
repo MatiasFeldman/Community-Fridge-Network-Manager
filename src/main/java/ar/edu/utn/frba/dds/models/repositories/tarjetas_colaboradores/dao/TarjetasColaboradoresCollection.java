@@ -2,10 +2,12 @@ package ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class TarjetasColaboradoresCollection implements TarjetasColaboradoresDAO, WithSimplePersistenceUnit {
     private List<TarjetaColaborador> tarjetas;
 

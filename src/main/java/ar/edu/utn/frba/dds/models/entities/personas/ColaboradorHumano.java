@@ -6,6 +6,8 @@ import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import javax.persistence.*;
 
 @Getter
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Setter
 @NoArgsConstructor
 @Entity

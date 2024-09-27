@@ -1,0 +1,69 @@
+.image-container {
+    width: 100%;
+    max-width: 500px; /* Ajuste según el tamaño de la imagen */
+    margin: 0 auto;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+h1.display-4 {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif; /* Fuente moderna */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los inputs */
+input.form-control,
+select.form-control {
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 20px; /* Espacio entre campos */
+}
+
+input.form-control:focus,
+select.form-control:focus {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+/* Estilos para títulos secundarios */
+h3.h5 {
+    color: #555;
+    font-weight: bold;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .image-container,
+    .col-md-6 {
+        max-width: 100%;
+    }
+
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    input.form-control,
+    select.form-control {
+        font-size: 0.9rem;
+    }
+
+    button#registrar-btn {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}

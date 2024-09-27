@@ -15,18 +15,11 @@
 <body>
 
 <!-- Header -->
-<header class="container-fluid bg-platinum border-bottom">
-    <div class="container d-flex justify-content-between align-items-center py-2">
+<header class="bg-platinum border-bottom d-flex justify-content-between align-items-center py-2">
         <div class="logo">
             <a class="nav-link text-dark" href="/">
                 <img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid">
             </a>
-        </div>
-        <div class="search-bar d-flex flex-grow-1 mx-3 position-relative">
-            <input type="text" class="form-control rounded-pill ps-4" placeholder="Buscar...">
-            <span class="position-absolute end-0 top-50 translate-middle-y pe-3">
-                    <img src="../imagenes/lupa.png" alt="Buscar" class="img-fluid search-icon">
-                </span>
         </div>
         <nav class="navigation">
             <ul class="nav">
@@ -59,12 +52,10 @@
                 </div>
             </div>
         </div>
-
-    </div>
 </header>
 
 <!-- Main Content - Product Listing -->
-<main class="container my-5">
+<main class="container my-5 d-flex justify-content-center align-items-center">
     {{#block "contenido"}}
     {{/block}}
 </main>
@@ -74,7 +65,7 @@
     <div class="container d-flex">
 
         <div class="footer-logo me-5">
-            <a href="index.html"><img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid mb-2" style="max-width: 100px;"></a>
+            <a href="/"><img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid mb-2" style="max-width: 100px;"></a>
         </div>
 
         <div class="footer-content d-flex flex-grow-1 justify-content-between">

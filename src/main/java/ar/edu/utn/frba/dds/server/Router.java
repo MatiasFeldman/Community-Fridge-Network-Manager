@@ -1,24 +1,28 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
+import ar.edu.utn.frba.dds.controllers.ViewsController;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.Javalin;
 
 
 public class Router {
-    public static void init(Javalin app){
-        app.get("/", ctx -> ctx.render("landing.hbs"));
-        app.get("/colaborar", ctx -> ctx.render("colaborar.hbs"));
+    public static void init(Javalin app) {
+        app.get("/", ViewsController::landing);
 
-        app.get("/colaborar/donar-dinero", ctx -> ctx.render("colaboraciones/dinero.hbs"));
+        app.get("/colaborar", ViewsController::colaborar);
 
-        app.get("/colaborar/distribuir-viandas", ctx -> ctx.render("colaboraciones/distribucion-de-viandas.hbs"));
+        app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero);
 
-        app.get("/colaborar/donar-viandas", ctx -> ctx.render("colaboraciones/donacion-de-viandas.hbs"));
+        app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas);
 
-        app.get("/colaborar/heladera-a-cargo", ctx -> ctx.render("colaboraciones/heladera-a-cargo.hbs"));
+        app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas);
 
+        app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo);
 
+        app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable);
+
+        app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta);
 
         app.get("/heladeras", ctx -> ServiceLocator.instanceOf(HeladerasController.class).index(ctx));
 

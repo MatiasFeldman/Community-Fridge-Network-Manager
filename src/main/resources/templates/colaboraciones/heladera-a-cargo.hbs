@@ -4,6 +4,7 @@
 {{/partial}}
 
 {{#partial "contenido"}}
+    <div>
     <div class="row justify-content-center align-items-center">
         <div class="col-md-6">
             <div class="image-container">
@@ -12,32 +13,32 @@
             </div>
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
-            <h1 class="display-4 font-weight-bold text-center">Registrar Heladera</h1>
+            <h1 class="fw-bold text-center text-dark">Registrar Heladera</h1>
             <div class="row mt-4">
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Nombre</h3>
+                    <h3 class="h5 fw-semibold">Nombre</h3>
                     <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombre">
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Capacidad Máxima</h3>
+                    <h3 class="h5 fw-semibold">Capacidad Máxima</h3>
                     <input type="text" class="form-control mt-2" placeholder="Cantidad de viandas"
                            id="capacidadMaxima">
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Cantidad Actual(Opcional)</h3>
+                    <h3 class="h5 fw-semibold">Cantidad Actual(Opcional)</h3>
                     <input type="text" class="form-control mt-2" placeholder="Cantidad actual de viandas"
                            id="cantidadViandas">
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Calle</h3>
+                    <h3 class="h5 fw-semibold">Calle</h3>
                     <input type="text" class="form-control mt-2" placeholder="Calle" id="calle">
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Altura</h3>
+                    <h3 class="h5 fw-semibold">Altura</h3>
                     <input type="text" class="form-control mt-2" placeholder="Altura" id="altura">
                 </div>
                 <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Comuna</h3>
+                    <h3 class="h5 fw-semibold">Comuna</h3>
                     <select class="form-control mt-2" id="comuna">
                         <option value="">Selecciona la comuna</option>
                         <option value="comuna1">Comuna 1</option>
@@ -53,36 +54,32 @@
 
     <!-- Sección de Recomendación de Puntos-->
     <div class="recomendacion-puntos mt-5">
-        <h2 class="h5 text-recomendacion">Recomendación de Puntos (Opcional):</h2>
-        <div class="row mt-4 justify-content-center">
-            <div class="col-12 col-md-3 mb-3">
-                <h3 class="h5">Latitud</h3>
-                <input type="text" class="form-control mt-2" placeholder="Latitud" id="latitudRecomendacion">
+        <h2 class="h5 text-recomendacion ps-2">Recomendación de Puntos (Opcional):</h2>
+        <div class="d-flex flex-wrap mt-4 justify-content-between align-items-center">
+            <div class="form-group">
+                <h3 class="text-dark fs-6 fw-semibold ps-2">Latitud</h3>
+                <input type="text" class="form-control latitud" placeholder="Latitud" id="latitudRecomendacion">
             </div>
-            <div class="col-12 col-md-3 mb-3">
-                <h3 class="h5">Longitud</h3>
-                <input type="text" class="form-control mt-2" placeholder="Longitud" id="longitudRecomendacion">
+            <div class="form-group">
+                <h3 class="text-dark fs-6 fw-semibold ps-2">Longitud</h3>
+                <input type="text" class="form-control longitud" placeholder="Longitud" id="longitudRecomendacion">
             </div>
-            <div class="col-12 col-md-3 mb-3">
-                <h3 class="h5">Radio (en metros)</h3>
-                <input type="text" class="form-control mt-2" placeholder="Radio" id="longitudRecomendacion">
+            <div class="form-group">
+                <h3 class="text-dark fs-6 fw-semibold ps-2">Radio (en metros)</h3>
+                <input type="text" class="form-control radio" placeholder="Radio" id="radioRecomendacion">
             </div>
-            <div class="col-12 col-md-3 mb-3">
+            <div class="form-group">
+                <h3 class="text-dark fs-6 fw-semibold invisible">Botón</h3>
                 <button id="recomendarPuntosBtn" class="boton">Solicitar Recomendación</button>
             </div>
         </div>
-        <!-- Sección de resultados -->
-        <div class="resultados mt-5" id="resultadosContainer" style="display: none;">
-            <h2 class="h5 text-center text-recomendacion">Puntos Recomendados:</h2>
-            <ul id="listaPuntosRecomendados" class="list-group">
-                <!-- Los puntos recomendados van aca -->
-            </ul>
-        </div>
     </div>
+
     <div class="row mt-4">
         <div class="col text-center">
-            <button class="boton" id="colocar-btn">Registrar</button>
+            <button class="boton fs-3 fw-bold" id="colocar-btn">Registrar</button>
         </div>
+    </div>
     </div>
 {{/partial}}
 {{> templates/base }}

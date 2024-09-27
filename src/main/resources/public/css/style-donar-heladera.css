@@ -1,27 +1,5 @@
-.image-container {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.image-container img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Título principal */
-h1.display-4 {
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif; /* Fuente moderna */
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* Estilos para los inputs */
-input.form-control,
-select.form-control {
+/* Ajustes para inputs con ancho específico */
+input.form-control {
     padding: 10px 15px;
     border-radius: 50px;
     border: 1px solid #ccc;
@@ -30,87 +8,34 @@ select.form-control {
     color: #333;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+    max-width: 300px; /* Limita el ancho máximo */
     width: 100%;
-    margin-bottom: 20px; /* Espacio entre campos */
 }
 
-input.form-control:focus,
-select.form-control:focus {
-    background-color: #e9ecef;
-    border-color: #007bff;
+/* Ajuste específico para cada input */
+input.latitud, input.longitud, input.radio {
+    width: 250px; /* Ancho fijo opcional */
 }
 
-/* Estilos para títulos secundarios */
-h3.h5 {
+.h5{
     color: #555;
     font-weight: bold;
+
 }
 
-/* Título de recomendación de puntos */
-.text-recomendacion {
-    color: #007bff; /* Color más visible */
-}
-
-/* Botones */
-button#colocar-btn,
 button#recomendarPuntosBtn {
+    padding: 10px 15px;
+    font-size: 1rem;
     border-radius: 50px;
-    font-size: 1.2rem;
 }
 
 /* Ajustes responsivos */
 @media (max-width: 768px) {
-    .image-container,
-    .col-md-6 {
-        max-width: 100%;
+    input.latitud, input.longitud, input.radio {
+        width: 100%; /* Ocuparán el 100% en pantallas pequeñas */
     }
 
-    h1.display-4 {
-        font-size: 2.5rem;
-    }
-
-    input.form-control,
-    select.form-control {
-        font-size: 0.9rem;
-    }
-
-    button#colocar-btn,
     button#recomendarPuntosBtn {
-        padding: 8px 20px;
-        font-size: 1rem;
+        width: 100%; /* Botón a full ancho en pantallas pequeñas */
     }
-}
-
-/* Separación adicional para la sección de recomendación */
-.recomendacion-puntos {
-    margin-top: 50px;
-}
-.recomendacion-puntos h2{
-    color: #333;
-}
-
-.resultados {
-    margin-top: 50px;
-}
-
-#listaPuntosRecomendados {
-    padding: 0;
-    list-style-type: none;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-#listaPuntosRecomendados li {
-    background-color: #f7f7f7;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#listaPuntosRecomendados li span {
-    font-weight: bold;
 }

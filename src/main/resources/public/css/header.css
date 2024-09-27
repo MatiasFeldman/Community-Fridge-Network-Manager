@@ -9,7 +9,12 @@
 header {
     background-color: var(--background-color);
     border-bottom: 1px solid var(--secondary-color);
+    height: 10vh;
+    padding: 0px 20px;
+}
 
+main{
+    height: 70vh;
 }
 
 .logo img {

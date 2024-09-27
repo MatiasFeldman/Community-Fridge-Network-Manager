@@ -19,6 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVuln
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.javalin.http.Context;
 import lombok.SneakyThrows;
 
 import java.util.Optional;
@@ -201,6 +202,5 @@ public class ContribucionesController {
         juridica.sumarPuntaje(contribucion);
         ofertas.guardar(oferta);
     }
-
 
 }

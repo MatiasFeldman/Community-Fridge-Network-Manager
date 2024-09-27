@@ -1,0 +1,46 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-donar-oferta.css">
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-6">
+            <div class="image-container">
+                <img src="../imagenes/caridad.jpg" alt="Foto con título" class="img-fluid rounded shadow">
+                <h2 class="h5 text-center mt-3">Foto con Título</h2>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h1 class="display-4 font-weight-bold text-center">Ofrecer producto o Servicio</h1>
+            <div class="row mt-4">
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 fw-semibold">Nombre Producto</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombreProducto">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 fw-semibold">Puntos Necesarios</h3>
+                    <input type="number" class="form-control mt-2" placeholder="Cantidad de Puntos"
+                           id="puntosNecesarios">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 fw-semibold">Imagen (Opcional)</h3>
+                    <input type="file" class="form-control mt-2" accept=".png, .jpg, .jpeg" id="imagenProducto">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 fw-semibold">Tipo</h3>
+                    <select class="form-control mt-2" id="tipoProducto">
+                        <option value="">Selecciona el tipo</option>
+                        <option value="producto">Producto</option>
+                        <option value="servicio">Servicio</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <button class="boton fs-3 fw-bold" id="ofrecer-btn">Ofrecer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

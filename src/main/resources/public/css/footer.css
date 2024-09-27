@@ -11,6 +11,7 @@ body {
 footer {
     color: var(--text-color);
     background-color: var(--primary-color); /* Fondo oscuro para el footer */
+    height: 20vh;
 }
 
 .footer-logo {

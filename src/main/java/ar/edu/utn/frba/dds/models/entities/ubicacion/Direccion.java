@@ -1,10 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -24,6 +21,7 @@ public class Direccion {
     private Integer altura;
 
     @Embedded
+    @Setter
     private Coordenada coordenadas;
 
     public static Direccion of(DireccionDTO dto){

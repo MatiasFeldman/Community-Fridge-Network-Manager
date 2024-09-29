@@ -1,0 +1,201 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-gestion-heladeras-user.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../js/gestion-heladeras-user.js"></script>
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="w-100">
+        <h1 class="display-4 text-center mb-5">Gestión de Heladeras</h1>
+
+        <div class="filter-container">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#filter-options" aria-expanded="false" aria-controls="filter-options">
+                <img src="../imagenes/filtro.png" alt="Filtrar" class="filter-icon"> Filtrar
+            </button>
+            <div class="collapse" id="filter-options">
+                <form id="filter-form">
+                    <!-- Filtro por estado -->
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="filtro-activo" value="activo">
+                        <label class="form-check-label" for="filtro-activo">Heladeras Activas</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="filtro-inactivo" value="inactivo">
+                        <label class="form-check-label" for="filtro-inactivo">Heladeras Inactivas</label>
+                    </div>
+
+                    <!-- Filtro dentro de las heladeras inactivas -->
+                    <div class="sub-filtro" id="filtros-inactivos" style="display: none;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filtro-falla" value="falla">
+                            <label class="form-check-label" for="filtro-falla">Falla Técnica</label>
+                        </div>
+
+                        <!-- Filtros por alertas -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filtro-alerta" value="alerta">
+                            <label class="form-check-label" for="filtro-alerta">Alertas</label>
+                        </div>
+
+                        <!-- Sub-filtros de alertas -->
+                        <div class="sub-filtro" id="filtros-alerta" style="display: none;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="filtro-temperatura"
+                                       value="temperatura">
+                                <label class="form-check-label" for="filtro-temperatura">Temperatura</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="filtro-fraude" value="fraude">
+                                <label class="form-check-label" for="filtro-fraude">Fraude</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="filtro-conexion" value="conexion">
+                                <label class="form-check-label" for="filtro-conexion">Falla en la Conexión</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container-page">
+
+            <div id="map"></div>
+
+            <!-- Lista de heladeras -->
+            <div class="lista-heladeras " id="lista-heladeras">
+                {{#each heladeras}}
+                    <div class="p-3 d-flex flex-column justify-content-between rounded heladera-card" data-nombre="{{this.nombre}}" data-direccion="{{this.direccion}}" data-latitud="{{this.latitud}}" data-longitud="{{this.longitud}}">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="text-dark fs-5">{{this.nombre}}</h5>
+                            <span class="{{#if this.activa}}estado-activa{{else}}estado-inactiva{{/if}}">
+                                {{#if this.activa}}Activa{{else}}Inactiva{{/if}}
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-black fs-5 fw-semibold mb-1">{{this.direccion}}</p>
+                            <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas
+                                disponibles: {{this.capacidadActual}}</p>
+                            <!-- <button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button> -->
+                            <button class="boton suscribirse-btn">Suscribirse</button>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+
+
+            <!-- Sección de suscripción -->
+            <div class="row mt-5" id="suscripcion-container" style="display: block;">
+                <h3 class="h5 text-center">Suscripción a Heladeras</h3>
+                <div class="col-12 ">
+                    <form id="form-suscripcion" class="card p-4 shadow">
+                        <h4 class="mb-3">Elija el tipo de notificación que desea recibir (puede seleccionar más de una):
+                        </h4>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="notificacionViandasMin">
+                            <label class="form-check-label" for="notificacionViandasMin">
+                                Notificarme cuando queden menos de <strong>N</strong> viandas disponibles en la
+                                heladera.
+                            </label>
+
+                            <div class="modal fade" id="configurarNModal" tabindex="-1"
+                                 aria-labelledby="configurarNModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="configurarNModalLabel">Configurar valor de
+                                                N</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="nValueInput">Ingrese el valor de <strong>N</strong>:</label>
+                                            <input type="number" id="nValueInput" class="form-control"
+                                                   placeholder="Número de viandas">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancelar
+                                            </button>
+                                            <button type="button" id="guardarNValue"
+                                                    class="btn btn-primary">Guardar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="notificacionViandasMax">
+                            <label class="form-check-label" for="notificacionViandasMax">
+                                Notificarme cuando falten menos de <strong>N</strong> viandas para llenar la heladera.
+                            </label>
+
+                            <div class="modal fade" id="configurarNModal" tabindex="-1"
+                                 aria-labelledby="configurarNModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="configurarNModalLabel">Configurar valor de
+                                                N</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="nValueInput">Ingrese el valor de <strong>N</strong>:</label>
+                                            <input type="number" id="nValueInput" class="form-control"
+                                                   placeholder="Número de viandas">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancelar
+                                            </button>
+                                            <button type="button" id="guardarNValue"
+                                                    class="btn btn-primary">Guardar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="notificacionDesperfecto">
+                            <label class="form-check-label" for="notificacionDesperfecto">
+                                La heladera sufrió un desperfecto.
+                            </label>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="medioNotificacion">Medio de Notificación:</label>
+                            <select id="medioNotificacion" class="form-control">
+                                <option value="email">Email</option>
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="telegram">Telegram</option>
+                            </select>
+                        </div>
+
+                        <!-- Campo extra para ingresar correo o teléfono -->
+                        <div id="contactoAdicional" class="form-group mb-3" style="display: none;">
+                            <label for="contactoAdicionalInput">Por favor, ingrese su <span
+                                    id="tipoContacto"></span>:</label>
+                            <input type="text" id="contactoAdicionalInput" class="form-control"
+                                   placeholder="Ingrese su contacto">
+                        </div>
+
+                        <button type="submit" class="boton">Guardar Suscripción</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

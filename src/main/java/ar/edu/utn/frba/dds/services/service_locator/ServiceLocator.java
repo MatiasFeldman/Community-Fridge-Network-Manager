@@ -75,8 +75,6 @@ public class ServiceLocator {
         } else if (componentName.equals(JuridicasRepository.class.getName())) {
             JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
             instances.put(componentName, juridicas);
-        } else {
-            throw new RuntimeException("No se encontro el componente");
         }
 
         if (persistence.equals("memory")) {

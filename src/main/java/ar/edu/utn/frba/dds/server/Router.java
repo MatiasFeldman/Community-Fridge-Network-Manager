@@ -24,6 +24,8 @@ public class Router {
 
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta);
 
+        app.get("/heladeras/suscribirse", ctx -> ServiceLocator.instanceOf(HeladerasController.class).suscribirseAHeladeras(ctx));
+
         app.get("/heladeras", ctx -> ServiceLocator.instanceOf(HeladerasController.class).index(ctx));
 
         app.get("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));

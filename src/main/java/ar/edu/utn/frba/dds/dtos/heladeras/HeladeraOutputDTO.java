@@ -8,8 +8,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class HeladeraOutputDTO {
+    private String nombre;
     private String direccion;
     private Integer capacidadActual;
     private Integer capacidadMaxima;
     private Boolean activa;
+    private Double longitud;
+    private Double latitud;
 }

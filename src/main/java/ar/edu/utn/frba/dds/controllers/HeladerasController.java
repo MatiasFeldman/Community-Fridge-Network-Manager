@@ -123,13 +123,27 @@ public class HeladerasController implements CrudViewsHandler {
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
         heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva()));
+            dtos.add(new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
         });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
         model.put("heladeras", heladeras);
 
         context.render("heladeras/heladeras.hbs", model);
+    }
+
+    public void suscribirseAHeladeras(Context context) {
+        List<Heladera> heladeras = this.heladeras.buscarTodos();
+        List<HeladeraOutputDTO> dtos = new ArrayList<>();
+
+        heladeras.forEach(h -> {
+            dtos.add(new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+        });
+
+        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+        model.put("heladeras", dtos);
+
+        context.render("heladeras/mapa-de-heladeras-user.hbs", model);
     }
 
     @Override
@@ -139,8 +153,8 @@ public class HeladerasController implements CrudViewsHandler {
             context.status(HttpStatus.NOT_FOUND);
             context.result("Heladera no encontrada");
         } else {
-            Heladera heladera = buscada.get();
-            HeladeraOutputDTO dto = new HeladeraOutputDTO(heladera.direccionCompleta(), heladera.getCapActual(), heladera.getCapacidadMaxima(), heladera.getActiva());
+            Heladera h = buscada.get();
+            HeladeraOutputDTO dto = new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud());
 
             Map<String, Object> model = new HashMap<>();
             model.put("heladera", dto);
@@ -148,6 +162,7 @@ public class HeladerasController implements CrudViewsHandler {
             context.render("heladeras/heladera.hbs", model);
         }
     }
+
 
     @Override
     public void create(Context context) {

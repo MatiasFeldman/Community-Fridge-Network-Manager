@@ -1,28 +1,36 @@
 package ar.edu.utn.frba.dds.utils.server;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
 public class Initializer {
-    public static void init(){
+    public static void init() {
         HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
 
         Direccion d1 = Direccion
-                .of("Calle Falsa", 123);
+                .of("Mozart", 2300);
+        d1.setCoordenadas(new Coordenada(-34.662, -58.4649));
 
         Direccion d2 = Direccion
-                .of("Calle Falsa2", 124);
+                .of("Pepiri", 1234);
+        d2.setCoordenadas(new Coordenada(-34.634, -58.392));
 
-        Direccion d3 = Direccion.of("Calle Falsa3", 125);
+        Direccion d3 = Direccion.of("Avenida Triunvirato", 4000);
+        d3.setCoordenadas(new Coordenada(-34.573, -58.475));
+
+        Direccion d4 = Direccion
+                .of("Nazca", 2000);
+        d4.setCoordenadas(new Coordenada(-34.625, -58.467));
 
         Heladera h1 = Heladera
                 .builder()
-                .nombre("Heladera 1")
+                .nombre("Heladera UTN Lugano")
                 .direccion(d1)
-                .capacidadMaxima(100)
-                .capActual(100)
+                .capacidadMaxima(50)
+                .capActual(50)
                 .activa(true)
                 .build();
 
@@ -30,8 +38,8 @@ public class Initializer {
                 .builder()
                 .nombre("Heladera 2")
                 .direccion(d2)
-                .capacidadMaxima(100)
-                .capActual(100)
+                .capacidadMaxima(30)
+                .capActual(30)
                 .activa(true)
                 .build();
 
@@ -39,13 +47,23 @@ public class Initializer {
                 .builder()
                 .nombre("Heladera 3")
                 .direccion(d3)
-                .capacidadMaxima(100)
-                .capActual(100)
+                .capacidadMaxima(20)
+                .capActual(20)
+                .activa(true)
+                .build();
+
+        Heladera h4 = Heladera
+                .builder()
+                .nombre("Heladera Flores")
+                .direccion(d4)
+                .capacidadMaxima(70)
+                .capActual(70)
                 .activa(true)
                 .build();
 
         heladeras.guardar(h1);
         heladeras.guardar(h2);
         heladeras.guardar(h3);
+        heladeras.guardar(h4);
     }
 }

@@ -1,0 +1,56 @@
+
+
+    {{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-fallas-tecnicas.css">
+    <script src="../js/header-log.js"></script>
+    <script src="../js/autenticacion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkUserRole(['admin', 'colaboradorHumano', 'juridico'], false, false);
+        });
+    </script>
+    {{/partial}}
+
+
+
+    {{#partial "contenido"}}
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-8 d-flex flex-column justify-content-center">
+            <h1 class="display-4 font-weight-bold text-center">Reporte Falla Técnica</h1>
+            <div class="row mt-4">
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5">Heladera</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Nombre de la heladera" id="heladera">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5">Fecha de Nacimiento</h3>
+                    <input type="date" class="form-control mt-2" id="fechaNacimiento">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5">Tipo de Incidente</h3>
+                    <select class="form-control mt-2" id="tipoIncidente">
+                        <option value="">Selecciona el tipo de incidente</option>
+                        <option value="electrico">Eléctrico</option>
+                        <option value="mecanico">Mecánico</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5">Foto</h3>
+                    <input type="file" class="form-control mt-2" id="foto" accept="image/png, image/jpeg">
+                </div>
+                <div class="col-12 mb-3">
+                    <h3 class="h5">Descripción</h3>
+                    <textarea class="form-control mt-2" rows="4" placeholder="Descripción del incidente"
+                              id="descripcion"></textarea>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-end ">
+                    <button class="btn btn-success btn-lg" id="reportar-btn">Reportar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/partial}}
+    {{> templates/base }}

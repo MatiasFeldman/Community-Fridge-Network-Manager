@@ -1,0 +1,102 @@
+/* Estilos generales */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+}
+
+/* Encapsular los estilos del login */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-page h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.login-page form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-page label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-page input {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.login-page input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.login-page button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.login-page button:hover {
+    background-color: #0056b3;
+}
+
+.login-page .register-link {
+    margin-top: 20px;
+    color: #333;
+}
+
+.login-page .register-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-page .register-link a:hover {
+    text-decoration: underline;
+}

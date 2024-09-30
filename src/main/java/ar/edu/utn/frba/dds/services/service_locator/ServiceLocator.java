@@ -38,6 +38,7 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
+import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
 import java.util.ArrayList;
@@ -64,28 +65,38 @@ public class ServiceLocator {
         String componentName = componentClass.getName();
         String persistence = PrettyProperties.getInstance().propertyFromName("persistence");
 
-        if (componentName.equals(Accionador.class.getName())) {
-            Accionador accionador = new Accionador();
-            instances.put(componentName, accionador);
-        } else if (componentName.equals(MimeMailSender.class.getName())) {
-            MimeMailSender mailSender = new MimeMailSender();
-            instances.put(componentName, mailSender);
-        } else if (componentName.equals(TelegramSender.class.getName())) {
-            TelegramSender telegramSender = new TelegramSender();
-            instances.put(componentName, telegramSender);
-        } else if (componentName.equals(WhatsAppSender.class.getName())) {
-            WhatsAppSender whatsAppSender = new WhatsAppSender();
-            instances.put(componentName, whatsAppSender);
-        } else if (componentName.equals(JuridicasRepository.class.getName())) {
-            JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
-            instances.put(componentName, juridicas);
-        } else if (componentName.equals(HumanosController.class.getName())){
-            HumanosController humanos = new HumanosController();
-            instances.put(componentName, humanos);
-        }
+        if (!instances.containsKey(componentName)) {
+            if (componentName.equals(Accionador.class.getName())) {
+                Accionador accionador = new Accionador();
+                instances.put(componentName, accionador);
+            } else if (componentName.equals(ValidadorDeContrasenias.class.getName())) {
+                ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+                validador.agregarCondiciones(new CumpleLongitud(8, 64),
+                        new TieneMayuscula(),
+                        new TieneMinuscula(),
+                        new TieneNumero(),
+                        new TieneCaracterEspecial(),
+                        new NoEstaDentroDeLasComunes());
+                instances.put(componentName, validador);
+            } else if (componentName.equals(MimeMailSender.class.getName())) {
+                MimeMailSender mailSender = new MimeMailSender();
+                instances.put(componentName, mailSender);
+            } else if (componentName.equals(TelegramSender.class.getName())) {
+                TelegramSender telegramSender = new TelegramSender();
+                instances.put(componentName, telegramSender);
+            } else if (componentName.equals(WhatsAppSender.class.getName())) {
+                WhatsAppSender whatsAppSender = new WhatsAppSender();
+                instances.put(componentName, whatsAppSender);
+            } else if (componentName.equals(JuridicasRepository.class.getName())) {
+                JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
+                instances.put(componentName, juridicas);
+            } else if (componentName.equals(HumanosController.class.getName())) {
+                HumanosController humanos = new HumanosController();
+                instances.put(componentName, humanos);
+            }
 
-        if (persistence.equals("memory")) {
-            if (!instances.containsKey(componentName)) {
+            if (persistence.equals("memory")) {
+
                 if (componentName.equals(HeladerasController.class.getName())) {
                     HeladerasController controller = new HeladerasController(
                             instanceOf(Accionador.class),
@@ -129,10 +140,8 @@ public class ServiceLocator {
                     IncidentesRepository incidentes = new IncidentesRepository(new IncidentesCollection(new ArrayList<>()));
                     instances.put(componentName, incidentes);
                 }
-            }
 
-        } else if (persistence.equals("sql")) {
-            if (!instances.containsKey(componentName)) {
+            } else if (persistence.equals("sql")) {
                 if (componentName.equals(HeladerasController.class.getName())) {
                     HeladerasController controller = new HeladerasController(
                             instanceOf(Accionador.class),
@@ -176,7 +185,6 @@ public class ServiceLocator {
             }
 
         }
-
 
         return (T) instances.get(componentName);
     }

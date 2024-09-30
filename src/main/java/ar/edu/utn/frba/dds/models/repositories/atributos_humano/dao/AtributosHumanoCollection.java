@@ -44,4 +44,9 @@ public class AtributosHumanoCollection implements AtributosHumanoDAO {
     public List<Atributo> buscarPorTipo(TipoAtributo tipo) {
         return this.atributos.stream().filter(atributo -> atributo.getTipo().equals(tipo)).toList();
     }
+
+    @Override
+    public Optional<Atributo> buscarPorNombre(String nombre) {
+        return this.atributos.stream().filter(atributo -> atributo.getNombre().equals(nombre)).findFirst();
+    }
 }

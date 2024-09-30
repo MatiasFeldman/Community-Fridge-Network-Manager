@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import lombok.*;
@@ -43,6 +44,9 @@ public class ColaboradorHumano extends Persistente {
     @JoinColumn(name = "id_contacto")
     private List<Contacto> mediosDeContacto;
 
+    @Embedded
+    private Direccion direccion;
+
     @Column(name = "puntos_canjeados")
     private Double puntosCanjeados;
 
@@ -60,9 +64,9 @@ public class ColaboradorHumano extends Persistente {
                 .atributosObligatorios(dto.getAtributosObligatorios())
                 .atributosOpcionales(dto.getAtributosOpcionales())
                 .mediosDeContacto(dto.getMediosDeContacto())
+                .direccion(dto.getDireccion())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
-                .user(dto.getUser())
                 .user(dto.getUser())
                 .build();
     }

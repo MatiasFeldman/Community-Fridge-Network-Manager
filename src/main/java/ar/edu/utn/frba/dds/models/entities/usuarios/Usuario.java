@@ -9,7 +9,9 @@ import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ import javax.persistence.*;
 public class Usuario extends Persistente {
 
     @Column(name = "usuario", unique = true, nullable = false)
-    private final String user;
+    private String user;
     @Column(name = "contrasenia", nullable = false)
     private String password;
 
@@ -41,24 +43,20 @@ public class Usuario extends Persistente {
     @Column(name = "estrategia_de_envio")
     private SendingStrategy strategiaDeEnvio = null;
 
-    public Usuario(String user, String password, List<Rol> roles) throws IOException {
-        ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
-        validador.agregarCondiciones(new CumpleLongitud(8, 64),
-                new TieneMayuscula(),
-                new TieneMinuscula(),
-                new TieneNumero(),
-                new TieneCaracterEspecial(),
-                new NoEstaDentroDeLasComunes());
-
-        if (!validador.esValida(password)) {
-            throw new ContraseniaInseguraException("La contraseña no cumple con los requisitos mínimos");
-        } else {
+    @SneakyThrows
+    public Usuario(String user, String password, List<Rol> roles) {
             this.user = user;
             this.password = password;
             this.roles = roles;
             this.strategiaDeEnvio = null;
-        }
+    }
 
+    @SneakyThrows
+    public Usuario(String user, String password) {
+        this.user = user;
+        this.password = password;
+        this.roles = new ArrayList<>();
+        this.strategiaDeEnvio = null;
     }
 
     public boolean tienePermiso(String permiso) {

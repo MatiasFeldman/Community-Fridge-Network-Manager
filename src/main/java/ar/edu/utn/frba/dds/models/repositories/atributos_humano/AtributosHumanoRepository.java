@@ -40,4 +40,8 @@ public class AtributosHumanoRepository {
     public List<Atributo> buscarPorTipo(TipoAtributo tipo){
         return this.dao.buscarPorTipo(tipo);
     }
+
+    public Optional<Atributo> buscarPorNombre(String nombre) {
+        return this.dao.buscarPorNombre(nombre);
+    }
 }

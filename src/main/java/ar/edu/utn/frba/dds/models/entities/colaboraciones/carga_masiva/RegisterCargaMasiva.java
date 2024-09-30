@@ -61,7 +61,7 @@ public class RegisterCargaMasiva {
     }
 
     public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos, opcionales, new ArrayList<>() , userCreado);
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos ,opcionales, userCreado, null);
         return HumanoFactory.crear(dto);
     }
 

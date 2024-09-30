@@ -18,4 +18,6 @@ public interface AtributosHumanoDAO {
     public void eliminar(Atributo atributo);
 
     public List<Atributo> buscarPorTipo(TipoAtributo tipo);
+
+    Optional<Atributo> buscarPorNombre(String nombre);
 }

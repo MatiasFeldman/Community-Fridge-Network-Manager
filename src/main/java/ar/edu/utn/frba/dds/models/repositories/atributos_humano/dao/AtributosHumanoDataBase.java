@@ -50,4 +50,13 @@ public class AtributosHumanoDataBase implements WithSimplePersistenceUnit, Atrib
                 .getResultList();
     }
 
+    @Override
+    public Optional<Atributo> buscarPorNombre(String nombre) {
+        return Optional.of(entityManager()
+                .createQuery("SELECT d FROM Atributo d WHERE d.nombre = :nombre AND d.presente = true", Atributo.class)
+                .setParameter("nombre", nombre)
+                .getSingleResult());
+
+    }
+
 }

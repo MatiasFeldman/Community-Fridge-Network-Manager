@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds.utils.seguridad;
 
-import java.io.IOException;
+import lombok.SneakyThrows;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 public class ValidadorDeContrasenias {
 
@@ -12,13 +14,21 @@ public class ValidadorDeContrasenias {
         this.condicionesACumplir = new ArrayList<>();
     }
 
-    public boolean esValida(String contrasenia) throws IOException {
+    public Boolean esValida(String contrasenia) {
         for(CondicionContrasenia condicion : condicionesACumplir){
             if(!condicion.cumpleConCondicion(contrasenia)){
                 return false;
             }
         }
         return true;
+    }
+
+    @SneakyThrows
+    public Optional<CondicionContrasenia> condicionQueNoCumple(String contrasenia){
+        return condicionesACumplir
+                .stream()
+                .filter(c -> !c.cumpleConCondicion(contrasenia))
+                .findFirst();
     }
 
     public void agregarCondiciones(CondicionContrasenia ... condiciones){

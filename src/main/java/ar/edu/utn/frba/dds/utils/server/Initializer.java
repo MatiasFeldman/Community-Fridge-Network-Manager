@@ -78,7 +78,7 @@ public class Initializer {
 
         Atributo nombre = Atributo.create("Nombre", TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT);
         Atributo apellido = Atributo.create("Apellido", TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEL);
-        Atributo nacimiento = Atributo.create("Fecha de nacimiento", TipoAtributo.OPCIONAL, TipoCampoAtributo.DATE);
+        Atributo nacimiento = Atributo.create("Nacimiento", TipoAtributo.OPCIONAL, TipoCampoAtributo.DATE);
         Atributo direccion = Atributo.create("Direccion", TipoAtributo.OPCIONAL, TipoCampoAtributo.TEXT);
         Atributo email = Atributo.create("Mail", TipoAtributo.OPCIONAL, TipoCampoAtributo.EMAIL);
         Atributo wpp = Atributo.create("WhatsApp", TipoAtributo.OPCIONAL, TipoCampoAtributo.TEL);

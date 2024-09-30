@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 
 
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "atributo_humano")
 @Setter
 public class AtributoHumanoRespondido extends Persistente {
@@ -21,6 +23,11 @@ public class AtributoHumanoRespondido extends Persistente {
 
     @Column(name = "valor")
     private String valor;
+
+    public AtributoHumanoRespondido(String valor, Atributo atributo) {
+        this.valor = valor;
+        this.atributo = atributo;
+    }
 
     public static AtributoHumanoRespondido create(String nombre, String valor, TipoAtributo tipoAtributo, TipoCampoAtributo tipoCampo){
         Atributo atrib = Atributo.create(nombre, tipoAtributo, tipoCampo);

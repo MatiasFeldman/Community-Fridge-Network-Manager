@@ -22,8 +22,8 @@ public class AtributoHumanoRespondido extends Persistente {
     @Column(name = "valor")
     private String valor;
 
-    public static AtributoHumanoRespondido create(String nombre, String valor){
-        Atributo atrib = new Atributo(nombre);
+    public static AtributoHumanoRespondido create(String nombre, String valor, TipoAtributo tipoAtributo){
+        Atributo atrib = Atributo.create(nombre, tipoAtributo);
         AtributoHumanoRespondido respondido = new AtributoHumanoRespondido();
         respondido.setAtributo(atrib);
         respondido.setValor(valor);

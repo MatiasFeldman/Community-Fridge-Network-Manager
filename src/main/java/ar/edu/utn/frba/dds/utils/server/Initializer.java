@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.utils.server;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
@@ -65,5 +66,9 @@ public class Initializer {
         heladeras.guardar(h2);
         heladeras.guardar(h3);
         heladeras.guardar(h4);
+    }
+
+    public void inicializarAtributos(){
+
     }
 }

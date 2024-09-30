@@ -1,6 +1,4 @@
-
-
-    {{#partial "styles"}}
+{{#partial "styles"}}
     <link rel="stylesheet" href="../css/style-fallas-tecnicas.css">
     <script src="../js/header-log.js"></script>
     <script src="../js/autenticacion.js"></script>
@@ -9,11 +7,11 @@
             checkUserRole(['admin', 'colaboradorHumano', 'juridico'], false, false);
         });
     </script>
-    {{/partial}}
+{{/partial}}
 
 
 
-    {{#partial "contenido"}}
+{{#partial "contenido"}}
     <div class="row justify-content-center align-items-center">
         <div class="col-md-8 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Reporte Falla Técnica</h1>
@@ -52,5 +50,5 @@
             </div>
         </div>
     </div>
-    {{/partial}}
-    {{> templates/base }}
+{{/partial}}
+{{> templates/base }}

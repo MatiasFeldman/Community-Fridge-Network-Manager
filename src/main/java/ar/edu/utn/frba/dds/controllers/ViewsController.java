@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import io.javalin.http.Context;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,40 +8,63 @@ import java.util.Map;
 public class ViewsController {
 
     public  static void landing(Context ctx){
-        ctx.render("landing.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Inicio");
+
+        System.out.println(model.get("titulo"));
+        ctx.render("landing.hbs", model);
     }
 
     public static void colaborar(Context ctx){
-        ctx.render("colaborar.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaborar");
+
+        ctx.render("colaborar.hbs", model);
     }
 
     public static void formDonarDinero(Context ctx){
-        ctx.render("colaboraciones/dinero.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Donar dinero");
+
+        ctx.render("colaboraciones/dinero.hbs", model);
     }
 
     public static void formDistribuirViandas(Context ctx){
-        ctx.render("colaboraciones/distribucion-de-viandas.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Distribuir viandas");
+
+        ctx.render("colaboraciones/distribucion-de-viandas.hbs", model);
     }
 
     public static void formDonarViandas(Context ctx){
-        ctx.render("colaboraciones/donacion-de-viandas.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Donar viandas");
+
+        ctx.render("colaboraciones/donacion-de-viandas.hbs", model);
     }
 
     public static void formHeladeraACargo(Context ctx){
-        ctx.render("colaboraciones/heladera-a-cargo.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Hacerse cargo de heladera");
+
+
+        ctx.render("colaboraciones/heladera-a-cargo.hbs", model);
     }
 
     public static void formRegistroPersonaVulnerable(Context ctx){
-        ctx.render("colaboraciones/registro-vulnerable.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Registro de persona vulnerable");
+
+        ctx.render("colaboraciones/registro-vulnerable.hbs", model);
     }
 
     public static void formRegistrarOferta(Context ctx){
-        ctx.render("colaboraciones/ofertar.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Registro de oferta");
+
+        ctx.render("colaboraciones/ofertar.hbs", model);
     }
 
-    public static void formProducto(Context ctx){
-        ctx.render("colaboraciones/productos.hbs");
-    }
 
     public static void formLogin(Context ctx){
         Map<String, Object> model = new HashMap<>();
@@ -52,11 +74,17 @@ public class ViewsController {
     }
 
     public static void formRegistro(Context ctx){
-        ctx.render("registroUsuario/registro-tipo.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Registro");
+
+        ctx.render("registroUsuario/registro-tipo.hbs", model);
     }
 
     public static void formFallaTecnica(Context ctx){
-        ctx.render("colaboraciones/fallas-tecnicas.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Reporte falla ténica");
+
+        ctx.render("colaboraciones/fallas-tecnicas.hbs", model);
     }
 
 

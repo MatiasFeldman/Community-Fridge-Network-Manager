@@ -21,8 +21,12 @@ public class JuridicasRepository {
 
     public void eliminar(Juridica juridica){dao.eliminar(juridica);}
 
-    void modificar(Juridica juridica){dao.modificar(juridica);}
+    public void modificar(Juridica juridica){dao.modificar(juridica);}
 
     public List<Juridica> buscarTodos(){return dao.buscarTodos();}
+
+    public Boolean existeUsername(String username){
+        return dao.existeUsername(username);
+    }
 
 }

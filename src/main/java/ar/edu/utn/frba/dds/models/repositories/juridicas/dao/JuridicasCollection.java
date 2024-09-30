@@ -44,4 +44,11 @@ public class JuridicasCollection implements JuridicasDAO{
                 .filter(juridica -> juridica.getId().equals(id))
                 .findFirst();
     }
+
+    @Override
+    public Boolean existeUsername(String username) {
+        return this.juridicas
+                .stream()
+                .anyMatch(juridica -> juridica.getUser().getUser().equals(username));
+    }
 }

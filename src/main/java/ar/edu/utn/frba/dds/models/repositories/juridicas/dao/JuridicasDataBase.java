@@ -40,4 +40,14 @@ public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUni
     public Optional<Juridica> buscarPorId(Long id) {
         return Optional.ofNullable(entityManager().find(Juridica.class, id));
     }
+
+    @Override
+    public Boolean existeUsername(String username) {
+        Long count = entityManager()
+                .createQuery("SELECT COUNT(h) FROM Juridica h WHERE h.user.user = :username AND h.presente = true", Long.class)
+                .setParameter("username", username)
+                .getSingleResult();
+
+        return count > 0;
+    }
 }

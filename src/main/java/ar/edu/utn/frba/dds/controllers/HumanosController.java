@@ -6,17 +6,16 @@ import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.StringToDireccion;
+import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,10 +57,19 @@ public class HumanosController {
             context.json(response);
             return;
         }
-        ColaboradorHumano humano = new ColaboradorHumano();
-        Usuario user = new Usuario();
 
         String username = context.formParam("user");
+
+        if(ValidadorUsernames.existe(username, "Humano")){
+            context.status(HttpStatus.BAD_REQUEST);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("motivo", "El nombre de usuario ya existe");
+
+            context.json(response);
+            return;
+        }
+
         String nombre = context.formParam("nombre");
         String apellido = context.formParam("apellido");
         String email = context.formParam("email");

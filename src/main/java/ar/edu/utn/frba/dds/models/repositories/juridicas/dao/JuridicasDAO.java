@@ -17,4 +17,6 @@ public interface JuridicasDAO {
     public List<Juridica> buscarTodos();
 
     public Optional<Juridica> buscarPorId(Long id);
+
+    Boolean existeUsername(String username);
 }

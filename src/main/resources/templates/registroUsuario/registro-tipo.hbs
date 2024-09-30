@@ -1,0 +1,34 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-registros.css">
+    <script src="../../js/header-log.js"></script>
+    <script src="../../js/autenticacion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserRole([],true,true);
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="register-page">
+        <div class="register-container">
+            <h2>Registro de Usuario</h2>
+            <p class="login">Ya tenes cuenta? <a href="login.html">Login</a></p>
+            <p>Antes de empezar a registrarte, contanos con qué tipo de entidad te quieres registrar:</p>
+            <div class="option-group">
+                <label>
+                    <input type="radio" name="tipo-entidad" value="colaboradorHumano" checked>
+                    Humano
+                </label>
+                <label>
+                    <input type="radio" name="tipo-entidad" value="juridico">
+                    Jurídico
+                </label>
+            </div>
+            <button id="siguiente-btn">Siguiente</button>
+        </div>
+    </div>
+    <script src="js/registro.js"></script>
+{{/partial}}
+{{> templates/base }}

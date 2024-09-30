@@ -71,11 +71,11 @@ public class ColaboradorHumano extends Persistente {
         this.mediosDeContacto.add(contacto);
     }
 
-    public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor) {
+    public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor, TipoCampoAtributo tipoCampo) {
         if (tipo == TipoAtributo.OBLIGATORIO) {
-            this.atributosObligatorios.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo));
+            this.atributosObligatorios.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo, tipoCampo));
         } else {
-            this.atributosOpcionales.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo));
+            this.atributosOpcionales.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo, tipoCampo));
         }
     }
 

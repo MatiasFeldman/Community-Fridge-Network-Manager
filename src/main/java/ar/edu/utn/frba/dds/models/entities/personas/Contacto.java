@@ -1,28 +1,28 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @Entity
 @Table(name = "contacto")
 public class Contacto extends Persistente {
 
-    @Column(name = "tipo")
-    private String tipoContacto;
+    @Embedded
+    private TipoContacto tipoContacto;
 
     @Column(name = "valor")
     private String valorContacto;
 
-    public Contacto(String tipoContacto, String valorContacto) {
-        this.tipoContacto = tipoContacto;
-        this.valorContacto = valorContacto;
+    public static Contacto of(String tipoCon, String valor){
+        TipoContacto tipo = new TipoContacto(tipoCon);
+        return new Contacto(tipo, valor);
     }
 }

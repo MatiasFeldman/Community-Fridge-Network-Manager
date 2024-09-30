@@ -13,18 +13,22 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @SuperBuilder
+@Setter
 public class Atributo extends Persistente {
 
     @Column(name = "nombre_atributo", nullable = false)
     private String nombre;
 
+    private TipoCampoAtributo tipoCampo;
+
     private TipoAtributo tipo;
 
-    public static Atributo create(String nombre, TipoAtributo tipo){
+    public static Atributo create(String nombre, TipoAtributo tipo, TipoCampoAtributo campo){
         return Atributo
                 .builder()
                 .nombre(nombre)
                 .tipo(tipo)
+                .tipoCampo(campo)
                 .presente(true)
                 .build();
     }

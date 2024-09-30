@@ -12,6 +12,7 @@ public class DistribucionesDeViandasCollection implements DistribucionesDeVianda
 
     @Override
     public void guardar(DistribucionViandas donacionDeVianda) {
+
         this.distribuciones.add(donacionDeVianda);
     }
 

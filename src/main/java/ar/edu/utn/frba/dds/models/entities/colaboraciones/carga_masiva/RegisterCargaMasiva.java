@@ -35,11 +35,11 @@ public class RegisterCargaMasiva {
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
 
-        ArrayList<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create("Nombre", nombre, TipoAtributo.OBLIGATORIO), AtributoHumanoRespondido.create("Apellido", apellido, TipoAtributo.OBLIGATORIO)));
+        ArrayList<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create("Nombre", nombre, TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT), AtributoHumanoRespondido.create("Apellido", apellido, TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT)));
 
-        ArrayList<Contacto> mediosDeContacto = new ArrayList<>(List.of(new Contacto("Mail", mail)));
+        ArrayList<Contacto> mediosDeContacto = new ArrayList<>(List.of(Contacto.of("Mail", mail)));
 
-        ArrayList<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>(List.of(AtributoHumanoRespondido.create(tipoDocumento, documento, TipoAtributo.OPCIONAL)));
+        ArrayList<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>(List.of(AtributoHumanoRespondido.create(tipoDocumento, documento, TipoAtributo.OPCIONAL, TipoCampoAtributo.TEXT)));
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 

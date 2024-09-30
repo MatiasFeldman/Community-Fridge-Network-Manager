@@ -13,6 +13,9 @@ public class AtributosHumanoCollection implements AtributosHumanoDAO {
 
     @Override
     public void guardar(Atributo atributo) {
+        if (atributo.getId() == null) {
+            atributo.setId((Long.valueOf(this.atributos.size() - 1)));
+        }
         this.atributos.add(atributo);
     }
 

@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.models.repositories.atributos_humano;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class AtributosHumanoRepository {
     private AtributosHumanoDAO dao;
 

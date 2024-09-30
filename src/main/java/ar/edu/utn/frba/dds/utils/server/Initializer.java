@@ -2,8 +2,11 @@ package ar.edu.utn.frba.dds.utils.server;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
+import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
+import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
@@ -66,9 +69,28 @@ public class Initializer {
         heladeras.guardar(h2);
         heladeras.guardar(h3);
         heladeras.guardar(h4);
+
+        Initializer.inicializarAtributos();
     }
 
-    public void inicializarAtributos(){
+    public static void inicializarAtributos(){
+        AtributosHumanoRepository atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class);
+
+        Atributo nombre = Atributo.create("Nombre", TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT);
+        Atributo apellido = Atributo.create("Apellido", TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEL);
+        Atributo nacimiento = Atributo.create("Fecha de nacimiento", TipoAtributo.OPCIONAL, TipoCampoAtributo.DATE);
+        Atributo direccion = Atributo.create("Direccion", TipoAtributo.OPCIONAL, TipoCampoAtributo.TEXT);
+        Atributo email = Atributo.create("Mail", TipoAtributo.OPCIONAL, TipoCampoAtributo.EMAIL);
+        Atributo wpp = Atributo.create("WhatsApp", TipoAtributo.OPCIONAL, TipoCampoAtributo.TEL);
+        Atributo telegram = Atributo.create("Telegram", TipoAtributo.OPCIONAL,TipoCampoAtributo.TEL);
+
+        atributos.guardar(nombre);
+        atributos.guardar(apellido);
+        atributos.guardar(nacimiento);
+        atributos.guardar(direccion);
+        atributos.guardar(email);
+        atributos.guardar(wpp);
+        atributos.guardar(telegram);
 
     }
 }

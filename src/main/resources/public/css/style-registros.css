@@ -22,6 +22,12 @@ h2 {
     font-weight: bold;
 }
 
+#form-colaboradorHumano{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+}
+
 .form-group label {
     font-weight: bold;
     margin-bottom: 5px;
@@ -54,24 +60,10 @@ h2 {
     margin-right: 20px;
 }
 
-.form-group:last-child {
-    margin-right: 0;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    background-color: #27ae60;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.btn-registro{
     width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: #2ecc71;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 .form-container h2, .form-group label {
     color: #333;

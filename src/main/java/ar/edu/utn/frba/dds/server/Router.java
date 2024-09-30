@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
+import ar.edu.utn.frba.dds.controllers.HumanosController;
 import ar.edu.utn.frba.dds.controllers.ViewsController;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.Javalin;
@@ -26,6 +27,7 @@ public class Router {
 
         app.get("/heladeras/suscribirse", ctx -> ServiceLocator.instanceOf(HeladerasController.class).suscribirseAHeladeras(ctx));
 
+        app.get("/prueba", ctx -> ServiceLocator.instanceOf(HumanosController.class).formRegistroHumano(ctx));
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 

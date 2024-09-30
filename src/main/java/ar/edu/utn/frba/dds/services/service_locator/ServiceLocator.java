@@ -1,10 +1,14 @@
 package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
+import ar.edu.utn.frba.dds.controllers.HumanosController;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
+import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
+import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoCollection;
+import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDataBase;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasCollection;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasDataBase;
@@ -75,6 +79,9 @@ public class ServiceLocator {
         } else if (componentName.equals(JuridicasRepository.class.getName())) {
             JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
             instances.put(componentName, juridicas);
+        } else if (componentName.equals(HumanosController.class.getName())){
+            HumanosController humanos = new HumanosController();
+            instances.put(componentName, humanos);
         }
 
         if (persistence.equals("memory")) {
@@ -88,6 +95,9 @@ public class ServiceLocator {
                             instanceOf(HeladerasRepository.class), instanceOf(HumanosRepository.class),
                             instanceOf(JuridicasRepository.class));
                     instances.put(componentName, controller);
+                } else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
+                    AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoCollection(new ArrayList<>()));
+                    instances.put(componentName, atributos);
                 } else if (componentName.equals(TarjetasColaboradoresRepository.class.getName())) {
                     TarjetasColaboradoresRepository tarjetas = new TarjetasColaboradoresRepository(new TarjetasColaboradoresCollection(new ArrayList<>()));
                     instances.put(componentName, tarjetas);
@@ -132,6 +142,9 @@ public class ServiceLocator {
                             instanceOf(HeladerasRepository.class), instanceOf(HumanosRepository.class),
                             instanceOf(JuridicasRepository.class));
                     instances.put(componentName, controller);
+                } else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
+                    AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoDataBase());
+                    instances.put(componentName, atributos);
                 } else if (componentName.equals(TarjetasColaboradoresRepository.class.getName())) {
                     TarjetasColaboradoresRepository tarjetas = new TarjetasColaboradoresRepository(new TarjetasColaboradoresDB());
                     instances.put(componentName, tarjetas);

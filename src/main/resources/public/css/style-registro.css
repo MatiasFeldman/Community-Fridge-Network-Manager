@@ -1,0 +1,35 @@
+p {
+    font-size: 16px;
+    color: #333;
+}
+.login{
+
+    margin-bottom: 20px;
+}
+.login a{
+    color: #333;
+}
+
+/* Contenedores */
+.register-container, .form-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Títulos */
+.register-page h2, .form-humano h2, .form-juridico h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+.register-page h2{
+    margin-bottom: 3px;
+}

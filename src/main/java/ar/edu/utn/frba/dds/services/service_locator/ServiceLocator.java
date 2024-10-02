@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
 import ar.edu.utn.frba.dds.controllers.HumanosController;
+import ar.edu.utn.frba.dds.controllers.JuridicasController;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
@@ -93,6 +94,9 @@ public class ServiceLocator {
             } else if (componentName.equals(HumanosController.class.getName())) {
                 HumanosController humanos = new HumanosController();
                 instances.put(componentName, humanos);
+            } else if (componentName.equals(JuridicasController.class.getName())){
+                JuridicasController juridicas = new JuridicasController();
+                instances.put(componentName, juridicas);
             }
 
             if (persistence.equals("memory")) {

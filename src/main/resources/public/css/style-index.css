@@ -1,4 +1,9 @@
 /* General Styles */
+body{
+    min-height: 100vh;
+    max-height: 100%;
+}
+
 body, html {
     margin: 0;
     padding: 0;

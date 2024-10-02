@@ -77,7 +77,7 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro");
 
-        ctx.render("registroUsuario/registro-tipo.hbs", model);
+        ctx.render("registro-usuario/registro-tipo.hbs", model);
     }
 
     public static void formFallaTecnica(Context ctx){

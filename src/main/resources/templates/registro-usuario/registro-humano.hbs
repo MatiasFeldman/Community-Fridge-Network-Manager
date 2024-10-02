@@ -21,7 +21,7 @@
                         <label for="{{this.nombre}}">{{this.nombre}}{{#if this.obligatorio}}
                              *{{else}} (Opcional){{/if}}</label>
                         <input type="{{this.tipo}}" id="{{this.nombre}}" name="{{this.nombre}}"
-                               placeholder="Ingrese su {{this.nombre}}">
+                               placeholder="Ingrese su {{this.nombre}}" class="{{#if this.obligatorio}}obligatorio{{/if}}">
                     </div>
                 {{/each}}
 

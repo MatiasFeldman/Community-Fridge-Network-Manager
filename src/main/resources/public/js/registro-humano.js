@@ -9,14 +9,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_telegram = document.getElementById('Telegram')
     const input_wpp = document.getElementById('Whatsapp')
 
+    const campos_obligatorios = Array.from(document.querySelectorAll('.obligatorio'));
+
     const btn_register = document.getElementById('btn-submit-humana')
 
     function tieneMedioDeContacto() {
         return input_email.value || input_telegram.value || input_wpp.value
     }
 
+    function camposObligatoriosLlenos(){
+        return campos_obligatorios.every(c => c.value)
+    }
+
     btn_register.addEventListener('click', () => {
-        if (input_user.value && input_password.value && input_nombre.value && input_apellido.value && input_nacimiento.value && input_direccion.value && tieneMedioDeContacto()) {
+        if (camposObligatoriosLlenos() && tieneMedioDeContacto()) {
             const data = {
                 user: input_user.value,
                 password: input_password.value,

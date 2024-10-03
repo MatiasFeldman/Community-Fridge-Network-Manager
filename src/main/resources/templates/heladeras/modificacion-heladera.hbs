@@ -1,0 +1,61 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-modif-heladera.css">
+    <script src="../js/modificar-heladera.js"></script>
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="container">
+        <h1 class="display-4 text-center mb-5">Modificar Heladera</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="h4 text-center mb-4">Selecciona una Heladera para Modificar</h2>
+                <div id="heladera-list" class="d-flex flex-wrap justify-content-center">
+                    {{#each heladeras}}
+                        <div id="{{this.id}}"
+                             class="heladera-item p-3 mb-4 rounded shadow d-flex flex-column justify-content-between"
+                             data-nombre="{{this.nombre}}"
+                             data-direccion="{{this.direccion}}"
+                             data-capacidad-actual="{{this.capacidadActual}}"
+                             data-capacidad-maxima="{{this.capacidadMaxima}}"
+                             data-activa="{{this.activa}}">
+                            <h3>{{this.nombre}}</h3>
+                            <p>{{this.direccion}}</p>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <div id="modificar-heladera-container" class="d-none mt-5">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 text-dark">Nombre</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombre">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 text-dark">Capacidad Máxima</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Cantidad de viandas" id="capacidadMaxima">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 text-dark">Cantidad de Viandas (Opcional)</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Cantidad actual de viandas"
+                           id="cantidadViandas">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 text-dark">Direccion</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Direccion" id="direccion">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <h3 class="h5 text-dark">Activa</h3>
+                    <input type="text" class="form-control mt-2" placeholder="Activa" id="activa">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <button class="btn btn-success btn-lg" id="modificar-btn">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

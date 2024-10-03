@@ -1,0 +1,27 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-reportes.css">
+    <script src="../js/reportes.js"></script>
+{{/partial}}
+{{#partial "contenido"}}
+    <div class="container">
+        <h1 class="display-4 text-center mb-5">Reporte</h1>
+        <div class="row">
+            <!-- Sección de Heladeras -->
+            <div class="col-md-6">
+                <h2 class="h3 text-center">Heladeras</h2>
+                <div id="heladera-list">
+                    <!-- Las heladeras se agregarán aca dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección de Colaboradores -->
+            <div class="col-md-6">
+                <h2 class="h3 text-center">Colaboradores</h2>
+                <div id="colaborador-list">
+                    <!-- Los colaboradores se agregarán aca dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

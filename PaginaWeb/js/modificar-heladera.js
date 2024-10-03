@@ -4,44 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const modificarBtn = document.getElementById("modificar-btn");
 
     // Simulación de datos recibidos del backend
-    const heladeras = [
-        {
-            id: 1,
-            nombre: "Heladera 1",
-            calle: "Calle 1",
-            altura: "123",
-            capacidadMaxima: "100",
-            cantidadViandas: "50",
-            comuna: "Comuna 1"
-        },
-        {
-            id: 2,
-            nombre: "Heladera 2",
-            calle: "Calle 2",
-            altura: "456",
-            capacidadMaxima: "200",
-            cantidadViandas: "120",
-            comuna: "Comuna 2"
-        },
-        {
-            id: 3,
-            nombre: "Heladera 3",
-            calle: "Calle 3",
-            altura: "789",
-            capacidadMaxima: "300",
-            cantidadViandas: "200",
-            comuna: "Comuna 3"
-        },
-        {
-            id: 4,
-            nombre: "Heladera 4",
-            calle: "Calle 4",
-            altura: "789",
-            capacidadMaxima: "300",
-            cantidadViandas: "200",
-            comuna: "Comuna 4"
-        }
-    ];
+    const heladeras = Array.from(document.getElementsByClassName('heladera-item'))
 
 
     // Mostrar lista de heladeras
@@ -59,11 +22,9 @@ document.addEventListener("DOMContentLoaded", function() {
         heladeraItem.appendChild(h3);
         heladeraItem.appendChild(pCalleAltura);
 
-        heladeraItem.addEventListener("click", function() {
+        heladera.addEventListener("click", function() {
             seleccionarHeladera(heladera.id);
         });
-
-        heladeraList.appendChild(heladeraItem);
     });
 
     function seleccionarHeladera(id) {

@@ -123,7 +123,7 @@ public class HeladerasController implements CrudViewsHandler {
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
         heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
         });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
@@ -137,7 +137,7 @@ public class HeladerasController implements CrudViewsHandler {
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
         heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
         });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
@@ -154,7 +154,7 @@ public class HeladerasController implements CrudViewsHandler {
             context.result("Heladera no encontrada");
         } else {
             Heladera h = buscada.get();
-            HeladeraOutputDTO dto = new HeladeraOutputDTO(h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud());
+            HeladeraOutputDTO dto = new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud());
 
             Map<String, Object> model = new HashMap<>();
             model.put("heladera", dto);
@@ -187,6 +187,20 @@ public class HeladerasController implements CrudViewsHandler {
     @Override
     public void delete(Context context) {
 
+    }
+
+    public void editarHeladera(Context context){
+        List<Heladera> heladeras = this.heladeras.buscarTodos();
+        List<HeladeraOutputDTO> dtos = new ArrayList<>();
+
+        heladeras.forEach(h -> {
+            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+        });
+
+        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+        model.put("heladeras", dtos);
+
+        context.render("heladeras/modificacion-heladera.hbs", model);
     }
 
 }

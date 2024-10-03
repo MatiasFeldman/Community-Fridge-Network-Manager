@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class HeladeraOutputDTO {
+    private Long id;
     private String nombre;
     private String direccion;
     private Integer capacidadActual;

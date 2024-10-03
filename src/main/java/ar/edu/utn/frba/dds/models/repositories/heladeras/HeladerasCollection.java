@@ -13,6 +13,7 @@ public class HeladerasCollection implements HeladerasDAO {
 
     @Override
     public void guardar(Heladera heladera) {
+        heladera.setId(Long.valueOf(this.heladeras.size()));
         heladeras.add(heladera);
     }
 

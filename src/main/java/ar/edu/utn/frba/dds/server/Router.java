@@ -36,6 +36,12 @@ public class Router {
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 
+        app.get("/registro/modificar-registro-humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).camposFormHumano(ctx));
+
+        app.get("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).editarHeladera(ctx));
+
+        app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
+
         app.get("/login", ViewsController::formLogin);
 
         app.get("/registro", ViewsController::formRegistro);

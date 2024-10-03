@@ -33,12 +33,23 @@ public class HumanosController {
         List<AtributoOutputDTO> dtos = new ArrayList<>();
 
         atributos.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
-        System.out.println(dtos.get(0).getNombre());
 
         Map<String, Object> model = new HashMap<>();
         model.put("campos", dtos);
 
         context.render("registro-usuario/registro-humano.hbs", model);
+    }
+
+    public void camposFormHumano(Context context){
+        List<Atributo> atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarTodas();
+        List<AtributoOutputDTO> dtos = new ArrayList<>();
+
+        atributos.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("campos", dtos);
+
+        context.render("registro-usuario/modif-registro-humano.hbs", model);
     }
 
     public void save(Context context){
@@ -93,4 +104,5 @@ public class HumanosController {
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
     }
+
 }

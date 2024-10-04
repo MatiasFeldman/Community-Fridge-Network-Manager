@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/style-btn.css">
+    <script src="https://unpkg.com/htmx.org@2.0.2"
+            integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+            crossorigin="anonymous"></script>
     {{#block "styles"}}
     {{/block}}
 </head>
@@ -16,42 +19,42 @@
 
 <!-- Header -->
 <header class="bg-platinum border-bottom d-flex justify-content-between align-items-center py-2">
-        <div class="logo">
-            <a class="nav-link text-dark" href="/">
-                <img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid">
-            </a>
-        </div>
-        <nav class="navigation">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#quienes-somos">Quienes Somos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#que-hacemos">Qué Hacemos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/colaborar">Colaborar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/heladeras/suscribirse">Heladeras</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="profile ms-3 d-flex align-items-center position-relative">
+    <div class="logo">
+        <a class="nav-link text-dark" href="/">
+            <img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid">
+        </a>
+    </div>
+    <nav class="navigation">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#quienes-somos">Quienes Somos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#que-hacemos">Qué Hacemos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/colaborar">Colaborar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/heladeras/suscribirse">Heladeras</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="profile ms-3 d-flex align-items-center position-relative">
 
-            <span id="user-name" class="me-2 text-dark"></span>
+        <span id="user-name" class="me-2 text-dark"></span>
 
-            <a class="nav-link text-dark" href="#" id="profile-icon">
-                <img src="../imagenes/user.png" alt="Perfil" class="img-fluid rounded-circle">
-            </a>
+        <a class="nav-link text-dark" href="#" id="profile-icon">
+            <img src="../imagenes/user.png" alt="Perfil" class="img-fluid rounded-circle">
+        </a>
 
-            <div class="dropdown" id="profile-dropdown" style="display: none;">
-                <div class="dropdown-content">
-                    <a href="/mi-cuenta.html">Mi Cuenta</a>
-                    <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
-                </div>
+        <div class="dropdown" id="profile-dropdown" style="display: none;">
+            <div class="dropdown-content">
+                <a href="/mi-cuenta.html">Mi Cuenta</a>
+                <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
             </div>
         </div>
+    </div>
 </header>
 
 <!-- Main Content - Product Listing -->
@@ -65,7 +68,8 @@
     <div class="container d-flex">
 
         <div class="footer-logo me-5">
-            <a href="/"><img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid mb-2" style="max-width: 100px;"></a>
+            <a href="/"><img src="../imagenes/logoEmpresa.png" alt="Logo" class="img-fluid mb-2"
+                             style="max-width: 100px;"></a>
         </div>
 
         <div class="footer-content d-flex flex-grow-1 justify-content-between">
@@ -73,7 +77,9 @@
             <div class="footer-column text-center">
                 <h5>Ayúdanos a ayudar</h5>
                 <p>Ayudemos a las personas vulnerables</p>
-                <a href="/colaborar"><button class="boton">Donar</button></a>
+                <a href="/colaborar">
+                    <button class="boton">Donar</button>
+                </a>
             </div>
 
             <div class="footer-column text-center">

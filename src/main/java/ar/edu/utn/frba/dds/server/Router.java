@@ -40,13 +40,17 @@ public class Router {
 
         app.get("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).editarHeladera(ctx));
 
+        app.delete("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).eliminarHeladera(ctx));
+
+        app.put("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).modificarEstadoHeladera(ctx));
+
+        app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx));
+
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
 
         app.get("/login", ViewsController::formLogin);
 
         app.get("/registro", ViewsController::formRegistro);
-
-        app.get("/heladeras", ctx -> ServiceLocator.instanceOf(HeladerasController.class).index(ctx));
 
         app.get("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));
         app.post("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));

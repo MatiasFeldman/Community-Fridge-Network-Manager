@@ -19,7 +19,8 @@
                              data-capacidad-maxima="{{this.capacidadMaxima}}"
                              data-activa="{{this.activa}}">
                             <h3>{{this.nombre}}</h3>
-                            <p>{{this.direccion}}</p>
+                            <p>Direccion: {{this.direccion}}</p>
+                            <p>Estado: {{#if this.activa}}Activa{{else}}Inactiva{{/if}}</p>
                         </div>
                     {{/each}}
                 </div>
@@ -45,14 +46,12 @@
                     <h3 class="h5 text-dark">Direccion</h3>
                     <input type="text" class="form-control mt-2" placeholder="Direccion" id="direccion">
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 text-dark">Activa</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Activa" id="activa">
-                </div>
             </div>
             <div class="row mt-4">
-                <div class="col text-center">
-                    <button class="btn btn-success btn-lg" id="modificar-btn">Guardar Cambios</button>
+                <div class="col d-flex justify-content-center gap-3">
+                    <button class="boton" id="modificar-btn">Guardar Cambios</button>
+                    <button id="activa-btn"></button>
+                    <button id="eliminar-btn" class="boton boton-eliminar">Eliminar</button>
                 </div>
             </div>
         </div>

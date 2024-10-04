@@ -38,6 +38,7 @@ public class Direccion {
                 .builder()
                 .calle(new Calle(calle))
                 .altura(altura)
+                .coordenadas(new Coordenada(0.0, 0.0))
                 .build();
     }
 

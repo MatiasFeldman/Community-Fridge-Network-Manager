@@ -31,4 +31,8 @@ public class HeladerasRepository {
     public Optional<Heladera> buscarPorId(Long id){
         return heladeras.buscarPorId(id);
     }
+
+    public void modificar(Heladera heladera){
+        this.heladeras.modificar(heladera);
+    }
 }

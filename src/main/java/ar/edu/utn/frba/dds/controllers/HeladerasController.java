@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoA
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -18,6 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
+import ar.edu.utn.frba.dds.utils.direcciones.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.server.CrudViewsHandler;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +28,7 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
@@ -33,7 +36,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class HeladerasController implements CrudViewsHandler {
+public class HeladerasController {
     private Accionador accionador;
     private SolicitudesDeAperturaRepository solicitudes;
     private IntentosDeAperturaRepository intentos;
@@ -116,22 +119,6 @@ public class HeladerasController implements CrudViewsHandler {
         intentos.guardar(intento);
     }
 
-    @Override
-    // Devolver todas las heladeras del sistema
-    public void index(Context context) {
-        List<Heladera> heladeras = this.heladeras.buscarTodos();
-        List<HeladeraOutputDTO> dtos = new ArrayList<>();
-
-        heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
-        });
-
-        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
-        model.put("heladeras", heladeras);
-
-        context.render("heladeras/heladeras.hbs", model);
-    }
-
     public void suscribirseAHeladeras(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
@@ -146,50 +133,11 @@ public class HeladerasController implements CrudViewsHandler {
         context.render("heladeras/mapa-de-heladeras-user.hbs", model);
     }
 
-    @Override
-    public void show(Context context) {
-        Optional<Heladera> buscada = this.heladeras.buscarPorId(Long.parseLong(context.pathParam("id")));
-        if (buscada.isEmpty()) {
-            context.status(HttpStatus.NOT_FOUND);
-            context.result("Heladera no encontrada");
-        } else {
-            Heladera h = buscada.get();
-            HeladeraOutputDTO dto = new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud());
-
-            Map<String, Object> model = new HashMap<>();
-            model.put("heladera", dto);
-
-            context.render("heladeras/heladera.hbs", model);
-        }
-    }
-
-
-    @Override
     public void create(Context context) {
 
     }
 
-    @Override
-    public void save(Context context) {
-
-    }
-
-    @Override
-    public void edit(Context context) {
-
-    }
-
-    @Override
-    public void update(Context context) {
-
-    }
-
-    @Override
-    public void delete(Context context) {
-
-    }
-
-    public void editarHeladera(Context context){
+    public void editarHeladera(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
@@ -203,4 +151,74 @@ public class HeladerasController implements CrudViewsHandler {
         context.render("heladeras/modificacion-heladera.hbs", model);
     }
 
+    @SneakyThrows
+    public void eliminarHeladera(Context ctx) {
+        String body = ctx.body();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> jsonMap = objectMapper.readValue(body, Map.class);
+
+        // Obtener el id del JSON
+        Long heladeraId = Long.valueOf(jsonMap.get("id"));
+
+        Optional<Heladera> heladera = heladeras.buscarPorId(heladeraId);
+        if (heladera.isEmpty()) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+        } else {
+            heladeras.eliminar(heladera.get());
+            ctx.status(HttpStatus.OK).result("Heladera eliminada");
+        }
+    }
+
+    @SneakyThrows
+    public void modificarEstadoHeladera(Context ctx) {
+        String body = ctx.body();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> jsonMap = objectMapper.readValue(body, Map.class);
+
+        // Obtener el id del JSON
+        Long heladeraId = Long.valueOf(jsonMap.get("id"));
+        Boolean activa = Boolean.valueOf(jsonMap.get("activa"));
+
+        Optional<Heladera> heladera = heladeras.buscarPorId(heladeraId);
+        if (heladera.isEmpty()) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+        } else {
+            heladera.get().setActiva(activa);
+            heladeras.modificar(heladera.get());
+            ctx.status(HttpStatus.OK).result("Heladera actualizada");
+        }
+
+    }
+
+    @SneakyThrows
+    public void actualizarHeladera(@NotNull Context ctx) {
+        String body = ctx.body();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> jsonMap = objectMapper.readValue(body, Map.class);
+
+        Long heladeraId = Long.valueOf(jsonMap.get("id"));
+        String nombre = jsonMap.get("nombre");
+        Integer capacidadMaxima = Integer.valueOf(jsonMap.get("capacidadMaxima"));
+        Integer capacidadActual = Integer.valueOf(jsonMap.get("capacidadMaxima"));
+        String direccionString = jsonMap.get("direccion");
+
+        Direccion direccion = StringToDireccion.convertir(direccionString);
+
+        Optional<Heladera> heladeraBuscada = heladeras.buscarPorId(heladeraId);
+        if (heladeraBuscada.isEmpty()) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+        } else {
+            Heladera heladera = heladeraBuscada.get();
+            heladera.setNombre(nombre);
+            heladera.setCapacidadMaxima(capacidadMaxima);
+            heladera.setCapActual(capacidadActual);
+            heladera.setDireccion(direccion);
+            heladeras.modificar(heladera);
+            ctx.status(HttpStatus.OK).result("Heladera actualizada");
+        }
+
+    }
 }

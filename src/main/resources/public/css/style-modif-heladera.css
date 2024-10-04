@@ -44,4 +44,24 @@
 }
 .btn {
     margin-bottom: 30px;
-}	
+}
+
+.boton-desactivar{
+    background-color: #D9594C !important;
+    border-color: #D9594C;
+}
+
+.boton-desactivar:hover{
+    background-color: #CA3B2B !important;
+    border-color: #CA3B2B;
+}
+
+.boton.boton-eliminar{
+    background-color: #E55934;
+    border-color: #E55934;
+}
+
+.boton.boton-eliminar:hover{
+    background-color: #D9451C;
+    border-color: #D9451C;
+}

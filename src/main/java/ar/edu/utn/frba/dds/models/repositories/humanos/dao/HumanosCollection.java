@@ -13,6 +13,7 @@ public class HumanosCollection implements HumanosDAO {
 
     @Override
     public void guardar(ColaboradorHumano colaboradorHumano) {
+        colaboradorHumano.setId((long) (colaboradorHumanos.size() + 1));
         this.colaboradorHumanos.add(colaboradorHumano);
     }
 

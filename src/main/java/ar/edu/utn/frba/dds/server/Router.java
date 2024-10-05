@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.server;
 
-import ar.edu.utn.frba.dds.controllers.HeladerasController;
-import ar.edu.utn.frba.dds.controllers.HumanosController;
-import ar.edu.utn.frba.dds.controllers.JuridicasController;
-import ar.edu.utn.frba.dds.controllers.ViewsController;
+import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.Javalin;
 
@@ -46,7 +43,21 @@ public class Router {
 
         app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx));
 
-        app.get("/heladeras/reportes", ViewsController::reportesHeladerasInicio);
+        app.get("/heladeras/reportes", ctx -> {
+            String tipo = ctx.queryParam("tipo");
+            if (tipo == null) {
+                ViewsController.reportesHeladerasInicio(ctx);
+            } else if (tipo.equals("todos")) {
+                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeTodos(ctx);
+            } else if (tipo.equals("fallas")) {
+                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeFallas(ctx);
+            } else if (tipo.equals("donaciones")) {
+                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeViandasDonadas(ctx);
+            } else if (tipo.equals("movimiento")) {
+                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);
+            }
+        });
+
 
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
 

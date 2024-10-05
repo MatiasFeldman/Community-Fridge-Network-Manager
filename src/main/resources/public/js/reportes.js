@@ -1,88 +1,50 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const heladeraList = document.getElementById("heladera-list");
-    const colaboradorList = document.getElementById("colaborador-list");
+    const btn_todos = document.getElementById("todos");
+    const btn_fallas = document.getElementById("fallas");
+    const btn_donaciones = document.getElementById("donaciones")
+    const btn_movimientos = document.getElementById("movimiento");
 
-    // Datos simulados del backend
-    const datosReporte = {
-        heladeras: [
-            {
-                nombre: "Heladera 1",
-                cantidadFallas: 3,
-                viandasRetiradas: 120
-            },
-            {
-                nombre: "Heladera 2",
-                cantidadFallas: 1,
-                viandasRetiradas: 80
-            },
-            {
-                nombre: "Heladera 3",
-                cantidadFallas: 0,
-                viandasRetiradas: 50
-            }
-        ],
-        colaboradores: [
-            {
-                nombre: "Colaborador 1",
-                viandasDonadas: 200
-            },
-            {
-                nombre: "Colaborador 2",
-                viandasDonadas: 150
-            },
-            {
-                nombre: "Colaborador 3",
-                viandasDonadas: 300
-            }
-        ]
-    };
+    const descargarPdf = (tipo) =>{
+        fetch('/heladeras/reportes?tipo=' + tipo)
+            .then(response => {
+                if (response.ok) {
+                    return response.blob(); // Obtener el blob del PDF
+                } else {
+                    throw new Error('Error al descargar el PDF');
+                }
+            })
+            .then(blob => {
+                // Crear una URL para el blob
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
 
-    // Renderizar la lista de heladeras
-    function renderizarHeladeras(heladeras) {
-        heladeraList.innerHTML = '';
+                // No necesitas cambiar el nombre aquí, el servidor ya lo genera con la fecha
+                a.download = 'reporte_' + tipo + '.pdf'; // El servidor ya agregará la fecha
 
-        heladeras.forEach(heladera => {
-            const item = document.createElement("div");
-            item.className = "item";
-
-            const h3 = document.createElement("h3");
-            h3.textContent = heladera.nombre;
-
-            const fallas = document.createElement("p");
-            fallas.textContent = `Cantidad de fallas: ${heladera.cantidadFallas}`;
-
-            const viandas = document.createElement("p");
-            viandas.textContent = `Viandas Retiradas: ${heladera.viandasRetiradas}`;
-
-            item.appendChild(h3);
-            item.appendChild(fallas);
-            item.appendChild(viandas);
-
-            heladeraList.appendChild(item);
-        });
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url); // Liberar la URL del objeto
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
     }
 
-    // Renderizar la lista de colaboradores
-    function renderizarColaboradores(colaboradores) {
-        colaboradorList.innerHTML = '';
+    btn_todos.addEventListener('click', () =>{
+        descargarPdfTodos('todos');
+    })
 
-        colaboradores.forEach(colaborador => {
-            const item = document.createElement("div");
-            item.className = "item";
+    btn_fallas.addEventListener('click', () =>{
+        descargarPdf('fallas');
+    })
 
-            const h3 = document.createElement("h3");
-            h3.textContent = colaborador.nombre;
+    btn_donaciones.addEventListener('click', () =>{
+        descargarPdf('donaciones');
+    })
 
-            const viandas = document.createElement("p");
-            viandas.textContent = `Cantidad de viandas Donadas: ${colaborador.viandasDonadas}`;
-
-            item.appendChild(h3);
-            item.appendChild(viandas);
-
-            colaboradorList.appendChild(item);
-        });
-    }
-
-    renderizarHeladeras(datosReporte.heladeras);
-    renderizarColaboradores(datosReporte.colaboradores);
+    btn_movimientos.addEventListener('click', () =>{
+        descargarPdf('movimiento');
+    })
 });

@@ -2,12 +2,10 @@ package ar.edu.utn.frba.dds.models.entities.reportes;
 
 
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
-import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
-import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import com.itextpdf.text.pdf.PdfException;
 import lombok.AllArgsConstructor;
@@ -19,11 +17,6 @@ import java.util.List;
 public class GenerarReportesCronJob implements Runnable {
     private GeneradorPDF generadorPDF;
     private String filePath;
-    private IncidentesRepository incidentesRepository;
-    private HumanosRepository humanosRepository;
-    private PersonasVulnerablesRepository personasVulnerablesRepository;
-    private DonacionesDeViandaRepository donacionesDeViandaRepository;
-    private DistribucionesDeViandasRepository distribucionesDeViandasRepository;
 
 
     @Override
@@ -37,7 +30,7 @@ public class GenerarReportesCronJob implements Runnable {
 
 
         try {
-            generadorPDF.generarPDF(listaReportes, filePath);
+            generadorPDF.guardarPdfEnPath(listaReportes, filePath);
             System.out.println("Reportes generados con éxito");
         } catch (PdfException e) {
             e.printStackTrace();

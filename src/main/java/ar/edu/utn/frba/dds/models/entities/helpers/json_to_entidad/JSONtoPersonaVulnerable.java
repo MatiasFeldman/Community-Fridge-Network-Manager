@@ -2,8 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.factories.DireccionFactory;
+import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDate;

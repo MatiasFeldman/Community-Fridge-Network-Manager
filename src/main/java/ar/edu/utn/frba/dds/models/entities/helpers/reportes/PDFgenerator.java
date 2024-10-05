@@ -4,6 +4,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.FileNotFoundException;
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class PDFgenerator implements GeneradorPDF {
 
     @Override
-    public void generarPDF(List<Reporte> reportes, String path) {
+    public void guardarPdfEnPath(List<Reporte> reportes, String path) {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timeStamp = dateTime.format(dateFormat);
@@ -47,5 +49,38 @@ public class PDFgenerator implements GeneradorPDF {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public ByteArrayOutputStream generarPdfParaEnviar(List<Reporte> reportes) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        String timeStamp = dateTime.format(dateFormat);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Document document = new Document();
+
+        try {
+            PdfWriter.getInstance(document, byteArrayOutputStream);
+            document.open();
+
+            for (int i = 0; i < reportes.size(); i++) {
+                Reporte reporte = reportes.get(i);
+                document.add(new Paragraph("Reporte Semanal - " + reporte.nombre()));
+                document.add(new Paragraph("Fecha: " + timeStamp));
+                document.add(new Paragraph(reporte.contenido()));
+
+                if (i < reportes.size() - 1) {
+                    document.newPage();
+                }
+            }
+
+            document.close();
+        } catch (DocumentException e) {
+            throw new RuntimeException("Error al generar el PDF", e);
+        }
+
+        return byteArrayOutputStream;
+    }
+
 }
 

@@ -1,19 +1,37 @@
 package ar.edu.utn.frba.dds.utils.server;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.factories.DireccionFactory;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Initializer {
     public static void init() {
         HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
+        HumanosRepository humanos = ServiceLocator.instanceOf(HumanosRepository.class);
+        DistribucionesDeViandasRepository distribuciones = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
+        DonacionesDeViandaRepository donaciones = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
+        IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
@@ -31,6 +49,7 @@ public class Initializer {
                 .capActual(25)
                 .viandasColocadas(32)
                 .viandasRetiradas(7)
+                .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -42,6 +61,7 @@ public class Initializer {
                 .capActual(28)
                 .viandasColocadas(22)
                 .viandasRetiradas(20)
+                .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -53,6 +73,7 @@ public class Initializer {
                 .capActual(18)
                 .viandasColocadas(17)
                 .viandasRetiradas(15)
+                .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -64,6 +85,7 @@ public class Initializer {
                 .capActual(63)
                 .viandasColocadas(12)
                 .viandasRetiradas(5)
+                .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -73,6 +95,61 @@ public class Initializer {
         heladeras.guardar(h4);
 
         Initializer.inicializarAtributos();
+
+        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", null);
+        u1.setId(1L);
+        Usuario u2 = new Usuario("usuario2", "Pedritoclavounclavito123@", null);
+        u2.setId(2L);
+
+        ColaboradorHumano c1 = ColaboradorHumano.crearVacio();
+        ColaboradorHumano c2 = ColaboradorHumano.crearVacio();
+        c1.setUser(u1);
+        c2.setUser(u2);
+
+        humanos.guardar(c1);
+        humanos.guardar(c2);
+
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(h1, h2, 5, "Motivo1", c1);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(h2, h1, 3, "Motivo2", c2);
+
+        distribuciones.guardar(distribucion1);
+        distribuciones.guardar(distribucion2);
+
+        DonacionDeVianda donacion1 = DonacionDeVianda.of(h1, c1);
+        DonacionDeVianda donacion2 = DonacionDeVianda.of(h2, c2);
+
+        donaciones.guardar(donacion1);
+        donaciones.guardar(donacion2);
+
+        Incidente incidente1 = Incidente.builder()
+                .fecha(LocalDateTime.now())
+                .heladera(h1)
+                .tipo(TipoEvento.FALLA_TECNICA)
+                .build();
+        incidentesRepository.guardar(incidente1);
+
+        Incidente incidente2 = Incidente.builder()
+                .fecha(LocalDateTime.now())
+                .heladera(h2)
+                .tipo(TipoEvento.FALLA_TECNICA)
+                .build();
+        incidentesRepository.guardar(incidente2);
+
+        Incidente incidente3 = Incidente.builder()
+                .fecha(LocalDateTime.now())
+                .heladera(h1)
+                .tipo(TipoEvento.FALLA_TECNICA)
+                .build();
+        incidentesRepository.guardar(incidente3);
+
+        Incidente incidente4 = Incidente.builder()
+                .fecha(LocalDateTime.now())
+                .heladera(h2)
+                .tipo(TipoEvento.MOVIMIENTO)
+                .build();
+        incidentesRepository.guardar(incidente4);
+
+
     }
 
     public static void inicializarAtributos(){
@@ -97,4 +174,5 @@ public class Initializer {
         atributos.guardar(telegram);
 
     }
+
 }

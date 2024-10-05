@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.services.service_locator;
 import ar.edu.utn.frba.dds.controllers.HeladerasController;
 import ar.edu.utn.frba.dds.controllers.HumanosController;
 import ar.edu.utn.frba.dds.controllers.JuridicasController;
+import ar.edu.utn.frba.dds.controllers.ReportesController;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoCollection;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDataBase;
@@ -71,6 +73,12 @@ public class ServiceLocator {
             if (componentName.equals(Accionador.class.getName())) {
                 Accionador accionador = new Accionador();
                 instances.put(componentName, accionador);
+            } else if (componentName.equals(ReportesController.class.getName())) {
+                ReportesController reportesController = new ReportesController();
+                instances.put(componentName, reportesController);
+            } else if (componentName.equals(PDFgenerator.class.getName())) {
+                PDFgenerator pdfGenerator = new PDFgenerator();
+                instances.put(componentName, pdfGenerator);
             } else if (componentName.equals(GobiernoAPI.class.getName())) {
                 GobiernoAPI api = new GobiernoAPI();
                 instances.put(componentName, api);

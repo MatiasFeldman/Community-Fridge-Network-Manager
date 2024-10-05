@@ -2,14 +2,11 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.*;
-import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
-import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import com.itextpdf.text.pdf.PdfException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -36,9 +33,8 @@ public class GenerarReporteTest {
                 reporteViandasDonadas,
                 movimientoViandas
         );
-        pdfGeneratorMock.generarPDF(reportes, filePath);
+        pdfGeneratorMock.guardarPdfEnPath(reportes, filePath);
 
-        // Verificar que el método generarPDF fue llamado con los argumentos correctos
-        Mockito.verify(pdfGeneratorMock, times(1)).generarPDF(reportes, filePath);
+        Mockito.verify(pdfGeneratorMock, times(1)).guardarPdfEnPath(reportes, filePath);
     }
 }

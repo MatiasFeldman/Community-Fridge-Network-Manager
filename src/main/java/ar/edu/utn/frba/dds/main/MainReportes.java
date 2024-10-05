@@ -23,16 +23,10 @@ public class MainReportes {
     }
 
     public static void main(String[] args) {
-        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
-        IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
-        PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
-        DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
-        DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
-
         String filePath = "";
         GeneradorPDF generadorPDF = new PDFgenerator();
 
-        GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath, incidentesRepository, humanosRepository, personasVulnerablesRepository, donacionesDeViandaRepository, distribucionesDeViandasRepository);
+        GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath);
 
         MainReportes main = new MainReportes(reportesCronJob);
         main.ejecutarUnaVez();

@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.factories;
+package ar.edu.utn.frba.dds.models.factories.direcciones;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.GeoRefDeDirecc;

@@ -129,7 +129,8 @@ public class ContribucionesController {
         throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
     }
 
-    public void registrarPersonaVulnerable(String json) {
+    public void registrarPersonaVulnerable(Context ctx) {
+        String json = ctx.body();
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
         Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());

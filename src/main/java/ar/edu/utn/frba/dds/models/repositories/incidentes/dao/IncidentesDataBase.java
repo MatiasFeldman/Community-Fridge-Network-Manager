@@ -50,4 +50,12 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
 
         return count > 0;
     }
+
+    @Override
+    public Integer cantFallasEn(Heladera heladera) {
+        return ((Long) entityManager()
+                .createQuery("SELECT COUNT(i) FROM Incidente i WHERE i.heladera = :heladera")
+                .setParameter("heladera", heladera)
+                .getSingleResult()).intValue();
+    }
 }

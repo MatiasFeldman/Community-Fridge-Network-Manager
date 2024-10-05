@@ -64,6 +64,12 @@ public class Heladera extends Persistente {
     @Column(name = "ultima_fecha_registrada")
     private LocalDateTime ultFechaRegistrada;
 
+    @Column(name = "viandas_colocadas")
+    private Integer viandasColocadas;
+
+    @Column(name = "viandas_retiradas")
+    private Integer viandasRetiradas;
+
     private static final String BROKER_URL = "";
 
     @Transient
@@ -100,7 +106,9 @@ public class Heladera extends Persistente {
                 .activa(dto.getActiva())
                 .ultimaTemperaturaRegistrada(dto.getUltimaTemperaturaRegistrada())
                 .tempMinima(dto.getTempMinima())
-                .tempMaxima(dto.getTempMaxima());
+                .tempMaxima(dto.getTempMaxima())
+                .viandasColocadas(0)
+                .viandasRetiradas(0);
 
         MqttClient client1 = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client1.subscribe(topic_solicitudes);
@@ -146,6 +154,7 @@ public class Heladera extends Persistente {
         } else {
             this.setCapActual(resultado);
             this.notificarColaboradores();
+            this.viandasColocadas += cantidad;
         }
     }
 
@@ -156,6 +165,7 @@ public class Heladera extends Persistente {
         } else {
             this.setCapActual(resultado);
             this.notificarColaboradores();
+            this.viandasRetiradas += cantidad;
         }
 
     }

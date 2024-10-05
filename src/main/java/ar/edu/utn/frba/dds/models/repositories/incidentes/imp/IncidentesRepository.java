@@ -35,4 +35,8 @@ public class IncidentesRepository {
     public void modificar(Incidente incidente){
         this.incidentes.modificar(incidente);
     }
+
+    public Integer cantFallasTecnicasEn(Heladera heladera) {
+        return this.incidentes.cantFallasEn(heladera);
+    }
 }

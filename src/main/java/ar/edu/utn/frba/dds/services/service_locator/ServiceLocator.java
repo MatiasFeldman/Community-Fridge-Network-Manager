@@ -39,6 +39,7 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
+import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
@@ -70,6 +71,9 @@ public class ServiceLocator {
             if (componentName.equals(Accionador.class.getName())) {
                 Accionador accionador = new Accionador();
                 instances.put(componentName, accionador);
+            } else if (componentName.equals(GobiernoAPI.class.getName())) {
+                GobiernoAPI api = new GobiernoAPI();
+                instances.put(componentName, api);
             } else if (componentName.equals(ValidadorDeContrasenias.class.getName())) {
                 ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
                 validador.agregarCondiciones(new CumpleLongitud(8, 64),
@@ -94,7 +98,7 @@ public class ServiceLocator {
             } else if (componentName.equals(HumanosController.class.getName())) {
                 HumanosController humanos = new HumanosController();
                 instances.put(componentName, humanos);
-            } else if (componentName.equals(JuridicasController.class.getName())){
+            } else if (componentName.equals(JuridicasController.class.getName())) {
                 JuridicasController juridicas = new JuridicasController();
                 instances.put(componentName, juridicas);
             }

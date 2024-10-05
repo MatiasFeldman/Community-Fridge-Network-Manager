@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 
 @Builder
 @Getter
+@Setter
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,12 @@ public class Direccion {
 
     @Column(name = "altura")
     private Integer altura;
+
+    @Embedded
+    private Comuna comuna;
+
+    @Embedded
+    private Provincia provincia;
 
     @Embedded
     @Setter

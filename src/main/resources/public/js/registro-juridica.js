@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_razon_social = document.getElementById('razon-social')
     const select_tipo = document.getElementById('tipo')
     const input_direccion = document.getElementById('direccion')
+    const input_provincia = document.getElementById('provincia')
     const input_email = document.getElementById('Mail')
     const input_telegram = document.getElementById('Telegram')
     const input_wpp = document.getElementById('Whatsapp')
@@ -21,8 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return campos_obligatorios.every(c => c.value)
     }
 
+    function direccionValida(){
+        if (input_provincia.value){
+            return input_direccion.value
+        } else if (input_direccion.value){
+            return input_provincia.value
+        }
+        return true;
+    }
+
     btn_register.addEventListener('click', () => {
-        if (camposObligatoriosLlenos() && tieneMedioDeContacto()) {
+        if (camposObligatoriosLlenos() && tieneMedioDeContacto() && direccionValida()) {
             const data = {
                 user: input_user.value,
                 password: input_password.value,

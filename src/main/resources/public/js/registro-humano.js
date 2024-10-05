@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_apellido = document.getElementById('Apellido')
     const input_nacimiento = document.getElementById('Nacimiento')
     const input_direccion = document.getElementById('direccion')
+    const input_provincia = document.getElementById('provincia')
     const input_email = document.getElementById('Mail')
     const input_telegram = document.getElementById('Telegram')
     const input_wpp = document.getElementById('Whatsapp')
@@ -21,8 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return campos_obligatorios.every(c => c.value)
     }
 
+    function direccionValida(){
+        if (input_provincia.value){
+            return input_direccion.value
+        } else if (input_direccion.value){
+            return input_provincia.value
+        }
+        return true;
+    }
+
     btn_register.addEventListener('click', () => {
-        if (camposObligatoriosLlenos() && tieneMedioDeContacto()) {
+        if (camposObligatoriosLlenos() && tieneMedioDeContacto() && direccionValida()) {
             const data = {
                 user: input_user.value,
                 password: input_password.value,
@@ -30,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 apellido: input_apellido.value,
                 nacimiento: input_nacimiento.value,
                 direccion: input_direccion.value,
+                provincia: input_provincia.value,
                 email: input_email.value,
                 telegram: input_telegram.value,
                 wpp: input_wpp.value

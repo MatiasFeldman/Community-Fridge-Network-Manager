@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.AtributoOutputDTO;
+import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.factories.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -87,6 +89,7 @@ public class HumanosController {
         String telegram = context.formParam("telegram");
         String whatsapp = context.formParam("whatsapp");
         String direccionForm = context.formParam("direccion");
+        String provinciaForm = context.formParam("provincia");
         String nacimiento = context.formParam("nacimiento");
 
         AtributoHumanoRespondido atributoNombre = MapeadorAtributos.mapear(nombre, "nombre");
@@ -98,7 +101,7 @@ public class HumanosController {
 
         HumanoInputDTO dto = HumanoInputDTO.create(username, password, atributoNombre, atributoApellido, atributoEmail, atributoTelegram, atributoWhatsapp, atributoNacimiento);
         if (direccionForm != null){
-            Direccion direccion = StringToDireccion.convert(direccionForm);
+            Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
             dto.setDireccion(direccion);
         }
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);

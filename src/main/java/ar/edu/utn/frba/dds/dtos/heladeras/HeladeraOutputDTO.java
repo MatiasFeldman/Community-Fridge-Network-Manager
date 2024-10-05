@@ -16,4 +16,5 @@ public class HeladeraOutputDTO {
     private Boolean activa;
     private Double longitud;
     private Double latitud;
+
 }

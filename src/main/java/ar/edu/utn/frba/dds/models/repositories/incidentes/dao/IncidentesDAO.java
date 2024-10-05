@@ -18,4 +18,6 @@ public interface IncidentesDAO {
     public Optional<Incidente> buscarIncidente(Long id);
 
     boolean buscarFallaTecnicaEnHeladera(Heladera heladera);
+
+    Integer cantFallasEn(Heladera heladera);
 }

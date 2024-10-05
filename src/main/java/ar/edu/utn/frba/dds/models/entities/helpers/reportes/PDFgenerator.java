@@ -40,8 +40,9 @@ public class PDFgenerator implements GeneradorPDF {
                 }
             }
 
-            document.close();
             System.out.println("PDF generado: " + nombrePDF);
+            document.close();
+
         } catch (DocumentException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }

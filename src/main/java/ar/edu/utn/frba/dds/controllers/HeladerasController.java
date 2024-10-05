@@ -124,7 +124,7 @@ public class HeladerasController {
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
         heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+            dtos.add(HeladeraOutputDTO.of(h));
         });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
@@ -142,7 +142,7 @@ public class HeladerasController {
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
         heladeras.forEach(h -> {
-            dtos.add(new HeladeraOutputDTO(h.getId(), h.getNombre(), h.direccionCompleta(), h.getCapActual(), h.getCapacidadMaxima(), h.getActiva(), h.getDireccion().getCoordenadas().getLongitud(), h.getDireccion().getCoordenadas().getLatitud()));
+            dtos.add(HeladeraOutputDTO.of(h));
         });
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista

@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao.DonacionesDeViandaDAO;
 import lombok.AllArgsConstructor;
 
@@ -39,5 +40,9 @@ public class DonacionesDeViandaRepository {
 
     public List<DonacionDeVianda> buscarPorColaborador(Long id) {
         return dao.buscarPorColaborador(id);
+    }
+
+    public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
+        return dao.cantViandasDonadasPor(colaborador);
     }
 }

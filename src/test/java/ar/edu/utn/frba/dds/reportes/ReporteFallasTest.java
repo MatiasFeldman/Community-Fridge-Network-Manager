@@ -4,7 +4,9 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteFallas;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,25 +22,15 @@ import static org.mockito.Mockito.when;
 
 class ReporteFallasTest {
     private IncidentesRepository incidentesRepository;
+    private HeladerasRepository heladeras;
     private ReporteFallas reporteFallas;
     private List<Incidente> incidentes;
 
     @BeforeEach
     void setUp() {
-        incidentesRepository = Mockito.mock(IncidentesRepository.class);
-        reporteFallas = new ReporteFallas(incidentesRepository);
-
-        // Inicializar lista simulada de incidentes
-        incidentes = new ArrayList<>();
-
-        // Configurar comportamiento del mock
-        doAnswer(invocation -> {
-            Incidente incidente = invocation.getArgument(0);
-            incidentes.add(incidente);
-            return null;
-        }).when(incidentesRepository).guardar(any(Incidente.class));
-
-        when(incidentesRepository.buscarTodos()).thenReturn(incidentes);
+        incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
+        heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
+        reporteFallas = new ReporteFallas(incidentesRepository, heladeras);;
     }
 
     @Test
@@ -56,6 +48,9 @@ class ReporteFallasTest {
         Heladera heladera2 = Heladera.of("Heladera2");
         heladera2.setCapActual(10);  // Inicializar capacidad actual
         heladera2.setCapacidadMaxima(10);
+
+        heladeras.guardar(heladera1);
+        heladeras.guardar(heladera2);
 
         // Crear incidentes usando el builder
         Incidente incidente1 = Incidente.builder()

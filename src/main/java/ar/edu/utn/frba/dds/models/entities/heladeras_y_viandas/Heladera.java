@@ -124,6 +124,8 @@ public class Heladera extends Persistente {
         return Heladera
                 .builder()
                 .nombre(punto)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
                 .solicitudes(new ArrayList<>())
                 .build();
@@ -148,19 +150,18 @@ public class Heladera extends Persistente {
     }
 
     public void agregarViandas(Integer cantidad) {
-        Integer resultado = this.getCapActual() + cantidad;
-        if (resultado > this.getCapacidadMaxima()) {
+        if (cantidad > this.getCapActual()) {
             throw new EspacioInsuficienteException("La heladera no tiene suficiente espacio para esa cantidad de viandas");
         } else {
-            this.setCapActual(resultado);
+            this.setCapActual(this.getCapActual() - cantidad);
             this.notificarColaboradores();
             this.viandasColocadas += cantidad;
         }
     }
 
     public void quitarViandas(Integer cantidad) {
-        Integer resultado = this.getCapActual() - cantidad;
-        if (resultado > this.getCapActual()) {
+        Integer resultado = this.getCapActual() + cantidad;
+        if (cantidad > this.getCapActual()) {
             throw new EspacioInsuficienteException("No podes quitar esa cantidad de viandas");
         } else {
             this.setCapActual(resultado);

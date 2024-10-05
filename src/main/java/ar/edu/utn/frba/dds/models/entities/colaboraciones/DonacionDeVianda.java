@@ -16,7 +16,7 @@ import javax.persistence.*;
 @SuperBuilder
 @Entity
 @Table(name = "donacion_de_vianda")
-public class DonacionDeVianda extends Persistente implements Contribucion{
+public class DonacionDeVianda extends Persistente implements Contribucion {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
@@ -31,29 +31,32 @@ public class DonacionDeVianda extends Persistente implements Contribucion{
 
 
     public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador) {
-        return DonacionDeVianda
+        DonacionDeViandaBuilder builder = DonacionDeVianda
                 .builder()
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(false)
-                .presente(true)
-                .build();
+                .presente(true);
+        heladera.agregarViandas(1);
+        return builder.build();
     }
 
     public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador, Boolean finalizada) {
-        return DonacionDeVianda
+        DonacionDeViandaBuilder builder = DonacionDeVianda
                 .builder()
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(finalizada)
-                .presente(true)
-                .build();
+                .presente(true);
+        heladera.agregarViandas(1);
+        return builder.build();
     }
 
-    public static DonacionDeVianda ofFinalizada() {
+    public static DonacionDeVianda ofFinalizada(ColaboradorHumano colaboradorHumano) {
         return DonacionDeVianda
                 .builder()
                 .finalizada(true)
+                .colaborador(colaboradorHumano)
                 .presente(true)
                 .build();
     }

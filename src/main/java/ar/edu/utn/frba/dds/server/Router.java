@@ -46,6 +46,8 @@ public class Router {
 
         app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx));
 
+        app.get("/heladeras/reportes", ViewsController::reportesHeladerasInicio);
+
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
 
         app.get("/login", ViewsController::formLogin);

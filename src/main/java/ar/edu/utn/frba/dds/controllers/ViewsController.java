@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,6 +93,13 @@ public class ViewsController {
         model.put("titulo", "Carga Csv");
 
         context.render("carga-csv.hbs", model);
+    }
+
+    public static void reportesHeladerasInicio(Context context) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Reportes de heladeras");
+
+        context.render("reportes/main-reportes.hbs", model);
     }
 }
 

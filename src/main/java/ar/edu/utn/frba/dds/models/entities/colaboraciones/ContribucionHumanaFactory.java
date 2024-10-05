@@ -13,7 +13,7 @@ public class ContribucionHumanaFactory {
     public static Contribucion createForCargaMasiva(String strategy, Integer cant, ColaboradorHumano colaboradorHumano) {
         return switch (strategy) {
             case "DINERO" -> ContribucionHumanaFactory.crearDonacionDeDinero(cant, colaboradorHumano);
-            case "DONACION_VIANDA" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
+            case "DONACION_VIANDA" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano);
             case "REDISTRIBUCION_VIANDAS" -> ContribucionHumanaFactory.crearDistribucionDeViandaFinalizada(cant, colaboradorHumano);
             case "ENTREGA_TARJETAS" -> new RegistroPersonaVulnerable();
             default -> throw new InvalidContribucionException("Forma de contribucion invalida.");
@@ -25,6 +25,8 @@ public class ContribucionHumanaFactory {
     }
 
     public static DistribucionViandas crearDistribucionDeViandas(Heladera origen, Heladera destino, Integer cant, String motivo, ColaboradorHumano h) {
+        destino.agregarViandas(cant);
+        origen.quitarViandas(cant);
         return DistribucionViandas.of(origen, destino, cant, motivo, h);
     }
 
@@ -51,8 +53,8 @@ public class ContribucionHumanaFactory {
         return RegistroPersonaVulnerable.of(tarjeta, h);
     }
 
-    public static DonacionDeVianda crearDonacionDeViandaFinalizada() {
-        return DonacionDeVianda.ofFinalizada();
+    public static DonacionDeVianda crearDonacionDeViandaFinalizada(ColaboradorHumano colaboradorHumano) {
+        return DonacionDeVianda.ofFinalizada(colaboradorHumano);
     }
 
     public static DistribucionViandas crearDistribucionDeViandaFinalizada(Integer cant, ColaboradorHumano h) {

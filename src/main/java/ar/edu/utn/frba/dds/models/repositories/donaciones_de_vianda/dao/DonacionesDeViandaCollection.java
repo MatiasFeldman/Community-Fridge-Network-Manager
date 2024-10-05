@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -46,5 +47,13 @@ public class DonacionesDeViandaCollection implements DonacionesDeViandaDAO{
                 .stream()
                 .filter(d -> Objects.equals(d.getColaboradorId(), id))
                 .toList();
+    }
+
+    @Override
+    public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
+        return (int) donaciones
+                .stream()
+                .filter(d -> Objects.equals(d.getColaborador().getIdUsuario(), colaborador.getIdUsuario()))
+                .count();
     }
 }

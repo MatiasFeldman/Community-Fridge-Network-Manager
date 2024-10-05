@@ -5,7 +5,9 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,23 +29,13 @@ class ReporteViandasDonadasTest {
     private HumanosRepository humanosRepository;
     private ReporteViandasDonadas reporteViandasDonadas;
     private List<ColaboradorHumano> colaboradorHumanos;
+    private DonacionesDeViandaRepository donacionesDeViandaRepository;
 
     @BeforeEach
     void setUp() {
-        humanosRepository = Mockito.mock(HumanosRepository.class);
-        reporteViandasDonadas = new ReporteViandasDonadas(humanosRepository);
-
-        // Inicializar lista simulada
-        colaboradorHumanos = new ArrayList<>();
-
-        // Configurar comportamiento de los mocks
-        doAnswer(invocation -> {
-            ColaboradorHumano colaboradorHumano = invocation.getArgument(0);
-            colaboradorHumanos.add(colaboradorHumano);
-            return null;
-        }).when(humanosRepository).guardar(any(ColaboradorHumano.class));
-
-        when(humanosRepository.buscarTodos()).thenReturn(colaboradorHumanos);
+        humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
+        reporteViandasDonadas = new ReporteViandasDonadas(humanosRepository, donacionesDeViandaRepository);
     }
 
     @Test
@@ -59,19 +51,23 @@ class ReporteViandasDonadasTest {
         ColaboradorHumano colaboradorHumano1 = ColaboradorHumano.crearVacio();
         colaboradorHumano1.setUser(usuario1);
 
-        DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
-        DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
+        DonacionDeVianda donacion1 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano1);
+        DonacionDeVianda donacion2 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano1);
 
         colaboradorHumano1.sumarPuntaje(donacion1);
         colaboradorHumano1.sumarPuntaje(donacion2);
         humanosRepository.guardar(colaboradorHumano1);
+
+        donacionesDeViandaRepository.guardar(donacion1);
+        donacionesDeViandaRepository.guardar(donacion2);
 
         Usuario usuario2 = new Usuario("usuario2", "Pedritoclavounclavito12122343#", null);
         usuario2.setId(2L);
         ColaboradorHumano colaboradorHumano2 = ColaboradorHumano.crearVacio();
         colaboradorHumano2.setUser(usuario2);
 
-        DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada();
+        DonacionDeVianda donacion3 = ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano2);
+        donacionesDeViandaRepository.guardar(donacion3);
         colaboradorHumano2.sumarPuntaje(donacion3);
         humanosRepository.guardar(colaboradorHumano2);
 

@@ -8,8 +8,10 @@ import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,38 +32,19 @@ class ReporteMovimientoViandasTest {
     private DistribucionesDeViandasRepository distribucionesDeViandasRepository;
     private PersonasVulnerablesRepository personasVulnerablesRepository;
     private ReporteMovimientoViandas reporteMovimientoViandas;
+    private HeladerasRepository heladeras;
 
     private List<ColaboradorHumano> colaboradorHumanos;
     private List<PersonaVulnerable> personasVulnerables;
 
     @BeforeEach
     void setUp() {
-        humanosRepository = Mockito.mock(HumanosRepository.class);
-        personasVulnerablesRepository = Mockito.mock(PersonasVulnerablesRepository.class);
-        donacionesDeViandaRepository = Mockito.mock(DonacionesDeViandaRepository.class);
-        distribucionesDeViandasRepository = Mockito.mock(DistribucionesDeViandasRepository.class);
-        reporteMovimientoViandas = new ReporteMovimientoViandas(humanosRepository, personasVulnerablesRepository, donacionesDeViandaRepository, distribucionesDeViandasRepository);
-
-
-        // Inicializar listas simuladas
-        colaboradorHumanos = new ArrayList<>();
-        personasVulnerables = new ArrayList<>();
-
-        // Configurar comportamiento de los mocks
-        doAnswer(invocation -> {
-            ColaboradorHumano colaboradorHumano = invocation.getArgument(0);
-            colaboradorHumanos.add(colaboradorHumano);
-            return null;
-        }).when(humanosRepository).guardar(any(ColaboradorHumano.class));
-
-        doAnswer(invocation -> {
-            PersonaVulnerable personaVulnerable = invocation.getArgument(0);
-            personasVulnerables.add(personaVulnerable);
-            return null;
-        }).when(personasVulnerablesRepository).guardar(any(PersonaVulnerable.class));
-
-        when(humanosRepository.buscarTodos()).thenReturn(colaboradorHumanos);
-        when(personasVulnerablesRepository.buscarTodos()).thenReturn(personasVulnerables);
+        humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
+        donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
+        distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
+        heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
+        reporteMovimientoViandas = new ReporteMovimientoViandas(heladeras);
     }
 
     @Test
@@ -76,9 +59,13 @@ class ReporteMovimientoViandasTest {
         heladera1.setCapActual(10);  // Inicializar capacidad actual
         heladera1.setCapacidadMaxima(10);
 
+
         Heladera heladera2 = Heladera.of("Heladera2");
         heladera2.setCapActual(10);  // Inicializar capacidad actual
         heladera2.setCapacidadMaxima(10);
+
+        heladeras.guardar(heladera1);
+        heladeras.guardar(heladera2);
 
         // Crear distribuciones de viandas
 
@@ -130,8 +117,8 @@ class ReporteMovimientoViandasTest {
         List<String> expectedLines = Arrays.asList(
                 "Reporte de viandas por heladera",
                 "Heladera Nombre\t\tEntraron\tSalieron",
-                "Heladera1\t\t5\t\t5",
-                "Heladera2\t\t7\t\t3"
+                "Heladera1\t\t4\t\t6",
+                "Heladera2\t\t6\t\t4"
         );
         String expected = expectedLines.stream().sorted().collect(Collectors.joining("\n"));
 

@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.AllArgsConstructor;
 
@@ -49,5 +50,14 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
                 .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.id = :id AND d.presente = true", DonacionDeVianda.class)
                 .setParameter("id", id)
                 .getResultList();
+    }
+
+    @Override
+    public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
+        return entityManager()
+                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.user.id = :id AND d.presente = true", DonacionDeVianda.class)
+                .setParameter("id", colaborador.getIdUsuario())
+                .getResultList()
+                .size();
     }
 }

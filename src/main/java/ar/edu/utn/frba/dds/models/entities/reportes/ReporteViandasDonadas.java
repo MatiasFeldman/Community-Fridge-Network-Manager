@@ -15,44 +15,25 @@ public class ReporteViandasDonadas implements Reporte {
     private HumanosRepository humanosRepository;
     private DonacionesDeViandaRepository donacionesDeViandaRepository;
 
-    public ReporteViandasDonadas(HumanosRepository humanosRepository) {
-        this.humanosRepository = humanosRepository;
-    }
 
     @Override
-    public String nombre (){
+    public String nombre() {
         return "Reporte de viandas donadas";
     }
 
     @Override
-    public String contenido(){
+    public String contenido() {
         return generarReporteViandas();
     }
 
     public String generarReporteViandas() {
-        Map<String, Integer> viandasPorHumano = contarViandasPorHumano();
         StringBuilder contenido = new StringBuilder();
         contenido.append("Reporte de viandas donadas\n");
         contenido.append("ColaboradorHumano\tCantidad de viandas\n");
-        for (Map.Entry<String, Integer> entry : viandasPorHumano.entrySet()) {
-            contenido.append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
+        for (ColaboradorHumano colaboradorHumano : humanosRepository.buscarTodos()) {
+            System.out.println(donacionesDeViandaRepository.cantViandasDonadasPor(colaboradorHumano));
+            contenido.append(colaboradorHumano.getIdUsuario()).append("\t").append(donacionesDeViandaRepository.cantViandasDonadasPor(colaboradorHumano)).append("\n");
         }
         return contenido.toString();
-    }
-
-    private Map<String, Integer> contarViandasPorHumano() {
-        List<ColaboradorHumano> colaboradorHumanos = humanosRepository.buscarTodos();
-
-        Map<String, Integer> viandasPorHumano = new HashMap<>();
-
-        for (ColaboradorHumano colaboradorHumano : colaboradorHumanos) {
-            Long id = colaboradorHumano.getId();
-            String idUsuario = colaboradorHumano.getIdUsuario().toString();
-            List<DonacionDeVianda> donacionesDeVianda = donacionesDeViandaRepository.buscarPorColaborador(id);
-
-            viandasPorHumano.put(idUsuario, donacionesDeVianda.size());
-        }
-
-        return viandasPorHumano;
     }
 }

@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
-import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.factories.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
@@ -29,7 +28,9 @@ public class Initializer {
                 .nombre("Heladera UTN Lugano")
                 .direccion(d1)
                 .capacidadMaxima(50)
-                .capActual(50)
+                .capActual(25)
+                .viandasColocadas(32)
+                .viandasRetiradas(7)
                 .activa(true)
                 .build();
 
@@ -38,7 +39,9 @@ public class Initializer {
                 .nombre("Heladera 2")
                 .direccion(d2)
                 .capacidadMaxima(30)
-                .capActual(30)
+                .capActual(28)
+                .viandasColocadas(22)
+                .viandasRetiradas(20)
                 .activa(true)
                 .build();
 
@@ -47,7 +50,9 @@ public class Initializer {
                 .nombre("Heladera 3")
                 .direccion(d3)
                 .capacidadMaxima(20)
-                .capActual(20)
+                .capActual(18)
+                .viandasColocadas(17)
+                .viandasRetiradas(15)
                 .activa(true)
                 .build();
 
@@ -56,7 +61,9 @@ public class Initializer {
                 .nombre("Heladera Flores")
                 .direccion(d4)
                 .capacidadMaxima(70)
-                .capActual(70)
+                .capActual(63)
+                .viandasColocadas(12)
+                .viandasRetiradas(5)
                 .activa(true)
                 .build();
 

@@ -24,6 +24,7 @@ import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Initializer {
     public static void init() {

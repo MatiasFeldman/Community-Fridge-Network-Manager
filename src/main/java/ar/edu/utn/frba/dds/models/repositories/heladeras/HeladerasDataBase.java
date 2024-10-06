@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.repositories.heladeras;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Comuna;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Provincia;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import java.util.List;
@@ -28,6 +30,24 @@ public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUni
             entityManager().merge(heladera);
         });
     }
+
+    @Override
+    public List<Heladera> buscarHeladerasPorDireccion(String valorBusqueda) {
+        return entityManager()
+                .createQuery("SELECT h FROM Heladera h WHERE h.direccion.direccion = :direc AND h.presente = true ", Heladera.class)
+                .setParameter("direc", valorBusqueda)
+                .getResultList();
+    }
+
+    @Override
+    public List<Heladera> buscarHeladerasPorComuna(String valorBusqueda) {
+        Comuna comuna = new Comuna(valorBusqueda.toLowerCase());
+        return entityManager()
+                .createQuery("SELECT h FROM Heladera h WHERE h.direccion.comuna = :comuna AND h.presente = true ", Heladera.class)
+                .setParameter("comuna", comuna)
+                .getResultList();
+    }
+
 
     @Override
     public void eliminar(Heladera heladera) {

@@ -17,11 +17,8 @@ import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAp
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
-import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
-import ar.edu.utn.frba.dds.utils.direcciones.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
-import ar.edu.utn.frba.dds.utils.server.CrudViewsHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
@@ -30,10 +27,8 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class HeladerasController {
@@ -204,8 +199,9 @@ public class HeladerasController {
         Integer capacidadMaxima = Integer.valueOf(jsonMap.get("capacidadMaxima"));
         Integer capacidadActual = Integer.valueOf(jsonMap.get("capacidadMaxima"));
         String direccionString = jsonMap.get("direccion");
+        String provinciaString = jsonMap.get("provincia");
 
-        Direccion direccion = StringToDireccion.convertir(direccionString);
+        Direccion direccionNueva = Direccion.of(direccionString, provinciaString);
 
         Optional<Heladera> heladeraBuscada = heladeras.buscarPorId(heladeraId);
         if (heladeraBuscada.isEmpty()) {
@@ -215,7 +211,7 @@ public class HeladerasController {
             heladera.setNombre(nombre);
             heladera.setCapacidadMaxima(capacidadMaxima);
             heladera.setCapActual(capacidadActual);
-            heladera.setDireccion(direccion);
+            heladera.setDireccion(direccionNueva);
             heladeras.modificar(heladera);
             ctx.status(HttpStatus.OK).result("Heladera actualizada");
         }

@@ -1,9 +1,13 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ViewsController {
@@ -81,9 +85,11 @@ public class ViewsController {
         ctx.render("registro-usuario/registro-tipo.hbs", model);
     }
 
-    public static void formFallaTecnica(Context ctx){
+    public static void formFallaTecnica(Context ctx, List<HeladeraOutputDTO> heladeras){
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Reporte falla ténica");
+        model.put("heladeras", heladeras);
+
 
         ctx.render("heladeras/fallas-tecnicas.hbs", model);
     }

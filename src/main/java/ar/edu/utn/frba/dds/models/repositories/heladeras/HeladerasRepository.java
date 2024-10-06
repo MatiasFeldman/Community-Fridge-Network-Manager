@@ -35,4 +35,13 @@ public class HeladerasRepository {
     public void modificar(Heladera heladera){
         this.heladeras.modificar(heladera);
     }
+
+    public List<Heladera> buscarHeladerasPorDireccion(String valorBusqueda) {
+        return heladeras.buscarHeladerasPorDireccion(valorBusqueda);
+    }
+
+    public List<Heladera> buscarPorComuna(String valorBusqueda) {
+        return heladeras.buscarHeladerasPorComuna(valorBusqueda);
+    }
+
 }

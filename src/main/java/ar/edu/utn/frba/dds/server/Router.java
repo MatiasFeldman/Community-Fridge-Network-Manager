@@ -1,8 +1,17 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.*;
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Router {
@@ -31,7 +40,26 @@ public class Router {
 
         app.get("/registro/juridica", ctx -> ServiceLocator.instanceOf(JuridicasController.class).formRegistro(ctx));
 
-        app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
+        app.get("/heladeras/reportar-falla-tecnica", ctx -> {
+            String tipoBusqueda = ctx.queryParam("busqueda");
+            String valorBusqueda = ctx.queryParam("valor");
+            List<Heladera> heladeras = new ArrayList<>();
+            List<HeladeraOutputDTO> dtos = new ArrayList<>();
+            if (tipoBusqueda == null || (valorBusqueda == null && !tipoBusqueda.equalsIgnoreCase("todas"))) {
+                ViewsController.formFallaTecnica(ctx, dtos);
+                return;
+            }
+            heladeras = switch (tipoBusqueda) {
+                case "direccion" ->
+                        ServiceLocator.instanceOf(HeladerasRepository.class).buscarHeladerasPorDireccion(valorBusqueda);
+                case "comuna" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorComuna(valorBusqueda);
+                case "todas" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarTodos();
+                default -> heladeras;
+            };
+            heladeras.forEach(h -> dtos.add(HeladeraOutputDTO.of(h)));
+            ViewsController.formFallaTecnica(ctx, dtos);
+
+        });
 
         app.get("/registro/modificar-registro-humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).camposFormHumano(ctx));
 
@@ -42,6 +70,7 @@ public class Router {
         app.put("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).modificarEstadoHeladera(ctx));
 
         app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx));
+
 
         app.get("/heladeras/reportes", ctx -> {
             String tipo = ctx.queryParam("tipo");
@@ -57,7 +86,6 @@ public class Router {
                 ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);
             }
         });
-
 
 
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);

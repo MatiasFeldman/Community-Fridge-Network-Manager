@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.ubicacion;
 
 import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
+import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -15,11 +16,8 @@ import javax.persistence.Embedded;
 @NoArgsConstructor
 public class Direccion {
 
-    @Embedded
-    private Calle calle;
-
-    @Column(name = "altura")
-    private Integer altura;
+    @Column(name = "direc")
+    private String direccion;
 
     @Embedded
     private Comuna comuna;
@@ -31,26 +29,16 @@ public class Direccion {
     @Setter
     private Coordenada coordenadas;
 
-    public static Direccion of(DireccionDTO dto){
+    public static Direccion of(String direccion, String provincia){
+        GobiernoAPI api = new GobiernoAPI();
+        GeoRefDeDirecc geoRefDeDirecc = api.getCoordYComuna(direccion, provincia);
         return Direccion
                 .builder()
-                .calle(dto.getCalle())
-                .altura(dto.getAltura())
-                .coordenadas(dto.getCoordenada())
+                .direccion(direccion)
+                .coordenadas(geoRefDeDirecc.getCoords())
+                .provincia(geoRefDeDirecc.getProvincia())
+                .comuna(geoRefDeDirecc.getComuna())
                 .build();
-    }
-
-    public static Direccion of(String calle, Integer altura){
-        return Direccion
-                .builder()
-                .calle(new Calle(calle))
-                .altura(altura)
-                .coordenadas(new Coordenada(0.0, 0.0))
-                .build();
-    }
-
-    public String direccionCompleta() {
-        return calle.getNombre() + " " + altura;
     }
 
     public boolean esCercaDe(Direccion dire) {

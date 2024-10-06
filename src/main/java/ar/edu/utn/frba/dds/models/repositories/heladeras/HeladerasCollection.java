@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class HeladerasCollection implements HeladerasDAO {
@@ -48,4 +47,22 @@ public class HeladerasCollection implements HeladerasDAO {
         Optional<Heladera> heladera1 = buscarPorId(heladera.getId());
         heladera1.ifPresent(heladera2 -> heladeras.set(heladeras.indexOf(heladera2), heladera));
     }
+
+    @Override
+    public List<Heladera> buscarHeladerasPorDireccion(String valorBusqueda) {
+        System.out.println("Voy a comparar la direccion de valor: " + valorBusqueda);
+        return heladeras
+                .stream()
+                .filter(h -> h.getDireccion().getDireccion().equalsIgnoreCase(valorBusqueda))
+                .toList();
+    }
+
+    @Override
+    public List<Heladera> buscarHeladerasPorComuna(String valorBusqueda) {
+        return heladeras
+                .stream()
+                .filter(h -> h.getDireccion().getComuna().getNombre().equalsIgnoreCase(valorBusqueda))
+                .toList();
+    }
+
 }

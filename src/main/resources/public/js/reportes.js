@@ -8,24 +8,23 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch('/heladeras/reportes?tipo=' + tipo)
             .then(response => {
                 if (response.ok) {
-                    return response.blob(); // Obtener el blob del PDF
+                    return response.blob();
                 } else {
                     throw new Error('Error al descargar el PDF');
                 }
             })
             .then(blob => {
-                // Crear una URL para el blob
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
 
-                // No necesitas cambiar el nombre aquí, el servidor ya lo genera con la fecha
-                a.download = 'reporte_' + tipo + '.pdf'; // El servidor ya agregará la fecha
+
+                a.download = 'reporte_' + tipo + '.pdf';
 
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
-                window.URL.revokeObjectURL(url); // Liberar la URL del objeto
+                window.URL.revokeObjectURL(url);
             })
             .catch(error => {
                 console.error('Error en la solicitud:', error);

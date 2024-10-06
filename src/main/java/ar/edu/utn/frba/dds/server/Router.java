@@ -29,7 +29,9 @@ public class Router {
 
         app.post("/registro/humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).save(ctx));
 
-        app.get("/registro/juridica", ctx -> ServiceLocator.instanceOf(JuridicasController.class).formRegistro(ctx));
+        app.get("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::create);
+
+        //app.post("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::save);
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 

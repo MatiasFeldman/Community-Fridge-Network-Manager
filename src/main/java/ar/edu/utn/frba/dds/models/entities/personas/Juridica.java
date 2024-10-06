@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.personas;
 
+import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
@@ -10,6 +12,8 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +22,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "juridica")
+@SuperBuilder
 @Getter
+@Setter
 public class Juridica extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -86,4 +92,20 @@ public class Juridica extends Persistente {
                 .get()
                 .getValorContacto();
     }
+
+    public static Juridica create(JuridicoInputDTO dto) {
+        return Juridica
+                .builder()
+                .tipo(dto.getTipo())
+                .razonSocial(dto.getRazonSocial())
+                .rubro(dto.getRubro())
+                .mediosDeContacto(dto.getMediosDeContacto())
+                .direccion(dto.getDireccion())
+                .puntosCanjeados(0.0)
+                .puntosGanados(0.0)
+                .user(dto.getUser())
+                .recomendador(dto.getRecomendador())
+                .build();
+    }
 }
+

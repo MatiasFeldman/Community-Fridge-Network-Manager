@@ -7,7 +7,7 @@
     <div class="form-juridico">
         <div class="form-container">
             <h2>Registro de Usuario - Jurídico</h2>
-            <form id="form-juridico" class="gap-3 my-3">
+            <form method="POST" action="registro/juridica" id="form-juridico" class="gap-3 my-3">
                 <div class="form-group">
                     <label for="user">Usuario *</label>
                     <input class="obligatorio" type="text" id="user" name="user" required="true" placeholder="Ingrese su username">
@@ -35,7 +35,11 @@
                 </div>
                 <div class="form-group">
                     <label for="direccion">Provincia</label>
-                    <input type="text" id="provincia" name="provincia" placeholder="Si ingresa su direccion, ingrese su provincia aquí">
+                    <input type="text" id="provincia" name="provincia" placeholder="Si ingresa su direccion, ingrese su provincia">
+                </div>
+                <div class="form-group">
+                    <label for="rubro">Rubro</label>
+                    <input type="text" id="rubro" name="rubro" placeholder="Rubro">
                 </div>
                 <div class="form-group">
                     <label for="Mail">Mail (Opcional)</label>
@@ -51,14 +55,14 @@
                                                          placeholder="Ingrese su Telegram">
                 </div>
 
+                <p class="mt-1 mb-0 fs-6 fw-bold">
+                    Nota: Los campos marcados con * son obligatorios.
+                </p>
+                <p class="mt-1 mb-0 fs-6 fw-bold">
+                    Nota: Debe ser ingresado al menos un medio de contacto para poder registrarse
+                </p>
+                <button id="btn-submit-juridica" type="submit" class="boton btn-registro mt-3">Registrarse</button>
             </form>
-            <p class="mt-1 mb-0 fs-6 fw-bold">
-                Nota: Los campos marcados con * son obligatorios.
-            </p>
-            <p class="mt-1 mb-0 fs-6 fw-bold">
-                Nota: Debe ser ingresado al menos un medio de contacto para poder registrarse
-            </p>
-            <button id="btn-submit-juridica" class="boton btn-registro mt-3">Registrarse</button>
         </div>
     </div>
 {{/partial}}

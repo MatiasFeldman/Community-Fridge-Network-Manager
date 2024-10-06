@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", function() {
             localStorage.removeItem("userRole");
             localStorage.removeItem("userName");
 
-            window.location.href = "login.html";
+            window.location.href = "/login";
         });
 
     } else {
         profileIcon.addEventListener("click", function(e) {
             e.preventDefault();
-            window.location.href = "login.html";
+            window.location.href = "/login";
         });
     }
 

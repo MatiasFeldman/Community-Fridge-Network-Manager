@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSende
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoCollection;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDataBase;
@@ -42,6 +43,7 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasCo
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
+import ar.edu.utn.frba.dds.utils.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
@@ -109,6 +111,12 @@ public class ServiceLocator {
             } else if (componentName.equals(JuridicasController.class.getName())) {
                 JuridicasController juridicas = new JuridicasController();
                 instances.put(componentName, juridicas);
+            }else if (componentName.equals(RecomendarPuntos.class.getName())) {
+                RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
+                instances.put(componentName, recomendarPuntos);
+            }else if (componentName.equals(StringToDireccion.class.getName())) {
+                StringToDireccion stringToDireccion = new StringToDireccion();
+                instances.put(componentName, stringToDireccion);
             }
 
             if (persistence.equals("memory")) {
@@ -155,6 +163,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(IncidentesRepository.class.getName())) {
                     IncidentesRepository incidentes = new IncidentesRepository(new IncidentesCollection(new ArrayList<>()));
                     instances.put(componentName, incidentes);
+                }else if (componentName.equals(JuridicasRepository.class.getName())) {
+                    JuridicasRepository humanos = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
+                    instances.put(componentName, humanos);
                 }
 
             } else if (persistence.equals("sql")) {

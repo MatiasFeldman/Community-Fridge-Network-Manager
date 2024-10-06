@@ -39,6 +39,9 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.utils.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
@@ -166,6 +169,9 @@ public class ServiceLocator {
                 }else if (componentName.equals(JuridicasRepository.class.getName())) {
                     JuridicasRepository humanos = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
                     instances.put(componentName, humanos);
+                }else if (componentName.equals(UsuariosRepository.class.getName())) {
+                    UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>()));
+                    instances.put(componentName, usuarios);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -209,6 +215,9 @@ public class ServiceLocator {
             } else if (componentName.equals(IncidentesRepository.class.getName())) {
                 IncidentesRepository incidentes = new IncidentesRepository(new IncidentesDataBase());
                 instances.put(componentName, incidentes);
+            }else if (componentName.equals(UsuariosRepository.class.getName())) {
+                UsuariosRepository usuarios = new UsuariosRepository(new UsuariosDataBase());
+                instances.put(componentName, usuarios);
             }
 
         }

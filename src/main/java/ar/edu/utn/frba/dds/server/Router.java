@@ -67,6 +67,8 @@ public class Router {
         app.get("/login", ViewsController::formLogin);
         app.post("/login", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogin(ctx));
 
+        app.post("/logout", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogout(ctx));
+
         app.get("/registro", ViewsController::formRegistro);
 
         app.get("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));

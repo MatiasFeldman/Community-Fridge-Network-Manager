@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.models.repositories.usuarios;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class UsuariosRepository {
     private UsuariosDAO usuarios;
 

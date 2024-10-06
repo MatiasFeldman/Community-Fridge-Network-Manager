@@ -20,6 +20,7 @@ import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDe
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class Initializer {
         DistribucionesDeViandasRepository distribuciones = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         DonacionesDeViandaRepository donaciones = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
+        UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
@@ -96,10 +98,13 @@ public class Initializer {
 
         Initializer.inicializarAtributos();
 
-        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", null);
+        Usuario u1 = new Usuario("usuario1@gmail.com", "Pedritoclavounclavito123@", null);
         u1.setId(1L);
-        Usuario u2 = new Usuario("usuario2", "Pedritoclavounclavito123@", null);
+        Usuario u2 = new Usuario("usuario2@gmail.com", "Pedritoclavounclavito123@", null);
         u2.setId(2L);
+
+        usuariosRepository.guardar(u1);
+        usuariosRepository.guardar(u2);
 
         ColaboradorHumano c1 = ColaboradorHumano.crearVacio();
         ColaboradorHumano c2 = ColaboradorHumano.crearVacio();

@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.http.Context;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +26,8 @@ public class UsuariosController {
             if(usuarioEncontrado.getPassword().equals(password)){
                 ctx.sessionAttribute("user", usuarioEncontrado.getUser()); // me guardo el usuario
 
-                List<String> nombresRoles = usuarioEncontrado.getRoles()
+                List<String> nombresRoles = Optional.ofNullable(usuarioEncontrado.getRoles())
+                        .orElse(Collections.emptyList())
                         .stream()
                         .map(Rol::getNombre)
                         .collect(Collectors.toList());
@@ -40,5 +42,11 @@ public class UsuariosController {
         } else {
             throw new UsuarioIncorrectoException();
         }
+    }
+
+    public void handleLogout(Context ctx){
+        ctx.sessionAttribute("user", null);
+        ctx.sessionAttribute("roles", null);
+        ctx.redirect("/");
     }
 }

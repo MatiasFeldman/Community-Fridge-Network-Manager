@@ -9,8 +9,16 @@
             <form id="login-form" action="/login" method="POST">
                 <label for="email">EMAIL</label>
                 <input type="email" id="email" name="email" placeholder="Dominquez@gmail.com" required>
+                {{#if errorUsuario}}
+                      <span class="text-danger">Usuario no encontrado</span>
+                {{/if}}
+
                 <label for="password">CONTRASEÑA</label>
                 <input type="password" id="password" name="password" placeholder="******" required>
+                {{#if errorContrasenia}}
+                      <span class="text-danger">Contraseña incorrecta</span>
+                {{/if}}
+
                 <button type="submit">Login</button>
             </form>
             <div class="register-link">

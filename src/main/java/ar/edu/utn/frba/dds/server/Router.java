@@ -4,6 +4,8 @@ import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.Javalin;
 
+import java.util.Arrays;
+
 
 public class Router {
     public static void init(Javalin app) {
@@ -11,7 +13,11 @@ public class Router {
 
         app.get("/colaborar", ViewsController::colaborar);
 
-        app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero);
+        // app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero);
+        app.get("/colaborar/donar-dinero", ctx ->{
+            ctx.attribute("rolesRequeridos", Arrays.asList("ADMIN", "HUMANO"));
+            ViewsController.formDonarDinero(ctx);
+        });
 
         app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas);
 

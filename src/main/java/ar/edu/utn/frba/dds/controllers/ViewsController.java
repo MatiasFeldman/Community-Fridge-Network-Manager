@@ -67,6 +67,13 @@ public class ViewsController {
 
 
     public static void formLogin(Context ctx){
+
+        // Verifica si ya hay un usuario autenticado en la sesión
+        if (ctx.sessionAttribute("user") != null) {
+            ctx.redirect("/");
+            return;
+        }
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Login");
 

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.server;
 
+import ar.edu.utn.frba.dds.middlewares.AppMiddlewares;
 import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
 import ar.edu.utn.frba.dds.utils.server.Initializer;
 import ar.edu.utn.frba.dds.utils.server.JavalinRenderer;
@@ -27,6 +28,7 @@ public class Server {
             Integer port = Integer.parseInt(PrettyProperties.getInstance().propertyFromName("server_port"));
             app = Javalin.create(config()).start(port);
 
+            AppMiddlewares.applyMiddlewares(app);
             AppHandlers.applyHandlers(app);
             Router.init(app);
 

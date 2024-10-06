@@ -8,7 +8,9 @@ import java.util.Arrays;
 public class AppHandlers {
     private IHandler[] handlers = new IHandler[]{
             new UsuarioIncorrectoHandler(),
-            new ContraseniaIncorrectaHandler()
+            new ContraseniaIncorrectaHandler(),
+            new AccessDeniedHandler(),
+            new NoSesionIniciadaHandler()
     };
 
     public static void applyHandlers(Javalin app) {

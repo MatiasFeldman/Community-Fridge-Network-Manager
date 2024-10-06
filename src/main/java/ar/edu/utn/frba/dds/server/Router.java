@@ -63,6 +63,7 @@ public class Router {
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
 
         app.get("/login", ViewsController::formLogin);
+        app.post("/login", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogin(ctx));
 
         app.get("/registro", ViewsController::formRegistro);
 

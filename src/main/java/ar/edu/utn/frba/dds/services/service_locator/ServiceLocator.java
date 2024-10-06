@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.services.service_locator;
 
-import ar.edu.utn.frba.dds.controllers.HeladerasController;
-import ar.edu.utn.frba.dds.controllers.HumanosController;
-import ar.edu.utn.frba.dds.controllers.JuridicasController;
-import ar.edu.utn.frba.dds.controllers.ReportesController;
+import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
@@ -76,6 +73,9 @@ public class ServiceLocator {
             } else if (componentName.equals(ReportesController.class.getName())) {
                 ReportesController reportesController = new ReportesController();
                 instances.put(componentName, reportesController);
+            } else if (componentName.equals(UsuariosController.class.getName())) {
+                UsuariosController usuariosController = new UsuariosController();
+                instances.put(componentName, usuariosController);
             } else if (componentName.equals(PDFgenerator.class.getName())) {
                 PDFgenerator pdfGenerator = new PDFgenerator();
                 instances.put(componentName, pdfGenerator);

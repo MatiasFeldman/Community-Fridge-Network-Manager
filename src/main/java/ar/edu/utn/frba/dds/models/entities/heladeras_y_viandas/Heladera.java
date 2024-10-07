@@ -263,7 +263,7 @@ public class Heladera extends Persistente {
     }
 
     public String direccionCompleta(){
-        return this.direccion.getCalle().getNombre() + " " + this.direccion.getAltura();
+        return this.direccion.getDireccion();
     }
 
     public Integer cantActual() {

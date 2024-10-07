@@ -60,6 +60,7 @@ public class GobiernoAPI implements IGeoRefApi {
                 JsonNode provincia = direc.get("provincia");
                 String prov = provincia.get("nombre").asText();
 
+
                 return new GeoRefDeDirecc(new Comuna(comuna), new Coordenada(lat, lon), new Provincia(prov));
             } else {
                 return null;

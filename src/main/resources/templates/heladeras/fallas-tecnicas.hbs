@@ -1,27 +1,35 @@
 {{#partial "styles"}}
     <script src="../js/fallas-tecnicas.js"></script>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <link rel="stylesheet" href="../css/style-reporte-falla-tecnica.css">
 {{/partial}}
 
 {{#partial "contenido"}}
     <div>
         <h1 class="display-4 text-center text-dark fw-bold">Reportar una falla tecnica</h1>
         <h3 class="text-center text-dark fw-semibold mb-3">Seleccione la heladera que desea reportar</h3>
-        <div class="input-group">
-            <select id="select-busqueda" class="form-select rounded-start">
+        <form id="form-busqueda" class="input-group">
+            <select class="form-select rounded-start" name="busqueda" id="busqueda">
                 <option value="direccion">Buscar por direccion</option>
                 <option value="comuna">Buscar por departamento/comuna</option>
-                <option value="provincia">Buscar por provincia</option>
-                <option value="todos">Buscar todas</option>
+                <option value="todas">Buscar todas</option>
             </select>
             <input id="input-busqueda" type="text" class="form-control" placeholder="Ingrese la direccion">
-            <button class="boton rounded-end d-flex align-items-center" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <button id="boton-buscar" class="boton rounded-end d-flex align-items-center" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                     viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
             </button>
-        </div>
-        <div>
-            <!-- Aca van a ir las heladeras -->
+        </form>
+        <div id="lista-heladeras" class="heladeras-group my-4">
+            {{#each heladeras}}
+                <div data-id="{{this.id}}" class="card-heladera">
+                    <p class="fs-4 fw-semibold mb-2">{{this.nombre}}</p>
+                    <p class="mb-1">Direccion: {{this.direccion}}</p>
+                    <p class="mb-0">Estado: {{#if this.activa}}Activa{{else}}Inactiva{{/if}}</p>
+                </div>
+            {{/each}}
         </div>
     </div>
 {{/partial}}

@@ -1,9 +1,17 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.*;
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Arrays;
 
 
@@ -41,6 +49,14 @@ public class Router {
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 
+        app.get("/heladeras/reportar-falla-tecnica/{id}", ctx -> ServiceLocator.instanceOf(HeladerasController.class).reporteFallaTecnicaView(ctx));
+
+        app.get("/not-found", ViewsController::notFound);
+
+        app.get("/bad-request", ViewsController::badRequest);
+
+        app.post("/heladeras/reportar-falla-tecnica", ctx -> ServiceLocator.instanceOf(HeladerasController.class).registrarFallaTecnica(ctx));
+
         app.get("/registro/modificar-registro-humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).camposFormHumano(ctx));
 
         app.get("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).editarHeladera(ctx));
@@ -50,6 +66,7 @@ public class Router {
         app.put("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).modificarEstadoHeladera(ctx));
 
         app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx));
+
 
         app.get("/heladeras/reportes", ctx -> {
             String tipo = ctx.queryParam("tipo");
@@ -65,7 +82,6 @@ public class Router {
                 ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);
             }
         });
-
 
 
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);

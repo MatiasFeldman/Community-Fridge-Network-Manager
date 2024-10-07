@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
@@ -18,6 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -158,7 +160,7 @@ public class HeladerasController {
 
         Optional<Heladera> heladera = heladeras.buscarPorId(heladeraId);
         if (heladera.isEmpty()) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+            ctx.redirect("/not-found");
         } else {
             heladeras.eliminar(heladera.get());
             ctx.status(HttpStatus.OK).result("Heladera eliminada");
@@ -178,7 +180,7 @@ public class HeladerasController {
 
         Optional<Heladera> heladera = heladeras.buscarPorId(heladeraId);
         if (heladera.isEmpty()) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+            ctx.redirect("/not-found");
         } else {
             heladera.get().setActiva(activa);
             heladeras.modificar(heladera.get());
@@ -205,7 +207,7 @@ public class HeladerasController {
 
         Optional<Heladera> heladeraBuscada = heladeras.buscarPorId(heladeraId);
         if (heladeraBuscada.isEmpty()) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+            ctx.redirect("/not-found");
         } else {
             Heladera heladera = heladeraBuscada.get();
             heladera.setNombre(nombre);
@@ -214,6 +216,48 @@ public class HeladerasController {
             heladera.setDireccion(direccionNueva);
             heladeras.modificar(heladera);
             ctx.status(HttpStatus.OK).result("Heladera actualizada");
+        }
+
+    }
+
+    @SneakyThrows
+    public void reporteFallaTecnicaView(Context ctx) {
+
+        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+        model.put("titulo", "Reporte falla técnica");
+
+
+        String idParam = ctx.pathParam("id");
+        Long id = Long.parseLong(idParam);
+        Optional<Heladera> buscada = heladeras.buscarPorId(id);
+        if (buscada.isPresent()) {
+            Heladera h = buscada.get();
+            HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
+            model.put("heladera", dto);
+            ctx.render("heladeras/form-falla-tecnica.hbs", model);
+        } else{
+            ctx.redirect("/not-found");
+        }
+    }
+
+    public void registrarFallaTecnica(Context ctx) {
+        String body = ctx.body();
+
+        JsonNode node = ConversorJSON.convertir(body);
+
+        Long id_heladera = Long.parseLong(node.get("id_heladera").asText());
+        LocalDateTime fecha = LocalDateTime.parse(node.get("fecha").asText());
+        String descripcion = node.get("descripcion").asText();
+        String foto = node.get("foto").asText();
+
+        Optional<Heladera> heladera_buscada = heladeras.buscarPorId(id_heladera);
+        if (heladera_buscada.isEmpty()) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
+        } else {
+            Heladera heladera = heladera_buscada.get();
+            DenunciaFallaTecnica denuncia = DenunciaFallaTecnica.of(null, descripcion, foto, fecha, heladera);
+            accionador.sucedeFallaTecnica(denuncia, heladera);
+            ctx.status(HttpStatus.OK).result("Falla técnica registrada");
         }
 
     }

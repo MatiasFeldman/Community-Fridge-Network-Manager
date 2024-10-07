@@ -138,7 +138,7 @@ public class ServiceLocator {
                     IntentosDeAperturaRepository intentos = new IntentosDeAperturaRepository(new IntentosDeAperturaCollection(new ArrayList<>()));
                     instances.put(componentName, intentos);
                 } else if (componentName.equals(Accionador.class.getName())) {
-                    Accionador accionador = new Accionador();
+                    Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
                     instances.put(componentName, accionador);
                 } else if (componentName.equals(HeladerasRepository.class.getName())) {
                     HeladerasRepository heladeras = new HeladerasRepository(new HeladerasCollection(new ArrayList<>()));

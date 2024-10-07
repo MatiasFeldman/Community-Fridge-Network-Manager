@@ -40,26 +40,15 @@ public class Router {
 
         app.get("/registro/juridica", ctx -> ServiceLocator.instanceOf(JuridicasController.class).formRegistro(ctx));
 
-        app.get("/heladeras/reportar-falla-tecnica", ctx -> {
-            String tipoBusqueda = ctx.queryParam("busqueda");
-            String valorBusqueda = ctx.queryParam("valor");
-            List<Heladera> heladeras = new ArrayList<>();
-            List<HeladeraOutputDTO> dtos = new ArrayList<>();
-            if (tipoBusqueda == null || (valorBusqueda == null && !tipoBusqueda.equalsIgnoreCase("todas"))) {
-                ViewsController.formFallaTecnica(ctx, dtos);
-                return;
-            }
-            heladeras = switch (tipoBusqueda) {
-                case "direccion" ->
-                        ServiceLocator.instanceOf(HeladerasRepository.class).buscarHeladerasPorDireccion(valorBusqueda);
-                case "comuna" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorComuna(valorBusqueda);
-                case "todas" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarTodos();
-                default -> heladeras;
-            };
-            heladeras.forEach(h -> dtos.add(HeladeraOutputDTO.of(h)));
-            ViewsController.formFallaTecnica(ctx, dtos);
+        app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 
-        });
+        app.get("/heladeras/reportar-falla-tecnica/{id}", ctx -> ServiceLocator.instanceOf(HeladerasController.class).reporteFallaTecnicaView(ctx));
+
+        app.get("/not-found", ViewsController::notFound);
+
+        app.get("/bad-request", ViewsController::badRequest);
+
+        app.post("/heladeras/reportar-falla-tecnica", ctx -> ServiceLocator.instanceOf(HeladerasController.class).registrarFallaTecnica(ctx));
 
         app.get("/registro/modificar-registro-humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).camposFormHumano(ctx));
 

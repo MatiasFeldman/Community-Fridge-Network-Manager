@@ -54,11 +54,12 @@ public class Accionador {
 
     public void registrarFallaTecnica(DenunciaFallaTecnica denuncia) {
         Heladera heladera = denuncia.getHeladera();
-        IncidenteDTO dto = new IncidenteDTO(denuncia.getFecha(),
-                                            heladera,
-                                            TipoEvento.FALLA_TECNICA,
-                                            denuncia.getDenunciante(),
-                                            denuncia.getDescripcion(), denuncia.getFoto());
+        IncidenteDTO dto = IncidenteDTO.of(denuncia.getDenunciante(),
+                denuncia.getFecha(),
+                heladera,
+                TipoEvento.FALLA_TECNICA,
+                denuncia.getDescripcion(),
+                denuncia.getFoto());
         Incidente incidente = Incidente.of(dto);
         incidentesRepository.guardar(incidente);
         heladera.desactivar();

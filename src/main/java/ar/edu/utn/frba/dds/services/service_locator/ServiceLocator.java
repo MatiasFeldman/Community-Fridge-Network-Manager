@@ -43,7 +43,6 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
-import ar.edu.utn.frba.dds.utils.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
@@ -117,9 +116,6 @@ public class ServiceLocator {
             }else if (componentName.equals(RecomendarPuntos.class.getName())) {
                 RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
                 instances.put(componentName, recomendarPuntos);
-            }else if (componentName.equals(StringToDireccion.class.getName())) {
-                StringToDireccion stringToDireccion = new StringToDireccion();
-                instances.put(componentName, stringToDireccion);
             }
 
             if (persistence.equals("memory")) {

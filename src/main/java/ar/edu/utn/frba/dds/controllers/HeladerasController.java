@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -116,7 +117,7 @@ public class HeladerasController {
         intentos.guardar(intento);
     }
 
-    public void suscribirseAHeladeras(Context context) {
+    public void mostrarHeladeras(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
@@ -124,8 +125,14 @@ public class HeladerasController {
             dtos.add(HeladeraOutputDTO.of(h));
         });
 
+        List<String> rolesUsuario = context.sessionAttribute("roles");
+
+        boolean permisoSuscripcion = rolesUsuario != null && !rolesUsuario.isEmpty() && rolesUsuario.stream()
+                .anyMatch(rol -> rol.equals("ADMIN") || rol.equals("HUMANO") || rol.equals("JURIDICA"));
+
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
         model.put("heladeras", dtos);
+        model.put("permisoSuscripcion", permisoSuscripcion);
 
         context.render("heladeras/mapa-de-heladeras-user.hbs", model);
     }

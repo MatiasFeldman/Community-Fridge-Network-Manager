@@ -80,8 +80,10 @@
                             <p class="text-black fs-5 fw-semibold mb-1">{{this.direccion}}</p>
                             <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas
                                 disponibles: {{this.capacidadActual}}</p>
+                            {{#if permisoSuscripcion}}
                             <!-- <button class="boton ${heladera.suscrito && "boton-desuscribirse"} suscribirse-btn">${heladera.suscrito ? 'Desuscribirse' : 'Suscribirse'}</button> -->
-                            <button class="boton suscribirse-btn">Suscribirse</button>
+                                <button class="boton suscribirse-btn">Suscribirse</button>
+                            {{/if}}
                         </div>
                     </div>
                 {{/each}}

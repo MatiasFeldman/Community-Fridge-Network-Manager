@@ -13,6 +13,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
@@ -22,6 +23,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -99,9 +101,12 @@ public class Initializer {
 
         Initializer.inicializarAtributos();
 
-        Usuario u1 = new Usuario("usuario1@gmail.com", "Pedritoclavounclavito123@", null);
+        Rol rolAdmin = new Rol("ADMIN");
+        Usuario u1 = new Usuario("usuario1@gmail.com", "Pedritoclavounclavito123@", List.of(rolAdmin));
         u1.setId(1L);
-        Usuario u2 = new Usuario("usuario2@gmail.com", "Pedritoclavounclavito123@", null);
+
+        Rol rolHumano = new Rol("HUMANO");
+        Usuario u2 = new Usuario("usuario2@gmail.com", "Pedritoclavounclavito123@", List.of(rolHumano));
         u2.setId(2L);
 
         usuariosRepository.guardar(u1);

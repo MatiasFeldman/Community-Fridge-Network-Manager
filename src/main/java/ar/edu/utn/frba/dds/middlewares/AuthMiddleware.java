@@ -3,36 +3,37 @@ package ar.edu.utn.frba.dds.middlewares;
 import ar.edu.utn.frba.dds.exceptions.AccessDeniedException;
 import ar.edu.utn.frba.dds.exceptions.NoSesionIniciadaException;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
+
+import io.javalin.security.RouteRole;
 
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AuthMiddleware implements IMiddleware {
     @Override
     public void apply(Javalin app) {
         app.beforeMatched(ctx -> {
-            if(esRutaPublica(ctx)){
-                return;
-            }
-            String user = ctx.sessionAttribute("user");
-            if(user == null){
-                    //throw new NoSesionIniciadaException();
-                ctx.redirect("/login");
-            }
+            Set<RouteRole> rolesRequeridos = ctx.routeRoles();
 
-            List<String> roles = ctx.sessionAttribute("roles");
+            if(!rolesRequeridos.isEmpty()){
+                String user = ctx.sessionAttribute("user");
+                if(user == null){
+                    throw new NoSesionIniciadaException();
+                }
 
-            List<String> rolesRequeridos = ctx.attribute("rolesRequeridos");
+                List<String> roles = ctx.sessionAttribute("roles");
 
-            if(rolesRequeridos != null && !rolesRequeridos.isEmpty() &&
-                    (roles == null || roles.isEmpty() || roles.stream().noneMatch(rolesRequeridos::contains))) {
-                throw new AccessDeniedException();
+                // convierto roles requeridos a strings para comparar
+                Set<String> rolesRequeridosStrings = rolesRequeridos.stream()
+                        .map(RouteRole::toString)
+                        .collect(Collectors.toSet());
+
+                if (roles == null || roles.isEmpty() || roles.stream().noneMatch(rolesRequeridosStrings::contains)) {
+                    throw new AccessDeniedException();
+                }
             }
         });
-    }
-
-    private boolean esRutaPublica(Context ctx) {
-        return ctx.path().equals("/") || ctx.path().equals("/login");
     }
 }

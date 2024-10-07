@@ -9,7 +9,7 @@ public class AccessDeniedHandler implements IHandler {
     public void setHandle(Javalin app) {
         app.exception(AccessDeniedException.class, (e, context) -> {
             context.status(403);
-            context.render("sin permisos"); // TODO: renderizar una vista de error
+            context.render("/400.hbs"); // TODO: renderizar una vista de error
         });
     }
 }

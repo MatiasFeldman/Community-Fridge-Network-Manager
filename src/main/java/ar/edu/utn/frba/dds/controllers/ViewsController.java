@@ -87,6 +87,12 @@ public class ViewsController {
     }
 
     public static void formRegistro(Context ctx) {
+
+        if (ctx.sessionAttribute("user") != null) {
+            ctx.redirect("/");
+            return;
+        }
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro");
 

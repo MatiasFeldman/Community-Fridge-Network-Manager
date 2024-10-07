@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const select_busqueda = document.getElementById('busqueda');
     const input_busqueda = document.getElementById('input-busqueda');
     const btn_buscar = document.getElementById('boton-buscar');
+    const cards_heladeras = document.querySelectorAll('.card-heladera');
 
     select_busqueda.addEventListener('change', () => {
         switch (select_busqueda.value) {
@@ -34,6 +35,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Redirige a la URL con los parámetros
         window.location.href = '/heladeras/reportar-falla-tecnica?busqueda=' + select_busqueda.value + '&valor=' + encodeURIComponent(valorBusqueda);
     };
+
+    cards_heladeras.forEach(card =>{
+        card.addEventListener('click', () => {
+            const idHeladera = card.getAttribute('data-id');
+            window.location.href = '/heladeras/reportar-falla-tecnica/' + idHeladera;
+        });
+
+    })
 
     btn_buscar.addEventListener('click', buscarHeladeras);
 });

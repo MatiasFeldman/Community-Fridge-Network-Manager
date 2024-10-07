@@ -1,14 +1,12 @@
 package ar.edu.utn.frba.dds.services.service_locator;
 
-import ar.edu.utn.frba.dds.controllers.HeladerasController;
-import ar.edu.utn.frba.dds.controllers.HumanosController;
-import ar.edu.utn.frba.dds.controllers.JuridicasController;
-import ar.edu.utn.frba.dds.controllers.ReportesController;
+import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoCollection;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDataBase;
@@ -41,7 +39,11 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
+import ar.edu.utn.frba.dds.utils.StringToDireccion;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
@@ -76,6 +78,9 @@ public class ServiceLocator {
             } else if (componentName.equals(ReportesController.class.getName())) {
                 ReportesController reportesController = new ReportesController();
                 instances.put(componentName, reportesController);
+            } else if (componentName.equals(UsuariosController.class.getName())) {
+                UsuariosController usuariosController = new UsuariosController();
+                instances.put(componentName, usuariosController);
             } else if (componentName.equals(PDFgenerator.class.getName())) {
                 PDFgenerator pdfGenerator = new PDFgenerator();
                 instances.put(componentName, pdfGenerator);
@@ -109,6 +114,12 @@ public class ServiceLocator {
             } else if (componentName.equals(JuridicasController.class.getName())) {
                 JuridicasController juridicas = new JuridicasController();
                 instances.put(componentName, juridicas);
+            }else if (componentName.equals(RecomendarPuntos.class.getName())) {
+                RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
+                instances.put(componentName, recomendarPuntos);
+            }else if (componentName.equals(StringToDireccion.class.getName())) {
+                StringToDireccion stringToDireccion = new StringToDireccion();
+                instances.put(componentName, stringToDireccion);
             }
 
             if (persistence.equals("memory")) {
@@ -155,6 +166,12 @@ public class ServiceLocator {
                 } else if (componentName.equals(IncidentesRepository.class.getName())) {
                     IncidentesRepository incidentes = new IncidentesRepository(new IncidentesCollection(new ArrayList<>()));
                     instances.put(componentName, incidentes);
+                }else if (componentName.equals(JuridicasRepository.class.getName())) {
+                    JuridicasRepository humanos = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
+                    instances.put(componentName, humanos);
+                }else if (componentName.equals(UsuariosRepository.class.getName())) {
+                    UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>()));
+                    instances.put(componentName, usuarios);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -198,6 +215,9 @@ public class ServiceLocator {
             } else if (componentName.equals(IncidentesRepository.class.getName())) {
                 IncidentesRepository incidentes = new IncidentesRepository(new IncidentesDataBase());
                 instances.put(componentName, incidentes);
+            }else if (componentName.equals(UsuariosRepository.class.getName())) {
+                UsuariosRepository usuarios = new UsuariosRepository(new UsuariosDataBase());
+                instances.put(componentName, usuarios);
             }
 
         }

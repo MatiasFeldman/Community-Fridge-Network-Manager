@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 
 public class Router {
@@ -20,7 +21,11 @@ public class Router {
 
         app.get("/colaborar", ViewsController::colaborar);
 
-        app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero);
+        // app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero);
+        app.get("/colaborar/donar-dinero", ctx ->{
+            ctx.attribute("rolesRequeridos", Arrays.asList("ADMIN", "HUMANO"));
+            ViewsController.formDonarDinero(ctx);
+        });
 
         app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas);
 
@@ -38,7 +43,9 @@ public class Router {
 
         app.post("/registro/humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).save(ctx));
 
-        app.get("/registro/juridica", ctx -> ServiceLocator.instanceOf(JuridicasController.class).formRegistro(ctx));
+        app.get("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::create);
+
+        //app.post("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::save);
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica);
 
@@ -80,6 +87,9 @@ public class Router {
         app.get("/colaborar/carga-csv", ViewsController::cargaCsv);
 
         app.get("/login", ViewsController::formLogin);
+        app.post("/login", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogin(ctx));
+
+        app.post("/logout", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogout(ctx));
 
         app.get("/registro", ViewsController::formRegistro);
 

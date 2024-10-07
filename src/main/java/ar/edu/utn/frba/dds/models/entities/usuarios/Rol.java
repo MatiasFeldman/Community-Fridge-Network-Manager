@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "rol")
 public class Rol extends Persistente {
 
+    @Getter
     @Column(name = "nombre", nullable = false)
     private String nombre;
 

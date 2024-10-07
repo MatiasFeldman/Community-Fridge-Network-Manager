@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.http.Context;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +72,14 @@ public class ViewsController {
     }
 
 
-    public static void formLogin(Context ctx) {
+    public static void formLogin(Context ctx){
+
+        // Verifica si ya hay un usuario autenticado en la sesión
+        if (ctx.sessionAttribute("user") != null) {
+            ctx.redirect("/");
+            return;
+        }
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Login");
 

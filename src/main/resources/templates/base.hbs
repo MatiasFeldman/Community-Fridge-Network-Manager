@@ -45,14 +45,16 @@
 
         <span id="user-name" class="me-2 text-dark"></span>
 
-        <a class="nav-link text-dark" href="#" id="profile-icon">
+        <a class="nav-link text-dark" href="/login" id="profile-icon">
             <img src="../imagenes/user.png" alt="Perfil" class="img-fluid rounded-circle">
         </a>
 
         <div class="dropdown" id="profile-dropdown" style="display: none;">
             <div class="dropdown-content">
                 <a href="/mi-cuenta.html">Mi Cuenta</a>
-                <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
+                <form action="/logout" method="POST">
+                    <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
+                </form>
             </div>
         </div>
     </div>

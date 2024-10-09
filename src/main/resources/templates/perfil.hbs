@@ -1,5 +1,6 @@
 {{#partial "styles"}}
     <link rel="stylesheet" href="/css/perfil.css">
+    <script src="/js/perfil.js" defer></script>
 {{/partial}}
 
 {{#partial "contenido"}}
@@ -14,7 +15,7 @@
                           d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                 </svg>
             </picture>
-            <p class="text-dark mb-1 text-center fs-2 fw-semibold">{{usuario.user}}</p>
+            <p class="text-dark mb-1 text-center fs-2 fw-semibold">{{usuario}} - Id: {{id}}</p>
             <div class="d-flex flex-row gap-2 justify-content-center align-items-center">
                 {{#each roles}}
                     <p class="p-2 fs-6" id="{{this}}">{{this}}</p>
@@ -25,13 +26,13 @@
                     <div class="form-group">
                         <label class="text-dark" for="{{this.nombre}}">{{this.nombre}}</label>
                         <input id="{{this.nombre}}" name="{{this.nombre}}" type="{{this.tipo}}" value="{{this.valor}}"
-                               placeholder="{{this.valor}}" {{#if this.completado}}disabled="disabled"{{/if}}>
+                               placeholder="{{this.valor}}" {{#if this.constante}}disabled="disabled"{{/if}}>
                     </div>
                 {{/each}}
             </div>
             <div class="d-flex mt-3 justify-content-center align-items-center gap-3">
                 <button class="boton fw-bold w-100" id="cerrar">Cerrar sesion</button>
-                <button class="boton fw-bold w-100" id="guardar">Guardar cambios</button>
+                <button data-id="{{id}}" class="boton fw-bold w-100" id="guardar">Guardar cambios</button>
             </div>
         </div>
     </div>

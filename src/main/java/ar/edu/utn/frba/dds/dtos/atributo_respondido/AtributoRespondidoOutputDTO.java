@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.dtos.atributo_respondido;
 
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
+import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,19 +16,17 @@ public class AtributoRespondidoOutputDTO {
     private String nombre;
     private String valor;
     private Boolean completado;
-    private TipoAtributo tipo;
+    private TipoCampoAtributo tipo;
+    private Boolean constante;
 
-    public static AtributoRespondidoOutputDTO of(AtributoHumanoRespondido a){
-        System.out.println(a.getNombreAtributo());
-        System.out.println(a.getValor());
-        System.out.println(a.getValor().isEmpty());
-        System.out.println("--------------------");
+    public static AtributoRespondidoOutputDTO of(AtributoHumanoRespondido a, Boolean constante){
         return AtributoRespondidoOutputDTO
                 .builder()
                 .nombre(a.getNombreAtributo())
                 .valor(a.getValor())
                 .completado(!a.getValor().isEmpty())
-                .tipo(a.getAtributo().getTipo())
+                .tipo(a.getAtributo().getTipoCampo())
+                .constante(constante)
                 .build();
     }
 }

@@ -37,10 +37,12 @@ public class HumanosCollection implements HumanosDAO {
     @Override
     public void modificar(ColaboradorHumano colaboradorHumano) {
         Optional<ColaboradorHumano> humanoOptional = this.buscarPorId(colaboradorHumano.getIdUsuario());
-        humanoOptional.ifPresent(humano1 -> {
-            this.eliminar(humano1);
+        if (humanoOptional.isPresent()){
+            this.colaboradorHumanos.remove(humanoOptional.get());
+            this.colaboradorHumanos.add(colaboradorHumano);
+        } else{
             this.guardar(colaboradorHumano);
-        });
+        }
     }
 
     @Override

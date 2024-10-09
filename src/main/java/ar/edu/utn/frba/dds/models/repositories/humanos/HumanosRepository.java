@@ -27,11 +27,15 @@ public class HumanosRepository {
         humanos.eliminar(colaboradorHumano);
     }
 
-    public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro){
+    public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro) {
         return humanos.buscarPorDocumento(tipo, nro);
     }
 
-    public boolean existeUsername(String username){
+    public boolean existeUsername(String username) {
         return humanos.existeUsername(username);
+    }
+
+    public void actualizar(ColaboradorHumano humano) {
+        humanos.modificar(humano);
     }
 }

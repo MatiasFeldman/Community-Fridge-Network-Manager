@@ -18,8 +18,8 @@ public class AuthMiddleware implements IMiddleware {
             Set<RouteRole> rolesRequeridos = ctx.routeRoles();
 
             if(!rolesRequeridos.isEmpty()){
-                String user = ctx.sessionAttribute("user");
-                if(user == null){
+                Long userId = ctx.sessionAttribute("user");
+                if(userId == null){
                     throw new NoSesionIniciadaException();
                 }
 

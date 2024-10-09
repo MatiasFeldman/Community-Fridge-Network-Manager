@@ -31,7 +31,37 @@ public class HumanoOutputDTO {
 
         List<AtributoRespondidoOutputDTO> atributos_dto = new ArrayList<>();
         for (AtributoHumanoRespondido a : atributosAMostrar) {
-            atributos_dto.add(AtributoRespondidoOutputDTO.of(a));
+            switch (a.getNombreAtributo()) {
+                case "Direccion":
+                    a.setValor(h.getDireccion().getDireccion());
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
+                    break;
+                case "Provincia":
+                    a.setValor(String.valueOf(h.getDireccion().getProvincia().getNombre()));
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
+                    break;
+                case "WhatsApp":
+                    if (h.tieneMedioDeContacto("WhatsApp")) {
+                        a.setValor(h.getMedioDeContacto("WhatsApp"));
+                    }
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
+                    break;
+                case "Telegram":
+                    if (h.tieneMedioDeContacto("Telegram")) {
+                        a.setValor(h.getMedioDeContacto("Telegram"));
+                    }
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
+                    break;
+                case "Mail":
+                    if (h.tieneMedioDeContacto("Mail")) {
+                        a.setValor(h.getMedioDeContacto("Mail"));
+                    }
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
+                    break;
+                default:
+                    atributos_dto.add(AtributoRespondidoOutputDTO.of(a, true));
+            }
+
         }
 
         return HumanoOutputDTO

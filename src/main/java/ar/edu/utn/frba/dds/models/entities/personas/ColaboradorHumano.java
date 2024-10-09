@@ -97,7 +97,7 @@ public class ColaboradorHumano extends Persistente {
     }
 
     public void sumarPuntaje(Contribucion contribucion) {
-        puntosGanados+= contribucion.calcularPuntaje();
+        puntosGanados += contribucion.calcularPuntaje();
     }
 
     public String getDocumento(String tipo) {
@@ -109,24 +109,30 @@ public class ColaboradorHumano extends Persistente {
                 .getValor();
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.user.getUser();
     }
 
-    public String getMedioDeContacto(String medio){
-        return this.mediosDeContacto
+    public String getMedioDeContacto(String medio) {
+        return this.tieneMedioDeContacto(medio) ? this.mediosDeContacto
                 .stream()
-                .filter(contacto -> contacto.getTipoContacto().equals(medio))
+                .filter(contacto -> contacto.getTipoContacto().getNombre().equals(medio))
                 .findFirst()
                 .get()
-                .getValorContacto();
+                .getValorContacto() : "";
     }
 
-    public Long getIdUsuario(){
+    public Boolean tieneMedioDeContacto(String medio) {
+        return this.mediosDeContacto
+                .stream()
+                .anyMatch(contacto -> contacto.getTipoContacto().getNombre().equals(medio));
+    }
+
+    public Long getIdUsuario() {
         return this.user.getId();
     }
 
-    public static ColaboradorHumano crearVacio(){
+    public static ColaboradorHumano crearVacio() {
         return ColaboradorHumano
                 .builder()
                 .atributosObligatorios(new ArrayList<>())

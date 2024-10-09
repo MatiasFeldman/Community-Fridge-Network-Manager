@@ -93,6 +93,8 @@ public class Router {
 
         app.get("/perfil", ServiceLocator.instanceOf(UsuariosController.class)::handlePerfil);
 
+        app.post("/perfil", ServiceLocator.instanceOf(UsuariosController.class)::handleUpdate);
+
         app.get("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));
         app.post("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));
     }

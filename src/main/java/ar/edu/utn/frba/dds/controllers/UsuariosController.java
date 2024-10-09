@@ -1,32 +1,37 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioIncorrectoException;
+import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class UsuariosController {
-    public void handleLogin(Context ctx){
+    public void handleLogin(Context ctx) {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
 
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
         Optional<Usuario> user = usuariosRepository.buscarPorUsername(username);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             Usuario usuarioEncontrado = user.get();
-            if(usuarioEncontrado.getPassword().equals(password)){
+            if (usuarioEncontrado.getPassword().equals(password)) {
                 ctx.sessionAttribute("user", usuarioEncontrado.getId());
 
                 List<String> nombresRoles = Optional.ofNullable(usuarioEncontrado.getRoles())
@@ -47,28 +52,30 @@ public class UsuariosController {
         }
     }
 
-    public void handleLogout(Context ctx){
+    public void handleLogout(Context ctx) {
         ctx.sessionAttribute("user", null);
         ctx.sessionAttribute("roles", null);
         ctx.redirect("/");
     }
 
-    public void handlePerfil(Context ctx){
+    public void handlePerfil(Context ctx) {
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
         Long id = ctx.sessionAttribute("user");
         List<String> roles = ctx.sessionAttribute("roles");
         Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
 
-        if (usuario.isPresent()){
+        if (usuario.isPresent()) {
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Perfil");
             model.put("roles", roles);
+            model.put("id", id);
             model.put("usuario", usuario.get().getUser());
 
 
-            if (roles.contains("HUMANO")){
+            if (roles.contains("HUMANO")) {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
+                System.out.println(humano.getDireccion().getDireccion());
                 HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
                 model.put("humano", dto);
             } else if (roles.contains("JURIDICA")) {
@@ -77,8 +84,53 @@ public class UsuariosController {
             }
 
             ctx.render("perfil.hbs", model);
-        } else{
+        } else {
             ctx.redirect("/login");
+        }
+    }
+
+    public void handleUpdate(Context ctx) {
+        UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
+        Long id = ctx.sessionAttribute("user");
+        Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
+
+        if (usuario.isPresent()) {
+            String body = ctx.body();
+            JsonNode json = ConversorJSON.convertir(body);
+
+            Long idUsuario = json.get("id").asLong();
+
+            if (idUsuario != id) {
+                ctx.status(401);
+                return;
+            } else {
+                String direccion = json.get("direccion").asText();
+                String provincia = json.get("provincia").asText();
+                String mail = json.get("mail").asText();
+                String telegram = json.get("telegram").asText();
+                String whatsapp = json.get("whatsapp").asText();
+                List<Contacto> mediosDeContacto = new ArrayList<>();
+
+                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
+                if (direccion != null && provincia != null) {
+                    humano.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
+                } else {
+                    humano.setDireccion(null);
+                }
+
+                if (!mail.isEmpty()) mediosDeContacto.add(Contacto.of("Mail", mail));
+                if (!telegram.isEmpty()) mediosDeContacto.add(Contacto.of("Telegram", telegram));
+                if (!whatsapp.isEmpty()) mediosDeContacto.add(Contacto.of("WhatsApp", whatsapp));
+                System.out.println(mediosDeContacto.get(0).getTipoContacto().getNombre());
+                System.out.println(mediosDeContacto.get(0).getValorContacto());
+                humano.setMediosDeContacto(mediosDeContacto);
+                System.out.println(humano.tieneMedioDeContacto("Mail"));
+                ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
+                System.out.println(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)).getDireccion());
+                System.out.println("Usuario actualizado");
+                ctx.redirect("/perfil");
+
+            }
         }
     }
 }

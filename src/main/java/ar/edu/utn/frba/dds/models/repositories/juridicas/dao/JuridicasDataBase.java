@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.juridicas.dao;
 
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
@@ -38,7 +39,10 @@ public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUni
 
     @Override
     public Optional<Juridica> buscarPorId(Long id) {
-        return Optional.ofNullable(entityManager().find(Juridica.class, id));
+        return Optional.ofNullable(entityManager()
+                .createQuery("SELECT j FROM Juridica j WHERE j.user.id = :idUsuario AND j.presente = true", Juridica.class)
+                .setParameter("idUsuario", id)
+                .getSingleResult());
     }
 
     @Override

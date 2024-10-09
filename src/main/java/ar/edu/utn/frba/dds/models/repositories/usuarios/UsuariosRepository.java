@@ -32,7 +32,7 @@ public class UsuariosRepository {
         return usuarios.buscarPorId(id);
     };
 
-    public Optional<Usuario> buscarPorEmail(String email){
-        return usuarios.buscarPorEmail(email);
+    public Optional<Usuario> buscarPorUsername(String username){
+        return usuarios.buscarPorUsername(username);
     };
 }

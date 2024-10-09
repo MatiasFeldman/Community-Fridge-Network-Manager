@@ -40,10 +40,10 @@ public class UsuariosCollection implements UsuariosDAO{
     }
 
     @Override
-    public Optional<Usuario> buscarPorEmail(String email) {
+    public Optional<Usuario> buscarPorUsername(String username) {
         return this.usuarios
                 .stream()
-                .filter(usuario -> usuario.getUser().equals(email))
+                .filter(usuario -> usuario.getUser().equals(username))
                 .findFirst();
     }
 }

@@ -102,11 +102,11 @@ public class Initializer {
         Initializer.inicializarAtributos();
 
         Rol rolAdmin = new Rol("ADMIN");
-        Usuario u1 = new Usuario("usuario1@gmail.com", "Pedritoclavounclavito123@", List.of(rolAdmin));
+        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(rolAdmin));
         u1.setId(1L);
 
         Rol rolHumano = new Rol("HUMANO");
-        Usuario u2 = new Usuario("usuario2@gmail.com", "Pedritoclavounclavito123@", List.of(rolHumano));
+        Usuario u2 = new Usuario("usuario2", "prueba", List.of(rolHumano));
         u2.setId(2L);
 
         usuariosRepository.guardar(u1);

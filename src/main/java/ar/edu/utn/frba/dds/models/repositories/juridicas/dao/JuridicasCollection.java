@@ -41,7 +41,7 @@ public class JuridicasCollection implements JuridicasDAO{
     public Optional<Juridica> buscarPorId(Long id) {
         return juridicas
                 .stream()
-                .filter(juridica -> juridica.getId().equals(id))
+                .filter(juridica -> juridica.getUser().getId().equals(id))
                 .findFirst();
     }
 

@@ -1,0 +1,20 @@
+#HUMANO{
+    background-color: #2C666E;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+#ADMIN{
+    background-color: #07393C;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+#JURIDICA{
+    background-color: #90DDF0;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}

@@ -41,10 +41,10 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
     }
 
     @Override
-    public Optional<Usuario> buscarPorEmail(String email) {
+    public Optional<Usuario> buscarPorUsername(String username) {
         return entityManager()
-                .createQuery("SELECT u FROM Usuario u WHERE u.user = :email AND u.presente = true", Usuario.class)
-                .setParameter("email", email)
+                .createQuery("SELECT u FROM Usuario u WHERE u.user = :username AND u.presente = true", Usuario.class)
+                .setParameter("username", username)
                 .getResultList()
                 .stream()
                 .findFirst();

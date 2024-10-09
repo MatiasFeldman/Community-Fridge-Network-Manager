@@ -83,6 +83,7 @@ public class UsuariosController {
             } else if (roles.contains("JURIDICA")) {
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
                 JuridicaOutpuDTO dto = JuridicaOutpuDTO.of(juridica);
+
                 model.put("juridica", dto);
                 model.put("esJuridica", true);
             }
@@ -130,9 +131,6 @@ public class UsuariosController {
                 ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
 
             } else if (roles.contains("JURIDICA")) {
-                String razon_social = json.get("razon-social").asText();
-                String rubro = json.get("rubro").asText();
-                Tipo tipo = Tipo.valueOf(json.get("tipo").asText());
                 String direccion = json.get("direccion").asText();
                 String provincia = json.get("provincia").asText();
                 String mail = json.get("mail").asText();
@@ -141,9 +139,6 @@ public class UsuariosController {
                 List<Contacto> mediosDeContacto = new ArrayList<>();
 
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
-                juridica.setRazonSocial(razon_social);
-                juridica.setRubro(rubro);
-                juridica.setTipo(tipo);
                 if (direccion != null && provincia != null) {
                     juridica.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
                 } else {

@@ -18,7 +18,7 @@
             <p class="text-dark mb-1 text-center fs-2 fw-semibold">{{usuario}} - Id: {{id}}</p>
             <div class="d-flex flex-row gap-2 justify-content-center align-items-center">
                 {{#each roles}}
-                    <p class="p-2 fs-6" id="{{this}}">{{this}}</p>
+                    <p class="p-2 fs-6 rol" data-rol-nombre="{{this}}" id="{{this}}">{{this}}</p>
                 {{/each}}
             </div>
             <div class="campos-usuario">
@@ -30,7 +30,47 @@
                     </div>
                 {{/each}}
                 {{#if esJuridica}}
-                    <p>Soy juridica perri</p>
+                    <div class="form-group">
+                        <label class="text-dark" for="razon-social">Razón Social</label>
+                        <input id="razon-social" name="razon-social" type="text" value="{{juridica.razonSocial}}"
+                               placeholder="{{juridica.razonSocial}}" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="tipo">Tipo</label>
+                        <input id="tipo" name="tipo" type="text" value="{{juridica.tipo}}" placeholder="{{juridica.tipo}}"
+                               disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="rubro">Rubro</label>
+                        <input id="rubro" name="rubro" type="text" value="{{juridica.rubro}}"
+                               placeholder="{{juridica.rubro}}" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="direccion">Direccion</label>
+                        <input id="Direccion" name="direccion" type="text" value="{{juridica.direccion}}"
+                               placeholder="{{juridica.rubro}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="provincia">Provincia</label>
+                        <input id="Provincia" name="provincia" type="text" value="{{juridica.provincia}}"
+                               placeholder="{{juridica.provincia}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="mail">Mail</label>
+                        <input id="Mail" name="mail" type="email" value="{{juridica.mail}}"
+                               placeholder="{{juridica.mail}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="telegram">Telegram</label>
+                        <input id="Telegram" name="telegram" type="tel" value="{{juridica.telegram}}"
+                               placeholder="{{juridica.telegram}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark" for="whatsapp">Whatsapp</label>
+                        <input id="WhatsApp" name="whatsapp" type="tel" value="{{juridica.whatsapp}}"
+                               placeholder="{{juridica.whatsapp}}">
+                    </div>
+
                 {{/if}}
             </div>
             <div class="d-flex mt-3 justify-content-center align-items-center gap-3">

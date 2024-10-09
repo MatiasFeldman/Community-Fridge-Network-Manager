@@ -59,6 +59,12 @@ public class Juridica extends Persistente {
         return ServiceLocator.instanceOf(RecomendarPuntos.class).solicitarRecomendacionParaHeladera(coord, radio);
     }
 
+    public Boolean tieneMedioDeContacto(String medio){
+        return this.mediosDeContacto
+                .stream()
+                .anyMatch(contacto -> contacto.getTipoContacto().getNombre().equals(medio));
+    }
+
     public double calcularPuntaje() {
         return puntosGanados - puntosCanjeados;
     }

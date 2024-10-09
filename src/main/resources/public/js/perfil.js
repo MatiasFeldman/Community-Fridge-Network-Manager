@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_whatsapp = document.getElementById("WhatsApp");
     const id = boton_guardar.getAttribute('data-id')
 
+
     const valores_iniciales = {
+        id,
         direccion: input_direccion.value ? input_direccion.value : '',
         provincia: input_provincia.value ? input_provincia.value : '',
         mail: input_mail.value ? input_mail.value : '',
@@ -42,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(valores_actuales)
             }).then(response => {
                 if (response.status === 200) {
+                    alert('Perfil actualizado correctamente');
+                    window.location.href = "/perfil";
                 } else {
                     alert('Error al actualizar el perfil');
                     window.location.href = "/perfil";

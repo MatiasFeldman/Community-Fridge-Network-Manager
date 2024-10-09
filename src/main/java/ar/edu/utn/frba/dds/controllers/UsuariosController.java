@@ -79,11 +79,12 @@ public class UsuariosController {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
                 System.out.println(humano.getDireccion().getDireccion());
                 HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
+                model.put("puntos", humano.calcularPuntaje());
                 model.put("humano", dto);
             } else if (roles.contains("JURIDICA")) {
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
                 JuridicaOutpuDTO dto = JuridicaOutpuDTO.of(juridica);
-
+                model.put("puntos", juridica.calcularPuntaje());
                 model.put("juridica", dto);
                 model.put("esJuridica", true);
             }

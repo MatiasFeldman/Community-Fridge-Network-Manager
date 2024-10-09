@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
@@ -60,16 +61,16 @@ public class UsuariosController {
 
 
         if (usuario.isPresent()){
-            System.out.println(usuario.get().getUser());
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Perfil");
             model.put("roles", roles);
-            model.put("usuario", usuario.get());
+            model.put("usuario", usuario.get().getUser());
 
 
             if (roles.contains("HUMANO")){
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
-                model.put("humano", humano);
+                HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
+                model.put("humano", dto);
             } else if (roles.contains("JURIDICA")) {
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
                 model.put("juridica", juridica);

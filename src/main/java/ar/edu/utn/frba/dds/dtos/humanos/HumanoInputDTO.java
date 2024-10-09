@@ -13,15 +13,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor
 public class HumanoInputDTO {
-    private ArrayList<AtributoHumanoRespondido> atributosObligatorios;
-    private ArrayList<Contacto> mediosDeContacto;
-    private ArrayList<AtributoHumanoRespondido> atributosOpcionales;
+    private List<AtributoHumanoRespondido> atributosObligatorios;
+    private List<Contacto> mediosDeContacto;
+    private List<AtributoHumanoRespondido> atributosOpcionales;
     private Usuario user;
     private Direccion direccion;
 

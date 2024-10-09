@@ -18,3 +18,35 @@
     border-radius: 6px;
     font-weight: bold;
 }
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.campos-usuario{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+#cerrar{
+    background-color: #FF5154;
+    border-color: #FF5154;
+}
+
+#cerrar:hover{
+    background-color: #FF1F22;
+    border-color: #FF1F22;
+}

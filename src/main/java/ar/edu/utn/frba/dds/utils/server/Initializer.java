@@ -1,16 +1,15 @@
 package ar.edu.utn.frba.dds.utils.server;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
+import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
-import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
-import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
-import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
-import ar.edu.utn.frba.dds.models.entities.personas.TipoCampoAtributo;
+import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
@@ -112,10 +111,31 @@ public class Initializer {
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u2);
 
-        ColaboradorHumano c1 = ColaboradorHumano.crearVacio();
-        ColaboradorHumano c2 = ColaboradorHumano.crearVacio();
-        c1.setUser(u1);
-        c2.setUser(u2);
+        Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
+        Atributo apellido = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
+        Atributo nacimiento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
+
+        AtributoHumanoRespondido nombre_respondido1 = new AtributoHumanoRespondido("Pedro", nombre);
+        AtributoHumanoRespondido apellido_respondido1 = new AtributoHumanoRespondido("Perez", apellido);
+        AtributoHumanoRespondido nacimiento_respondido1 = new AtributoHumanoRespondido("1990-01-01", nacimiento);
+
+        List<AtributoHumanoRespondido> obligatorios = List.of(nombre_respondido1, apellido_respondido1);
+        List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1);
+
+        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, new ArrayList<>(), opcionales, u1, d1);
+
+        ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
+
+        AtributoHumanoRespondido nombre_respondido2 = new AtributoHumanoRespondido("Luquitas", nombre);
+        AtributoHumanoRespondido apellido_respondido2 = new AtributoHumanoRespondido("Perez", apellido);
+        AtributoHumanoRespondido nacimiento_respondido2 = new AtributoHumanoRespondido("1992-01-01", nacimiento);
+
+        List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2);
+        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2);
+
+        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2, new ArrayList<>(), opcionales2, u2, d2);
+
+        ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
 
         humanos.guardar(c1);
         humanos.guardar(c2);

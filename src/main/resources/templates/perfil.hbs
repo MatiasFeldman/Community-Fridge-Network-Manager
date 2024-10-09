@@ -29,6 +29,9 @@
                                placeholder="{{this.valor}}" {{#if this.constante}}disabled="disabled"{{/if}}>
                     </div>
                 {{/each}}
+                {{#if esJuridica}}
+                    <p>Soy juridica perri</p>
+                {{/if}}
             </div>
             <div class="d-flex mt-3 justify-content-center align-items-center gap-3">
                 <button class="boton fw-bold w-100" id="cerrar">Cerrar sesion</button>

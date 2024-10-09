@@ -27,20 +27,4 @@ public class JuridicoInputDTO {
     private String rubro;
     private List<Contacto> mediosDeContacto;
     private Direccion direccion;
-    private String provincia;
-    private RecomendarPuntos recomendador;
-
-
-    public JuridicoInputDTO(String username,String password, String razonSocial, String tipo, String rubro, List<Contacto> mediosDeContacto, String direccion,String provincia) {
-        this.user = new Usuario(username, password);
-        this.razonSocial = razonSocial;
-        this.tipo = Tipo.valueOf(tipo);
-        this.rubro = rubro;
-        this.mediosDeContacto = mediosDeContacto;
-        if (direccion != null && provincia != null) {
-            this.direccion = DireccionFactory.create(new DireccionInputDTO(direccion, provincia));
-        }
-        this.provincia = provincia;
-        this.recomendador = new RecomendarPuntos();
-    }
 }

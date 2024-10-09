@@ -2,12 +2,14 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
+import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
+import ar.edu.utn.frba.dds.models.entities.personas.Tipo;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
@@ -80,7 +82,9 @@ public class UsuariosController {
                 model.put("humano", dto);
             } else if (roles.contains("JURIDICA")) {
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
-                model.put("juridica", juridica);
+                JuridicaOutpuDTO dto = JuridicaOutpuDTO.of(juridica);
+                model.put("juridica", dto);
+                model.put("esJuridica", true);
             }
 
             ctx.render("perfil.hbs", model);
@@ -92,6 +96,7 @@ public class UsuariosController {
     public void handleUpdate(Context ctx) {
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
         Long id = ctx.sessionAttribute("user");
+        List<String> roles = ctx.sessionAttribute("roles");
         Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
         if (usuario.isPresent()) {
@@ -103,7 +108,7 @@ public class UsuariosController {
             if (idUsuario != id) {
                 ctx.status(401);
                 return;
-            } else {
+            } else if (roles.contains("HUMANO")) {
                 String direccion = json.get("direccion").asText();
                 String provincia = json.get("provincia").asText();
                 String mail = json.get("mail").asText();
@@ -121,15 +126,34 @@ public class UsuariosController {
                 if (!mail.isEmpty()) mediosDeContacto.add(Contacto.of("Mail", mail));
                 if (!telegram.isEmpty()) mediosDeContacto.add(Contacto.of("Telegram", telegram));
                 if (!whatsapp.isEmpty()) mediosDeContacto.add(Contacto.of("WhatsApp", whatsapp));
-                System.out.println(mediosDeContacto.get(0).getTipoContacto().getNombre());
-                System.out.println(mediosDeContacto.get(0).getValorContacto());
                 humano.setMediosDeContacto(mediosDeContacto);
-                System.out.println(humano.tieneMedioDeContacto("Mail"));
                 ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
-                System.out.println(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)).getDireccion());
-                System.out.println("Usuario actualizado");
-                ctx.redirect("/perfil");
 
+            } else if (roles.contains("JURIDICA")) {
+                String razon_social = json.get("razon-social").asText();
+                String rubro = json.get("rubro").asText();
+                Tipo tipo = Tipo.valueOf(json.get("tipo").asText());
+                String direccion = json.get("direccion").asText();
+                String provincia = json.get("provincia").asText();
+                String mail = json.get("mail").asText();
+                String telegram = json.get("telegram").asText();
+                String whatsapp = json.get("whatsapp").asText();
+                List<Contacto> mediosDeContacto = new ArrayList<>();
+
+                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
+                juridica.setRazonSocial(razon_social);
+                juridica.setRubro(rubro);
+                juridica.setTipo(tipo);
+                if (direccion != null && provincia != null) {
+                    juridica.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
+                } else {
+                    juridica.setDireccion(null);
+                }
+                if (!mail.isEmpty()) mediosDeContacto.add(Contacto.of("Mail", mail));
+                if (!telegram.isEmpty()) mediosDeContacto.add(Contacto.of("Telegram", telegram));
+                if (!whatsapp.isEmpty()) mediosDeContacto.add(Contacto.of("WhatsApp", whatsapp));
+                juridica.setMediosDeContacto(mediosDeContacto);
+                ServiceLocator.instanceOf(JuridicasRepository.class).modificar(juridica);
             }
         }
     }

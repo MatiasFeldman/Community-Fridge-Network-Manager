@@ -7,9 +7,12 @@ import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.Tipo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
@@ -64,27 +67,33 @@ public class JuridicasController {
         List<Contacto> medioContacto = new ArrayList<>();
 
         if (email != null && !email.isEmpty()) {
-            medioContacto.add(Contacto.of("EMAIL", email));
+            medioContacto.add(Contacto.of("Email", email));
         }
 
         if (telegram != null && !telegram.isEmpty()) {
-            medioContacto.add(Contacto.of("TELEGRAM", telegram));
+            medioContacto.add(Contacto.of("Telegram", telegram));
         }
 
         if (whatsapp != null && !whatsapp.isEmpty()) {
-            medioContacto.add(Contacto.of("WHATSAPP", whatsapp));
+            medioContacto.add(Contacto.of("WhatsApp", whatsapp));
         }
 
         String direccionForm = ctx.formParam("direccion");
         String provinciaForm = ctx.formParam("provincia");
 
+        Usuario usuario = new Usuario(username, password, List.of(new Rol("JURIDICA")));
+
+        Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
+
         //TODO
         //fijarnos de poner obligatorio en el front que si pone direccion tiene que poner provincia
-        JuridicoInputDTO dto = new JuridicoInputDTO(username,password,razon_social, tipo, rubro,medioContacto,direccionForm,provinciaForm );
+        JuridicoInputDTO dto = new JuridicoInputDTO(usuario,razon_social, Tipo.valueOf(tipo), rubro,medioContacto, direccion);
 
         Juridica juridica = Juridica.create(dto);
 
         ServiceLocator.instanceOf(JuridicasRepository.class).guardar(juridica);
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
+
 
 
     }

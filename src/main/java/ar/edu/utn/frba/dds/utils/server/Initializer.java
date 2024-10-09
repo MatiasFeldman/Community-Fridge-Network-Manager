@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.utils.server;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
+import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
@@ -20,6 +21,7 @@ import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDe
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
+import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
@@ -101,15 +103,24 @@ public class Initializer {
         Initializer.inicializarAtributos();
 
         Rol rolAdmin = new Rol("ADMIN");
-        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(rolAdmin));
-        u1.setId(1L);
 
         Rol rolHumano = new Rol("HUMANO");
+        Rol rolJuridica = new Rol("JURIDICA");
+
+        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(rolAdmin));
+        u1.setId(1L);
         Usuario u2 = new Usuario("usuario2", "prueba", List.of(rolHumano));
         u2.setId(2L);
+        Usuario u3 = new Usuario("usuario3", "prueba", List.of(rolJuridica));
+        u3.setId(3L);
 
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u2);
+        usuariosRepository.guardar(u3);
+
+        JuridicoInputDTO juridicoInputDTO = new JuridicoInputDTO(u3, "Razon Social", Tipo.EMPRESA, "Rubro 1" ,new ArrayList<>(), d3);
+
+        ServiceLocator.instanceOf(JuridicasRepository.class).guardar(Juridica.create(juridicoInputDTO));
 
         Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
         Atributo apellido = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();

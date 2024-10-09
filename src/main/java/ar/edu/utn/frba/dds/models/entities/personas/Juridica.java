@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,15 +54,9 @@ public class Juridica extends Persistente {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
-    @Transient
-    private RecomendarPuntos recomendador;
-
-    public Juridica(RecomendarPuntos recomendador) {
-        this.recomendador = recomendador;
-    }
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
-        return recomendador.solicitarRecomendacionParaHeladera(coord, radio);
+        return ServiceLocator.instanceOf(RecomendarPuntos.class).solicitarRecomendacionParaHeladera(coord, radio);
     }
 
     public double calcularPuntaje() {
@@ -87,7 +82,7 @@ public class Juridica extends Persistente {
     public String getMedioDeContacto(String medio){
         return this.mediosDeContacto
                 .stream()
-                .filter(contacto -> contacto.getTipoContacto().equals(medio))
+                .filter(contacto -> contacto.getTipoContacto().getNombre().equals(medio))
                 .findFirst()
                 .get()
                 .getValorContacto();
@@ -104,7 +99,6 @@ public class Juridica extends Persistente {
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
                 .user(dto.getUser())
-                .recomendador(dto.getRecomendador())
                 .build();
     }
 }

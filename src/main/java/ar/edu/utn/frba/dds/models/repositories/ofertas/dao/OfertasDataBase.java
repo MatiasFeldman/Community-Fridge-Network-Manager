@@ -58,4 +58,12 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
     public Optional<Oferta> buscarPorId(Long id) {
         return Optional.ofNullable(entityManager().find(Oferta.class, id));
     }
+
+    @Override
+    public void canjearOferta(Oferta oferta) {
+        oferta.serCanjeada();
+        if (oferta.canjesRestantes() == 0) {
+            this.eliminar(oferta);
+        }
+    }
 }

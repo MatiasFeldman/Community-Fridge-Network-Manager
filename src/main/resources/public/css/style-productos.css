@@ -1,0 +1,90 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.filter-container {
+    background-color: #f8f9fa;
+    color: #333; /* Color más oscuro para que se vea mejor */
+}
+
+.filter-container h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#apply-filter {
+    background-color: #007bff;
+    color: white;
+}
+
+h1, h3, h4 {
+    color: #333; /* Color más oscuro para mejor visibilidad */
+}
+
+#product-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#product-list .product-item {
+    border: 1px solid #e0e0e0;
+    width: calc(50% - 20px); /* Ancho de dos columnas */
+    margin-right: 20px;
+    margin-bottom: 20px;
+    height: 140px; /* Altura fija para todas las cajas */
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Espaciado interno para que se vea más espacioso */
+    box-sizing: border-box; /* Aseguramos que el padding no afecte el tamaño */
+}
+
+#product-list .product-item:nth-child(2n) {
+    margin-right: 0; /* Para remover el margen en el último item de cada fila */
+}
+
+#product-list .product-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#product-list .product-image {
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+#product-list .product-image img {
+    width: 100px; /* Tamaño fijo para las imágenes */
+    height: 100px; /* También altura fija para que todas sean iguales */
+    object-fit: cover; /* Para que la imagen se ajuste sin deformarse */
+    border-radius: 8px;
+}
+
+#product-list .product-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Para distribuir el contenido */
+}
+
+#product-list .product-details h3 {
+    color: #333;
+    font-weight: bold;
+}
+
+#product-list .product-details p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+#mis-puntos {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Cambios en el color del título "Ofertas disponibles" */
+h4.h5 {
+    color: #007bff; /* Color más visible */
+    font-weight: bold;
+}

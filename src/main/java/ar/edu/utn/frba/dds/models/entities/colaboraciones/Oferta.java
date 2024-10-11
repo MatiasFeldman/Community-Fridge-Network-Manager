@@ -24,7 +24,8 @@ public class Oferta extends Persistente {
     @Column(name = "puntos_necesarios")
     private Double puntosNecesarios;
 
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rubro")
     private Rubro rubro;
 
     @Column(name = "canjes_totales")
@@ -33,7 +34,10 @@ public class Oferta extends Persistente {
     @Column(name = "canjes_usados")
     private Integer canjesUsados;
 
-    public static Oferta of(String nombre, Double puntosNecesarios, String rubro, Integer canjesTotales) {
+    @Column(name = "Image")
+    private String image;
+
+    public static Oferta of(String nombre, Double puntosNecesarios, String rubro, Integer canjesTotales,String image) {
         return Oferta
                 .builder()
                 .nombre(nombre)
@@ -41,6 +45,7 @@ public class Oferta extends Persistente {
                 .rubro(new Rubro(rubro))
                 .canjesTotales(canjesTotales)
                 .canjesUsados(0)
+                .image(image)
                 .build();
     }
 

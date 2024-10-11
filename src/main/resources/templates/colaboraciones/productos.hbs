@@ -1,68 +1,60 @@
 {{#partial "styles"}}
-    <link rel="stylesheet" href="../css/style-productos.css">
-    <script src="../js/header-log.js"></script>
-    <script src="../js/autenticacion.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            checkUserRole(['admin', 'juridico', 'colaboradorHumano'], false, false);
-        });
-    </script>
+    <link rel="stylesheet" href="../../css/style-productos.css">
 {{/partial}}
 
 {{#partial "contenido"}}
-    <h1 class="display-4 text-center mb-5">Productos y Servicios</h1>
-    <div class="row">
-        <!-- Filtro de rubros -->
-        <div class="col-md-3">
-            <div class="filter-container p-3 rounded shadow">
-                <h3 class="h5 mb-4">Filtrar rubros</h3>
-                <form id="filter-form">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gastronomia" value="gastronomia"
-                               name="filtro-rubro">
-                        <label class="form-check-label" for="gastronomia">Gastronomía</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="electronica" value="electronica"
-                               name="filtro-rubro">
-                        <label class="form-check-label" for="electronica">Electrónica</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="articulos-hogar" value="articulos-hogar"
-                               name="filtro-rubro">
-                        <label class="form-check-label" for="articulos-hogar">Artículos para el hogar</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="otros" value="otros" name="filtro-rubro">
-                        <label class="form-check-label" for="otros">Otros</label>
-                    </div>
-                    <button type="button" class="btn btn-primary mt-4" id="apply-filter">Aplicar Filtro</button>
-                </form>
-            </div>
-        </div>
+    <div class="container">
+        <!-- Título central -->
+        <h1 class="display-4 text-center mb-5">Productos y Servicios</h1>
 
-        <!-- Lista de productos -->
-        <div class="col-md-9">
-            <div class="text-right mb-4">
-                <h3 class="h5" style="color: #333;">Mis puntos: <span id="mis-puntos">{{this.mis_puntos}}</span></h3>
+        <div class="row">
+            <!-- Filtro de rubros -->
+            <div class="col-md-3">
+                <div class="filter-container p-3 rounded shadow">
+                    <h3 class="h5 mb-4">Filtrar rubros</h3>
+                    <form id="filter-form">
+                        {{#each rubros}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="{{this.id}}" value="{{this.id}}"
+                                       name="filtro-rubro">
+                                <label class="form-check-label" for="{{this.id}}">{{this.nombre}}</label>
+                            </div>
+                        {{/each}}
+                        <button type="button" class="btn btn-primary mt-4 w-100" id="apply-filter">Aplicar Filtro</button>
+                    </form>
+                </div>
             </div>
-            <div id="product-list">
-                {{#each productos}}
-                    <div class="product-item p-3 mb-4 rounded shadow d-flex">
-                        <div class="product-image mr-3">
-                            <img src="{{#if imagen}}{{this.imagen}}{{else}}{{this.imagenDefault}}{{/if}}"
-                                 alt="{{nombre}}" class="img-fluid rounded">
-                        </div>
-                        <div class="product-details">
-                            <h3 class="h5">{{this.nombre}}</h3>
-                            <p>Puntos necesarios: {{this.puntos}}</p>
-                            <p>Tipo: {{this.tipo}}</p>
-                        </div>
+
+            <!-- Lista de productos -->
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="h5 text-muted">Mis puntos: <span id="mis-puntos">{{misPuntos}}</span></h3>
+                    <h4 class="h5">Ofertas disponibles</h4>
+                </div>
+                {{#if success}}
+                    <div class="alert alert-success" role="alert">
+                        ¡Oferta canjeada exitosamente!
                     </div>
-                {{/each}}
+                {{/if}}
+                <div id="product-list">
+                    {{#each ofertas}}
+                    <a href="/ofertas/{{this.id}}" class="product-item-link">
+                        <div class="product-item p-3 mb-4 rounded shadow-sm d-flex align-items-center">
+                            <div class="product-image mr-3">
+                                <img src="{{#if this.image}}{{this.image}}{{else}}imagenes/ofertaDefault.jpg{{/if}}"
+                                     alt="{{nombre}}" class="img-fluid rounded">
+                            </div>
+                            <div class="product-details">
+                                <h3 class="h5 font-weight-bold mb-1">{{this.nombre}}</h3>
+                                <p class="mb-0 text-muted">Puntos necesarios: {{this.puntosNecesarios}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {{/each}}
+                </div>
             </div>
         </div>
     </div>
-    <script src="../js/productos.js"></script>
 {{/partial}}
+
 {{> templates/base }}

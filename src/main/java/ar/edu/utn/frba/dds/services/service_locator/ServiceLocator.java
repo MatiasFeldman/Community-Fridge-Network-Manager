@@ -30,9 +30,15 @@ import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAp
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDataBase;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesCollection;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesDataBase;
+import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
+import ar.edu.utn.frba.dds.models.repositories.rubros.dao.RubroCollection;
+import ar.edu.utn.frba.dds.models.repositories.rubros.dao.RubroDataBase;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaCollection;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaDB;
@@ -104,7 +110,7 @@ public class ServiceLocator {
             } else if (componentName.equals(WhatsAppSender.class.getName())) {
                 WhatsAppSender whatsAppSender = new WhatsAppSender();
                 instances.put(componentName, whatsAppSender);
-            } else if (componentName.equals(JuridicasRepository.class.getName())) {
+            } else if (componentName.equals(JuridicasRepository.class.getName())) {//mepa que esta mal que este aca
                 JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
                 instances.put(componentName, juridicas);
             } else if (componentName.equals(HumanosController.class.getName())) {
@@ -116,6 +122,9 @@ public class ServiceLocator {
             }else if (componentName.equals(RecomendarPuntos.class.getName())) {
                 RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
                 instances.put(componentName, recomendarPuntos);
+            }else if (componentName.equals(OfertasController.class.getName())) {
+                OfertasController oferta = new OfertasController();
+                instances.put(componentName, oferta);
             }
 
             if (persistence.equals("memory")) {
@@ -168,6 +177,12 @@ public class ServiceLocator {
                 }else if (componentName.equals(UsuariosRepository.class.getName())) {
                     UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>()));
                     instances.put(componentName, usuarios);
+                }else if (componentName.equals(OfertasRepository.class.getName())) {
+                    OfertasRepository oferta = new OfertasRepository(new OfertasCollection());
+                    instances.put(componentName, oferta);
+                }else if (componentName.equals(RubrosRepository.class.getName())) {
+                    RubrosRepository rubro = new RubrosRepository(new RubroCollection(new ArrayList<>()));
+                    instances.put(componentName, rubro);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -214,6 +229,12 @@ public class ServiceLocator {
             }else if (componentName.equals(UsuariosRepository.class.getName())) {
                 UsuariosRepository usuarios = new UsuariosRepository(new UsuariosDataBase());
                 instances.put(componentName, usuarios);
+            }else if (componentName.equals(OfertasRepository.class.getName())) {
+                OfertasRepository oferta = new OfertasRepository(new OfertasDataBase());
+                instances.put(componentName, oferta);
+            }else if (componentName.equals(RubrosRepository.class.getName())) {
+                RubrosRepository rubro = new RubrosRepository(new RubroDataBase());
+                instances.put(componentName, rubro);
             }
 
         }

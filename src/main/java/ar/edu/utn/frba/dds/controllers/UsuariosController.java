@@ -45,6 +45,9 @@ public class UsuariosController {
                 // Guardar roles en la sesión
                 ctx.sessionAttribute("roles", nombresRoles); // me guardo los roles del usuario
 
+                // Guardo el id en la sesion
+                ctx.sessionAttribute("id", usuarioEncontrado.getId());
+
                 ctx.redirect("/");
             } else {
                 throw new ContraseniaIncorrectaException("La contraseña es incorrecta");

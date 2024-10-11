@@ -19,4 +19,6 @@ public interface OfertasDAO {
     public void eliminar(Oferta oferta);
 
     public Optional<Oferta> buscarPorId(Long id);
+
+    public void canjearOferta(Oferta oferta);
 }

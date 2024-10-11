@@ -2,10 +2,11 @@ package ar.edu.utn.frba.dds.models.repositories.ofertas;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-
+@AllArgsConstructor
 public class OfertasRepository {
     private OfertasDAO ofertas;
 
@@ -22,4 +23,7 @@ public class OfertasRepository {
     public void eliminar(Oferta oferta){ofertas.eliminar(oferta);}
 
     public void modificar(Oferta oferta){ofertas.modficar(oferta);}
+
+    public void canjearOferta(Oferta oferta){ofertas.canjearOferta(oferta);}
+
 }

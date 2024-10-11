@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.ofertas.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class OfertasCollection implements OfertasDAO {
                 .findFirst();
     }
 
+    @Override
     public void canjearOferta(Oferta oferta) {
         oferta.serCanjeada();
         if (oferta.canjesRestantes() == 0) {

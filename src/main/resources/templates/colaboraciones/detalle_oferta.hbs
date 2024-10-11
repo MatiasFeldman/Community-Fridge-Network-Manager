@@ -1,0 +1,28 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../../css/style-detalle-oferta.css">
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="container">
+        <h1>{{oferta.nombre}}</h1>
+
+        <!-- Mostrar el mensaje de error si está presente en la URL -->
+        {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{error}} <!-- Aquí se mostrará el mensaje de error directo del backend -->
+            </div>
+        {{/if}}
+
+        <div class="product-details">
+            <img src="{{#if oferta.image}}{{oferta.image}}{{else}}/imagenes/ofertaDefault.jpg{{/if}}" alt="{{oferta.nombre}}" class="img-fluid">
+            <p>Puntos necesarios: {{oferta.puntosNecesarios}}</p>
+            <p>Descripción: {{oferta.descripcion}}</p>
+            <p>Canjes Restantes: {{ofertasRestantes}}</p>
+
+            <form method="POST" action="/oferta/{{oferta.id}}/canjear">
+                <button type="submit" class="btn btn-primary">Canjear</button>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

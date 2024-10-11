@@ -43,7 +43,7 @@ public class Router {
 
         app.get("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::create);
 
-        //app.post("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::save);
+        app.post("/registro/juridica", ServiceLocator.instanceOf(JuridicasController.class)::save);
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica, TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
@@ -97,5 +97,9 @@ public class Router {
 
         app.get("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));
         app.post("/heladeras/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).create(ctx));
+
+        app.get("/ofertas",  ctx ->  ServiceLocator.instanceOf(OfertasController.class).showOfertas(ctx), TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
+        app.get("/ofertas/{id}",  ctx ->  ServiceLocator.instanceOf(OfertasController.class).showOferta(ctx), TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
+        app.post("/oferta/{id}/canjear",  ServiceLocator.instanceOf(OfertasController.class)::canjearOferta,TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
     }
 }

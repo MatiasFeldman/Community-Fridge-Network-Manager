@@ -10,6 +10,7 @@ public class JSONtoOferta {
         Double puntosNecesarios = node.get("puntosNecesarios").asDouble();
         String rubro = node.get("rubro").asText();
         Integer canjesTotales = node.get("canjesTotales").asInt();
-        return Oferta.of(nombre, puntosNecesarios, rubro, canjesTotales);
+        String image = node.get("image").asText();
+        return Oferta.of(nombre, puntosNecesarios, rubro, canjesTotales,image);
     }
 }

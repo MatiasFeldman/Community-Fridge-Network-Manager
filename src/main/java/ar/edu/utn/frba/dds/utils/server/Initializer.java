@@ -4,9 +4,7 @@ import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
@@ -22,6 +20,8 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
+import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 
@@ -38,6 +38,8 @@ public class Initializer {
         DonacionesDeViandaRepository donaciones = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
+        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
+        RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
@@ -147,7 +149,7 @@ public class Initializer {
         HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2, new ArrayList<>(), opcionales2, u2, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
-
+        c2.setPuntosGanados(2500.0); //funciona :)
         humanos.guardar(c1);
         humanos.guardar(c2);
 
@@ -190,6 +192,119 @@ public class Initializer {
                 .tipo(TipoEvento.MOVIMIENTO)
                 .build();
         incidentesRepository.guardar(incidente4);
+
+        Rubro peluqueria = new Rubro("Peluqueria");
+        Rubro tecnologia = new Rubro("Tecnologia");
+        Rubro deportivo = new Rubro("Deportivo");
+        Rubro indumentaria = new Rubro("Indumentaria");
+        Rubro gastronomia = new Rubro("Gastronomia");
+        Rubro viajes = new Rubro("Viajes");
+        Rubro educacion = new Rubro("Educacion");
+
+        rubrosRepository.guardar(peluqueria);
+        rubrosRepository.guardar(tecnologia);
+        rubrosRepository.guardar(deportivo);
+        rubrosRepository.guardar(indumentaria);
+        rubrosRepository.guardar(gastronomia);
+        rubrosRepository.guardar(viajes);
+        rubrosRepository.guardar(educacion);
+
+        Oferta oferta1 = Oferta.builder()
+                        .nombre("holaaaa")
+                        .puntosNecesarios(1000.0)
+                        .rubro(peluqueria)
+                        .canjesTotales(200)
+                        .canjesUsados(0)
+                        .image("imagenes/caridad.jpg")
+                        .build();
+        oferta1.setId(1L);
+        oferta1.setPresente(true);
+
+        Oferta oferta2 = Oferta.builder()
+                .nombre("Corte de Cabello Premium")
+                .puntosNecesarios(800.0)
+                .rubro(peluqueria)
+                .canjesTotales(150)
+                .canjesUsados(50)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta2.setId(2L);
+        oferta2.setPresente(true);
+
+        Oferta oferta3 = Oferta.builder()
+                .nombre("Laptop Gaming")
+                .puntosNecesarios(5000.0)
+                .rubro(tecnologia)
+                .canjesTotales(100)
+                .canjesUsados(25)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta3.setId(3L);
+        oferta3.setPresente(true);
+
+        Oferta oferta4 = Oferta.builder()
+                .nombre("Entrenamiento Personalizado")
+                .puntosNecesarios(1200.0)
+                .rubro(deportivo)
+                .canjesTotales(80)
+                .canjesUsados(20)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta4.setId(4L);
+        oferta4.setPresente(true);
+
+        Oferta oferta5 = Oferta.builder()
+                .nombre("Conjunto Deportivo")
+                .puntosNecesarios(600.0)
+                .rubro(indumentaria)
+                .canjesTotales(300)
+                .canjesUsados(100)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta5.setId(5L);
+        oferta5.setPresente(true);
+
+        Oferta oferta6 = Oferta.builder()
+                .nombre("Cena para Dos en Restaurante Gourmet")
+                .puntosNecesarios(1500.0)
+                .rubro(gastronomia)
+                .canjesTotales(50)
+                .canjesUsados(10)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta6.setId(6L);
+        oferta6.setPresente(true);
+
+        Oferta oferta7 = Oferta.builder()
+                .nombre("Paquete de Viaje a la Playa")
+                .puntosNecesarios(7000.0)
+                .rubro(viajes)
+                .canjesTotales(30)
+                .canjesUsados(5)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta7.setId(7L);
+        oferta7.setPresente(true);
+
+        Oferta oferta8 = Oferta.builder()
+                .nombre("Curso Online de Programación")
+                .puntosNecesarios(2000.0)
+                .rubro(educacion)
+                .canjesTotales(120)
+                .canjesUsados(40)
+                .image("imagenes/caridad.jpg")
+                .build();
+        oferta8.setId(8L);
+        oferta8.setPresente(false);
+
+        ofertasRepository.guardar(oferta1);
+        ofertasRepository.guardar(oferta2);
+        ofertasRepository.guardar(oferta3);
+        ofertasRepository.guardar(oferta4);
+        ofertasRepository.guardar(oferta5);
+        ofertasRepository.guardar(oferta6);
+        ofertasRepository.guardar(oferta7);
+        ofertasRepository.guardar(oferta8);
 
 
     }

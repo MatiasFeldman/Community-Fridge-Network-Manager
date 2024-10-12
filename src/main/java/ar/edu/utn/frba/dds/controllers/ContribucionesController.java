@@ -11,17 +11,24 @@ import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoPersona
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
+import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 import lombok.SneakyThrows;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class ContribucionesController {
@@ -130,31 +137,52 @@ public class ContribucionesController {
     }
 
     public void registrarPersonaVulnerable(Context ctx) {
-        String json = ctx.body();
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-        Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());
+        String nombre = ctx.formParam("nombre");
+        String fechaNacimiento = ctx.formParam("fechaNacimiento");
+        String domicilio = ctx.formParam("domicilio");
+        String dni = ctx.formParam("dni");
+        String menoresACargo = ctx.formParam("menoresACargo");
+        String numeroTarjeta = ctx.formParam("numeroTarjeta");
 
-
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
-        Optional<TarjetaPersonaVulnerable> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
-
-        if (posibleHumano.isPresent() && tarjeta.isPresent()) {
-            ColaboradorHumano h = posibleHumano.get();
-
-            VerificadorDePermisos.tienePermiso(h.getUser(), "REGISTRAR_PERSONA_VULNERABLE");
-
-            TarjetaPersonaVulnerable tarjetaPersona = tarjeta.get();
-
-            PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
-
-            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable(tarjetaPersona, persona, h);
-            h.sumarPuntaje(registro);
-        } else if (posibleHumano.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
-        } else {
-            throw new TarjetaInexistenteException("La tarjeta ingresada no existe o tiene dueño.");
+        if (nombre == null || fechaNacimiento == null || domicilio == null || dni == null || menoresACargo == null || numeroTarjeta == null) {
+            throw new TarjetaInexistenteException("Faltan datos"); // todo: cambiar a excepcion mas especifica
         }
+
+        Long userId = ctx.sessionAttribute("id");
+
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorId(userId);
+
+        if (posibleColaboradorHumano.isEmpty()) {
+            throw new TarjetaInexistenteException("No se encontro el usuario");// todo: cambiar a excepcion mas especifica
+        }
+
+        ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+
+        TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
+        Optional<TarjetaPersonaVulnerable> posibleTarjeta = tarjetasVulnerablesRepository.buscarPorId(Long.valueOf(numeroTarjeta));
+
+        if (posibleTarjeta.isEmpty()) {
+            throw new TarjetaInexistenteException("No se encontro la tarjeta");// todo: cambiar a excepcion mas especifica
+        }
+
+        TarjetaPersonaVulnerable tarjeta = posibleTarjeta.get();
+
+        PersonaVulnerable personaVulnerable = new PersonaVulnerable(
+                colaboradorHumano,
+                nombre,
+                LocalDate.parse(fechaNacimiento),
+                LocalDate.now(),
+                Direccion.of(domicilio, "CABA"),
+                dni,
+                Integer. valueOf(menoresACargo),
+                List.of(tarjeta)
+                );
+
+        PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
+        personasVulnerablesRepository.guardar(personaVulnerable);
+
+        ctx.redirect("/colaborar/registro-persona-vulnerable"); // todo: cambiar a vista de exito
     }
 
     public void registrarHeladeraACargo(String json) {
@@ -204,6 +232,8 @@ public class ContribucionesController {
         ofertas.guardar(oferta);
     }
 
+    public void cargaMasiva(Context ctx){
 
+    }
 
 }

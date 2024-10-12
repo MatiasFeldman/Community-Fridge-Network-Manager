@@ -32,6 +32,13 @@ public class Router {
 
         app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
 
+        // revisar si esta correcta el registro
+        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.ADMIN, TipoRol.HUMANO);
+        
+        app.get("/colaborar/carga-masiva", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);
+
+        app.post("/colaborar/carga-masiva", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx), TipoRol.ADMIN, TipoRol.HUMANO);
+
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.ADMIN, TipoRol.JURIDICA);
 
         // sin rol se pueden ver las heladeras, pero si tenes rol podes suscribirte a una heladera (el checkeo se hace en el controller)

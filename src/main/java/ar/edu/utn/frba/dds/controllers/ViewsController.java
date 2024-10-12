@@ -64,6 +64,13 @@ public class ViewsController {
         ctx.render("colaboraciones/registro-vulnerable.hbs", model);
     }
 
+    public static void formCargaMasiva(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Carga masiva");
+
+        ctx.render("colaboraciones/carga_masiva.hbs", model);
+    }
+
     public static void formRegistrarOferta(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro de oferta");

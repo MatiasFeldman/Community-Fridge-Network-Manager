@@ -58,9 +58,8 @@ public class UsuariosController {
     }
 
     public void handleLogout(Context ctx) {
-        ctx.sessionAttribute("user", null);
-        ctx.sessionAttribute("roles", null);
-        ctx.redirect("/");
+        ctx.req().getSession().invalidate();
+        ctx.redirect("/login");
     }
 
     public void handlePerfil(Context ctx) {

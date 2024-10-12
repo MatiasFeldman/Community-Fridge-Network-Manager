@@ -3,13 +3,12 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
-import ar.edu.utn.frba.dds.exceptions.ContraseniaIncorrectaException;
-import ar.edu.utn.frba.dds.exceptions.UsuarioIncorrectoException;
+import ar.edu.utn.frba.dds.exceptions.login.ContraseniaIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.login.UsuarioIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
-import ar.edu.utn.frba.dds.models.entities.personas.Tipo;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
@@ -78,7 +77,7 @@ public class UsuariosController {
 
 
             if (roles.contains("HUMANO")) {
-                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
+                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
                 System.out.println(humano.getDireccion().getDireccion());
                 HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
                 model.put("puntos", humano.calcularPuntaje());
@@ -120,7 +119,7 @@ public class UsuariosController {
                 String whatsapp = json.get("whatsapp").asText();
                 List<Contacto> mediosDeContacto = new ArrayList<>();
 
-                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(id).get();
+                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
                 if (direccion != null && provincia != null) {
                     humano.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
                 } else {

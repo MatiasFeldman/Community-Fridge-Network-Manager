@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.dtos.ofertas.OfertaOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
-import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -12,7 +11,6 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 
 import java.util.*;
@@ -65,7 +63,7 @@ public class OfertasController {
         List<String> rolUsuario = ctx.sessionAttribute("roles");
         Double misPuntos;
         if(rolUsuario.get(0).contains("HUMANO")){
-            Optional<ColaboradorHumano> Humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(idUsuario);
+            Optional<ColaboradorHumano> Humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario);
             misPuntos = Humano.get().calcularPuntaje();
         }else if (rolUsuario.get(0).contains("JURIDICA")){
             Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(idUsuario);
@@ -120,7 +118,7 @@ public class OfertasController {
                 Oferta oferta = ofertaOptional.get();
                 // Verificamos si el rol del usuario es HUMANO
                 if (rolUsuario.get(0).contains("HUMANO")) {
-                    Optional<ColaboradorHumano> usuarioOptional = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorId(usuarioId);
+                    Optional<ColaboradorHumano> usuarioOptional = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
 
                     if (usuarioOptional.isPresent()) {
                         ColaboradorHumano usuario = usuarioOptional.get();

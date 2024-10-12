@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Registrar persona Vulnerable</h1>
-            <form action="/registrar-persona-vulnerable" method="POST">
+            <form action="/colaborar/registro-persona-vulnerable" method="POST">
                 <div class="row mt-4">
                     <div class="col-12 col-md-6 mb-3">
                           <h3 class="h5 fw-semibold">Nombre</h3>
@@ -32,11 +32,14 @@
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Menores a Cargo</h3>
-                        <input type="text" class="form-control mt-2" placeholder="Menores a Cargo" id="menoresACargo" name="menoresACargo">
+                        <input type="text" class="form-control mt-2" placeholder="Menores a Cargo" id="menoresACargo" name="menoresACargo" required>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Número de Tarjeta</h3>
-                        <input type="text" class="form-control mt-2" placeholder="Número de tarjeta" id="numeroTarjeta" name="numeroTarjeta">
+                        <input type="text" class="form-control mt-2" placeholder="Número de tarjeta" id="numeroTarjeta" name="numeroTarjeta" required>
+                        {{#if errorTarjeta}}
+                             <span class="text-danger">Tarjeta no existe</span>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="row mt-4">

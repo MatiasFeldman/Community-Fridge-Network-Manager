@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.controllers.*;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
@@ -45,6 +47,9 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesCollection;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesDB;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
@@ -110,22 +115,33 @@ public class ServiceLocator {
             } else if (componentName.equals(WhatsAppSender.class.getName())) {
                 WhatsAppSender whatsAppSender = new WhatsAppSender();
                 instances.put(componentName, whatsAppSender);
-            } else if (componentName.equals(JuridicasRepository.class.getName())) {//mepa que esta mal que este aca
-                JuridicasRepository juridicas = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
-                instances.put(componentName, juridicas);
             } else if (componentName.equals(HumanosController.class.getName())) {
                 HumanosController humanos = new HumanosController();
                 instances.put(componentName, humanos);
             } else if (componentName.equals(JuridicasController.class.getName())) {
                 JuridicasController juridicas = new JuridicasController();
                 instances.put(componentName, juridicas);
-            }else if (componentName.equals(RecomendarPuntos.class.getName())) {
+            } else if (componentName.equals(RecomendarPuntos.class.getName())) {
                 RecomendarPuntos recomendarPuntos = new RecomendarPuntos();
                 instances.put(componentName, recomendarPuntos);
-            }else if (componentName.equals(OfertasController.class.getName())) {
+            } else if (componentName.equals(OfertasController.class.getName())) {
                 OfertasController oferta = new OfertasController();
                 instances.put(componentName, oferta);
+            } else if (componentName.equals(ConversorCSVReader.class.getName())) {
+                ConversorCSVReader conversorCSVReader = new ConversorCSVReader(
+                        instanceOf(HumanosRepository.class),
+                        instanceOf(OfertasRepository.class),
+                        instanceOf(MimeMailSender.class)
+                );
+                instances.put(componentName, conversorCSVReader);
+            }else if (componentName.equals(MailSender.class.getName())) {
+                MailSender mailSender = new MimeMailSender();
+                instances.put(componentName, mailSender);
+            }else if (componentName.equals(ContribucionesController.class.getName())) {
+                ContribucionesController contribucionesController = new ContribucionesController();
+                instances.put(componentName, contribucionesController);
             }
+            // REPOSITORIOS A PARTIR DE AQUI
 
             if (persistence.equals("memory")) {
 
@@ -171,18 +187,21 @@ public class ServiceLocator {
                 } else if (componentName.equals(IncidentesRepository.class.getName())) {
                     IncidentesRepository incidentes = new IncidentesRepository(new IncidentesCollection(new ArrayList<>()));
                     instances.put(componentName, incidentes);
-                }else if (componentName.equals(JuridicasRepository.class.getName())) {
+                } else if (componentName.equals(JuridicasRepository.class.getName())) {
                     JuridicasRepository humanos = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
                     instances.put(componentName, humanos);
-                }else if (componentName.equals(UsuariosRepository.class.getName())) {
+                } else if (componentName.equals(UsuariosRepository.class.getName())) {
                     UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>()));
                     instances.put(componentName, usuarios);
-                }else if (componentName.equals(OfertasRepository.class.getName())) {
+                } else if (componentName.equals(OfertasRepository.class.getName())) {
                     OfertasRepository oferta = new OfertasRepository(new OfertasCollection());
                     instances.put(componentName, oferta);
-                }else if (componentName.equals(RubrosRepository.class.getName())) {
+                } else if (componentName.equals(RubrosRepository.class.getName())) {
                     RubrosRepository rubro = new RubrosRepository(new RubroCollection(new ArrayList<>()));
                     instances.put(componentName, rubro);
+                } else if (componentName.equals(TarjetasVulnerablesRepository.class.getName())) {
+                    TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesCollection(new ArrayList<>()));
+                    instances.put(componentName, tarjetasVulnerablesRepository);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -210,35 +229,37 @@ public class ServiceLocator {
                 } else if (componentName.equals(IntentosDeAperturaRepository.class.getName())) {
                     IntentosDeAperturaRepository intentos = new IntentosDeAperturaRepository(new IntentosDeAperturaDataBase());
                     instances.put(componentName, intentos);
+                } else if (componentName.equals(HeladerasRepository.class.getName())) {
+                    HeladerasRepository heladeras = new HeladerasRepository(new HeladerasDataBase());
+                    instances.put(componentName, heladeras);
+                } else if (componentName.equals(HumanosRepository.class.getName())) {
+                    HumanosRepository humanos = new HumanosRepository(new HumanosDataBase());
+                    instances.put(componentName, humanos);
+                } else if (componentName.equals(PersonasVulnerablesRepository.class.getName())) {
+                    PersonasVulnerablesRepository personasVulnerables = new PersonasVulnerablesRepository(new PersonasVulnerablesDataBase());
+                    instances.put(componentName, personasVulnerables);
+                } else if (componentName.equals(DonacionesDeViandaRepository.class.getName())) {
+                    DonacionesDeViandaRepository donaciones = new DonacionesDeViandaRepository(new DonacionesDeViandaDataBase());
+                    instances.put(componentName, donaciones);
+                } else if (componentName.equals(IncidentesRepository.class.getName())) {
+                    IncidentesRepository incidentes = new IncidentesRepository(new IncidentesDataBase());
+                    instances.put(componentName, incidentes);
+                } else if (componentName.equals(UsuariosRepository.class.getName())) {
+                    UsuariosRepository usuarios = new UsuariosRepository(new UsuariosDataBase());
+                    instances.put(componentName, usuarios);
+                } else if (componentName.equals(OfertasRepository.class.getName())) {
+                    OfertasRepository oferta = new OfertasRepository(new OfertasDataBase());
+                    instances.put(componentName, oferta);
+                } else if (componentName.equals(RubrosRepository.class.getName())) {
+                    RubrosRepository rubro = new RubrosRepository(new RubroDataBase());
+                    instances.put(componentName, rubro);
+                } else if (componentName.equals(TarjetasVulnerablesRepository.class.getName())) {
+                    TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesDB());
+                    instances.put(componentName, tarjetasVulnerablesRepository);
                 }
-            } else if (componentName.equals(HeladerasRepository.class.getName())) {
-                HeladerasRepository heladeras = new HeladerasRepository(new HeladerasDataBase());
-                instances.put(componentName, heladeras);
-            } else if (componentName.equals(HumanosRepository.class.getName())) {
-                HumanosRepository humanos = new HumanosRepository(new HumanosDataBase());
-                instances.put(componentName, humanos);
-            } else if (componentName.equals(PersonasVulnerablesRepository.class.getName())) {
-                PersonasVulnerablesRepository personasVulnerables = new PersonasVulnerablesRepository(new PersonasVulnerablesDataBase());
-                instances.put(componentName, personasVulnerables);
-            } else if (componentName.equals(DonacionesDeViandaRepository.class.getName())) {
-                DonacionesDeViandaRepository donaciones = new DonacionesDeViandaRepository(new DonacionesDeViandaDataBase());
-                instances.put(componentName, donaciones);
-            } else if (componentName.equals(IncidentesRepository.class.getName())) {
-                IncidentesRepository incidentes = new IncidentesRepository(new IncidentesDataBase());
-                instances.put(componentName, incidentes);
-            }else if (componentName.equals(UsuariosRepository.class.getName())) {
-                UsuariosRepository usuarios = new UsuariosRepository(new UsuariosDataBase());
-                instances.put(componentName, usuarios);
-            }else if (componentName.equals(OfertasRepository.class.getName())) {
-                OfertasRepository oferta = new OfertasRepository(new OfertasDataBase());
-                instances.put(componentName, oferta);
-            }else if (componentName.equals(RubrosRepository.class.getName())) {
-                RubrosRepository rubro = new RubrosRepository(new RubroDataBase());
-                instances.put(componentName, rubro);
             }
-
         }
-
         return (T) instances.get(componentName);
+
     }
 }

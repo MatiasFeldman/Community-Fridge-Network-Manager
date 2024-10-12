@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
-import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
@@ -11,7 +10,6 @@ import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -20,7 +18,6 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
-import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +47,7 @@ public class HeladerasController {
         String rol = node.get("rol").asText();
         Usuario usuario;
 
-        if (Objects.equals(rol, "HUMANO")) usuario = humanos.buscarPorId(idDenunciante).get().getUser();
+        if (Objects.equals(rol, "HUMANO")) usuario = humanos.buscarPorIdUsuario(idDenunciante).get().getUser();
         else usuario = juridicas.buscarPorId(idDenunciante).get().getUser();
 
         String nombreHeladera = node.get("heladera").asText();
@@ -93,7 +90,7 @@ public class HeladerasController {
             throw new PermisoDenegadoException("No tiene permisos para realizar esta accion");
         }
 
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(idUsuario);
+        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorIdUsuario(idUsuario);
 
         if (posibleHumano.isEmpty()) {
             throw new UsuarioSinTarjetaException("No se encontro el usuario");

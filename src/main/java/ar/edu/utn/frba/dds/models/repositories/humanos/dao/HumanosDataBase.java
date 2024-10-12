@@ -35,7 +35,7 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
                 .getResultList();
     }
     @Override
-    public Optional<ColaboradorHumano> buscarPorId(Long id) {
+    public Optional<ColaboradorHumano> buscarPorIdUsuario(Long id) {
         return Optional.ofNullable(entityManager()
                 .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.user.id = :idUsuario AND h.presente = true", ColaboradorHumano.class)
                 .setParameter("idUsuario", id)

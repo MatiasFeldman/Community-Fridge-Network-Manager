@@ -160,6 +160,13 @@ public class ViewsController {
 
         context.render("400.hbs", model);
     }
+
+    public static void confirmacionColaboracion(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+    }
 }
 
 

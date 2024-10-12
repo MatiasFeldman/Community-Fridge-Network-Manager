@@ -1,10 +1,11 @@
 package ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaPersonaVulnerable;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-
+@AllArgsConstructor
 public class TarjetasVulnerablesCollection implements TarjetasVulnerablesDAO {
     private List<TarjetaPersonaVulnerable> tarjetas;
 

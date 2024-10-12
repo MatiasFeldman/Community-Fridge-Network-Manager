@@ -1,6 +1,7 @@
-package ar.edu.utn.frba.dds.server.handlers;
+package ar.edu.utn.frba.dds.server.handlers.implementaciones;
 
 import ar.edu.utn.frba.dds.exceptions.AccessDeniedException;
+import ar.edu.utn.frba.dds.server.handlers.IHandler;
 import io.javalin.Javalin;
 
 public class AccessDeniedHandler implements IHandler {

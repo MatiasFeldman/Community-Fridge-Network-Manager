@@ -10,7 +10,7 @@ public interface HumanosDAO {
 
     public List<ColaboradorHumano> buscarTodos();
 
-    public Optional<ColaboradorHumano> buscarPorId(Long id);
+    public Optional<ColaboradorHumano> buscarPorIdUsuario(Long id);
 
     public void eliminar(ColaboradorHumano colaboradorHumano);
 

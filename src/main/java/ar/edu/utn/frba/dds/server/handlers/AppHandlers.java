@@ -12,10 +12,13 @@ public class AppHandlers {
             new ContraseniaIncorrectaHandler(),
             new AccessDeniedHandler(),
             new NoSesionIniciadaHandler(),
-            new RegistroPersonaVulnerableIncompletoHandler(),
+            new MenosACargoIncorrectoHandler(),
             new RegistroTarjetaInexistenteHandler(),
             new SolicitudesIncorrectasHandler(),
-            new MontoInvalidoHandler()
+            new MontoInvalidoHandler(),
+            new FechaNacimientoIncorrectaHandler(),
+            new TemperaturaIncorrectaHandler(),
+            new CapacidadIncorrectaHandler()
     };
 
     public static void applyHandlers(Javalin app) {

@@ -1,0 +1,21 @@
+package ar.edu.utn.frba.dds.server.handlers.implementaciones;
+
+import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.MenoresACargoIncorrectoException;
+import ar.edu.utn.frba.dds.server.handlers.IHandler;
+import io.javalin.Javalin;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MenosACargoIncorrectoHandler implements IHandler {
+    public void setHandle(Javalin app) {
+        app.exception(MenoresACargoIncorrectoException.class, (e, ctx) -> {
+            ctx.status(401);
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Registro de persona vulnerable");
+            model.put("menoresIncorrecto", true);
+
+            ctx.render("colaboraciones/registro-vulnerable.hbs", model);
+        });
+    }
+}

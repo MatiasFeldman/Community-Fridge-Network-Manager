@@ -32,6 +32,8 @@ public class Router {
 
         app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo, TipoRol.ADMIN, TipoRol.JURIDICA);
 
+        app.post("/colaborar/heladera-a-cargo", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarHeladeraACargo(ctx), TipoRol.JURIDICA);
+
         app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
 
         // revisar si esta correcta el registro

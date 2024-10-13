@@ -3,6 +3,10 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
+import ar.edu.utn.frba.dds.exceptions.registroHeladera.CapacidadIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.registroHeladera.TemperaturaIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.FechaNacimientoIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.MenoresACargoIncorrectoException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
@@ -13,7 +17,9 @@ import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Comuna;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Provincia;
 import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
@@ -198,6 +204,25 @@ public class ContribucionesController {
             throw new SolicitudIncorrectaException();
         }
 
+        Integer cantMenoresACargo;
+
+        try {
+            cantMenoresACargo = Integer. valueOf(menoresACargo);;
+        } catch (NumberFormatException e) {
+            throw new MenoresACargoIncorrectoException(); // menoresACargo debe ser un numero
+        }
+
+        if (cantMenoresACargo < 0) {
+            throw new MenoresACargoIncorrectoException(); // menoresACargo debe ser un numero positivo
+        }
+
+        LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento);
+        LocalDate fechaActual = LocalDate.now();
+
+        if (fechaNacimientoDate.isAfter(fechaActual) || fechaNacimientoDate.isBefore(fechaActual.minusYears(120))) {
+            throw new FechaNacimientoIncorrectaException(); // fecha de nacimiento debe ser entre 120 años antes de la fecha actual y la fecha actual
+        }
+
         Long userId = ctx.sessionAttribute("id");
 
         HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
@@ -223,9 +248,9 @@ public class ContribucionesController {
                 nombre,
                 LocalDate.parse(fechaNacimiento),
                 LocalDate.now(),
-                Direccion.of(domicilio, ""), // que pongo en provincia?
+                Direccion.of(domicilio, "CABA"),
                 dni,
-                Integer. valueOf(menoresACargo),
+                cantMenoresACargo,
                 List.of(tarjeta)
                 );
 
@@ -238,30 +263,73 @@ public class ContribucionesController {
         ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
-    public void registrarHeladeraACargo(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-        String heladera = node.get("heladera").asText();
+    public void registrarHeladeraACargo(Context ctx) {
+        String nombre = ctx.formParam("nombre");
+        String capacidadMaximaStr = ctx.formParam("capacidadMaxima");
+        String calle = ctx.formParam("calle");
+        String comuna = ctx.formParam("comuna");
+        String temperaturaMaximaStr = ctx.formParam("temperaturaMaxima");
+        String temperaturaMinimaStr = ctx.formParam("temperaturaMinima");
 
-        Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id);
-        Optional<Heladera> heladeraOpt = heladeras.buscarPorNombre(heladera);
-
-        if (posibleJuridica.isPresent() && heladeraOpt.isPresent()) {
-            Juridica j = posibleJuridica.get();
-
-            VerificadorDePermisos.tienePermiso(j.getUser(), "HACERSE_CARGO_HELADERA");
-
-
-            Heladera h = heladeraOpt.get();
-
-            HacerseCargoHeladera contribucion = ContribucionJuridicaFactory.hacerseCargoHeladera(h,j);
-            j.sumarPuntaje(contribucion);
-        } else if (posibleJuridica.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
-        } else {
-            throw new HeladeraInexistenteException("La heladera ingresada no existe.");
+        if (nombre == null || capacidadMaximaStr == null || calle == null || comuna == null ||
+                temperaturaMaximaStr == null || temperaturaMinimaStr == null) {
+            throw new SolicitudIncorrectaException();
         }
 
+        Integer capacidadMaxima;
+        Double temperaturaMaxima, temperaturaMinima;
+
+        try {
+            capacidadMaxima = Integer.parseInt(capacidadMaximaStr);
+            temperaturaMaxima = Double.parseDouble(temperaturaMaximaStr);
+            temperaturaMinima = Double.parseDouble(temperaturaMinimaStr);
+        } catch (NumberFormatException e) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        if (capacidadMaxima < 1 || capacidadMaxima > 100) {
+            throw new CapacidadIncorrectaException();
+        }
+
+        if (temperaturaMaxima < temperaturaMinima || temperaturaMaxima >= 8 || temperaturaMinima < -18) {
+            throw new TemperaturaIncorrectaException();
+        }
+
+        Long userId = ctx.sessionAttribute("id");
+
+        JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
+        Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
+
+        if (posibleJuridica.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        Juridica juridica = posibleJuridica.get();
+
+        Heladera heladera = Heladera.builder()
+                .nombre(nombre)
+                .capacidadMaxima(capacidadMaxima)
+                .capActual(0)
+                .fechaDePuestaEnFuncionamiento(LocalDate.now())
+                .activa(true)
+                .tempMinima(temperaturaMinima)
+                .tempMaxima(temperaturaMaxima)
+                .ultimaTemperaturaRegistrada(0.0)
+                .ultFechaRegistrada(null)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
+                .direccion(new Direccion(calle, new Comuna(comuna), new Provincia("CABA"), null)) // TODO: obtener correctamente la direccion
+                .build();
+
+        HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.of(heladera, juridica);
+
+        HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
+        heladerasRepository.guardar(heladera);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarOferta(String json) {

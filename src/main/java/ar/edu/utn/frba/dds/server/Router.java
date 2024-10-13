@@ -1,19 +1,9 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.*;
-import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
-import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
 
 
 public class Router {
@@ -101,5 +91,8 @@ public class Router {
         app.get("/ofertas",  ctx ->  ServiceLocator.instanceOf(OfertasController.class).showOfertas(ctx), TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
         app.get("/ofertas/{id}",  ctx ->  ServiceLocator.instanceOf(OfertasController.class).showOferta(ctx), TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
         app.post("/oferta/{id}/canjear",  ServiceLocator.instanceOf(OfertasController.class)::canjearOferta,TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
+
+        app.get("/donde-donar", ViewsController::dondeDonar);
+        app.post("/donde-donar", ViewsController::dondeDonarMapa);
     }
 }

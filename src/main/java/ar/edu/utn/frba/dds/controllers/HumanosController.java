@@ -39,6 +39,7 @@ public class HumanosController {
         model.put("campos", dtos);
 
         context.render("registro-usuario/registro-humano.hbs", model);
+        System.out.println("Se renderizo el formulario de registro de humano");
     }
 
     public void camposFormHumano(Context context){

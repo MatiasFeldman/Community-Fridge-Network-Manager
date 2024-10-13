@@ -48,6 +48,7 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.Tarjet
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
+import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
@@ -91,6 +92,9 @@ public class ServiceLocator {
                 instances.put(componentName, pdfGenerator);
             } else if (componentName.equals(GobiernoAPI.class.getName())) {
                 GobiernoAPI api = new GobiernoAPI();
+                instances.put(componentName, api);
+            } else if (componentName.equals(ApiIntegracionGrupo1.class.getName())) {
+                ApiIntegracionGrupo1 api = new ApiIntegracionGrupo1();
                 instances.put(componentName, api);
             } else if (componentName.equals(ValidadorDeContrasenias.class.getName())) {
                 ValidadorDeContrasenias validador = new ValidadorDeContrasenias();

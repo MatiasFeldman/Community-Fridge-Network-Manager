@@ -109,5 +109,11 @@ public class DonacionDeDinero extends Persistente implements Contribucion{
         return monto * vecesCumplidas();
     }
 
+    public Long getColaboradorId() {
+        if (colaboradorHumano != null) {
+            return colaboradorHumano.getUser().getId();
+        }
+        return colaboradorJuridico.getUser().getId();
+    }
 
 }

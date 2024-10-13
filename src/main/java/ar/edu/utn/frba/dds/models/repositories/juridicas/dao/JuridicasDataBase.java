@@ -38,7 +38,7 @@ public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUni
     }
 
     @Override
-    public Optional<Juridica> buscarPorId(Long id) {
+    public Optional<Juridica> buscarPorIdUsuario(Long id) {
         return Optional.ofNullable(entityManager()
                 .createQuery("SELECT j FROM Juridica j WHERE j.user.id = :idUsuario AND j.presente = true", Juridica.class)
                 .setParameter("idUsuario", id)

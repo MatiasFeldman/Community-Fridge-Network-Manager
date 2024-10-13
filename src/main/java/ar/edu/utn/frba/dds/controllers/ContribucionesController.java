@@ -1,27 +1,38 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
-import ar.edu.utn.frba.dds.exceptions.TarjetaInexistenteException;
+import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
+import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
-import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDonacionDeDinero;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
-import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
+import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 import lombok.SneakyThrows;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ContribucionesController {
@@ -37,7 +48,7 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<ColaboradorHumano> humano = humanos.buscarPorId(id);
+        Optional<ColaboradorHumano> humano = humanos.buscarPorIdUsuario(id);
 
         if (humano.isPresent()) {
             ColaboradorHumano h = humano.get();
@@ -64,7 +75,7 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
+        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorIdUsuario(id);
 
         if (posibleHumano.isPresent()) {
             ColaboradorHumano h = posibleHumano.get();
@@ -97,64 +108,134 @@ public class ContribucionesController {
         }
     }
 
-    public void crearDonacionDeDinero(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-        String rol = node.get("rol").asText();
+    public void crearDonacionDeDinero(Context ctx) {
+        Long userId = ctx.sessionAttribute("user");
+        List<String> roles = ctx.sessionAttribute("roles");
+        String frecuenciaTexto = ctx.formParam("frecuencia");
+        String monto = (ctx.formParam("monto"));
 
-        if (rol.equals("HUMANO")) {
-            Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
-            if (posibleHumano.isPresent()) {
-                ColaboradorHumano h = posibleHumano.get();
-
-                VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_DINERO");
-
-                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node, h);
-                h.sumarPuntaje(donacion);
-                return;
-            }
-        } else if (rol.equals("JURIDICA")) {
-            Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
-            if (posibleJuridica.isPresent()) {
-                Juridica j = posibleJuridica.get();
-
-                VerificadorDePermisos.tienePermiso(j.getUser(), "DONAR_DINERO");
-
-                DonacionDeDinero donacion = JSONtoDonacionDeDinero.convertir(node, j);
-                j.sumarPuntaje(donacion);
-                return;
-            }
+        if (frecuenciaTexto == null || monto == null || userId == null || roles == null || monto.isEmpty() || frecuenciaTexto.isEmpty() || roles.isEmpty()) {
+            throw new SolicitudIncorrectaException();
         }
 
-        throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
+        Double montoDouble;
+        try {
+            montoDouble = Double.parseDouble(monto);
+        } catch (NumberFormatException e) {
+            throw new MontoInvalidoException(); // monto debe ser un numero
+        }
+
+        if (montoDouble <= 0) {
+            throw new MontoInvalidoException(); // monto debe ser mayor a cero
+        }
+
+        Integer frecuencia;
+        ChronoUnit unidad = null;
+
+        if (frecuenciaTexto.equals("mensual")){
+            frecuencia = 1;
+            unidad = ChronoUnit.MONTHS;
+        } else if (frecuenciaTexto.equals("unica")){
+            frecuencia = 0;
+        } else {
+            throw new SolicitudIncorrectaException();
+        }
+
+        DonacionDeDinero donacion;
+
+        if (roles.contains("HUMANO")) {
+            HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+            Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorIdUsuario(userId);
+
+            if (posibleColaboradorHumano.isEmpty()) {
+                throw new SolicitudIncorrectaException();
+            }
+
+            ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+
+            if (frecuencia > 0){
+                donacion = DonacionDeDinero.of(colaboradorHumano, montoDouble, unidad, frecuencia);
+            } else {
+                donacion = DonacionDeDinero.of(colaboradorHumano, montoDouble);
+            }
+        } else if (roles.contains("JURIDICA")) {
+            JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
+            Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
+
+            if (posibleJuridica.isEmpty()) {
+                throw new SolicitudIncorrectaException();
+            }
+
+            Juridica juridica = posibleJuridica.get();
+
+            if (frecuencia > 0){
+                donacion = DonacionDeDinero.of(juridica, montoDouble, unidad, frecuencia);
+            } else {
+                donacion = DonacionDeDinero.of(juridica, montoDouble);
+            }
+        } else {
+            throw new SolicitudIncorrectaException();
+        }
+
+        DonacionDineroRepository donacionDineroRepository = ServiceLocator.instanceOf(DonacionDineroRepository.class);
+        donacionDineroRepository.guardar(donacion);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarPersonaVulnerable(Context ctx) {
-        String json = ctx.body();
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-        Long idTarjetaRepartida = Long.parseLong(node.get("id_tarjeta").asText());
+        String nombre = ctx.formParam("nombre");
+        String fechaNacimiento = ctx.formParam("fechaNacimiento");
+        String domicilio = ctx.formParam("domicilio");
+        String dni = ctx.formParam("dni");
+        String menoresACargo = ctx.formParam("menoresACargo");
+        String numeroTarjeta = ctx.formParam("numeroTarjeta");
 
-
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
-        Optional<TarjetaPersonaVulnerable> tarjeta = tarjetas.buscarPorId(idTarjetaRepartida);
-
-        if (posibleHumano.isPresent() && tarjeta.isPresent()) {
-            ColaboradorHumano h = posibleHumano.get();
-
-            VerificadorDePermisos.tienePermiso(h.getUser(), "REGISTRAR_PERSONA_VULNERABLE");
-
-            TarjetaPersonaVulnerable tarjetaPersona = tarjeta.get();
-
-            PersonaVulnerable persona = JSONtoPersonaVulnerable.convertir(node);
-
-            RegistroPersonaVulnerable registro = ContribucionHumanaFactory.registrarPersonaVulnerable(tarjetaPersona, persona, h);
-            h.sumarPuntaje(registro);
-        } else if (posibleHumano.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
-        } else {
-            throw new TarjetaInexistenteException("La tarjeta ingresada no existe o tiene dueño.");
+        if (nombre == null || fechaNacimiento == null || domicilio == null || dni == null || menoresACargo == null || numeroTarjeta == null
+                || nombre.isEmpty() || fechaNacimiento.isEmpty() || domicilio.isEmpty() || dni.isEmpty() || menoresACargo.isEmpty() || numeroTarjeta.isEmpty()) {
+            throw new SolicitudIncorrectaException();
         }
+
+        Long userId = ctx.sessionAttribute("id");
+
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorIdUsuario(userId);
+
+        if (posibleColaboradorHumano.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+
+        TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
+        Optional<TarjetaPersonaVulnerable> posibleTarjeta = tarjetasVulnerablesRepository.buscarPorId(Long.valueOf(numeroTarjeta));
+
+        if (posibleTarjeta.isEmpty()) {
+            throw new RegistroTarjetaInexistenteException();
+        }
+
+        TarjetaPersonaVulnerable tarjeta = posibleTarjeta.get();
+
+        PersonaVulnerable personaVulnerable = new PersonaVulnerable(
+                colaboradorHumano,
+                nombre,
+                LocalDate.parse(fechaNacimiento),
+                LocalDate.now(),
+                Direccion.of(domicilio, ""), // que pongo en provincia?
+                dni,
+                Integer. valueOf(menoresACargo),
+                List.of(tarjeta)
+                );
+
+        PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
+        personasVulnerablesRepository.guardar(personaVulnerable);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarHeladeraACargo(String json) {
@@ -162,7 +243,7 @@ public class ContribucionesController {
         Long id = Long.parseLong(node.get("id_usuario").asText());
         String heladera = node.get("heladera").asText();
 
-        Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
+        Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id);
         Optional<Heladera> heladeraOpt = heladeras.buscarPorNombre(heladera);
 
         if (posibleJuridica.isPresent() && heladeraOpt.isPresent()) {
@@ -187,7 +268,7 @@ public class ContribucionesController {
         JsonNode node = ConversorJSON.convertir(json);
         Long id = Long.parseLong(node.get("id_usuario").asText());
 
-        Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
+        Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id);
 
 
         if (posibleJuridica.isEmpty()) {
@@ -204,6 +285,19 @@ public class ContribucionesController {
         ofertas.guardar(oferta);
     }
 
+    public void cargaMasiva(Context ctx){
+        String path = ctx.formParam("path");
 
+        ConversorCSVReader conversorCSV = ServiceLocator.instanceOf(ConversorCSVReader.class);
+
+        CargaMasiva cargaMasiva = new CargaMasiva(path, conversorCSV);
+
+        cargaMasiva.cargar();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+    }
 
 }

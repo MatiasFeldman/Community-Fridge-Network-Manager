@@ -23,7 +23,7 @@ public class HumanosCollection implements HumanosDAO {
     }
 
     @Override
-    public Optional<ColaboradorHumano> buscarPorId(Long id) {
+    public Optional<ColaboradorHumano> buscarPorIdUsuario(Long id) {
         return this.colaboradorHumanos
                 .stream()
                 .filter(humano -> humano.getIdUsuario().equals(id)).findFirst();
@@ -36,7 +36,7 @@ public class HumanosCollection implements HumanosDAO {
 
     @Override
     public void modificar(ColaboradorHumano colaboradorHumano) {
-        Optional<ColaboradorHumano> humanoOptional = this.buscarPorId(colaboradorHumano.getIdUsuario());
+        Optional<ColaboradorHumano> humanoOptional = this.buscarPorIdUsuario(colaboradorHumano.getIdUsuario());
         if (humanoOptional.isPresent()){
             this.colaboradorHumanos.remove(humanoOptional.get());
             this.colaboradorHumanos.add(colaboradorHumano);

@@ -20,6 +20,8 @@ public class AuthMiddleware implements IMiddleware {
             if(!rolesRequeridos.isEmpty()){
                 Long userId = ctx.sessionAttribute("user");
                 if(userId == null){
+                    String originalUrl = ctx.path();
+                    ctx.sessionAttribute("originalUrl", originalUrl);
                     throw new NoSesionIniciadaException();
                 }
 

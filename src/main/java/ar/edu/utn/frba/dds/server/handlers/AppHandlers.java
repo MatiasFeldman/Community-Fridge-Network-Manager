@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.server.handlers;
 
 
+import ar.edu.utn.frba.dds.server.handlers.implementaciones.*;
 import io.javalin.Javalin;
 
 import java.util.Arrays;
@@ -10,7 +11,11 @@ public class AppHandlers {
             new UsuarioIncorrectoHandler(),
             new ContraseniaIncorrectaHandler(),
             new AccessDeniedHandler(),
-            new NoSesionIniciadaHandler()
+            new NoSesionIniciadaHandler(),
+            new RegistroPersonaVulnerableIncompletoHandler(),
+            new RegistroTarjetaInexistenteHandler(),
+            new SolicitudesIncorrectasHandler(),
+            new MontoInvalidoHandler()
     };
 
     public static void applyHandlers(Javalin app) {

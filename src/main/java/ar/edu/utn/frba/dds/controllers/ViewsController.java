@@ -72,6 +72,13 @@ public class ViewsController {
         ctx.render("colaboraciones/registro-vulnerable.hbs", model);
     }
 
+    public static void formCargaMasiva(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Carga masiva");
+
+        ctx.render("colaboraciones/carga_masiva.hbs", model);
+    }
+
     public static void formRegistrarOferta(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro de oferta");
@@ -194,6 +201,13 @@ public class ViewsController {
         model.put("lugares", lugaresJson);
         model.put("lugaresDTO", lugares);
         context.render("donde-donar-resultados.hbs", model);
+    }
+
+    public static void confirmacionColaboracion(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 }
 

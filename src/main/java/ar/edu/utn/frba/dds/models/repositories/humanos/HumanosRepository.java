@@ -15,8 +15,8 @@ public class HumanosRepository {
         humanos.guardar(colaboradorHumano);
     }
 
-    public Optional<ColaboradorHumano> buscarPorId(Long id) {
-        return humanos.buscarPorId(id);
+    public Optional<ColaboradorHumano> buscarPorIdUsuario(Long id) {
+        return humanos.buscarPorIdUsuario(id);
     }
 
     public List<ColaboradorHumano> buscarTodos() {

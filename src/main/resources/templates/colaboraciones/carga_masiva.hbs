@@ -1,0 +1,40 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-donar-vulnerable.css">
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-6">
+            <div class="image-container">
+                <img src="../imagenes/fotoCaridadHeladera.jpg" alt="Carga masiva" class="img-fluid rounded shadow">
+                <h2 class="h5 text-center mt-3">Foto con Título</h2>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h1 class="display-4 font-weight-bold text-center">Subir archivo CSV</h1>
+
+            <!-- Formulario para la carga del archivo CSV -->
+            <form action="/cargar-csv" method="POST" enctype="multipart/form-data">
+                <div class="row mt-4">
+                    <div class="col-12 mb-3">
+                        <h3 class="h5 fw-semibold">Archivo CSV</h3>
+                        <input type="file" class="form-control mt-2" id="csvFile" name="csvFile" accept=".csv" required>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Cargar</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Mensaje de éxito o error -->
+            {{#if message}}
+                <div class="alert alert-info mt-4 text-center">
+                    {{message}}
+                </div>
+            {{/if}}
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

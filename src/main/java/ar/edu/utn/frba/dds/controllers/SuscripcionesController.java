@@ -36,7 +36,7 @@ public class SuscripcionesController {
             Heladera h = heladera.get();
             JsonNode suscripcionesNode = node.get("suscripciones");
             if (Objects.equals(tipo_colaborador, "HUMANO")){
-                Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id_usuario);
+                Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorIdUsuario(id_usuario);
                 if (posibleHumano.isPresent()){
                     ColaboradorHumano colaboradorHumano = posibleHumano.get();
                     for (JsonNode suscripcion : suscripcionesNode){
@@ -44,7 +44,7 @@ public class SuscripcionesController {
                     }
                 }
             } else if(Objects.equals(tipo_colaborador, "JURIDICA")){
-                Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id_usuario);
+                Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id_usuario);
                 if (posibleJuridica.isPresent()){
                     Juridica juridica = posibleJuridica.get();
                     for (JsonNode suscripcion : suscripcionesNode){

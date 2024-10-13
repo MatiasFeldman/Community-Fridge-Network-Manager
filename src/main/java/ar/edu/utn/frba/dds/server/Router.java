@@ -92,6 +92,8 @@ public class Router {
         app.get("/ofertas/{id}",  ctx ->  ServiceLocator.instanceOf(OfertasController.class).showOferta(ctx), TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
         app.post("/oferta/{id}/canjear",  ServiceLocator.instanceOf(OfertasController.class)::canjearOferta,TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
 
+        app.get("/confirmacion-colaboracion", ViewsController::confirmacionColaboracion, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
+
         app.get("/donde-donar", ViewsController::dondeDonar);
         app.post("/donde-donar", ViewsController::dondeDonarMapa);
     }

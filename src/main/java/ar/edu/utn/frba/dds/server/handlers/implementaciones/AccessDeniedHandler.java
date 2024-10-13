@@ -1,6 +1,7 @@
-package ar.edu.utn.frba.dds.server.handlers;
+package ar.edu.utn.frba.dds.server.handlers.implementaciones;
 
 import ar.edu.utn.frba.dds.exceptions.AccessDeniedException;
+import ar.edu.utn.frba.dds.server.handlers.IHandler;
 import io.javalin.Javalin;
 
 public class AccessDeniedHandler implements IHandler {
@@ -9,7 +10,7 @@ public class AccessDeniedHandler implements IHandler {
     public void setHandle(Javalin app) {
         app.exception(AccessDeniedException.class, (e, context) -> {
             context.status(403);
-            context.render("/400.hbs"); // TODO: renderizar una vista de error
+            context.render("/403.hbs");
         });
     }
 }

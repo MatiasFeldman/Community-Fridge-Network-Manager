@@ -12,37 +12,42 @@
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Registrar persona Vulnerable</h1>
-            <div class="row mt-4">
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Nombre</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombrePersona">
+            <form action="/colaborar/registro-persona-vulnerable" method="POST">
+                <div class="row mt-4">
+                    <div class="col-12 col-md-6 mb-3">
+                          <h3 class="h5 fw-semibold">Nombre</h3>
+                          <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombrePersona" name="nombre" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Fecha de Nacimiento</h3>
+                        <input type="date" class="form-control mt-2" placeholder="Fecha" id="fechaNacimientoPersona" name="fechaNacimiento" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Domicilio</h3>
+                        <input type="text" class="form-control mt-2" placeholder="Domicilio" id="domicilioPersona" name="domicilio" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">DNI</h3>
+                        <input type="text" class="form-control mt-2" placeholder="Número de documento" id="dniPersona" name="dni" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Menores a Cargo</h3>
+                        <input type="text" class="form-control mt-2" placeholder="Menores a Cargo" id="menoresACargo" name="menoresACargo" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Número de Tarjeta</h3>
+                        <input type="text" class="form-control mt-2" placeholder="Número de tarjeta" id="numeroTarjeta" name="numeroTarjeta" required>
+                        {{#if errorTarjeta}}
+                             <span class="text-danger">Tarjeta no existe</span>
+                        {{/if}}
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Fecha de Nacimiento</h3>
-                    <input type="date" class="form-control mt-2" placeholder="Fecha" id="fechaNacimientoPersona">
+                <div class="row mt-4">
+                     <div class="col text-center">
+                        <button type="submit" class="boton fs-3 fw-bold" id="registrar-btn">Registrar</button>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Domicilio</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Domicilio" id="domicilioPersona">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">DNI</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Número de documento" id="dniPersona">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Menores a Cargo</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Menores a Cargo" id="menoresACargo">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Número de Tarjeta</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Número de tarjeta" id="numeroTarjeta">
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col text-center">
-                    <button class="boton fs-3 fw-bold" id="registrar-btn">Registrar</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 {{/partial}}

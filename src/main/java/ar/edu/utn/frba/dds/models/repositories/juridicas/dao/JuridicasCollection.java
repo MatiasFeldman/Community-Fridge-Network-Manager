@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class JuridicasCollection implements JuridicasDAO{
     private List<Juridica> juridicas;
@@ -25,7 +24,7 @@ public class JuridicasCollection implements JuridicasDAO{
 
     @Override
     public void modificar(Juridica juridica) {
-        Optional<Juridica> juridicaOptional = this.buscarPorId(juridica.getId());
+        Optional<Juridica> juridicaOptional = this.buscarPorIdUsuario(juridica.getId());
         juridicaOptional.ifPresent(juridica1 -> {
             this.juridicas.remove(juridica1);
             this.juridicas.add(juridica);
@@ -38,7 +37,7 @@ public class JuridicasCollection implements JuridicasDAO{
     }
 
     @Override
-    public Optional<Juridica> buscarPorId(Long id) {
+    public Optional<Juridica> buscarPorIdUsuario(Long id) {
         return juridicas
                 .stream()
                 .filter(juridica -> juridica.getUser().getId().equals(id))

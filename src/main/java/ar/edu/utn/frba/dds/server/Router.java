@@ -28,6 +28,8 @@ public class Router {
 
         // sin rol se pueden ver las heladeras, pero si tenes rol podes suscribirte a una heladera (el checkeo se hace en el controller)
         app.get("/heladeras", ctx -> ServiceLocator.instanceOf(HeladerasController.class).mostrarHeladeras(ctx));
+        app.post("/suscribirse",ServiceLocator.instanceOf(HeladerasController.class)::suscribirse);
+        app.post("/desuscribirse",ServiceLocator.instanceOf(HeladerasController.class)::desuscribirse);
 
         app.get("/registro/humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).formRegistroHumano(ctx));
 

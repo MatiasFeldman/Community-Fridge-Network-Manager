@@ -1,10 +1,13 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.middlewares.AppMiddlewares;
+import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
 import ar.edu.utn.frba.dds.utils.server.Initializer;
 import ar.edu.utn.frba.dds.utils.server.JavalinRenderer;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
@@ -48,6 +51,19 @@ public class Server {
             config.fileRenderer(new JavalinRenderer().register("hbs", (path, model, context) -> {
                 Handlebars handlebars = new Handlebars();
                 Template template = null;
+
+                // Registrar el helper 'json' usando ConversorJSON
+                handlebars.registerHelper("json", (contextObject, options) -> {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        // Serializar el objeto Java a JSON
+                        return mapper.writeValueAsString(contextObject);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return "{}"; // Retornar JSON vacío en caso de error
+                    }
+                });
+
                 try {
                     template = handlebars.compile(
                             "templates/" + path.replace(".hbs", ""));

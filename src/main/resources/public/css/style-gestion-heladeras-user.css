@@ -20,27 +20,34 @@ h1.display-4 {
 
 .container-page {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
+    width: 100%;
+    margin: 0 auto;
+}
+.mapaHeladeras{
+    width: 90%;
+    display: flex; /* Activar Flexbox */
+    gap: 10px; /* Opcional, para agregar espacio entre los divs */
 }
 
 /* Ajustar tamaño del mapa */
+/* Ajustar el mapa */
 #map {
-    position: sticky;
-    height: 500px;
-    width: 40%;
-    margin-bottom: 30px;
+    flex: 0 0 40%; /* Fijar ancho al 40% */
+    height: 70vh; /* Altura completa de la pantalla */
 }
 
 /* Ajustar el listado de heladeras */
 .lista-heladeras {
-    flex: 1;
+    flex: 0 0 60%; /* Fijar ancho al 60% */
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Múltiples columnas y tamaño min y max de columna */
+    grid-template-columns: repeat(2, 1fr); /* Mostrar en dos columnas */
     gap: 20px;
-    row-gap: 20px;
-    overflow-y: auto; /* Hacer que sea scrollable si supera la altura */
     padding: 10px;
-    max-height: 500px;
+    overflow-y: auto; /* Hacer scroll vertical si hay más heladeras */
+    max-height: calc(100vh - 200px); /* Espacio restante con el formulario */
 }
 .lista-heladeras h5{
     font-weight: bold;
@@ -48,10 +55,13 @@ h1.display-4 {
     margin-bottom: 20px;
 }
 
-.heladera-card{
+.heladera-card {
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
     transition: all 0.3s;
     cursor: pointer;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
 }
 
 .heladera-card:hover {
@@ -106,6 +116,23 @@ h1.display-4 {
 }
 
 /* Formulario de suscripción */
+
+#suscripcion-container {
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1;
+
+}
+
+#suscripcion-container {
+    display: none;
+}
+
 #form-suscripcion {
     margin-top: 30px;
     margin-bottom: 30px;

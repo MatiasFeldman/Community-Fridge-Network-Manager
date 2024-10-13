@@ -64,6 +64,9 @@ public class Juridica extends Persistente {
                 .stream()
                 .anyMatch(contacto -> contacto.getTipoContacto().getNombre().equals(medio));
     }
+    public void generarContacto(Contacto contacto) {
+        this.mediosDeContacto.add(contacto);
+    }
 
     public double calcularPuntaje() {
         return puntosGanados - puntosCanjeados;

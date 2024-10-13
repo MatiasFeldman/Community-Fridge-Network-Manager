@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.controllers.*;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.OfrecerProductoOServicio;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
@@ -38,6 +39,9 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDataBase;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.dao.OfrecerProductoCollection;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.dao.OfrecerProductoDB;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesCollection;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesDataBase;
@@ -212,6 +216,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>()));
                     instances.put(componentName, donacionDineroRepository);
+                }else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
+                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>()));
+                    instances.put(componentName, ofrecerProductoRepository);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -269,6 +276,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroDB());
                     instances.put(componentName, donacionDineroRepository);
+                } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
+                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoDB());
+                    instances.put(componentName, ofrecerProductoRepository);
                 }
             }
         }

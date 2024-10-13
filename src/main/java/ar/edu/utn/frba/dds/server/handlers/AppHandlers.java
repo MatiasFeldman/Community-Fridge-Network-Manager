@@ -18,7 +18,9 @@ public class AppHandlers {
             new MontoInvalidoHandler(),
             new FechaNacimientoIncorrectaHandler(),
             new TemperaturaIncorrectaHandler(),
-            new CapacidadIncorrectaHandler()
+            new CapacidadIncorrectaHandler(),
+            new CantidadViandasIncorrectaHandler(),
+            new MismaHeladeraHanlder()
     };
 
     public static void applyHandlers(Javalin app) {

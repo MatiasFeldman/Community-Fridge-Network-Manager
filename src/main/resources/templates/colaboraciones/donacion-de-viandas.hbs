@@ -12,39 +12,28 @@
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Donar Vianda</h1>
-            <div class="row mt-4">
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Comida</h3>
-                    <input type="text" class="form-control mt-2" placeholder="ej. Fideos" id="comidaDonacion">
+            <form action="/colaborar/donar-viandas" method="POST">
+                <div class="row mt-4">
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Comida</h3>
+                        <input type="text" class="form-control mt-2" name="comidaDonacion" placeholder="ej. Fideos" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Ubicación</h3>
+                        <select class="form-control mt-2" name="heladera" required>
+                            <option value="">Selecciona la Heladera</option>
+                            {{#each heladeras}}
+                                    <option value="{{this.id}}">{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Ubicación</h3>
-                    <select class="form-control mt-2" id="ubicacionDonacion">
-                        <option value="">Ubicación Heladera</option>
-                        <option value="ubicacion1">Ubicación 1</option>
-                        <option value="ubicacion2">Ubicación 2</option>
-                        <option value="ubicacion3">Ubicación 3</option>
-                    </select>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Donar</button>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Peso</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Peso en kg" id="pesoDonacion">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Caducidad</h3>
-                    <input type="text" class="form-control mt-2" placeholder="DD/MM/AA" id="caducidadDonacion">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Calorías (Opcional)</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Cant. de calorías"
-                           id="caloriasDonacion">
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col text-center">
-                    <button class="boton fs-3 fw-bold" id="donar-btn">Donar</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 {{/partial}}

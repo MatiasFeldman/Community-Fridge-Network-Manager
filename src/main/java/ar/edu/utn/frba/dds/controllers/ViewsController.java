@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ViewsController {
 
@@ -44,15 +45,28 @@ public class ViewsController {
     }
 
     public static void formDistribuirViandas(Context ctx) {
+        HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
+        List<Heladera> heladeras = heladerasRepository.buscarTodos();
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Distribuir viandas");
+        model.put("heladeras", heladeras);
 
         ctx.render("colaboraciones/distribucion-de-viandas.hbs", model);
     }
 
     public static void formDonarViandas(Context ctx) {
+        HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
+        List<Heladera> heladeras = heladerasRepository.buscarTodos();
+
+        // Filtrar heladeras con capActual > 0
+        List<Heladera> heladerasDisponibles = heladeras.stream()
+                .filter(heladera -> heladera.getCapActual() > 0)
+                .collect(Collectors.toList());
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Donar viandas");
+        model.put("heladeras", heladerasDisponibles);
 
         ctx.render("colaboraciones/donacion-de-viandas.hbs", model);
     }

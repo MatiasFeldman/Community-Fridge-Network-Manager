@@ -12,34 +12,39 @@
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Ofrecer producto o Servicio</h1>
-            <div class="row mt-4">
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Nombre Producto</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Nombre" id="nombreProducto">
+            <form action="/colaborar/ofertar" method="POST" enctype="multipart/form-data">
+                <div class="row mt-4">
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Nombre Producto</h3>
+                        <input type="text" class="form-control mt-2" name="nombreProducto" placeholder="Nombre" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Puntos Necesarios</h3>
+                        <input type="number" class="form-control mt-2" name="puntosNecesarios" placeholder="Cantidad de Puntos" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Canjes Totales</h3>
+                        <input type="number" class="form-control mt-2" name="canjesTotales" placeholder="Cantidad de Canjes Totales" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Imagen (Opcional)</h3>
+                        <input type="file" class="form-control mt-2" name="imagenProducto" accept=".png, .jpg, .jpeg">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Tipo</h3>
+                        <select class="form-control mt-2" name="tipoProducto" required>
+                            <option value="">Selecciona el tipo</option>
+                            <option value="producto">Producto</option>
+                            <option value="servicio">Servicio</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Puntos Necesarios</h3>
-                    <input type="number" class="form-control mt-2" placeholder="Cantidad de Puntos"
-                           id="puntosNecesarios">
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Ofrecer</button>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Imagen (Opcional)</h3>
-                    <input type="file" class="form-control mt-2" accept=".png, .jpg, .jpeg" id="imagenProducto">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5 fw-semibold">Tipo</h3>
-                    <select class="form-control mt-2" id="tipoProducto">
-                        <option value="">Selecciona el tipo</option>
-                        <option value="producto">Producto</option>
-                        <option value="servicio">Servicio</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col text-center">
-                    <button class="boton fs-3 fw-bold" id="ofrecer-btn">Ofrecer</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 {{/partial}}

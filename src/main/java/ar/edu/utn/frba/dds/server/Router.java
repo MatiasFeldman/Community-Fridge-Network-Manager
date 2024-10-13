@@ -14,9 +14,15 @@ public class Router {
 
         app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
 
+        app.post("/colaborar/donar-dinero", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeDinero(ctx), TipoRol.JURIDICA, TipoRol.HUMANO);
+
         app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas, TipoRol.ADMIN, TipoRol.HUMANO);
 
+        app.post("/colaborar/distribuir-viandas", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDistribucionDeViandas(ctx), TipoRol.HUMANO);
+
         app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas, TipoRol.ADMIN, TipoRol.HUMANO);
+
+        app.post("/colaborar/donar-viandas", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeViandas(ctx), TipoRol.HUMANO);
 
         app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo, TipoRol.ADMIN, TipoRol.JURIDICA);
 
@@ -24,7 +30,11 @@ public class Router {
 
         app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
 
+        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.HUMANO);
+
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.ADMIN, TipoRol.JURIDICA);
+
+        app.post("/colaborar/ofertar", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarOferta(ctx), TipoRol.JURIDICA);
 
         // sin rol se pueden ver las heladeras, pero si tenes rol podes suscribirte a una heladera (el checkeo se hace en el controller)
         app.get("/heladeras", ctx -> ServiceLocator.instanceOf(HeladerasController.class).mostrarHeladeras(ctx));
@@ -74,7 +84,9 @@ public class Router {
         }, TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
 
-        app.get("/colaborar/carga-csv", ViewsController::cargaCsv, TipoRol.ADMIN, TipoRol.HUMANO);
+        app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);
+
+        app.post("/colaborar/carga-csv", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx),TipoRol.HUMANO);
 
         app.get("/login", ViewsController::formLogin);
         app.post("/login", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogin(ctx));

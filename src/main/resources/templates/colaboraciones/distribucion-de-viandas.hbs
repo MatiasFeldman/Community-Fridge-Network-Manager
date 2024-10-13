@@ -12,40 +12,47 @@
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h1 class="display-4 font-weight-bold text-center">Distribución de Viandas</h1>
-            <div class="row mt-4">
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Heladera Origen</h3>
-                    <select class="form-control mt-2" id="heladeraOrigen">
-                        <option value="">Ubicación Heladera</option>
-                        <option value="ubicacion1">Ubicación 1</option>
-                        <option value="ubicacion2">Ubicación 2</option>
-                        <option value="ubicacion3">Ubicación 3</option>
-                    </select>
+            <form action="/colaborar/distribuir-viandas" method="POST">
+                <div class="row mt-4">
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Heladera Origen</h3>
+                        <select class="form-control mt-2" name="heladeraOrigen" required>
+                            <option value="">Selecciona la Heladera de Origen</option>
+                            {{#each heladeras}}
+                                <option value="{{this.id}}">{{this.nombre}} (Cantidad actual: {{this.cantActual}})</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Heladera Destino</h3>
+                        <select class="form-control mt-2" name="heladeraDestino" required>
+                            <option value="">Selecciona la Heladera de Destino</option>
+                            {{#each heladeras}}
+                                <option value="{{this.id}}">{{this.nombre}} (Cantidad actual: {{this.cantActual}}, Capacidad: {{this.capacidadMaxima}})</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                        {{#if mismaHeladeraError}}
+                            <span class="text-danger">{{mismaHeladeraError}}</span>
+                        {{/if}}
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Cantidad de Viandas</h3>
+                        <input type="number" class="form-control mt-2" name="cantidadViandas" placeholder="Número" required>
+                        {{#if errorCantidad}}
+                            <span class="text-danger">{{errorCantidad}}</span>
+                        {{/if}}
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Motivo</h3>
+                        <input type="text" class="form-control mt-2" name="motivoDistribucion" placeholder="Motivo de la distribución" required>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Heladera Destino</h3>
-                    <select class="form-control mt-2" id="heladeraDestino">
-                        <option value="">Ubicación Heladera</option>
-                        <option value="ubicacion1">Ubicación 1</option>
-                        <option value="ubicacion2">Ubicación 2</option>
-                        <option value="ubicacion3">Ubicación 3</option>
-                    </select>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Distribuir</button>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Cantidad de Viandas</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Número" id="cantidadViandas">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h3 class="h5">Motivo</h3>
-                    <input type="text" class="form-control mt-2" placeholder="Motivo de la distribución"
-                           id="motivoDistribucion">
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col text-center">
-                    <button class="boton fs-3 fw-bold" id="distribuir-btn">Distribuir</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 {{/partial}}

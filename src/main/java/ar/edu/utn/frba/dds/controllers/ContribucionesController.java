@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.CantidadViandasIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.MismaHeladeraException;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
@@ -20,11 +22,14 @@ import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Comuna;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Provincia;
+import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -32,6 +37,7 @@ import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 import lombok.SneakyThrows;
 
 import java.time.LocalDate;
@@ -42,76 +48,130 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ContribucionesController {
-    private HumanosRepository humanos;
-    private HeladerasRepository heladeras;
-    private TarjetasVulnerablesRepository tarjetas;
-    private JuridicasRepository juridicas;
-    private OfertasRepository ofertas;
 
+    public void crearDonacionDeViandas(Context ctx) {
+        String heladeraId = ctx.formParam("heladera");
 
-    @SneakyThrows
-    public void crearDonacionDeViandas(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-
-        Optional<ColaboradorHumano> humano = humanos.buscarPorIdUsuario(id);
-
-        if (humano.isPresent()) {
-            ColaboradorHumano h = humano.get();
-
-            VerificadorDePermisos.tienePermiso(h.getUser(), "DONAR_VIANDAS");
-
-            String heladera_destino = node.get("heladera_destino").asText();
-            Optional<Heladera> destino = heladeras.buscarPorNombre(heladera_destino);
-
-            if (destino.isPresent()) {
-                Heladera heladera = destino.get();
-                DonacionDeVianda donacion = ContribucionHumanaFactory.crearDonacionDeVianda(h,heladera);
-                heladera.agregarViandas(1);
-                h.sumarPuntaje(donacion);
-                return;
-            }
-            throw new HeladeraInexistenteException("No se encontró la heladera");
-        } else {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
+        if (heladeraId == null) {
+            throw new SolicitudIncorrectaException();
         }
+
+        Long heladeraIdLong;
+        try {
+            heladeraIdLong = Long.parseLong(heladeraId);
+        } catch (NumberFormatException e) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
+        Optional<Heladera> posibleHeladera = heladerasRepository.buscarPorId(heladeraIdLong);
+
+        if (posibleHeladera.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        Heladera heladera = posibleHeladera.get();
+
+        if (heladera.getCapActual() < 0) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        Long userId = ctx.sessionAttribute("id");
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorIdUsuario(userId);
+
+        if (posibleColaboradorHumano.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+
+        DonacionDeVianda donacionDeVianda = DonacionDeVianda.of(heladera, colaboradorHumano);
+
+        DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
+        donacionesDeViandaRepository.guardar(donacionDeVianda);
+
+        heladera.agregarViandas(1);
+
+        colaboradorHumano.sumarPuntaje(donacionDeVianda);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
-    public void crearDistribucionDeViandas(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
+    public void crearDistribucionDeViandas(Context ctx) {
+        String heladeraOrigenId = ctx.formParam("heladeraOrigen");
+        String heladeraDestinoId = ctx.formParam("heladeraDestino");
+        String cantidadViandas = ctx.formParam("cantidadViandas");
+        String motivoDistribucion = ctx.formParam("motivoDistribucion");
 
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorIdUsuario(id);
-
-        if (posibleHumano.isPresent()) {
-            ColaboradorHumano h = posibleHumano.get();
-
-            VerificadorDePermisos.tienePermiso(h.getUser(), "DISTRIBUIR_VIANDAS");
-
-            String punto_origen = node.get("heladera_origen").asText();
-            String punto_destino = node.get("heladera_destino").asText();
-            Integer cantidad = node.get("cantidad").asInt();
-            String motivo = node.get("motivo").asText();
-
-            Optional<Heladera> origen = heladeras.buscarPorNombre(punto_origen);
-            Optional<Heladera> destino = heladeras.buscarPorNombre(punto_destino);
-
-            if (origen.isPresent() && destino.isPresent()) {
-                Heladera hOrigen = origen.get();
-                Heladera hDestino = destino.get();
-
-                hOrigen.quitarViandas(cantidad);
-                hDestino.agregarViandas(cantidad);
-
-                DistribucionViandas distri = ContribucionHumanaFactory.crearDistribucionDeViandas(hOrigen, hDestino, cantidad, motivo, h);
-                h.sumarPuntaje(distri);
-                return;
-            }
-            throw new HeladeraInexistenteException("No se encontró alguna de las heladeras");
-
-        } else {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
+        if (heladeraOrigenId == null || heladeraDestinoId == null || cantidadViandas == null || motivoDistribucion == null) {
+            throw new SolicitudIncorrectaException();
         }
+
+        if (heladeraOrigenId.equals(heladeraDestinoId)) {
+            throw new MismaHeladeraException("La heladera origen y la heladera destino no pueden ser la misma");
+        }
+
+        Long heladeraOrigenIdLong;
+        Long heladeraDestinoIdLong;
+        Integer cantidadViandasInt;
+        try {
+            heladeraOrigenIdLong = Long.parseLong(heladeraOrigenId);
+            heladeraDestinoIdLong = Long.parseLong(heladeraDestinoId);
+            cantidadViandasInt = Integer.parseInt(cantidadViandas);
+        } catch (NumberFormatException e) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
+        Optional<Heladera> posibleHeladeraOrigen = heladerasRepository.buscarPorId(heladeraOrigenIdLong);
+        Optional<Heladera> posibleHeladeraDestino = heladerasRepository.buscarPorId(heladeraDestinoIdLong);
+
+        if (posibleHeladeraOrigen.isEmpty() || posibleHeladeraDestino.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        Heladera heladeraOrigen = posibleHeladeraOrigen.get();
+        Heladera heladeraDestino = posibleHeladeraDestino.get();
+
+        if (cantidadViandasInt < 1) {
+            throw new CantidadViandasIncorrectaException("La cantidad de viandas debe ser mayor a 0");
+        }
+
+        if ((heladeraOrigen.cantActual() - cantidadViandasInt) < 0) {
+            throw new CantidadViandasIncorrectaException("La heladera origen no tiene suficientes viandas");
+        }
+
+        if (heladeraDestino.cantActual() + cantidadViandasInt > heladeraDestino.getCapacidadMaxima()) {
+            throw new CantidadViandasIncorrectaException("La heladera destino no tiene capacidad suficiente");
+        }
+
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        Long userId = ctx.sessionAttribute("id");
+        Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorIdUsuario(userId);
+
+        if (posibleColaboradorHumano.isEmpty()) {
+            throw new SolicitudIncorrectaException();
+        }
+
+        ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+
+        DistribucionViandas distribucionDeViandas = DistribucionViandas.of(heladeraOrigen, heladeraDestino, cantidadViandasInt, motivoDistribucion, colaboradorHumano);
+
+        heladeraOrigen.quitarViandas(cantidadViandasInt);
+        heladeraDestino.agregarViandas(cantidadViandasInt);
+
+        colaboradorHumano.sumarPuntaje(distribucionDeViandas);
+
+        DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
+        distribucionesDeViandasRepository.guardar(distribucionDeViandas);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void crearDonacionDeDinero(Context ctx) {
@@ -164,6 +224,8 @@ public class ContribucionesController {
             } else {
                 donacion = DonacionDeDinero.of(colaboradorHumano, montoDouble);
             }
+
+            colaboradorHumano.sumarPuntaje(donacion);
         } else if (roles.contains("JURIDICA")) {
             JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
             Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
@@ -179,6 +241,8 @@ public class ContribucionesController {
             } else {
                 donacion = DonacionDeDinero.of(juridica, montoDouble);
             }
+
+            juridica.sumarPuntaje(donacion);
         } else {
             throw new SolicitudIncorrectaException();
         }
@@ -257,6 +321,12 @@ public class ContribucionesController {
         PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
         personasVulnerablesRepository.guardar(personaVulnerable);
 
+        RegistroPersonaVulnerable registroPersonaVulnerable = RegistroPersonaVulnerable.of(tarjeta, colaboradorHumano);
+
+        // todo: agregar al repo
+
+        colaboradorHumano.sumarPuntaje(registroPersonaVulnerable);
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
@@ -326,31 +396,66 @@ public class ContribucionesController {
         HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
         heladerasRepository.guardar(heladera);
 
+        juridica.sumarPuntaje(hacerseCargoHeladera);
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
         ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
-    public void registrarOferta(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
+    public void registrarOferta(Context ctx) {
+        String nombreProducto = ctx.formParam("nombreProducto");
+        String puntosNecesarios = ctx.formParam("puntosNecesarios");
+        String canjesTotales = ctx.formParam("canjesTotales");
+        String tipoProducto = ctx.formParam("tipoProducto");
 
-        Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id);
+        if(nombreProducto == null || puntosNecesarios == null || canjesTotales == null || tipoProducto == null){
+            throw new SolicitudIncorrectaException();
+        }
+        Double puntosNecesariosDouble;
+        Integer canjesTotalesInt;
+        try {
+            puntosNecesariosDouble = Double.parseDouble(puntosNecesarios);
+            canjesTotalesInt = Integer.parseInt(canjesTotales);
+        } catch (NumberFormatException e) {
+            throw new SolicitudIncorrectaException();
+        }
 
+        // Obtener archivo de imagen (si se cargó uno)
+        UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
+        // todo: guardar imagen en el servidor
+
+        Long userId = ctx.sessionAttribute("id");
+
+        JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
+        Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
 
         if (posibleJuridica.isEmpty()) {
-            throw new PermisoDenegadoException("Debes tener una cuenta para realizar esta acción");
+            throw new SolicitudIncorrectaException();
         }
+
         Juridica juridica = posibleJuridica.get();
 
-        VerificadorDePermisos.tienePermiso(juridica.getUser(), "HACERSE_CARGO_HELADERA");
+        Oferta oferta = Oferta.of(nombreProducto,
+                puntosNecesariosDouble,
+                tipoProducto,
+                canjesTotalesInt,
+                null);
 
+        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
+        ofertasRepository.guardar(oferta);
 
-        Oferta oferta = JSONtoOferta.convertir(node);
-        OfrecerProductoOServicio contribucion = ContribucionJuridicaFactory.ofertar(oferta, juridica);
-        juridica.sumarPuntaje(contribucion);
-        ofertas.guardar(oferta);
+        OfrecerProductoOServicio ofrecerProductoOServicio = OfrecerProductoOServicio.of(oferta, juridica);
+
+        OfrecerProductoRepository ofrecerProductoRepository = ServiceLocator.instanceOf(OfrecerProductoRepository.class);
+        ofrecerProductoRepository.guardar(ofrecerProductoOServicio);
+
+        juridica.sumarPuntaje(ofrecerProductoOServicio);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Colaboración confirmada");
+        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void cargaMasiva(Context ctx){
@@ -366,6 +471,8 @@ public class ContribucionesController {
         model.put("titulo", "Colaboración confirmada");
 
         ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+
+        // todo: suma puntaje??
     }
 
 }

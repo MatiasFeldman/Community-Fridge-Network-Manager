@@ -4,6 +4,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ofrecimiento_producto")
 public class OfrecerProductoOServicio extends Persistente implements Contribucion{
-
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_juridica", referencedColumnName = "id")
     private Juridica juridica;

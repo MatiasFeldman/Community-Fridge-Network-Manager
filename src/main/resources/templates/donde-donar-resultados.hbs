@@ -1,0 +1,29 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../../css/style-donde-donar-resultados.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../../js/donde-donar.js"></script>
+{{/partial}}
+
+{{#partial "contenido"}}
+    <h1 class="display-4 text-center mb-5"> Resultados de la búsqueda</h1>
+    <div class="container">
+        <div id="map"
+             data-latitud="{{latitud}}"
+             data-longitud="{{longitud}}"
+             data-lugares='{{lugares}}'>
+        </div>
+        <div class="row">
+            </div class="lista-lugares">
+                {{#each lugaresDTO}}
+                    <!-- Carta de cada lugar con Nombre y Dirección -->
+                    <div class="card lugar-item">
+                        <h5 class="card-title">{{nombre}}</h5>
+                        <p class="card-text">{{direccion}}</p>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

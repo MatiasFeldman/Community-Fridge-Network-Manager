@@ -1,19 +1,9 @@
 package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.controllers.*;
-import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
-import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
 
 
 public class Router {
@@ -24,8 +14,6 @@ public class Router {
 
         app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
 
-        app.post("/colaborar/donar-dinero", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeDinero(ctx), TipoRol.HUMANO, TipoRol.JURIDICA);
-
         app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas, TipoRol.ADMIN, TipoRol.HUMANO);
 
         app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas, TipoRol.ADMIN, TipoRol.HUMANO);
@@ -35,13 +23,6 @@ public class Router {
         app.post("/colaborar/heladera-a-cargo", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarHeladeraACargo(ctx), TipoRol.JURIDICA);
 
         app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
-
-        // revisar si esta correcta el registro
-        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.HUMANO);
-        
-        app.get("/colaborar/carga-masiva", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);
-
-        app.post("/colaborar/carga-masiva", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx), TipoRol.HUMANO);
 
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.ADMIN, TipoRol.JURIDICA);
 
@@ -114,5 +95,8 @@ public class Router {
         app.post("/oferta/{id}/canjear",  ServiceLocator.instanceOf(OfertasController.class)::canjearOferta,TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
 
         app.get("/confirmacion-colaboracion", ViewsController::confirmacionColaboracion, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
+
+        app.get("/donde-donar", ViewsController::dondeDonar);
+        app.post("/donde-donar", ViewsController::dondeDonarMapa);
     }
 }

@@ -2,9 +2,17 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.GeoRefDeDirecc;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.LugarDonacion;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.services.api_integracion.APIAdapter;
+import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
+import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
+import ar.edu.utn.frba.dds.services.georef.IGeoRefApi;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
+import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,6 +167,40 @@ public class ViewsController {
         model.put("titulo", "Error 400");
 
         context.render("400.hbs", model);
+    }
+
+    public static void dondeDonar(Context context) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Donde donar");
+
+        context.render("donde-donar.hbs", model);
+    }
+
+    @SneakyThrows
+    public static void dondeDonarMapa(Context context) {
+        String direccion = context.formParam("direccion");
+        IGeoRefApi apiGeoRef = ServiceLocator.instanceOf(GobiernoAPI.class);
+        GeoRefDeDirecc geoRefDeDirecc = apiGeoRef.getCoord(direccion);
+        APIAdapter apiLugaresCercanos = ServiceLocator.instanceOf(ApiIntegracionGrupo1.class);
+        List<LugarDonacion> lugares = apiLugaresCercanos.getLugaresCercanos(geoRefDeDirecc.getCoords());
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Donde donar");
+        model.put("direccion", direccion);
+        model.put("latitud", geoRefDeDirecc.getCoords().getLatitud());
+        model.put("longitud", geoRefDeDirecc.getCoords().getLongitud());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        /*for (LugarDonacion lugar : lugares) {
+            System.out.println(lugar.getNombre());
+            System.out.println(lugar.getDireccion());
+            System.out.println(lugar.getCoordenadas().getLatitud());
+            System.out.println(lugar.getCoordenadas().getLongitud());
+        }*/
+        String lugaresJson = objectMapper.writeValueAsString(lugares);
+        model.put("lugares", lugaresJson);
+        model.put("lugaresDTO", lugares);
+        context.render("donde-donar-resultados.hbs", model);
     }
 
     public static void confirmacionColaboracion(Context ctx) {

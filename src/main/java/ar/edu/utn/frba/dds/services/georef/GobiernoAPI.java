@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public class GobiernoAPI implements IGeoRefApi {
-    private String baseUrl = "https://apis.datos.gob.ar/georef/api/";
+    private final String baseUrl = "https://apis.datos.gob.ar/georef/api/";
 
     @Override
     @SneakyThrows
@@ -24,6 +24,15 @@ public class GobiernoAPI implements IGeoRefApi {
         String provinciaEncoded = URLEncoder.encode(provincia, StandardCharsets.UTF_8);
         String direccionEncoded = URLEncoder.encode(direccion, StandardCharsets.UTF_8);
         String url = baseUrl + "direcciones?direccion=" + direccionEncoded + "&provincia=" + provinciaEncoded;
+
+        return this.hacerRequest(url);
+    }
+
+    @SneakyThrows
+    public GeoRefDeDirecc getCoord(String Direccion) {
+        String direccionEncoded = URLEncoder.encode(Direccion, StandardCharsets.UTF_8);
+        String url = baseUrl + "direcciones?direccion=" + direccionEncoded;
+        url += "&max=1&provincia=Ciudad%20Autónoma%20de%20Buenos%20Aires";
 
         return this.hacerRequest(url);
     }

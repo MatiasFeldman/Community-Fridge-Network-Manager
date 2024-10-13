@@ -1,0 +1,29 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../../css/style-donde-donar.css">
+    <script src="../../js/donde-donar.js"></script>
+{{/partial}}
+
+{{#partial "contenido"}}
+    <<div class="container container-page">
+         <div class="row">
+             <div class="col-12">
+                 <h1 class="display-4 text-center mb-5">Donde Donar</h1>
+             </div>
+         </div>
+
+         <div class="row">
+             <div class="col-12">
+                 <!-- Added id to the form for better handling in JS -->
+                 <form id="form-buscar" action="/donde-donar" method="POST" class="card p-4 shadow">
+                     <div class="form-group mb-3">
+                         <label for="direccion" class="form-label">Dirección</label>
+                         <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese una dirección">
+                     </div>
+
+                     <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+                 </form>
+             </div>
+         </div>
+     </div>
+{{/partial}}
+{{> templates/base }}

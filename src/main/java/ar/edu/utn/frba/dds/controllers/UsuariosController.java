@@ -47,7 +47,13 @@ public class UsuariosController {
                 // Guardo el id en la sesion
                 ctx.sessionAttribute("id", usuarioEncontrado.getId());
 
-                ctx.redirect("/");
+                String originalUrl = ctx.sessionAttribute("originalUrl");
+                if (originalUrl != null) {
+                    ctx.sessionAttribute("originalUrl", null);
+                    ctx.redirect(originalUrl);
+                } else {
+                    ctx.redirect("/");
+                }
             } else {
                 throw new ContraseniaIncorrectaException("La contraseña es incorrecta");
             }
@@ -83,7 +89,7 @@ public class UsuariosController {
                 model.put("puntos", humano.calcularPuntaje());
                 model.put("humano", dto);
             } else if (roles.contains("JURIDICA")) {
-                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
+                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(id).get();
                 JuridicaOutpuDTO dto = JuridicaOutpuDTO.of(juridica);
                 model.put("puntos", juridica.calcularPuntaje());
                 model.put("juridica", dto);
@@ -140,7 +146,7 @@ public class UsuariosController {
                 String whatsapp = json.get("whatsapp").asText();
                 List<Contacto> mediosDeContacto = new ArrayList<>();
 
-                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(id).get();
+                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(id).get();
                 if (direccion != null && provincia != null) {
                     juridica.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
                 } else {

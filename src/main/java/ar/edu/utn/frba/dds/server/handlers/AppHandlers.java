@@ -13,7 +13,9 @@ public class AppHandlers {
             new AccessDeniedHandler(),
             new NoSesionIniciadaHandler(),
             new RegistroPersonaVulnerableIncompletoHandler(),
-            new RegistroTarjetaInexistenteHandler()
+            new RegistroTarjetaInexistenteHandler(),
+            new SolicitudesIncorrectasHandler(),
+            new MontoInvalidoHandler()
     };
 
     public static void applyHandlers(Javalin app) {

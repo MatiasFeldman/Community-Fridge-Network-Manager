@@ -66,7 +66,7 @@ public class OfertasController {
             Optional<ColaboradorHumano> Humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario);
             misPuntos = Humano.get().calcularPuntaje();
         }else if (rolUsuario.get(0).contains("JURIDICA")){
-            Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(idUsuario);
+            Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario);
             misPuntos = juridica.get().calcularPuntaje();
         }else{
             misPuntos = 0.0;
@@ -135,7 +135,7 @@ public class OfertasController {
                         ctx.status(404).result("Usuario no encontrado");
                     }
                 }else if (rolUsuario.get(0).contains("JURIDICA")) {
-                    Optional<Juridica> usuarioOptional = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorId(usuarioId);
+                    Optional<Juridica> usuarioOptional = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId);
 
                     if (usuarioOptional.isPresent()) {
                         Juridica usuario = usuarioOptional.get();

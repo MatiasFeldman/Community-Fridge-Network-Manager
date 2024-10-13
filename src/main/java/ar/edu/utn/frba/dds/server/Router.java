@@ -24,6 +24,8 @@ public class Router {
 
         app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
 
+        app.post("/colaborar/donar-dinero", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeDinero(ctx), TipoRol.HUMANO, TipoRol.JURIDICA);
+
         app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas, TipoRol.ADMIN, TipoRol.HUMANO);
 
         app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas, TipoRol.ADMIN, TipoRol.HUMANO);
@@ -33,11 +35,11 @@ public class Router {
         app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
 
         // revisar si esta correcta el registro
-        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.ADMIN, TipoRol.HUMANO);
+        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.HUMANO);
         
         app.get("/colaborar/carga-masiva", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);
 
-        app.post("/colaborar/carga-masiva", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx), TipoRol.ADMIN, TipoRol.HUMANO);
+        app.post("/colaborar/carga-masiva", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx), TipoRol.HUMANO);
 
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.ADMIN, TipoRol.JURIDICA);
 

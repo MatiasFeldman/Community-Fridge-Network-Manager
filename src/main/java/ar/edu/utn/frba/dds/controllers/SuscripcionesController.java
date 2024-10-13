@@ -44,7 +44,7 @@ public class SuscripcionesController {
                     }
                 }
             } else if(Objects.equals(tipo_colaborador, "JURIDICA")){
-                Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id_usuario);
+                Optional<Juridica> posibleJuridica = juridicas.buscarPorIdUsuario(id_usuario);
                 if (posibleJuridica.isPresent()){
                     Juridica juridica = posibleJuridica.get();
                     for (JsonNode suscripcion : suscripcionesNode){

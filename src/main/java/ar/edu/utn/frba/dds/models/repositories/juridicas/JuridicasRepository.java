@@ -1,20 +1,18 @@
 package ar.edu.utn.frba.dds.models.repositories.juridicas;
 
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
-import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasDAO;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class JuridicasRepository {
     private JuridicasDAO dao;
 
-    public Optional<Juridica> buscarPorId(Long id) {
-        return dao.buscarPorId(id);
+    public Optional<Juridica> buscarPorIdUsuario(Long id) {
+        return dao.buscarPorIdUsuario(id);
     }
 
     public void guardar(Juridica juridica){dao.guardar(juridica);}

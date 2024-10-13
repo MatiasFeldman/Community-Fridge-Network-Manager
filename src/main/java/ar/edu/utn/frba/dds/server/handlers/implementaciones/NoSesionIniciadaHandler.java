@@ -8,6 +8,7 @@ public class NoSesionIniciadaHandler implements IHandler {
     @Override
     public void setHandle(Javalin app) {
         app.exception(NoSesionIniciadaException.class, (e, context) -> {
+            context.status(401);
             context.redirect("/login");
         });
     }

@@ -48,7 +48,7 @@ public class HeladerasController {
         Usuario usuario;
 
         if (Objects.equals(rol, "HUMANO")) usuario = humanos.buscarPorIdUsuario(idDenunciante).get().getUser();
-        else usuario = juridicas.buscarPorId(idDenunciante).get().getUser();
+        else usuario = juridicas.buscarPorIdUsuario(idDenunciante).get().getUser();
 
         String nombreHeladera = node.get("heladera").asText();
         if (heladeras.buscarPorNombre(nombreHeladera).isEmpty()) {

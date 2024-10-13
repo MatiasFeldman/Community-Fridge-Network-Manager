@@ -15,6 +15,9 @@ import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHum
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasCollection;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasDataBase;
+import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DAO.DonacionDineroCollection;
+import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DAO.DonacionDineroDB;
+import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao.DonacionesDeViandaCollection;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.dao.DonacionesDeViandaDataBase;
@@ -202,6 +205,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(TarjetasVulnerablesRepository.class.getName())) {
                     TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesCollection(new ArrayList<>()));
                     instances.put(componentName, tarjetasVulnerablesRepository);
+                } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
+                    DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>()));
+                    instances.put(componentName, donacionDineroRepository);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -256,6 +262,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(TarjetasVulnerablesRepository.class.getName())) {
                     TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesDB());
                     instances.put(componentName, tarjetasVulnerablesRepository);
+                } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
+                    DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroDB());
+                    instances.put(componentName, donacionDineroRepository);
                 }
             }
         }

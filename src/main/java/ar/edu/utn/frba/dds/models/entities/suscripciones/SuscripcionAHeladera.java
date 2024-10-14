@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.Suscripcion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -16,6 +17,7 @@ import javax.persistence.*;
 @Table(name = "suscriptor_heladera")
 public class SuscripcionAHeladera extends Persistente {
 
+    @Getter
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Usuario observerSuscripcion;

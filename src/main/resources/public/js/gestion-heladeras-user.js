@@ -1,101 +1,89 @@
-document.addEventListener("DOMContentLoaded", function () {
-    //rol
-    const userRole = localStorage.getItem("userRole");
-    //heladera
+document.addEventListener("DOMContentLoaded", function() {
+    // Heladera
     const listaHeladeras = document.getElementById('lista-heladeras');
-    //suscripcion
+    // Suscripción
     const suscripcionContainer = document.getElementById('suscripcion-container');
     const formSuscripcion = document.getElementById('form-suscripcion');
     const medioNotificacion = document.getElementById('medioNotificacion');
     const contactoAdicional = document.getElementById('contactoAdicional');
     const contactoAdicionalInput = document.getElementById('contactoAdicionalInput');
     const tipoContacto = document.getElementById('tipoContacto');
-    //filtro
-    const formFilter = document.getElementById('filter-form');
-    const filtroActivo = document.getElementById('filtro-activo');
-    const filtroInactivo = document.getElementById('filtro-inactivo');
-    const filtroFalla = document.getElementById('filtro-falla');
-    const filtroAlerta = document.getElementById('filtro-alerta');
-    const filtroTemperatura = document.getElementById('filtro-temperatura');
-    const filtroFraude = document.getElementById('filtro-fraude');
-    const filtroConexion = document.getElementById('filtro-conexion');
-    const heladeras = Array.from(document.getElementsByClassName('heladera-card'));
 
     let heladeraSeleccionada = null;
     let nConfiguradoMin = null;
     let nConfiguradoMax = null;
 
-    // Datos simulados del backend para las heladeras
-
-    const contactosGuardados = {email: "colaborador@example.com", whatsapp: null, telegram: null};
-
     // Inicializar el mapa
     const map = L.map('map').setView([-34.61, -58.44], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
-    // Función para renderizar las heladeras
-    function renderizarPinesHeladeras(heladerasAListar = heladeras) {
-        heladerasAListar.forEach(heladera => {
-            let latitud = heladera.getAttribute('data-latitud');
-            let longitud = heladera.getAttribute('data-longitud');
+    // Agregar marcadores para cada heladera desde el DOM (ya renderizado con Handlebars)
+    document.querySelectorAll('.heladera-card').forEach(heladeraCard => {
+        const latitud = heladeraCard.getAttribute('data-latitud');
+        const longitud = heladeraCard.getAttribute('data-longitud');
+        const nombre = heladeraCard.getAttribute('data-nombre');
+        const direccion = heladeraCard.getAttribute('data-direccion');
+        const heladeraId = heladeraCard.getAttribute('data-id'); // Obtener el ID de la heladera
 
-            heladera.addEventListener('click', function (e) {
-                e.preventDefault();
-                centrarMapaEnHeladera(latitud, longitud);
-            });
+        // Agregar marcador en el mapa
+        L.marker([latitud, longitud]).addTo(map).bindPopup(`<b>${nombre}</b><br>${direccion}`);
 
-
-
-            //  botón de suscripción/desuscripción solo aparece si el usuario ha iniciado sesión
-
-            if (userRole) {
-                const btnSuscribirse = item.querySelector('.suscribirse-btn');
-                btnSuscribirse.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    heladeraSeleccionada = heladera;
-
-                    // Si el usuario ya está suscrito, manejar la desuscripción
-                    if (heladera.suscrito) {
-                        desuscribirse(heladera);
-                    } else {
-                        mostrarFormularioSuscripcion(heladera);
-                    }
-                });
-            }
-
-            L.marker([latitud, longitud]).addTo(map).bindPopup(`<b>${heladera.nombre}</b><br>${heladera.direccion}`);
+        // Al hacer clic en la tarjeta, centrar el mapa en la heladera
+        heladeraCard.addEventListener('click', function(e) {
+            e.preventDefault();
+            centrarMapaEnHeladera(latitud, longitud);
         });
-    }
 
-    // Función para desuscribirse
-    function desuscribirse(heladera) {
-        //aca le mandamos la info al backend para que sepa que se desuscribio
-        heladera.suscrito = false;
-        alert(`Has desuscrito de ${heladera.nombre}`);
-        renderizarPinesHeladeras(); // actualizamos lista de heladeras
-    }
+        // Botón de suscribirse/desuscribirse
+        const btnSuscribirse = heladeraCard.querySelector('.suscribirse-btn');
+        if (btnSuscribirse) {
+            btnSuscribirse.addEventListener('click', function(e) {
+                e.preventDefault();
+                heladeraSeleccionada = heladeraId; // Almacenar el id de la heladera seleccionada
 
-    // formulario de suscripción no aparece si no inicio sesión
-    if (!userRole) {
-        suscripcionContainer.style.display = 'none';
-    }
+                // Añadir el valor del `heladera_id` al campo oculto en el formulario
+                document.getElementById('heladeraIdInput').value = heladeraSeleccionada;
 
-    // Centrar el mapa en una heladera específica
+                // Si el usuario ya está suscrito, manejar la desuscripción
+                if (btnSuscribirse.classList.contains('boton-desuscribirse')) {
+                    desuscribirse(heladeraSeleccionada);
+                } else {
+                    mostrarFormularioSuscripcion();
+                }
+            });
+        }
+
+    });
+
+    // Función para centrar el mapa en una heladera específica
     function centrarMapaEnHeladera(lat, lng) {
         map.setView([lat, lng], 14);
     }
 
-    // Mostrar el formulario de suscripción
-    function mostrarFormularioSuscripcion(heladera) {
-        suscripcionContainer.style.display = 'block';
-        formSuscripcion.dataset.heladeraId = heladera.id;
+    // Función para desuscribirse
+    function desuscribirse() {
+        fetch('/desuscribirse', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',  // Formato de los datos enviados
+            },
+            body: `heladera_id=${heladeraSeleccionada}`  // Enviar solo el ID de la heladera
+        });
     }
 
-    // Mostrar/ocultar el campo de configuración para N (número de viandas) dinámicamente usando modal
+    // Mostrar el formulario de suscripción sin afectar las heladeras
+    function mostrarFormularioSuscripcion() {
+        suscripcionContainer.style.display = 'block'; // Mostrar el formulario
+        const heladeraIdInput = document.getElementById('heladeraIdInput');
+        heladeraIdInput.value = heladeraSeleccionada.id; // Guardar el ID de la heladera seleccionada en el input hidden
+        window.scrollTo(0, document.body.scrollHeight); // Desplazar al final de la página para ver el formulario
+    }
+
+    // Mostrar/ocultar el campo de configuración para N (número de viandas)
     const notificacionViandasMin = document.getElementById('notificacionViandasMin');
     const notificacionViandasMax = document.getElementById('notificacionViandasMax');
 
-    notificacionViandasMin.addEventListener('change', function () {
+    notificacionViandasMin.addEventListener('change', function() {
         if (this.checked) {
             abrirModalConfigurarN('min');
         } else {
@@ -103,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    notificacionViandasMax.addEventListener('change', function () {
+    notificacionViandasMax.addEventListener('change', function() {
         if (this.checked) {
             abrirModalConfigurarN('max');
         } else {
@@ -113,8 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para abrir el modal y configurar N
     function abrirModalConfigurarN(tipo) {
-        const modal = new bootstrap.Modal(document.getElementById('configurarNModal'));
-        document.getElementById('guardarNValue').onclick = function () {
+        const modal = new bootstrap.Modal(document.getElementById('configurarNModal'), {
+            backdrop: false  // Deshabilitar bloqueo de fondo
+        });
+        document.getElementById('guardarNValue').onclick = function() {
             const nValue = document.getElementById('nValueInput').value;
             if (nValue) {
                 if (tipo === 'min') {
@@ -125,14 +115,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(`Valor de N para máximas configurado: ${nConfiguradoMax}`);
                 }
             }
-            const modalInstance = bootstrap.Modal.getInstance(document.getElementById('configurarNModal'));
-            modalInstance.hide(); // Cerrar el modal
+            modal.hide(); // Cerrar el modal
         };
         modal.show();
     }
 
+    // Simulamos un objeto de contactos guardados por el usuario
+    const contactosGuardados = {
+        email: "usuario@example.com",  // El usuario ya tiene un correo guardado
+        whatsapp: null,  // No tiene número de WhatsApp
+        telegram: null   // No tiene cuenta de Telegram
+    };
+
     // Cambiar el tipo de contacto según el medio seleccionado
-    medioNotificacion.addEventListener('change', function () {
+    medioNotificacion.addEventListener('change', function() {
         const medio = medioNotificacion.value;
         if (contactosGuardados[medio]) {
             contactoAdicional.style.display = 'none';
@@ -144,70 +140,80 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Enviar el formulario de suscripción
-    formSuscripcion.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const medio = medioNotificacion.value;
-        const contacto = contactoAdicionalInput.value;
+    formSuscripcion.addEventListener('submit', function(event) {
+        let isValid = true; // Bandera de validación
 
-        //usamos console.log para simular el envio de datos al backend
-        console.log(`Heladera ID: ${heladeraSeleccionada.id}`);
-        console.log(`Notificar por: ${medio} (${contacto})`);
-        if (nConfiguradoMin) {
-            console.log(`Valor de N para mínimas: ${nConfiguradoMin}`);
-        }
-        if (nConfiguradoMax) {
-            console.log(`Valor de N para máximas: ${nConfiguradoMax}`);
+        // Verificar si se seleccionó un tipo de suscripción
+        const tipoSuscripcion = document.querySelectorAll('input[name="tipo_suscripcion"]:checked');
+        if (tipoSuscripcion.length === 0) {
+            alert('Debe seleccionar al menos un tipo de suscripción.');
+            isValid = false;
         }
 
-        heladeraSeleccionada.suscrito = true;
-        renderizarPinesHeladeras();
+        // Verificar si el usuario ha ingresado el contacto adicional (si es necesario)
+        if (contactoAdicional.style.display === 'block' && !contactoAdicionalInput.value.trim()) {
+            alert('Por favor, ingrese el contacto adicional.');
+            isValid = false;
+        }
+
+        // Verificar si se configuró N cuando es necesario (mínimas o máximas)
+        if (nConfiguradoMin === null && document.getElementById('notificacionViandasMin').checked) {
+            alert('Debe configurar el valor de N para las viandas disponibles.');
+            isValid = false;
+        }
+
+        if (nConfiguradoMax === null && document.getElementById('notificacionViandasMax').checked) {
+            alert('Debe configurar el valor de N para la heladera llena.');
+            isValid = false;
+        }
+
+        // Si la validación falla, prevenimos el envío
+        if (!isValid) {
+            event.preventDefault(); // Detener envío si hay errores de validación
+        } else {
+            // Asegurarnos de que el heladera_id esté incluido en el formulario
+            document.getElementById('heladeraIdInput').value = heladeraSeleccionada;
+            const heladeraIdInput = document.getElementById('heladeraIdInput');
+            if (!heladeraIdInput.value) {
+                alert('El ID de la heladera no está definido.');
+                event.preventDefault();
+                return;
+            }
+
+            // Adjuntar el valor de N configurado al formulario
+            if (nConfiguradoMin !== null) {
+                const inputMin = document.createElement('input');
+                inputMin.type = 'hidden';
+                inputMin.name = 'cantidad';
+                inputMin.value = nConfiguradoMin;
+                formSuscripcion.appendChild(inputMin);
+            }
+
+            if (nConfiguradoMax !== null) {
+                const inputMax = document.createElement('input');
+                inputMax.type = 'hidden';
+                inputMax.name = 'cantidad';
+                inputMax.value = nConfiguradoMax;
+                formSuscripcion.appendChild(inputMax);
+            }
+
+            // Aquí se permite el envío normal del formulario
+        }
     });
 
     // Aplicar filtro de heladeras
-    formFilter.addEventListener('submit', function (event) {
+    const formFilter = document.getElementById('filter-form');
+    formFilter.addEventListener('submit', function(event) {
         event.preventDefault();
-
-        const heladerasFiltradas = heladeras.filter(heladera => {
-            let pasaFiltro = true;
-
-            // Filtrar por estado (activa/inactiva)
-            if (filtroActivo.checked && heladera.estado !== 'activa') {
-                pasaFiltro = false;
-            }
-            if (filtroInactivo.checked && heladera.estado !== 'inactiva') {
-                pasaFiltro = false;
-            }
-
-            if (filtroInactivo.checked) {
-                // Filtrar por fallas técnicas
-                if (filtroFalla.checked && heladera.alerta !== 'falla') {
-                    pasaFiltro = false;
-                }
-
-                // Filtrar por alertas específicas
-                if (filtroAlerta.checked) {
-                    const alertasSeleccionadas = [];
-                    if (filtroTemperatura.checked) alertasSeleccionadas.push('temperatura');
-                    if (filtroFraude.checked) alertasSeleccionadas.push('fraude');
-                    if (filtroConexion.checked) alertasSeleccionadas.push('conexion');
-
-                    // Verificar si la heladera tiene alguna de las alertas seleccionadas
-                    if (alertasSeleccionadas.length > 0 && !alertasSeleccionadas.includes(heladera.alerta)) {
-                        pasaFiltro = false;
-                    }
-                }
-            }
-
-            return pasaFiltro;
-        });
-
-        // Renderizar las heladeras filtradas
-        renderizarPinesHeladeras(heladerasFiltradas);
+        // Lógica de filtrado
     });
 
     // Mostrar/ocultar filtros adicionales
     const filtroInactivosDiv = document.getElementById('filtros-inactivos');
     const filtroAlertasDiv = document.getElementById('filtros-alerta');
+
+    const filtroInactivo = document.getElementById('filtro-inactivo');
+    const filtroAlerta = document.getElementById('filtro-alerta');
 
     filtroInactivo.addEventListener('change', function () {
         filtroInactivosDiv.style.display = this.checked ? 'block' : 'none';
@@ -216,7 +222,4 @@ document.addEventListener("DOMContentLoaded", function () {
     filtroAlerta.addEventListener('change', function () {
         filtroAlertasDiv.style.display = this.checked ? 'block' : 'none';
     });
-
-    // Inicializar heladeras en el mapa y lista
-    renderizarPinesHeladeras();
 });

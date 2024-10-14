@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.controllers;
-
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.UsuarioSinTarjetaException;
@@ -9,6 +9,14 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoA
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
+import ar.edu.utn.frba.dds.models.entities.personas.TipoContacto;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.HeladeraLlena;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.SufrioDesperfecto;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.Suscripcion;
+import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.ViandasDisponibles;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
@@ -16,7 +24,9 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
+import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +36,7 @@ import io.javalin.http.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -265,4 +275,130 @@ public class HeladerasController {
         }
 
     }
+
+    public void suscribirse(Context ctx) {
+        try {
+            Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
+            Long usuarioId = ctx.sessionAttribute("id");
+            List<String> rolUsuario = ctx.sessionAttribute("roles");
+            String tipoSuscripcion = ctx.formParam("tipo_suscripcion");
+            Integer cantidad = !Objects.equals(ctx.formParam("cantidad"), "") ? Integer.parseInt(ctx.formParam("cantidad")) : null;
+            String medioDeNotificacion = ctx.formParam("notificador");
+            String nuevoMedioNotificacion = Objects.equals(ctx.formParam("contacto_adicional"),"") ? null : ctx.formParam("contacto_adicional");
+
+            if(nuevoMedioNotificacion != null){
+                if (rolUsuario.get(0).contains("HUMANO")) {
+                     ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId)
+                            .orElseThrow(() -> new Exception("Usuario Humano no encontrado"));
+                    humano.generarContacto(new Contacto(new TipoContacto(medioDeNotificacion),nuevoMedioNotificacion));
+                    ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
+                } else if (rolUsuario.get(0).contains("JURIDICA")) {
+                     Juridica juridica =  ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId)
+                            .orElseThrow(() -> new Exception("Usuario Jurídico no encontrado"));
+                    juridica.generarContacto(new Contacto(new TipoContacto(medioDeNotificacion),nuevoMedioNotificacion));
+                    ServiceLocator.instanceOf(JuridicasRepository.class).modificar(juridica);
+                } else {
+                    throw new Exception("Este rol no tiene permitido suscribirse");
+                }
+            }
+
+            // Obtener la instancia de Heladera
+            Heladera heladera = ServiceLocator.instanceOf(HeladerasRepository.class)
+                    .buscarPorId(heladeraId).orElseThrow(() -> new Exception("Heladera no encontrada"));
+
+            // Obtener el usuario en función de su rol (como Object)
+            Object usuario = obtenerUsuarioPorRol(usuarioId, rolUsuario);
+
+            // Crear la suscripción según el tipo seleccionado
+            Suscripcion suscripcion = crearSuscripcion(tipoSuscripcion, usuario, medioDeNotificacion, cantidad);
+
+            // Crear la suscripción a la heladera y agregarla
+            SuscripcionAHeladera nuevaSuscripcion = new SuscripcionAHeladera(ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId)
+                    .orElseThrow(() -> new Exception("Heladera no encontrada")), suscripcion);
+
+            heladera.suscribir(nuevaSuscripcion);
+
+            // Persistir la suscripción y actualizar la heladera
+            ServiceLocator.instanceOf(SuscripcionesRepository.class).guardar(nuevaSuscripcion);
+            ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
+
+            // Redirigir a la página de éxito
+            ctx.redirect("/heladeras");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Error al suscribirse: " + e.getMessage());
+        }
+    }
+
+
+    private Object obtenerUsuarioPorRol(Long usuarioId, List<String> rolUsuario) throws Exception {
+        if (rolUsuario.get(0).contains("HUMANO")) {
+            return ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId)
+                    .orElseThrow(() -> new Exception("Usuario Humano no encontrado"));
+        } else if (rolUsuario.get(0).contains("JURIDICA")) {
+            return ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId)
+                    .orElseThrow(() -> new Exception("Usuario Jurídico no encontrado"));
+        } else {
+            throw new Exception("Este rol no tiene permitido suscribirse");
+        }
+    }
+
+    private Suscripcion crearSuscripcion(String tipoSuscripcion, Object usuario, String medioDeNotificacion, Integer cantidad) throws Exception {
+        if (usuario instanceof ColaboradorHumano) {
+            ColaboradorHumano colaborador = (ColaboradorHumano) usuario;
+            switch (tipoSuscripcion) {
+                case "viandas_disponibles":
+                    if (cantidad == null) {
+                        throw new Exception("Debe especificar la cantidad de viandas disponibles");
+                    }
+                    return ViandasDisponibles.of(colaborador.getMedioDeContacto(medioDeNotificacion), cantidad);
+                case "heladera_llena":
+                    if (cantidad == null) {
+                        throw new Exception("Debe especificar la cantidad de viandas faltantes");
+                    }
+                    return HeladeraLlena.of(colaborador.getMedioDeContacto(medioDeNotificacion), cantidad);
+                case "sufrio_desperfecto":
+                    return SufrioDesperfecto.of(colaborador.getMedioDeContacto(medioDeNotificacion));
+                default:
+                    throw new Exception("Tipo de suscripción no válido");
+            }
+        } else if (usuario instanceof Juridica) {
+            Juridica juridica = (Juridica) usuario;
+            switch (tipoSuscripcion) {
+                case "viandas_disponibles":
+                    if (cantidad == null) {
+                        throw new Exception("Debe especificar la cantidad de viandas disponibles");
+                    }
+                    return ViandasDisponibles.of(juridica.getMedioDeContacto(medioDeNotificacion), cantidad);
+                case "heladera_llena":
+                    if (cantidad == null) {
+                        throw new Exception("Debe especificar la cantidad de viandas faltantes");
+                    }
+                    return HeladeraLlena.of(juridica.getMedioDeContacto(medioDeNotificacion), cantidad);
+                case "sufrio_desperfecto":
+                    return SufrioDesperfecto.of(juridica.getMedioDeContacto(medioDeNotificacion));
+                default:
+                    throw new Exception("Tipo de suscripción no válido");
+            }
+        } else {
+            throw new Exception("Tipo de usuario no reconocido");
+        }
+    }
+    public void desuscribirse(Context ctx){
+        Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
+        Long usuarioId = ctx.sessionAttribute("id");
+        System.out.print(heladeraId);
+
+        Optional<Heladera> heladera = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(heladeraId);
+        Optional<SuscripcionAHeladera> suscrip = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioId(usuarioId);
+        if(suscrip.isPresent() && heladera.isPresent()){
+            heladera.get().desuscribir(suscrip.get());
+            ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera.get());
+        }
+
+        ctx.redirect("/heladeras");
+
+    }
+
 }
+

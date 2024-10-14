@@ -20,7 +20,8 @@ public class AppHandlers {
             new TemperaturaIncorrectaHandler(),
             new CapacidadIncorrectaHandler(),
             new CantidadViandasIncorrectaHandler(),
-            new MismaHeladeraHanlder()
+            new MismaHeladeraHanlder(),
+            new APIIntegracionSinConexionHandler()
     };
 
     public static void applyHandlers(Javalin app) {

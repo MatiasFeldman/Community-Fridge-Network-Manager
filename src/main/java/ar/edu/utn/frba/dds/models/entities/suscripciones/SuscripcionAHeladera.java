@@ -37,9 +37,4 @@ public class SuscripcionAHeladera extends Persistente {
             observerSuscripcion.serNotificado(suscripcion.getMensaje());
         }
     }
-
-    public SuscripcionAHeladera(Usuario observerSuscripcion, Suscripcion suscripcion) {
-        this.observerSuscripcion = observerSuscripcion;
-        this.suscripcion = suscripcion;
-    }
 }

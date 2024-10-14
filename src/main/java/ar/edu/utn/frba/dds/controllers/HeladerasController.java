@@ -314,7 +314,7 @@ public class HeladerasController {
 
             // Crear la suscripción a la heladera y agregarla
             SuscripcionAHeladera nuevaSuscripcion = new SuscripcionAHeladera(ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId)
-                    .orElseThrow(() -> new Exception("Heladera no encontrada")), suscripcion);
+                    .orElseThrow(() -> new Exception("Heladera no encontrada")), suscripcion, heladera);
 
             heladera.suscribir(nuevaSuscripcion);
 

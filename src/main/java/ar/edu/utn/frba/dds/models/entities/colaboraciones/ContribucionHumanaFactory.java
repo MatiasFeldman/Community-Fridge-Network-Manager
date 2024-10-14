@@ -21,43 +21,61 @@ public class ContribucionHumanaFactory {
     }
 
     public static DonacionDeVianda crearDonacionDeVianda(ColaboradorHumano h, Heladera destino) {
-        return DonacionDeVianda.of(destino, h, true);
+        DonacionDeVianda donacion = DonacionDeVianda.of(destino, h , true);
+        h.sumarPuntaje(donacion);
+        return donacion;
     }
 
     public static DistribucionViandas crearDistribucionDeViandas(Heladera origen, Heladera destino, Integer cant, String motivo, ColaboradorHumano h) {
         destino.agregarViandas(cant);
         origen.quitarViandas(cant);
-        return DistribucionViandas.of(origen, destino, cant, motivo, h);
+        DistribucionViandas distribucion = DistribucionViandas.of(origen, destino, cant, motivo, h);
+        h.sumarPuntaje(distribucion);
+        return distribucion;
     }
 
     public static DonacionDeDinero crearDonacionDeDineroPeriodica(double monto, ChronoUnit unidad, Integer frecuencia, ColaboradorHumano h) {
-        return DonacionDeDinero.of(h, monto, unidad, frecuencia);
+        DonacionDeDinero dinero =  DonacionDeDinero.of(h, monto, unidad, frecuencia);
+        h.sumarPuntaje(dinero);
+        return dinero;
     }
 
     public static DonacionDeDinero crearDonacionDeDineroPeriodica(double monto, ChronoUnit unidad, Integer frecuencia, Juridica j) {
-        return DonacionDeDinero.of(j, monto, unidad, frecuencia);
+        DonacionDeDinero dinero = DonacionDeDinero.of(j, monto, unidad, frecuencia);
+        j.sumarPuntaje(dinero);
+        return dinero;
     }
 
     public static DonacionDeDinero crearDonacionDeDinero(double monto, ColaboradorHumano colaboradorHumano) {
-        return DonacionDeDinero.of(colaboradorHumano, monto);
+        DonacionDeDinero donacion = DonacionDeDinero.of(colaboradorHumano, monto);
+        colaboradorHumano.sumarPuntaje(donacion);
+        return donacion;
     }
 
     public static DonacionDeDinero crearDonacionDeDinero(double monto, Juridica j) {
-        return DonacionDeDinero.of(j, monto);
+        DonacionDeDinero donacion = DonacionDeDinero.of(j, monto);
+        j.sumarPuntaje(donacion);
+        return donacion;
     }
 
     public static RegistroPersonaVulnerable registrarPersonaVulnerable(TarjetaPersonaVulnerable tarjeta, PersonaVulnerable persona, ColaboradorHumano h) {
         persona.setRegistradaPor(h);
         persona.setTarjetas(List.of(tarjeta));
         tarjeta.setDuenio(persona);
-        return RegistroPersonaVulnerable.of(tarjeta, h);
+        RegistroPersonaVulnerable registro = RegistroPersonaVulnerable.of(tarjeta, h);
+        h.sumarPuntaje(registro);
+        return registro;
     }
 
     public static DonacionDeVianda crearDonacionDeViandaFinalizada(ColaboradorHumano colaboradorHumano) {
-        return DonacionDeVianda.ofFinalizada(colaboradorHumano);
+        DonacionDeVianda donacion = DonacionDeVianda.ofFinalizada(colaboradorHumano);
+        colaboradorHumano.sumarPuntaje(donacion);
+        return donacion;
     }
 
     public static DistribucionViandas crearDistribucionDeViandaFinalizada(Integer cant, ColaboradorHumano h) {
-        return DistribucionViandas.ofCargaMasiva(cant, h);
+        DistribucionViandas distribucion = DistribucionViandas.ofCargaMasiva(cant, h);
+        h.sumarPuntaje(distribucion);
+        return distribucion;
     }
 }

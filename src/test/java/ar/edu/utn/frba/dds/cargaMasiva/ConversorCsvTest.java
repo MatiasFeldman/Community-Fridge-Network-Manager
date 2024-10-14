@@ -46,10 +46,10 @@ public class ConversorCsvTest {
         Double puntaje1Supuesto = 100.0;
         Double puntaje2Supuesto = 175.0;
 
-
-        Assertions.assertEquals(h.get().calcularPuntaje(), puntaje1Supuesto, "El puntaje del humano 1 no es el esperado");
         System.out.println("Puntaje esperado de Juan Pérez: " + puntaje1Supuesto);
         System.out.println("Puntaje obtenido: " + h.get().calcularPuntaje());
+        Assertions.assertEquals(h.get().calcularPuntaje(), puntaje1Supuesto, "El puntaje del humano 1 no es el esperado");
+
 
         Assertions.assertEquals(h2.get().calcularPuntaje(), puntaje2Supuesto);
         System.out.println("Puntaje esperado de Luis Martinez: " + puntaje2Supuesto);

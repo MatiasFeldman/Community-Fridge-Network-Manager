@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +20,40 @@ import java.util.Map;
 public class ReporteMovimientoViandas implements Reporte {
     private HeladerasRepository heladeras;
 
+    private LocalDate fechaUltimoReporte;
+
+    private String contenido;
+
+    public ReporteMovimientoViandas(HeladerasRepository heladeras) {
+        this.heladeras = heladeras;
+        this.fechaUltimoReporte = null;
+        this.contenido = null;
+    }
+
 
     public String generarReporteMovimientoViandas() {
         StringBuilder contenido = new StringBuilder();
+
+        if (this.contenido != null && (this.fechaUltimoReporte != null && this.fechaUltimoReporte.isAfter(LocalDate.now().minusWeeks(1)))) {
+            return contenido.toString();
+        }
+
         contenido.append("Reporte de viandas por heladera\n");
         contenido.append("Heladera Nombre\t\tEntraron\tSalieron\n");
 
-        for (Heladera heladera : heladeras.buscarTodos()){
+        for (Heladera heladera : heladeras.buscarTodos()) {
             contenido.append(heladera.getNombre())
                     .append("\t\t")
                     .append(heladera.getViandasColocadas())
                     .append("\t\t")
                     .append(heladera.getViandasRetiradas())
                     .append("\n");
+            heladera.setViandasColocadas(0);
+            heladera.setViandasRetiradas(0);
         }
-        return contenido.toString();
+        this.fechaUltimoReporte = LocalDate.now();
+        this.contenido = contenido.toString();
+        return this.contenido;
     }
 
 

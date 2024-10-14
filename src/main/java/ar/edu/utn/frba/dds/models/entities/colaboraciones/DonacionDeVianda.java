@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @NoArgsConstructor
@@ -29,6 +30,9 @@ public class DonacionDeVianda extends Persistente implements Contribucion {
     @JoinColumn(name = "heladera_id", referencedColumnName = "id")
     private Heladera heladera;
 
+    @Column(name = "fecha")
+    private LocalDate fecha;
+
 
     public static DonacionDeVianda of(Heladera heladera, ColaboradorHumano colaborador) {
         DonacionDeViandaBuilder builder = DonacionDeVianda
@@ -36,6 +40,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion {
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(false)
+                .fecha(LocalDate.now())
                 .presente(true);
         heladera.agregarViandas(1);
         return builder.build();
@@ -47,6 +52,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion {
                 .heladera(heladera)
                 .colaborador(colaborador)
                 .finalizada(finalizada)
+                .fecha(LocalDate.now())
                 .presente(true);
         heladera.agregarViandas(1);
         return builder.build();
@@ -57,6 +63,7 @@ public class DonacionDeVianda extends Persistente implements Contribucion {
                 .builder()
                 .finalizada(true)
                 .colaborador(colaboradorHumano)
+                .fecha(LocalDate.now())
                 .presente(true)
                 .build();
     }

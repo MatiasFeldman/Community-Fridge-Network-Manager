@@ -85,7 +85,7 @@ public class Router {
             } else if (tipo.equals("movimiento")) {
                 ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);
             }
-        }, TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+        }, TipoRol.ADMIN);
 
 
         app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);

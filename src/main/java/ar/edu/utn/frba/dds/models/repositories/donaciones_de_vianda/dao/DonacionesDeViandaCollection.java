@@ -4,12 +4,13 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class DonacionesDeViandaCollection implements DonacionesDeViandaDAO{
+public class DonacionesDeViandaCollection implements DonacionesDeViandaDAO {
     private List<DonacionDeVianda> donaciones;
 
     @Override
@@ -53,7 +54,9 @@ public class DonacionesDeViandaCollection implements DonacionesDeViandaDAO{
     public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
         return (int) donaciones
                 .stream()
-                .filter(d -> Objects.equals(d.getColaborador().getIdUsuario(), colaborador.getIdUsuario()))
+                .filter(d ->
+                        Objects.equals(d.getColaborador().getIdUsuario(), colaborador.getIdUsuario())
+                                && d.getFecha().isAfter(LocalDate.now().minusWeeks(1)))
                 .count();
     }
 }

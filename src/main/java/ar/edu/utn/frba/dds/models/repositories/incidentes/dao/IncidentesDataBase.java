@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,8 +54,10 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
 
     @Override
     public Integer cantFallasEn(Heladera heladera) {
+        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
         return ((Long) entityManager()
-                .createQuery("SELECT COUNT(i) FROM Incidente i WHERE i.heladera = :heladera")
+                .createQuery("SELECT COUNT(i) FROM Incidente i WHERE i.heladera = :heladera AND i.fecha >= :haceUnaSemana")
+                .setParameter("haceUnaSemana", haceUnaSemana)
                 .setParameter("heladera", heladera)
                 .getSingleResult()).intValue();
     }

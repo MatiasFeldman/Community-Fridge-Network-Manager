@@ -36,4 +36,12 @@ public class ReporteViandasDonadas implements Reporte {
         }
         return contenido.toString();
     }
+
+    public String generarReporteDeUsuario(Long id){
+        StringBuilder contenido = new StringBuilder();
+        contenido.append("Reporte de viandas donadas\n");
+        contenido.append("ColaboradorHumano\tCantidad de viandas\n");
+        contenido.append(id).append("\t").append(donacionesDeViandaRepository.cantViandasDonadasPor(humanosRepository.buscarPorIdUsuario(id).get())).append("\n");
+        return contenido.toString();
+    }
 }

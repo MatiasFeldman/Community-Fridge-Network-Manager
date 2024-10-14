@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,9 +55,11 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
 
     @Override
     public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
+        LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
         return entityManager()
-                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.user.id = :id AND d.presente = true", DonacionDeVianda.class)
+                .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.user.id = :id AND d.presente = true AND d.fecha >= :haceUnaSemana", DonacionDeVianda.class)
                 .setParameter("id", colaborador.getIdUsuario())
+                .setParameter("haceUnaSemana", haceUnaSemana)
                 .getResultList()
                 .size();
     }

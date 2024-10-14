@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class IncidentesCollection implements IncidentesDAO{
     public Integer cantFallasEn(Heladera heladera) {
         return incidentes
                 .stream()
-                .filter(incidente -> incidente.getHeladera().equals(heladera))
+                .filter(incidente -> incidente.getHeladera().equals(heladera) && incidente.getFecha().plusWeeks(1).isAfter(LocalDateTime.now()))
                 .mapToInt(incidente -> 1)
                 .sum();
     }

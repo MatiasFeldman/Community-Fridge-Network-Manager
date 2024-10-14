@@ -22,23 +22,30 @@
 h1, h3, h4 {
     color: #333; /* Color más oscuro para mejor visibilidad */
 }
+.titulo{
+    font-weight:bold;
+    font-family: 'Montserrat', sans-serif;
+}
 
 #product-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    gap: 20px;
 }
 
 #product-list .product-item {
     border: 1px solid #e0e0e0;
-    width: calc(50% - 20px); /* Ancho de dos columnas */
-    margin-right: 20px;
-    margin-bottom: 20px;
-    height: 140px; /* Altura fija para todas las cajas */
+    margin-bottom: 0px;
+    height: 180px;
     transition: box-shadow 0.3s ease-in-out;
     display: flex;
     align-items: center;
-    padding: 10px; /* Espaciado interno para que se vea más espacioso */
-    box-sizing: border-box; /* Aseguramos que el padding no afecte el tamaño */
+    padding: 15px; /* Más espacio interno */
+    box-sizing: border-box;
+    background-color: white; /* Fondo blanco para hacer más limpio */
+}
+#product{
+    margin: auto;
 }
 
 #product-list .product-item:nth-child(2n) {
@@ -46,18 +53,18 @@ h1, h3, h4 {
 }
 
 #product-list .product-item:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra más visible */
 }
 
 #product-list .product-image {
     flex-shrink: 0;
-    margin-right: 15px;
+    margin-right: 20px;
 }
 
 #product-list .product-image img {
-    width: 100px; /* Tamaño fijo para las imágenes */
-    height: 100px; /* También altura fija para que todas sean iguales */
-    object-fit: cover; /* Para que la imagen se ajuste sin deformarse */
+    width: 120px; /* Tamaño de imagen ajustado */
+    height: 120px;
+    object-fit: cover;
     border-radius: 8px;
 }
 
@@ -65,7 +72,7 @@ h1, h3, h4 {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Para distribuir el contenido */
+    justify-content: space-between;
 }
 
 #product-list .product-details h3 {
@@ -83,8 +90,17 @@ h1, h3, h4 {
     font-weight: bold;
 }
 
-/* Cambios en el color del título "Ofertas disponibles" */
 h4.h5 {
-    color: #007bff; /* Color más visible */
+    color: #007bff;
     font-weight: bold;
+}
+
+/* Estilo para eliminar el subrayado de los enlaces */
+.product-item-link {
+    text-decoration: none;
+    color: inherit; /* Mantiene el color del texto del producto */
+}
+
+.product-item-link:hover h3 {
+    text-decoration: underline; /* Subrayado solo al pasar el mouse */
 }

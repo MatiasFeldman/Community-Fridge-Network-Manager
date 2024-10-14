@@ -387,7 +387,6 @@ public class HeladerasController {
     public void desuscribirse(Context ctx){
         Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
         Long usuarioId = ctx.sessionAttribute("id");
-        System.out.print(heladeraId);
 
         Optional<Heladera> heladera = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(heladeraId);
         Optional<SuscripcionAHeladera> suscrip = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioId(usuarioId);

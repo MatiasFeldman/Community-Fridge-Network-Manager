@@ -1,6 +1,6 @@
 {{#partial "styles"}}
     <link rel="stylesheet" href="../css/style-donar-heladera.css">
-    <script src="../js/recomendarPuntos.js"></script>
+
 {{/partial}}
 
 {{#partial "contenido"}}
@@ -60,15 +60,15 @@
                 </form>
                 <div class="recomendacion-puntos mt-5">
                      <h2 class="h5 text-recomendacion ps-2">Solicitar Recomendación de Puntos:</h2>
-                     <form action="/recomendar-puntos" method="POST">
+                     <form id="recomendacionForm">
                           <div class="d-flex flex-wrap mt-4 justify-content-between align-items-center">
                               <div class="form-group">
                                    <h3 class="text-dark fs-6 fw-semibold ps-2">Latitud</h3>
-                                   <input type="text" class="form-control latitud" name="latitud" placeholder="Latitud" required>
+                                   <input type="number" class="form-control latitud" name="latitud" placeholder="Latitud" required>
                               </div>
                               <div class="form-group">
                                    <h3 class="text-dark fs-6 fw-semibold ps-2">Longitud</h3>
-                                   <input type="text" class="form-control longitud" name="longitud" placeholder="Longitud" required>
+                                   <input type="number" class="form-control longitud" name="longitud" placeholder="Longitud" required>
                               </div>
                               <div class="form-group">
                                     <h3 class="text-dark fs-6 fw-semibold ps-2">Radio (en metros)</h3>
@@ -81,7 +81,56 @@
                                </div>
                           </div>
                      </form>
+                    <!-- Sección de coordenadas recomendadas (inicialmente oculta) -->
+                    <div id="recomendacionesContainer" style="display:none;" class="mt-5">
+                        <h2 class="h5 text-recomendacion ps-2">Coordenadas Recomendadas:</h2>
+                        <ul id="coordenadasList" class="list-group"></ul>
+                    </div>
                 </div>
+                <script>
+                    // Manejar el evento submit del formulario
+                    document.getElementById("recomendacionForm").addEventListener("submit", function(event) {
+                        event.preventDefault();  // Evitar el envío tradicional del formulario
+
+                        // Obtener los valores del formulario
+                        const latitud = document.querySelector("input[name='latitud']").value;
+                        const longitud = document.querySelector("input[name='longitud']").value;
+                        const radio = document.querySelector("input[name='radio']").value;
+
+                        // Crear los datos para la solicitud POST
+                        const formData = new URLSearchParams();
+                        formData.append("latitud", latitud);
+                        formData.append("longitud", longitud);
+                        formData.append("radio", radio);
+
+                        // Hacer la solicitud POST
+                        fetch("/recomendar-puntos", {
+                            method: "POST",
+                            body: formData
+                        })
+                                .then(response => response.json())  // Convertir la respuesta en JSON
+                                .then(data => {
+                                    // Limpiar la lista anterior de coordenadas
+                                    const coordenadasList = document.getElementById("coordenadasList");
+                                    coordenadasList.innerHTML = '';
+
+                                    // Mostrar el contenedor de recomendaciones (que estaba oculto)
+                                    document.getElementById("recomendacionesContainer").style.display = 'block';
+
+                                    // Agregar las coordenadas recomendadas a la lista
+                                    data.forEach(coordenada => {
+                                        const listItem = document.createElement("li");
+                                        listItem.textContent = `Latitud: ${coordenada.latitud}, Longitud: ${coordenada.longitud}`;
+                                        listItem.classList.add("list-group-item");
+                                        coordenadasList.appendChild(listItem);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert("Hubo un error al obtener las coordenadas recomendadas.");
+                                });
+                    });
+                </script>
             </div>
         </div>
     </div>

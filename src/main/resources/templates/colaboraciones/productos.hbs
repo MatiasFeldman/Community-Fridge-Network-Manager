@@ -5,7 +5,7 @@
 {{#partial "contenido"}}
     <div class="container">
         <!-- Título central -->
-        <h1 class="display-4 text-center mb-5">Productos y Servicios</h1>
+        <h1 class="display-4 text-center mb-5 titulo">Productos y Servicios</h1>
 
         <div class="row">
             <!-- Filtro de rubros -->
@@ -39,7 +39,7 @@
                 <div id="product-list">
                     {{#each ofertas}}
                     <a href="/ofertas/{{this.id}}" class="product-item-link">
-                        <div class="product-item p-3 mb-4 rounded shadow-sm d-flex align-items-center">
+                        <div class="product-item p-3 mb-4 rounded shadow-sm d-flex align-items-center" id="product">
                             <div class="product-image mr-3">
                                 <img src="{{#if this.image}}{{this.image}}{{else}}imagenes/ofertaDefault.jpg{{/if}}"
                                      alt="{{nombre}}" class="img-fluid rounded">

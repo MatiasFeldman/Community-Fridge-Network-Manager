@@ -16,10 +16,13 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.Conversor
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
+import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListaDeUbicaciones;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Comuna;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Provincia;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
@@ -36,16 +39,15 @@ import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ContribucionesController {
 
@@ -473,6 +475,24 @@ public class ContribucionesController {
         ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
 
         // todo: suma puntaje??
+    }
+
+    @SneakyThrows
+    public void recomendarPuntos(Context ctx) throws IOException {
+        Double latitud = Double.valueOf(ctx.formParam("latitud"));
+        Double longitud = Double.valueOf(ctx.formParam("longitud"));
+        Double radio = Double.valueOf(ctx.formParam("radio"));
+
+        APIRecomendadoraDePuntos apiRecomendadoraDePuntos = APIRecomendadoraDePuntos.getInstance();
+        ListaDeUbicaciones ubicaciones = apiRecomendadoraDePuntos.puntosIdeales(new Coordenada(latitud,longitud),radio);
+        String jsonResponse = new Gson().toJson(ubicaciones.getCoordenadas());
+        /*
+        List<Coordenada> coordenadas = new ArrayList<>();
+        coordenadas.add(new Coordenada(123.0,123.0));
+        coordenadas.add(new Coordenada(1223.0,1233.0));
+        String jsonResponse = new Gson().toJson(coordenadas);*/
+        ctx.json(jsonResponse);
+
     }
 
 }

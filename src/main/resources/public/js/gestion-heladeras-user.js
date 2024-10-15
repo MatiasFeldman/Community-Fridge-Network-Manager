@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const contactoAdicional = document.getElementById('contactoAdicional');
     const contactoAdicionalInput = document.getElementById('contactoAdicionalInput');
     const tipoContacto = document.getElementById('tipoContacto');
+    const btn_reportar = document.getElementById('btn-reportar');
+
+    btn_reportar.addEventListener('click', () => {
+        window.location.href="/heladeras/reportar-falla-tecnica"
+    } )
 
     let heladeraSeleccionada = null;
     let nConfiguradoMin = null;

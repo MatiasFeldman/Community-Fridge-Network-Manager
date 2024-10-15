@@ -156,6 +156,10 @@ public class HeladerasController {
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
 
+        if (rolesUsuario != null){
+
+
+
         if(rolesUsuario.get(0).contains("HUMANO")){
             ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario).get();
 
@@ -164,6 +168,7 @@ public class HeladerasController {
             Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario).get();
 
             model.put("contactos", juridica.getMediosDeContacto());
+        }
         }
 
 

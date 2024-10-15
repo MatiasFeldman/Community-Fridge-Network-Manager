@@ -31,20 +31,18 @@ public class Usuario extends Persistente {
     @Column(name = "contrasenia", nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "rol_de_usuario",
-            joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
-    )
-    private List<Rol> roles;
+    @ElementCollection(targetClass = TipoRol.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING) // Indica que el enum se almacenará como una cadena
+    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "roles")
+    private List<TipoRol> roles;
 
     @Convert(converter = SendingStrategyConverter.class)
     @Column(name = "estrategia_de_envio")
     private SendingStrategy strategiaDeEnvio = null;
 
     @SneakyThrows
-    public Usuario(String user, String password, List<Rol> roles) {
+    public Usuario(String user, String password, List<TipoRol> roles) {
             this.user = user;
             this.password = password;
             this.roles = roles;
@@ -57,15 +55,6 @@ public class Usuario extends Persistente {
         this.password = password;
         this.roles = new ArrayList<>();
         this.strategiaDeEnvio = null;
-    }
-
-    public boolean tienePermiso(String permiso) {
-        for (Rol rol : roles) {
-            if (rol.tienePermiso(permiso)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void serNotificado(Mensaje mensaje) throws MessagingException, IOException {

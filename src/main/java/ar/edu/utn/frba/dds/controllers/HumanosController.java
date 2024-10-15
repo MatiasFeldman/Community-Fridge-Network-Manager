@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.AtributoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
@@ -10,10 +11,13 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.server.Server;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -56,7 +60,15 @@ public class HumanosController {
 
     public void save(Context context){
 
-        String password = context.formParam("password");
+
+
+        String body = context.body();
+
+        JsonNode json = ConversorJSON.convertir(body);
+
+        System.out.println(body);
+
+        String password = json.get("password").asText();
 
         ValidadorDeContrasenias validador = ServiceLocator.instanceOf(ValidadorDeContrasenias.class);
 
@@ -71,7 +83,7 @@ public class HumanosController {
             return;
         }
 
-        String username = context.formParam("user");
+        String username = json.get("user").asText();
 
         if(ValidadorUsernames.existe(username, "Humano")){
             context.status(HttpStatus.BAD_REQUEST);
@@ -83,29 +95,31 @@ public class HumanosController {
             return;
         }
 
-        String nombre = context.formParam("nombre");
-        String apellido = context.formParam("apellido");
-        String email = context.formParam("email");
-        String telegram = context.formParam("telegram");
-        String whatsapp = context.formParam("whatsapp");
-        String direccionForm = context.formParam("direccion");
-        String provinciaForm = context.formParam("provincia");
-        String nacimiento = context.formParam("nacimiento");
+        String nombre = json.get("nombre").asText();
+        String apellido = json.get("apellido").asText();
+        String email = json.get("email").asText();
+        String telegram = json.get("telegram").asText();
+        String whatsapp = json.get("wpp").asText();
+        String direccionForm = json.get("direccion").asText();
+        String provinciaForm = json.get("provincia").asText();
+        String nacimiento = json.get("nacimiento").asText();
 
         AtributoHumanoRespondido atributoNombre = MapeadorAtributos.mapear(nombre, "nombre");
         AtributoHumanoRespondido atributoApellido = MapeadorAtributos.mapear(apellido, "apellido");
-        AtributoHumanoRespondido atributoEmail = MapeadorAtributos.mapear(email, "email");
+        AtributoHumanoRespondido atributoEmail = MapeadorAtributos.mapear(email, "mail");
         AtributoHumanoRespondido atributoTelegram = MapeadorAtributos.mapear(telegram, "telegram");
         AtributoHumanoRespondido atributoWhatsapp = MapeadorAtributos.mapear(whatsapp, "whatsapp");
         AtributoHumanoRespondido atributoNacimiento = MapeadorAtributos.mapear(nacimiento, "nacimiento");
 
         HumanoInputDTO dto = HumanoInputDTO.create(username, password, atributoNombre, atributoApellido, atributoEmail, atributoTelegram, atributoWhatsapp, atributoNacimiento);
-        if (direccionForm != null){
+        if (!direccionForm.isEmpty()){
             Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
             dto.setDireccion(direccion);
         }
+
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(colaborador.getUser());
     }
 
 }

@@ -33,11 +33,20 @@ public class HumanoOutputDTO {
         for (AtributoHumanoRespondido a : atributosAMostrar) {
             switch (a.getNombreAtributo()) {
                 case "Direccion":
-                    a.setValor(h.getDireccion().getDireccion());
+                    if (!(h.getDireccion() == null)) {
+                        a.setValor(h.getDireccion().getDireccion());
+                    } else{
+                        a.setValor("");
+                    }
                     atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
                     break;
                 case "Provincia":
+                    if (!(h.getDireccion() == null)){
                     a.setValor(String.valueOf(h.getDireccion().getProvincia().getNombre()));
+                    }
+                    else{
+                        a.setValor("");
+                    }
                     atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
                     break;
                 case "WhatsApp":
@@ -68,7 +77,7 @@ public class HumanoOutputDTO {
                 .builder()
                 .atributos(atributos_dto)
                 .mediosDeContacto(h.getMediosDeContacto())
-                .direccion(h.getDireccion().getDireccion())
+                .direccion(h.getDireccion() == null ? "" : h.getDireccion().getDireccion())
                 .build();
 
     }

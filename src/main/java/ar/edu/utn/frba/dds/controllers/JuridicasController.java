@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.Tipo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -81,7 +82,7 @@ public class JuridicasController {
         String direccionForm = ctx.formParam("direccion");
         String provinciaForm = ctx.formParam("provincia");
 
-        Usuario usuario = new Usuario(username, password, List.of(new Rol("JURIDICA")));
+        Usuario usuario = new Usuario(username, password, List.of(TipoRol.JURIDICA));
 
         Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
 

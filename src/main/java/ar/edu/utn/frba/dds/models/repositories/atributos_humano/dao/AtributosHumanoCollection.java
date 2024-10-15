@@ -47,6 +47,6 @@ public class AtributosHumanoCollection implements AtributosHumanoDAO {
 
     @Override
     public Optional<Atributo> buscarPorNombre(String nombre) {
-        return this.atributos.stream().filter(atributo -> atributo.getNombre().equals(nombre)).findFirst();
+        return this.atributos.stream().filter(atributo -> atributo.getNombre().equalsIgnoreCase(nombre)).findFirst();
     }
 }

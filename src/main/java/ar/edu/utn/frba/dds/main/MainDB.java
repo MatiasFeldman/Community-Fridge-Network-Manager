@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.sending_strategy.SendingStrategyFactory;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -22,7 +23,7 @@ public class MainDB implements WithSimplePersistenceUnit {
         db.impactarEnBase();
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
 
-        Usuario user = new Usuario("test", "Pedrito1213311@", List.of(new Rol("HUMANO")));
+        Usuario user = new Usuario("test", "Pedrito1213311@", List.of(TipoRol.HUMANO));
         user.setStrategiaDeEnvio(SendingStrategyFactory.create("TELEGRAM"));
         db.guardarUsuario(user);
 

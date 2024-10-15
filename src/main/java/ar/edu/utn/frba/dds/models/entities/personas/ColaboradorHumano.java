@@ -6,6 +6,8 @@ import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import net.bytebuddy.implementation.bind.annotation.Super;
@@ -59,6 +61,7 @@ public class ColaboradorHumano extends Persistente {
     }
 
     public static ColaboradorHumano create(HumanoInputDTO dto) {
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(dto.getUser());
         return ColaboradorHumano
                 .builder()
                 .atributosObligatorios(dto.getAtributosObligatorios())

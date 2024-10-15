@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.CantidadViandasIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.MismaHeladeraException;
-import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
 import ar.edu.utn.frba.dds.exceptions.registroHeladera.CapacidadIncorrectaException;
@@ -14,8 +13,6 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
-import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoOferta;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListaDeUbicaciones;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
@@ -36,9 +33,6 @@ import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRe
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
-import ar.edu.utn.frba.dds.utils.permisos.VerificadorDePermisos;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;

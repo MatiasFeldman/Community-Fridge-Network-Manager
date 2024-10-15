@@ -12,6 +12,7 @@ public class UsuariosCollection implements UsuariosDAO{
 
     @Override
     public void guardar(Usuario usuario) {
+        usuario.setId((long) this.usuarios.size() + 12);
         this.usuarios.add(usuario);
     }
 

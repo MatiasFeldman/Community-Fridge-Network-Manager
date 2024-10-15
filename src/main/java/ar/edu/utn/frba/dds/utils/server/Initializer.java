@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
@@ -104,16 +105,11 @@ public class Initializer {
 
         Initializer.inicializarAtributos();
 
-        Rol rolAdmin = new Rol("ADMIN");
-
-        Rol rolHumano = new Rol("HUMANO");
-        Rol rolJuridica = new Rol("JURIDICA");
-
-        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(rolAdmin));
+        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(TipoRol.ADMIN));
         u1.setId(1L);
-        Usuario u2 = new Usuario("usuario2", "prueba", List.of(rolHumano));
+        Usuario u2 = new Usuario("usuario2", "prueba", List.of(TipoRol.HUMANO));
         u2.setId(2L);
-        Usuario u3 = new Usuario("usuario3", "prueba", List.of(rolJuridica));
+        Usuario u3 = new Usuario("usuario3", "prueba", List.of(TipoRol.JURIDICA));
         u3.setId(3L);
 
         usuariosRepository.guardar(u1);

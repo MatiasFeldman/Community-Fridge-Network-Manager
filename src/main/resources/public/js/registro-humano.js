@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const input_nombre = document.getElementById('Nombre')
     const input_apellido = document.getElementById('Apellido')
     const input_nacimiento = document.getElementById('Nacimiento')
-    const input_direccion = document.getElementById('direccion')
-    const input_provincia = document.getElementById('provincia')
+    const input_direccion = document.getElementById('Direccion')
+    const input_provincia = document.getElementById('Provincia')
     const input_email = document.getElementById('Mail')
     const input_telegram = document.getElementById('Telegram')
-    const input_wpp = document.getElementById('Whatsapp')
+    const input_wpp = document.getElementById('WhatsApp')
 
     const campos_obligatorios = Array.from(document.querySelectorAll('.obligatorio'));
 
@@ -45,6 +45,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 telegram: input_telegram.value,
                 wpp: input_wpp.value
             }
+
+            fetch('/registro/humano',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+
+            })
             console.log(data)
         } else {
             alert('Faltan campos por completar')

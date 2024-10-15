@@ -32,6 +32,9 @@ public class Direccion {
     public static Direccion of(String direccion, String provincia){
         GobiernoAPI api = new GobiernoAPI();
         GeoRefDeDirecc geoRefDeDirecc = api.getCoordYComuna(direccion, provincia);
+
+
+
         return Direccion
                 .builder()
                 .direccion(direccion)

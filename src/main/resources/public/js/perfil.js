@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const boton_cerrar = document.getElementById("cerrar");
     const boton_guardar = document.getElementById("guardar");
     const input_direccion = document.getElementById("Direccion");
     const input_provincia = document.getElementById("Provincia");
@@ -18,12 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         whatsapp: input_whatsapp.value ? input_whatsapp.value : ''
     }
 
-    boton_cerrar.addEventListener('click', () => {
-        fetch('/logout', {
-            method: 'POST',
-        })
-        window.location.href = "/";
-    })
+
 
     boton_guardar.addEventListener('click', () =>{
         const valores_actuales = {

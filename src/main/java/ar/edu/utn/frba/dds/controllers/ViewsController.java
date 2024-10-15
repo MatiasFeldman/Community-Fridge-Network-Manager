@@ -128,6 +128,8 @@ public class ViewsController {
         ctx.render("registro-usuario/registro-tipo.hbs", model);
     }
 
+
+
     public static void formFallaTecnica(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Reporte falla ténica");

@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFact
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -57,7 +58,7 @@ public class RegisterCargaMasiva {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = GeneradorDeContrasenias.generateRandomString(16);
-        return new Usuario(username, password, new ArrayList<>(List.of(new Rol("HUMANO"))));
+        return new Usuario(username, password, new ArrayList<>(List.of(TipoRol.HUMANO)));
     }
 
     public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){

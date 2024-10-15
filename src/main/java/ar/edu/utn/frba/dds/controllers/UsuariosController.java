@@ -38,7 +38,7 @@ public class UsuariosController {
                 List<String> nombresRoles = Optional.ofNullable(usuarioEncontrado.getRoles())
                         .orElse(Collections.emptyList())
                         .stream()
-                        .map(Rol::getNombre)
+                        .map(Enum::name)  // Convierte cada enum Rol a su nombre de cadena
                         .collect(Collectors.toList());
 
                 // Guardar roles en la sesión
@@ -84,7 +84,6 @@ public class UsuariosController {
 
             if (roles.contains("HUMANO")) {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
-                System.out.println(humano.getDireccion().getDireccion());
                 HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
                 model.put("puntos", humano.calcularPuntaje());
                 model.put("humano", dto);

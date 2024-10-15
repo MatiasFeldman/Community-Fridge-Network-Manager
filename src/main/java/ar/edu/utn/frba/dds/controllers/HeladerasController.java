@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class HeladerasController {
@@ -127,18 +128,47 @@ public class HeladerasController {
     public void mostrarHeladeras(Context context) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
-
-        heladeras.forEach(h -> {
-            dtos.add(HeladeraOutputDTO.of(h));
-        });
+        List<SuscripcionAHeladera> suscripciones = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarTodos();
 
         List<String> rolesUsuario = context.sessionAttribute("roles");
+        Long idUsuario = context.sessionAttribute("id");
+
+        List<SuscripcionAHeladera> suscripcionesUsuario = suscripciones.stream()
+                .filter(s -> s.getObserverSuscripcion().getId().equals(idUsuario))
+                .collect(Collectors.toList());
+
+        // Iterar sobre las heladeras y verificar si el usuario está suscrito a cada una
+        heladeras.forEach(h -> {
+            HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
+
+            // Verificar si la heladera actual tiene una suscripción del usuario
+            boolean estaSuscrito = suscripcionesUsuario.stream()
+                    .anyMatch(s -> s.getHeladera().getId().equals(h.getId()));
+
+            // Añadir una propiedad al DTO o agregar la información al modelo
+            dto.setEstaSuscrito(estaSuscrito);
+            dtos.add(dto);
+        });
+
 
         boolean permisoSuscripcion = rolesUsuario != null && !rolesUsuario.isEmpty() && rolesUsuario.stream()
                 .anyMatch(rol -> rol.equals("ADMIN") || rol.equals("HUMANO") || rol.equals("JURIDICA"));
 
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+
+        if(rolesUsuario.get(0).contains("HUMANO")){
+            ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario).get();
+
+            model.put("contactos", humano.getMediosDeContacto());
+        }else if(rolesUsuario.get(0).contains("JURIDICA")){
+            Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario).get();
+
+            model.put("contactos", juridica.getMediosDeContacto());
+        }
+
+
         model.put("heladeras", dtos);
+        model.put("titulo", "Heladeras");
         model.put("permisoSuscripcion", permisoSuscripcion);
 
         context.render("heladeras/mapa-de-heladeras-user.hbs", model);
@@ -389,10 +419,11 @@ public class HeladerasController {
         Long usuarioId = ctx.sessionAttribute("id");
 
         Optional<Heladera> heladera = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(heladeraId);
-        Optional<SuscripcionAHeladera> suscrip = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioId(usuarioId);
+        Optional<SuscripcionAHeladera> suscrip = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioIdYHeladeraId(usuarioId,heladeraId);
         if(suscrip.isPresent() && heladera.isPresent()){
             heladera.get().desuscribir(suscrip.get());
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera.get());
+            ServiceLocator.instanceOf(SuscripcionesRepository.class).eliminar(suscrip.get());
         }
 
         ctx.redirect("/heladeras");

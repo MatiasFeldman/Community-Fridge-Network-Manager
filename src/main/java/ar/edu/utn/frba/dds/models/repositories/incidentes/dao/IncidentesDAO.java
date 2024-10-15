@@ -19,5 +19,7 @@ public interface IncidentesDAO {
 
     boolean buscarFallaTecnicaEnHeladera(Heladera heladera);
 
+    public List<Incidente> buscarTodosPorHeladera(Heladera heladera);
+
     Integer cantFallasEn(Heladera heladera);
 }

@@ -36,5 +36,6 @@ public class HeladeraOutputDTO {
     private Double latitud;
     private Integer cantViandasRetiradas;
     private Integer cantViandasColocadas;
+    private Boolean estaSuscrito;
 
 }

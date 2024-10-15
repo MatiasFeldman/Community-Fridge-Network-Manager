@@ -37,4 +37,5 @@ public class SuscripcionAHeladera extends Persistente {
             observerSuscripcion.serNotificado(suscripcion.getMensaje());
         }
     }
+
 }

@@ -150,7 +150,7 @@ h1.display-4 {
 }
 
 /* Estilos del botón de suscripción */
-.suscribirse-btn {
+.suscribirse-btn,.boton-desuscribirse {
     font-weight: bold;
     font-size: 0.9rem;
     align-self: flex-end;

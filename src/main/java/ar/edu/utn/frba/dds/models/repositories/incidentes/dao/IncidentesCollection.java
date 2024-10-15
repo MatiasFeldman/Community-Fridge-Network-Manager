@@ -49,6 +49,11 @@ public class IncidentesCollection implements IncidentesDAO{
     }
 
     @Override
+    public List<Incidente> buscarTodosPorHeladera(Heladera heladera){
+        return incidentes.stream().filter(incidente -> incidente.getHeladera().equals(heladera)).toList();
+    }
+
+    @Override
     public Integer cantFallasEn(Heladera heladera) {
         return incidentes
                 .stream()

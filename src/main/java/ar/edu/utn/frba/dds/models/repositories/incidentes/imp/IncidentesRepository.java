@@ -32,6 +32,8 @@ public class IncidentesRepository {
         return this.incidentes.buscarFallaTecnicaEnHeladera(heladera);
     }
 
+    public List<Incidente> buscarTodosPorHeladera(Heladera heladera){return this.incidentes.buscarTodosPorHeladera(heladera);}
+
     public void modificar(Incidente incidente){
         this.incidentes.modificar(incidente);
     }

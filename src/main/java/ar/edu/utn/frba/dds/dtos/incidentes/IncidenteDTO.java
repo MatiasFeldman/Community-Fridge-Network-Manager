@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Getter
@@ -26,6 +27,7 @@ public class IncidenteDTO {
     private String descripcion;
     private String foto;
     private boolean resuelto;
+    private String fechaFormateada;
 
     public static IncidenteDTO of(Usuario user, LocalDateTime fecha, Heladera heladera, TipoEvento tipo, String descripcion, String foto){
         return IncidenteDTO
@@ -37,6 +39,20 @@ public class IncidenteDTO {
                 .descripcion(descripcion)
                 .foto(foto)
                 .resuelto(false)
+                .build();
+    }
+
+    public static IncidenteDTO of(Incidente incidente){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return IncidenteDTO
+                .builder()
+                .fechaFormateada(incidente.getFecha().format(formatter))
+                .heladera(incidente.getHeladera())
+                .tipo(incidente.getTipo())
+                .colaborador(incidente.getColaborador())
+                .descripcion(incidente.getDescripcion())
+                .foto(incidente.getFoto())
+                .resuelto(incidente.isResuelto())
                 .build();
     }
 

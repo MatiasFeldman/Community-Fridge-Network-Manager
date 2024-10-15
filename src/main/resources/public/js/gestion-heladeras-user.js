@@ -44,12 +44,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Añadir el valor del `heladera_id` al campo oculto en el formulario
                 document.getElementById('heladeraIdInput').value = heladeraSeleccionada;
 
-                // Si el usuario ya está suscrito, manejar la desuscripción
-                if (btnSuscribirse.classList.contains('boton-desuscribirse')) {
-                    desuscribirse(heladeraSeleccionada);
-                } else {
                     mostrarFormularioSuscripcion();
-                }
+
+            });
+
+        }
+        const btnDesuscribirse = heladeraCard.querySelector('.boton-desuscribirse');
+        if (btnDesuscribirse) {
+            btnDesuscribirse.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                heladeraSeleccionada = heladeraId;
+                desuscribirse(heladeraSeleccionada);
             });
         }
 
@@ -120,17 +126,18 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.show();
     }
 
-    // Simulamos un objeto de contactos guardados por el usuario
-    const contactosGuardados = {
-        email: "usuario@example.com",  // El usuario ya tiene un correo guardado
-        whatsapp: null,  // No tiene número de WhatsApp
-        telegram: null   // No tiene cuenta de Telegram
-    };
+    // Función para encontrar un contacto según el medio seleccionado
+    function encontrarContactoPorTipo(tipo) {
+        return contactosGuardados.find(contacto => contacto.tipoContacto.nombre === tipo);
+    }
 
     // Cambiar el tipo de contacto según el medio seleccionado
     medioNotificacion.addEventListener('change', function() {
         const medio = medioNotificacion.value;
-        if (contactosGuardados[medio]) {
+
+        const contactoExistente = encontrarContactoPorTipo(medio);
+
+        if (contactoExistente && contactoExistente.valorContacto) {
             contactoAdicional.style.display = 'none';
         } else {
             tipoContacto.textContent = medio;

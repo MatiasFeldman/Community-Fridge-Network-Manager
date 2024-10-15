@@ -16,7 +16,7 @@ public class SuscripcionesRepository {
 
     public Optional<SuscripcionAHeladera> buscarPorId(Long id){return suscripcion.buscarPorId(id);}
 
-    public Optional<SuscripcionAHeladera> buscarPorUsuarioId(Long id){return suscripcion.buscarPorUsuarioId(id);}
+    public Optional<SuscripcionAHeladera> buscarPorUsuarioIdYHeladeraId(Long usuarioId, Long heladeraId){return suscripcion.buscarPorUsuarioIdYHeladeraId(usuarioId,heladeraId);}
 
     public void eliminar(SuscripcionAHeladera suscripcionAHeladera){suscripcion.eliminar(suscripcionAHeladera);}
 

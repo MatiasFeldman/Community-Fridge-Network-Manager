@@ -136,6 +136,15 @@ public class ViewsController {
 
         String tipoBusqueda = ctx.queryParam("busqueda");
         String valorBusqueda = ctx.queryParam("valor");
+        List<HeladeraOutputDTO> dtos = busquedaDeHeladeras(tipoBusqueda,valorBusqueda);
+
+        model.put("heladeras", dtos);
+
+
+        ctx.render("heladeras/fallas-tecnicas.hbs", model);
+    }
+
+    private static List<HeladeraOutputDTO> busquedaDeHeladeras(String tipoBusqueda, String valorBusqueda){
         List<Heladera> heladeras = new ArrayList<>();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
         if (tipoBusqueda == null || (valorBusqueda == null && !tipoBusqueda.equalsIgnoreCase("todas"))) {
@@ -150,11 +159,21 @@ public class ViewsController {
             };
         }
         heladeras.forEach(h -> dtos.add(HeladeraOutputDTO.of(h)));
+        return dtos;
+    }
+
+    public static void formAlertas(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Incidentes");
+
+        String tipoBusqueda = ctx.queryParam("busqueda");
+        String valorBusqueda = ctx.queryParam("valor");
+        List<HeladeraOutputDTO> dtos = busquedaDeHeladeras(tipoBusqueda,valorBusqueda);
 
         model.put("heladeras", dtos);
 
 
-        ctx.render("heladeras/fallas-tecnicas.hbs", model);
+        ctx.render("heladeras/alertas.hbs", model);
     }
 
     public static void cargaCsv(Context context) {

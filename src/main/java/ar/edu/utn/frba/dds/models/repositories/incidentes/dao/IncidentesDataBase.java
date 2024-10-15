@@ -53,6 +53,14 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
     }
 
     @Override
+    public List<Incidente> buscarTodosPorHeladera(Heladera heladera){
+        return entityManager()
+                .createQuery("SELECT i FROM Incidente i WHERE i.presente = true AND i.heladera = :heladera", Incidente.class)
+                .setParameter("heladera", heladera)
+                .getResultList();
+    }
+
+    @Override
     public Integer cantFallasEn(Heladera heladera) {
         LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
         return ((Long) entityManager()

@@ -13,7 +13,7 @@ public interface SuscripcionDAO {
 
     public Optional<SuscripcionAHeladera> buscarPorId(Long id);
 
-    public Optional<SuscripcionAHeladera> buscarPorUsuarioId(Long id);
+    public Optional<SuscripcionAHeladera> buscarPorUsuarioIdYHeladeraId(Long usuarioId, Long heladeraId);
 
     public void eliminar(SuscripcionAHeladera suscripcionAHeladera);
 

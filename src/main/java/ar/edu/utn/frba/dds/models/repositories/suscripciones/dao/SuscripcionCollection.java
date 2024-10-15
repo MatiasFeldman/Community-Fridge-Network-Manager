@@ -28,10 +28,12 @@ public class SuscripcionCollection implements SuscripcionDAO {
     }
 
     @Override
-    public Optional<SuscripcionAHeladera> buscarPorUsuarioId(Long id) {
+    public Optional<SuscripcionAHeladera> buscarPorUsuarioIdYHeladeraId(Long usuarioId, Long heladeraId) {
         return this.suscripcionAHeladeras
                 .stream()
-                .filter(suscripcion -> suscripcion.getObserverSuscripcion().getId().equals(id)).findFirst();
+                .filter(suscripcion -> suscripcion.getObserverSuscripcion().getId().equals(usuarioId)
+                        && suscripcion.getHeladera().getId().equals(heladeraId))
+                .findFirst();
     }
 
     @Override

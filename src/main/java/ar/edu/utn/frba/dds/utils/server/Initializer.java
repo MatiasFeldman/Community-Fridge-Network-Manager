@@ -50,6 +50,8 @@ public class Initializer {
 
         Direccion d4 = DireccionFactory.create(new DireccionInputDTO("Nazca 2000", "CABA"));
 
+        Direccion d5 = DireccionFactory.create(new DireccionInputDTO("Avenida Medrano 951", "CABA"));
+
         Heladera h1 = Heladera
                 .builder()
                 .nombre("Heladera UTN Lugano")
@@ -90,6 +92,18 @@ public class Initializer {
                 .builder()
                 .nombre("Heladera Flores")
                 .direccion(d4)
+                .capacidadMaxima(70)
+                .capActual(63)
+                .viandasColocadas(12)
+                .viandasRetiradas(5)
+                .suscriptores(new ArrayList<>())
+                .activa(true)
+                .build();
+
+        Heladera h5 = Heladera
+                .builder()
+                .nombre("Heladera medrano")
+                .direccion(d5)
                 .capacidadMaxima(70)
                 .capActual(63)
                 .viandasColocadas(12)
@@ -146,6 +160,7 @@ public class Initializer {
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
         c2.setPuntosGanados(2500.0); //funciona :)
+        c2.generarContacto(new Contacto(new TipoContacto("email"),"facu@gmail.com"));
         humanos.guardar(c1);
         humanos.guardar(c2);
 

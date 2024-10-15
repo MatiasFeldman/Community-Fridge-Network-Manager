@@ -47,6 +47,9 @@ import ar.edu.utn.frba.dds.models.repositories.rubros.dao.RubroDataBase;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.SolicitudesDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaCollection;
 import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_heladera.dao.SolicitudDeAperturaDB;
+import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesRepository;
+import ar.edu.utn.frba.dds.models.repositories.suscripciones.dao.SuscripcionCollection;
+import ar.edu.utn.frba.dds.models.repositories.suscripciones.dao.SuscripcionDataBase;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.TarjetasColaboradoresDB;
@@ -212,6 +215,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>()));
                     instances.put(componentName, donacionDineroRepository);
+                }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
+                    SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionCollection(new ArrayList<>()));
+                    instances.put(componentName, suscripcionesRepository);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -269,6 +275,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroDB());
                     instances.put(componentName, donacionDineroRepository);
+                }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
+                    SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionDataBase());
+                    instances.put(componentName, suscripcionesRepository);
                 }
             }
         }

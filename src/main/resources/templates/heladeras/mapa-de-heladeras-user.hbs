@@ -11,6 +11,7 @@
     <script>
         const userRole = {{permisoSuscripcion}};
         const heladeras = {{{json heladeras}}};
+        const contactosGuardados = {{{json contactos}}};
         console.log(heladeras);
         const permisoSuscripcion = {{permisoSuscripcion}};
         console.log({{permisoSuscripcion}});
@@ -96,8 +97,8 @@
                                 <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas
                                     disponibles: {{this.capacidadActual}}</p>
                                 {{#if permisoSuscripcion}}
-                                    <button class="boton {{#if this.suscrito}}boton-desuscribirse{{/if}}suscribirse-btn">
-                                        {{#if this.suscrito}}Desuscribirse{{else}}Suscribirse{{/if}}
+                                    <button class="boton {{#if this.estaSuscrito}}boton-desuscribirse{{else}}suscribirse-btn{{/if}}">
+                                        {{#if this.estaSuscrito}}Desuscribirse{{else}}Suscribirse{{/if}}
                                     </button>
                                 {{/if}}
                             </div>
@@ -167,7 +168,7 @@
                         <!-- Selección del medio de notificación -->
                         <div class="form-group mb-3">
                             <label for="medioNotificacion">Medio de Notificación:</label>
-                            <select id="medioNotificacion" class="form-control" name="notificador">
+                            <select id="medioNotificacion" class="form-control" name="notificador" required>
                                 <option value="email">Email</option>
                                 <option value="whatsapp">WhatsApp</option>
                                 <option value="telegram">Telegram</option>

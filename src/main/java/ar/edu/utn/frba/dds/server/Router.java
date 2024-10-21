@@ -55,6 +55,10 @@ public class Router {
 
         app.get("/heladeras/reportar-falla-tecnica/{id}", ctx -> ServiceLocator.instanceOf(HeladerasController.class).reporteFallaTecnicaView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
+        app.get("/heladeras/{id}/reporte-falla-tecnica/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).reporteFallaTecnicaView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+
+        app.get("/heladeras/{id}/suscripcion/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).suscripcionView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+
         app.get("/heladeras/incidentes",ViewsController::formAlertas,TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
         app.get("/heladeras/incidentes/{id}", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleInicidenteView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);

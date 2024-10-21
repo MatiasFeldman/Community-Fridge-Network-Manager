@@ -435,5 +435,21 @@ public class HeladerasController {
 
     }
 
+    public void suscripcionView(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Suscripción");
+
+        String idParam = ctx.pathParam("id");
+        Long id = Long.parseLong(idParam);
+        Optional<Heladera> buscada = heladeras.buscarPorId(id);
+        if (buscada.isPresent()) {
+            Heladera h = buscada.get();
+            HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
+            model.put("heladera", dto);
+            ctx.render("heladeras/form-suscripcion-heladera.hbs", model);
+        } else{
+            ctx.redirect("/not-found");
+        }
+    }
 }
 

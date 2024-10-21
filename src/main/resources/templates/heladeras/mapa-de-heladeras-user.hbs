@@ -85,7 +85,9 @@
                 <!-- Lista de heladeras -->
                 <div class="lista-heladeras " id="lista-heladeras">
                     {{#each heladeras}}
-                        <div class="p-3 d-flex flex-column justify-content-between rounded heladera-card" data-id="{{this.id}}" data-nombre="{{this.nombre}}" data-direccion="{{this.direccion}}" data-latitud="{{this.latitud}}" data-longitud="{{this.longitud}}">
+                        <div class="p-3 d-flex flex-column justify-content-between rounded heladera-card"
+                             data-id="{{this.id}}" data-nombre="{{this.nombre}}" data-direccion="{{this.direccion}}"
+                             data-latitud="{{this.latitud}}" data-longitud="{{this.longitud}}">
                             <div class="d-flex justify-content-between">
                                 <h5 class="text-dark fs-5">{{this.nombre}}</h5>
                                 <span class="{{#if this.activa}}estado-activa{{else}}estado-inactiva{{/if}}">
@@ -97,9 +99,15 @@
                                 <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas
                                     disponibles: {{this.capacidadActual}}</p>
                                 {{#if permisoSuscripcion}}
-                                    <button class="boton {{#if this.estaSuscrito}}boton-desuscribirse{{else}}suscribirse-btn{{/if}}">
-                                        {{#if this.estaSuscrito}}Desuscribirse{{else}}Suscribirse{{/if}}
-                                    </button>
+                                    <div class="d-flex gap-2">
+                                        <a href="/heladeras/{{this.id}}/suscripcion/nueva" class="boton {{#if
+                                                this.estaSuscrito}}boton-desuscribirse{{else}}suscribirse-btn{{/if}}">
+                                            {{#if this.estaSuscrito}}Desuscribirse{{else}}Suscribirse{{/if}}
+                                        </a>
+                                        <a class="boton" href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">
+                                            Falla técnica
+                                        </a>
+                                    </div>
                                 {{/if}}
                             </div>
                         </div>
@@ -107,87 +115,7 @@
                 </div>
             </div>
 
-            <button class="boton" id="btn-reportar">Reportar falla técnica</button>
 
-            <!-- Sección de suscripción -->
-            <div class="row mt-5" id="suscripcion-container" style="display: none;">
-                <h3 class="h5 text-center">Suscripción a Heladeras</h3>
-                <div class="col-12">
-                    <!-- Formulario de suscripción -->
-                    <form method="POST" action="/suscribirse" id="form-suscripcion" class="card p-4 shadow">
-
-                        <!-- Campo oculto para ID de la heladera -->
-                        <input type="hidden" name="heladera_id" id="heladeraIdInput"  value="">
-
-                        <h4 class="mb-3">Elija el tipo de notificación que desea recibir (puede seleccionar más de una):</h4>
-
-                        <!-- Notificación de viandas disponibles -->
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="notificacionViandasMin" name="tipo_suscripcion" value="viandas_disponibles">
-                            <label class="form-check-label" for="notificacionViandasMin">
-                                Notificarme cuando queden menos de <strong>N</strong> viandas disponibles en la heladera.
-                            </label>
-                            <!-- Modal para configurar el valor de N -->
-                            <div class="modal fade" id="configurarNModal" tabindex="-1"
-                                 aria-labelledby="configurarNModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="configurarNModalLabel">Configurar valor de N</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <label for="nValueInput">Ingrese el valor de <strong>N</strong>:</label>
-                                            <input type="number" id="nValueInput" class="form-control"
-                                                   placeholder="Número de viandas" name="cantidad">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                            <button type="button" id="guardarNValue" class="btn btn-primary">Guardar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Notificación de heladera llena -->
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="notificacionViandasMax" name="tipo_suscripcion" value="heladera_llena">
-                            <label class="form-check-label" for="notificacionViandasMax">
-                                Notificarme cuando falten menos de <strong>N</strong> viandas para llenar la heladera.
-                            </label>
-                            <!-- Modal para configurar el valor de N (mismo modal reutilizado para configurar N) -->
-                        </div>
-
-                        <!-- Notificación de desperfecto -->
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="notificacionDesperfecto" name="tipo_suscripcion" value="sufrio_desperfecto">
-                            <label class="form-check-label" for="notificacionDesperfecto">
-                                La heladera sufrió un desperfecto.
-                            </label>
-                        </div>
-
-                        <!-- Selección del medio de notificación -->
-                        <div class="form-group mb-3">
-                            <label for="medioNotificacion">Medio de Notificación:</label>
-                            <select id="medioNotificacion" class="form-control" name="notificador" required>
-                                <option value="email">Email</option>
-                                <option value="whatsapp">WhatsApp</option>
-                                <option value="telegram">Telegram</option>
-                            </select>
-                        </div>
-
-                        <!-- Campo adicional si el medio de contacto no existe -->
-                        <div id="contactoAdicional" class="form-group mb-3" style="display: none;">
-                            <label for="contactoAdicionalInput">Por favor, ingrese su <span id="tipoContacto"></span>:</label>
-                            <input type="text" id="contactoAdicionalInput" class="form-control"
-                                   placeholder="Ingrese su contacto" name="contacto_adicional">
-                        </div>
-
-                        <button type="submit" class="boton">Guardar Suscripción</button>
-                    </form>
-                </div>
-            </div>
 
         </div>
     </div>

@@ -18,6 +18,8 @@ h1.display-4 {
     font-size: 1.2rem;
 }
 
+
+
 .container-page {
     display: flex;
     flex-direction: column;
@@ -150,7 +152,7 @@ h1.display-4 {
 }
 
 /* Estilos del botón de suscripción */
-.suscribirse-btn,.boton-desuscribirse {
+.suscribirse-btn,.boton-desuscribirse, a.boton {
     font-weight: bold;
     font-size: 0.9rem;
     align-self: flex-end;

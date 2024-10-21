@@ -5,6 +5,11 @@
     --text-color: #212529;
 }
 
+a.boton{
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+}
 
 header {
     background-color: var(--background-color);

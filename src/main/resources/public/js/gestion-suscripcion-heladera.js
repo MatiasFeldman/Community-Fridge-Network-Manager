@@ -13,58 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let nConfiguradoMin = null;
     let nConfiguradoMax = null;
 
-    // Inicializar el mapa
-    const map = L.map('map').setView([-34.61, -58.44], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
-
-    // Agregar marcadores para cada heladera desde el DOM (ya renderizado con Handlebars)
-    document.querySelectorAll('.heladera-card').forEach(heladeraCard => {
-        const latitud = heladeraCard.getAttribute('data-latitud');
-        const longitud = heladeraCard.getAttribute('data-longitud');
-        const nombre = heladeraCard.getAttribute('data-nombre');
-        const direccion = heladeraCard.getAttribute('data-direccion');
-        const heladeraId = heladeraCard.getAttribute('data-id'); // Obtener el ID de la heladera
-
-        // Agregar marcador en el mapa
-        L.marker([latitud, longitud]).addTo(map).bindPopup(`<b>${nombre}</b><br>${direccion}`);
-
-        // Al hacer clic en la tarjeta, centrar el mapa en la heladera
-        heladeraCard.addEventListener('click', function (e) {
-            if (e.target.tagName === 'A') {
-                return;
-            }
-            e.preventDefault()
-            centrarMapaEnHeladera(latitud, longitud);
-
-        });
-
-        const btnDesuscribirse = heladeraCard.querySelector('.boton-desuscribirse');
-        if (btnDesuscribirse) {
-            btnDesuscribirse.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                heladeraSeleccionada = heladeraId;
-                desuscribirse(heladeraSeleccionada);
-            });
-        }
-
-    });
-
-    // Función para centrar el mapa en una heladera específica
-    function centrarMapaEnHeladera(lat, lng) {
-        map.setView([lat, lng], 14);
-    }
-
-    // Función para desuscribirse
-    function desuscribirse() {
-        fetch('/desuscribirse', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',  // Formato de los datos enviados
-            },
-            body: `heladera_id=${heladeraSeleccionada}`  // Enviar solo el ID de la heladera
-        });
-    }
 
     // Mostrar el formulario de suscripción sin afectar las heladeras
     function mostrarFormularioSuscripcion() {

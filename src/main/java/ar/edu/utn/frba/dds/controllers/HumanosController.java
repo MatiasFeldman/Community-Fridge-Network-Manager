@@ -16,6 +16,7 @@ import ar.edu.utn.frba.dds.server.Server;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
+import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
@@ -111,7 +112,10 @@ public class HumanosController {
         AtributoHumanoRespondido atributoWhatsapp = MapeadorAtributos.mapear(whatsapp, "whatsapp");
         AtributoHumanoRespondido atributoNacimiento = MapeadorAtributos.mapear(nacimiento, "nacimiento");
 
-        HumanoInputDTO dto = HumanoInputDTO.create(username, password, atributoNombre, atributoApellido, atributoEmail, atributoTelegram, atributoWhatsapp, atributoNacimiento);
+        HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+        String passwordHashed = hash.hashPassword(password);
+
+        HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed, atributoNombre, atributoApellido, atributoEmail, atributoTelegram, atributoWhatsapp, atributoNacimiento);
         if (!direccionForm.isEmpty()){
             Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
             dto.setDireccion(direccion);

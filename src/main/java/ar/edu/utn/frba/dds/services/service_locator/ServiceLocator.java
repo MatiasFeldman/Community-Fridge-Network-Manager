@@ -150,6 +150,9 @@ public class ServiceLocator {
             }else if (componentName.equals(ContribucionesController.class.getName())) {
                 ContribucionesController contribucionesController = new ContribucionesController();
                 instances.put(componentName, contribucionesController);
+            }else if (componentName.equals(HashPassword.class.getName())) {
+                HashPassword hashPassword = new HashPassword();
+                instances.put(componentName, hashPassword);
             }
             // REPOSITORIOS A PARTIR DE AQUI
 

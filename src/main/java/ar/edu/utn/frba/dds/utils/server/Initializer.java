@@ -25,6 +25,7 @@ import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 
 
 import java.time.LocalDateTime;
@@ -119,11 +120,12 @@ public class Initializer {
 
         Initializer.inicializarAtributos();
 
-        Usuario u1 = new Usuario("usuario1", "Pedritoclavounclavito123@", List.of(TipoRol.ADMIN));
+        HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+        Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
         u1.setId(1L);
-        Usuario u2 = new Usuario("usuario2", "prueba", List.of(TipoRol.HUMANO));
+        Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
         u2.setId(2L);
-        Usuario u3 = new Usuario("usuario3", "prueba", List.of(TipoRol.JURIDICA));
+        Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         u3.setId(3L);
 
         usuariosRepository.guardar(u1);

@@ -16,6 +16,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 
@@ -31,8 +32,10 @@ public class UsuariosController {
         Optional<Usuario> user = usuariosRepository.buscarPorUsername(username);
 
         if (user.isPresent()) {
+            HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+            String passwordHashed = hash.hashPassword(password);
             Usuario usuarioEncontrado = user.get();
-            if (usuarioEncontrado.getPassword().equals(password)) {
+            if (usuarioEncontrado.getPassword().equals(passwordHashed)) {
                 ctx.sessionAttribute("user", usuarioEncontrado.getId());
 
                 List<String> nombresRoles = Optional.ofNullable(usuarioEncontrado.getRoles())

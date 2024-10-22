@@ -17,6 +17,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
+import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -82,7 +83,9 @@ public class JuridicasController {
         String direccionForm = ctx.formParam("direccion");
         String provinciaForm = ctx.formParam("provincia");
 
-        Usuario usuario = new Usuario(username, password, List.of(TipoRol.JURIDICA));
+        HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+        String passwordHashed = hash.hashPassword(password);
+        Usuario usuario = new Usuario(username, passwordHashed, List.of(TipoRol.JURIDICA));
 
         Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
 

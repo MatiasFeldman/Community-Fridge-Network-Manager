@@ -41,6 +41,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @AllArgsConstructor
 public class HeladerasController {
     private Accionador accionador;
@@ -126,57 +127,116 @@ public class HeladerasController {
     }
 
     public void mostrarHeladeras(Context context) {
-        List<Heladera> heladeras = this.heladeras.buscarTodos();
-        List<HeladeraOutputDTO> dtos = new ArrayList<>();
-        List<SuscripcionAHeladera> suscripciones = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarTodos();
+        List<Heladera> heladeras = obtenerHeladerasFiltradas(context);  // Mover la lógica de filtrado a un método separado
 
-        List<String> rolesUsuario = context.sessionAttribute("roles");
+        List<HeladeraOutputDTO> dtos = generarDTOsDeHeladeras(heladeras, context);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("heladeras", dtos);
+        model.put("titulo", "Heladeras");
+
+        boolean permisoSuscripcion = verificarPermisoSuscripcion(context);
+        model.put("permisoSuscripcion", permisoSuscripcion);
+
+        context.render("heladeras/mapa-de-heladeras-user.hbs", model);
+    }
+
+    private List<Heladera> obtenerHeladerasFiltradas(Context context) {
+        List<Heladera> heladeras;
+
+        // Verificar si es una solicitud POST con filtros
+        if ("POST".equalsIgnoreCase(String.valueOf(context.method()))) {
+            String filtroActivo = context.formParam("activo");
+            String filtroInactivo = context.formParam("inactivo");
+            List<Heladera> todasHeladeras = this.heladeras.buscarTodos();
+
+            // Filtrar según los parámetros
+            heladeras = filtrarPorEstado(todasHeladeras, filtroActivo, filtroInactivo);
+
+            // Aplicar otros tipos de búsqueda
+            String tipoBusqueda = context.formParam("busqueda");
+            String valorBusqueda = context.formParam("valor");
+
+            heladeras = buscarPorTipo(heladeras, tipoBusqueda, valorBusqueda);
+        } else {
+            // Si es GET, mostrar todas las heladeras
+            heladeras = this.heladeras.buscarTodos();
+        }
+
+        return heladeras;
+    }
+
+    private List<Heladera> filtrarPorEstado(List<Heladera> todasHeladeras, String filtroActivo, String filtroInactivo) {
+        if (filtroActivo != null && filtroInactivo != null) {
+            return todasHeladeras;  // Mostrar todas si ambos filtros están presentes
+        } else if (filtroActivo != null) {
+            return todasHeladeras.stream()
+                    .filter(Heladera::getActiva)
+                    .collect(Collectors.toList());
+        } else if (filtroInactivo != null) {
+            return todasHeladeras.stream()
+                    .filter(h -> !h.getActiva())
+                    .collect(Collectors.toList());
+        }
+        return todasHeladeras;  // Si no hay filtros, devolver todas las heladeras
+    }
+
+    private List<Heladera> buscarPorTipo(List<Heladera> heladeras, String tipoBusqueda, String valorBusqueda) {
+        if (tipoBusqueda == null || valorBusqueda == null) return heladeras;  // Si no hay parámetros de búsqueda
+
+
+        return switch (tipoBusqueda) {
+            case "direccion" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarHeladerasPorDireccion(valorBusqueda);
+            case "comuna" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorComuna(valorBusqueda);
+            case "todas" -> ServiceLocator.instanceOf(HeladerasRepository.class).buscarTodos();
+            default -> heladeras;
+        };
+    }
+
+    private List<HeladeraOutputDTO> generarDTOsDeHeladeras(List<Heladera> heladeras, Context context) {
+        List<SuscripcionAHeladera> suscripciones = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarTodos();
         Long idUsuario = context.sessionAttribute("id");
 
         List<SuscripcionAHeladera> suscripcionesUsuario = suscripciones.stream()
                 .filter(s -> s.getObserverSuscripcion().getId().equals(idUsuario))
                 .collect(Collectors.toList());
 
-        // Iterar sobre las heladeras y verificar si el usuario está suscrito a cada una
-        heladeras.forEach(h -> {
+        return heladeras.stream().map(h -> {
             HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
-
-            // Verificar si la heladera actual tiene una suscripción del usuario
             boolean estaSuscrito = suscripcionesUsuario.stream()
                     .anyMatch(s -> s.getHeladera().getId().equals(h.getId()));
-
-            // Añadir una propiedad al DTO o agregar la información al modelo
             dto.setEstaSuscrito(estaSuscrito);
-            dtos.add(dto);
-        });
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
+    private boolean verificarPermisoSuscripcion(Context context) {
+        List<String> rolesUsuario = context.sessionAttribute("roles");
+        if (rolesUsuario == null || rolesUsuario.isEmpty()) return false;
 
-        boolean permisoSuscripcion = rolesUsuario != null && !rolesUsuario.isEmpty() && rolesUsuario.stream()
-                .anyMatch(rol -> rol.equals("ADMIN") || rol.equals("HUMANO") || rol.equals("JURIDICA"));
+        return rolesUsuario.stream()
+                .anyMatch(rol -> rol.equals("HUMANO") || rol.equals("JURIDICA"));
+    }
 
-        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+    private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context context) {
+        List<String> rolesUsuario = context.sessionAttribute("roles");
+        Long idUsuario = context.sessionAttribute("id");
 
-        if (rolesUsuario != null){
+        if (rolesUsuario == null || rolesUsuario.isEmpty())  return;
 
+        if (rolesUsuario.get(0).contains("HUMANO")) {
 
-
-        if(rolesUsuario.get(0).contains("HUMANO")){
-            ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario).get();
+            ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class)
+                    .buscarPorIdUsuario(idUsuario).get();
 
             model.put("contactos", humano.getMediosDeContacto());
-        }else if(rolesUsuario.get(0).contains("JURIDICA")){
-            Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario).get();
+        } else if (rolesUsuario.get(0).contains("JURIDICA")) {
+
+            Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class)
+                    .buscarPorIdUsuario(idUsuario).get();
 
             model.put("contactos", juridica.getMediosDeContacto());
         }
-        }
-
-
-        model.put("heladeras", dtos);
-        model.put("titulo", "Heladeras");
-        model.put("permisoSuscripcion", permisoSuscripcion);
-
-        context.render("heladeras/mapa-de-heladeras-user.hbs", model);
     }
 
     public void create(Context context) {
@@ -438,10 +498,20 @@ public class HeladerasController {
     public void suscripcionView(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Suscripción");
+        // Añadir la lógica de medios de contacto a un método separado
+        agregarContactosUsuarioAlModelo(model, ctx);
 
         String idParam = ctx.pathParam("id");
-        Long id = Long.parseLong(idParam);
-        Optional<Heladera> buscada = heladeras.buscarPorId(id);
+        Long usuarioId = ctx.sessionAttribute("id");
+        Long heladeraId = Long.parseLong(idParam);
+        Optional<SuscripcionAHeladera> suscripcionYaExistente = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioIdYHeladeraId(usuarioId,heladeraId);
+        if (suscripcionYaExistente.isPresent()) {
+            // Si la suscripción ya existe, redirigir a una página de error o mostrar mensaje
+            ctx.render("/404.hbs");
+            return;
+        }
+
+        Optional<Heladera> buscada = heladeras.buscarPorId(heladeraId);
         if (buscada.isPresent()) {
             Heladera h = buscada.get();
             HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);

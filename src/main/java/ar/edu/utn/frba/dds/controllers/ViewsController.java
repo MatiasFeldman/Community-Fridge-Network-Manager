@@ -26,7 +26,6 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Inicio");
 
-        System.out.println(model.get("titulo"));
         ctx.render("landing.hbs", model);
     }
 

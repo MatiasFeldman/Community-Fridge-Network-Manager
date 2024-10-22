@@ -10,12 +10,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         const userRole = {{permisoSuscripcion}};
-        const heladeras = {{{json heladeras}}};
-        const contactosGuardados = {{{json contactos}}};
-        console.log(heladeras);
         const permisoSuscripcion = {{permisoSuscripcion}};
-        console.log({{permisoSuscripcion}});
-
     </script>
     <script src="../js/gestion-heladeras-user.js"></script>
 
@@ -23,59 +18,47 @@
 
 {{#partial "contenido"}}
     <div class="w-100">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Heladeras</li>
+            </ol>
+        </nav>
         <h1 class="display-4 text-center mb-5">Gestión de Heladeras</h1>
-
         <div class="filter-container">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="collapse"
                     data-bs-target="#filter-options" aria-expanded="false" aria-controls="filter-options">
                 <img src="../imagenes/filtro.png" alt="Filtrar" class="filter-icon"> Filtrar
             </button>
             <div class="collapse" id="filter-options">
-                <form id="filter-form">
-                    <!-- Filtro por estado -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="filtro-activo" value="activo">
-                        <label class="form-check-label" for="filtro-activo">Heladeras Activas</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="filtro-inactivo" value="inactivo">
-                        <label class="form-check-label" for="filtro-inactivo">Heladeras Inactivas</label>
-                    </div>
+                <form id="filter-form" method="POST" action="/heladeras/filtrar/estado">
+                    <!-- Filtro por estado (agrupado) -->
+                    <div>
+                        <input type="checkbox" name="activo" id="filtro-activo" value="activo">
+                        <label for="filtro-activo">Heladeras Activas</label>
 
-                    <!-- Filtro dentro de las heladeras inactivas -->
-                    <div class="sub-filtro" id="filtros-inactivos" style="display: none;">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="filtro-falla" value="falla">
-                            <label class="form-check-label" for="filtro-falla">Falla Técnica</label>
-                        </div>
-
-                        <!-- Filtros por alertas -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="filtro-alerta" value="alerta">
-                            <label class="form-check-label" for="filtro-alerta">Alertas</label>
-                        </div>
-
-                        <!-- Sub-filtros de alertas -->
-                        <div class="sub-filtro" id="filtros-alerta" style="display: none;">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="filtro-temperatura"
-                                       value="temperatura">
-                                <label class="form-check-label" for="filtro-temperatura">Temperatura</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="filtro-fraude" value="fraude">
-                                <label class="form-check-label" for="filtro-fraude">Fraude</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="filtro-conexion" value="conexion">
-                                <label class="form-check-label" for="filtro-conexion">Falla en la Conexión</label>
-                            </div>
-                        </div>
+                        <input type="checkbox" name="inactivo" id="filtro-inactivo" value="inactivo">
+                        <label for="filtro-inactivo">Heladeras Inactivas</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
+                    <button type="submit">Aplicar Filtro</button>
                 </form>
+
             </div>
+            <form id="form-busqueda" class="input-group" method="POST" action="/heladeras/filtrar/busqueda">
+                <select class="form-select rounded-start" name="busqueda" id="busqueda">
+                    <option value="direccion">Buscar por direccion</option>
+                    <option value="comuna">Buscar por departamento/comuna</option>
+                    <option value="todas">Buscar todas</option>
+                </select>
+                <input name="valor" id="input-busqueda" type="text" class="form-control" placeholder="Ingresar...">
+                <button id="boton-buscar" class="boton rounded-end d-flex align-items-center" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                         viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </form>
         </div>
 
         <div class="container-page">
@@ -100,10 +83,17 @@
                                     disponibles: {{this.capacidadActual}}</p>
                                 {{#if permisoSuscripcion}}
                                     <div class="d-flex gap-2">
-                                        <a href="/heladeras/{{this.id}}/suscripcion/nueva" class="boton {{#if
-                                                this.estaSuscrito}}boton-desuscribirse{{else}}suscribirse-btn{{/if}}">
-                                            {{#if this.estaSuscrito}}Desuscribirse{{else}}Suscribirse{{/if}}
-                                        </a>
+                                    {{#if this.estaSuscrito}}
+                                        <form action="/desuscribirse" method="POST">
+                                            <!-- Campo oculto para ID de la heladera -->
+                                            <input type="hidden" name="heladera_id" id="heladeraIdInput" value="{{this.id}}">
+                                            <button class="boton boton-desuscribirse" type="submit">Desuscribirse</button>
+                                        </form>
+                                    {{else}}
+                                            <a href="/heladeras/{{this.id}}/suscripcion/nueva" class="boton suscribirse-btn">
+                                                Suscribirse
+                                            </a>
+                                    {{/if}}
                                         <a class="boton" href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">
                                             Falla técnica
                                         </a>

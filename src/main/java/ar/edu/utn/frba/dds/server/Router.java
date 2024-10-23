@@ -12,29 +12,29 @@ public class Router {
 
         app.get("/colaborar", ViewsController::colaborar, TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
-        app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero, TipoRol.ADMIN, TipoRol.HUMANO, TipoRol.JURIDICA);
+        app.get("/colaborar/donar-dinero", ViewsController::formDonarDinero,TipoRol.HUMANO, TipoRol.JURIDICA);
 
         app.post("/colaborar/donar-dinero", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeDinero(ctx), TipoRol.JURIDICA, TipoRol.HUMANO);
 
-        app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas, TipoRol.ADMIN, TipoRol.HUMANO);
+        app.get("/colaborar/distribuir-viandas", ViewsController::formDistribuirViandas, TipoRol.HUMANO);
 
         app.post("/colaborar/distribuir-viandas", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDistribucionDeViandas(ctx), TipoRol.HUMANO);
 
-        app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas, TipoRol.ADMIN, TipoRol.HUMANO);
+        app.get("/colaborar/donar-viandas", ViewsController::formDonarViandas, TipoRol.HUMANO);
 
         app.post("/colaborar/donar-viandas", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).crearDonacionDeViandas(ctx), TipoRol.HUMANO);
 
-        app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo, TipoRol.ADMIN, TipoRol.JURIDICA);
+        app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo, TipoRol.JURIDICA);
 
         app.post("/colaborar/heladera-a-cargo", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarHeladeraACargo(ctx), TipoRol.JURIDICA);
 
         app.post("/recomendar-puntos", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).recomendarPuntos(ctx), TipoRol.JURIDICA);
 
-        app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.ADMIN, TipoRol.HUMANO);
+        app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.HUMANO);
 
         app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.HUMANO);
 
-        app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.ADMIN, TipoRol.JURIDICA);
+        app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.JURIDICA);
 
         app.post("/colaborar/ofertar", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarOferta(ctx), TipoRol.JURIDICA);
 
@@ -82,25 +82,17 @@ public class Router {
         app.post("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).actualizarHeladera(ctx), TipoRol.ADMIN);
 
 
-        app.get("/heladeras/reportes", ctx -> {
-            String tipo = ctx.queryParam("tipo");
-            if (tipo == null) {
-                ViewsController.reportesHeladerasInicio(ctx);
-            } else if (tipo.equals("todos")) {
-                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeTodos(ctx);
-            } else if (tipo.equals("fallas")) {
-                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeFallas(ctx);
-            } else if (tipo.equals("donaciones")) {
-                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeViandasDonadas(ctx);
-            } else if (tipo.equals("movimiento")) {
-                ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);
-            }
-        }, TipoRol.ADMIN);
+        app.get("/heladeras/reportes", ViewsController::reportesHeladerasInicio, TipoRol.ADMIN);
+        app.get("/heladeras/reportes/todos/download",ctx -> {ServiceLocator.instanceOf(ReportesController.class).generarReporteDeTodos(ctx);}, TipoRol.ADMIN);
+        app.get("/heladeras/reportes/fallas/download",ctx -> {ServiceLocator.instanceOf(ReportesController.class).generarReporteDeFallas(ctx);}, TipoRol.ADMIN);
+        app.get("/heladeras/reportes/donaciones/download",ctx -> {ServiceLocator.instanceOf(ReportesController.class).generarReporteDeViandasDonadas(ctx);}, TipoRol.ADMIN);
+        app.get("/heladeras/reportes/movimiento/download",ctx -> {ServiceLocator.instanceOf(ReportesController.class).generarReporteDeMovimientoViandas(ctx);}, TipoRol.ADMIN);
 
 
-        app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva, TipoRol.ADMIN, TipoRol.HUMANO);
 
-        app.post("/colaborar/carga-csv", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx),TipoRol.HUMANO);
+        app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva, TipoRol.ADMIN);
+
+        app.post("/colaborar/carga-csv", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx),TipoRol.ADMIN);
 
         app.get("/login", ViewsController::formLogin);
         app.post("/login", ctx -> ServiceLocator.instanceOf(UsuariosController.class).handleLogin(ctx));

@@ -9,6 +9,8 @@ import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Helper;
+import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
@@ -61,6 +63,28 @@ public class Server {
                     } catch (Exception e) {
                         e.printStackTrace();
                         return "{}"; // Retornar JSON vacío en caso de error
+                    }
+                });
+
+                // Registrar el helper 'or'
+                handlebars.registerHelper("or", (value, options) -> {
+                    for (int i = 0; i < options.params.length; i++) {
+                        if (value != null && value.equals(options.params[i])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                // Registrar el helper 'isEqual'
+                handlebars.registerHelper("isEqual", new Helper<Object>() {
+                    @Override
+                    public Object apply(Object value1, Options options) throws IOException {
+                        Object value2 = options.param(0); // Primer parámetro adicional del helper
+                        if (value1 != null && value2 != null) {
+                            return value1.toString().equals(value2.toString());
+                        }
+                        return false; // Retorna false si alguno de los valores es nulo
                     }
                 });
 

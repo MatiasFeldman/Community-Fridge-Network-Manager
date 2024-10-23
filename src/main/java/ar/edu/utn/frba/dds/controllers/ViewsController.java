@@ -31,7 +31,10 @@ public class ViewsController {
 
     public static void colaborar(Context ctx) {
         Map<String, Object> model = new HashMap<>();
+        List<String> rolesUsuario = ctx.sessionAttribute("roles");
+        String roleUsuario = rolesUsuario.get(0);
         model.put("titulo", "Colaborar");
+        model.put("rol", roleUsuario);
 
         ctx.render("colaborar.hbs", model);
     }

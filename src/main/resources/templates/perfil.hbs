@@ -78,7 +78,7 @@
                     <button type="submit" class="boton fw-bold w-100">Cerrar sesión</button>
                 </form>
 
-                <button data-id="{{id}}" class="boton fw-bold w-100" id="guardar">Guardar cambios</button>
+    {{#if esAdmin}} {{else}} <button data-id="{{id}}" class="boton fw-bold w-100" id="guardar">Guardar cambios</button>{{/if}}
             </div>
         </div>
     </div>

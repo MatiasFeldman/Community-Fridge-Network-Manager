@@ -28,13 +28,13 @@
         <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
             <select class="form-control me-2" id="tipoDonacion">
                 <option value="">Seleccione un tipo de donación</option>
-                <option value="/colaborar/donar-dinero">Dinero</option>
-                <option value="/colaborar/donar-viandas">Vianda</option>
-                <option value="/colaborar/distribuir-viandas">Distribucion de vianda</option>
-                <option value="/colaborar/registro-persona-vulnerable">Registro de Vulnerable</option>
-                <option value="/colaborar/heladera-a-cargo">Heladera</option>
-                <option value="/colaborar/ofertar">Oferta</option>
-                <option value="/colaborar/carga-csv">Carga Masiva de Colaboradores</option>
+                {{#if (or rol "JURIDICA" "HUMANO")}}<option value="/colaborar/donar-dinero">Dinero</option>{{/if}}
+                {{#if (isEqual rol "HUMANO")}}<option value="/colaborar/donar-viandas">Vianda</option>{{/if}}
+                {{#if (isEqual rol "HUMANO")}}<option value="/colaborar/distribuir-viandas">Distribucion de vianda</option>{{/if}}
+                {{#if (isEqual rol "JURIDICA")}}<option value="/colaborar/registro-persona-vulnerable">Registro de Vulnerable</option>{{/if}}
+                {{#if (isEqual rol "JURIDICA")}}<option value="/colaborar/heladera-a-cargo">Heladera</option>{{/if}}
+                {{#if (isEqual rol "JURIDICA")}}<option value="/colaborar/ofertar">Oferta</option>{{/if}}
+                {{#if (isEqual rol "ADMIN")}}<option value="/colaborar/carga-csv">Carga Masiva de Colaboradores</option>{{/if}}
             </select>
             <button class="boton" id="siguiente-btn">Siguiente</button>
         </div>

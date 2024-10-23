@@ -1,18 +1,21 @@
 {{#partial "styles"}}
-    <script src="../js/reportes.js"></script>
+
 {{/partial}}
 
 {{#partial "contenido"}}
     <div>
         <h1 class="display-4 text-center text-dark fw-bold">Reportes</h1>
-        <h3 class="text-center text-dark fw-semibold mb-3">Seleccione el tipo de reporte que desea ver</h3>
+        <h3 class="text-center text-dark fw-semibold mb-3">Seleccione el tipo de reporte que desea descargar</h3>
         <div class="d-flex gap-3">
-            <button id="fallas" class="boton fw-bold w-100">Cantidad de fallas de una heladera</button>
-            <button id="movimiento" class="boton fw-bold w-100">Cantidad de viandas ingresadas y retiradas por
-                heladera
-            </button>
-            <button id="donaciones" class="boton fw-bold w-100">Cantidad de viandas donadas por usuario</button>
-            <button id="todos" class="boton fw-bold w-100">Todos los reportes</button>
+            <a id="fallas" class="boton fw-bold w-100" href="/heladeras/reportes/fallas/download" target="_blank">Cantidad de fallas de una heladera</a>
+
+            <a id="movimiento" class="boton fw-bold w-100" href="/heladeras/reportes/movimiento/download" target="_blank">Cantidad de viandas ingresadas y retiradas por
+                heladera</a>
+
+            <a id="donaciones" class="boton fw-bold w-100" href="/heladeras/reportes/donaciones/download" target="_blank">Cantidad de viandas donadas por usuario</a>
+
+            <a id="todos" class="boton fw-bold w-100" href="/heladeras/reportes/todos/download" target="_blank">Todos los reportes</a>
+
         </div>
     </div>
 {{/partial}}

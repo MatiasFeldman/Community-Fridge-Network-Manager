@@ -82,10 +82,12 @@ public class UsuariosController {
             model.put("titulo", "Perfil");
             model.put("roles", roles);
             model.put("id", id);
+
             model.put("usuario", usuario.get().getUser());
 
-
-            if (roles.contains("HUMANO")) {
+            if (roles.contains("ADMIN")) {
+                model.put("esAdmin", true);
+            }else if (roles.contains("HUMANO")) {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
                 HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
                 model.put("puntos", humano.calcularPuntaje());

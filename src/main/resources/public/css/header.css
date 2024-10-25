@@ -79,13 +79,32 @@ main{
     display: none;
 }
 
-
-.profile img {
-    width: 75px;
-    height: 45px;
+.user-logout-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 15px;
+}
+.logout{
+    padding-top: 7px;
+}
+.profile {
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     cursor: pointer;
 }
+.image-logout {
+    width: 40px;  /* Ajusta al mismo tamaño que el ícono de perfil */
+    height: 40px;  /* Mantiene la proporción */
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;  /* Alinea verticalmente con otros elementos */
+}
+#profile-icon {
+    margin-right: 10px;  /* Espacio entre el ícono del perfil y el botón de logout */
+}
+
 
 .dropdown {
     position: relative;

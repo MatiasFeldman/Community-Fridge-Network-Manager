@@ -44,30 +44,30 @@
             </li>
         </ul>
     </nav>
-    {{#if isLoggedIn}}
-            <!-- Usuario logueado: Mostrar dropdown de perfil -->
-        <div class="dropdown mt-3 d-flex align-items-center">
-            <!-- Imagen y nombre que activan el dropdown -->
-            <a href="#" id="dropdownMenuLink" class="dropdown-toggle d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="https://via.placeholder.com/40" alt="Perfil">
-                <span>{{userName}}</span>
-            </a>
-            <!-- Menú del dropdown -->
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="/perfil">Perfil</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/logout">Cerrar sesión</a>
+    {{#if rolUsuario}}
+        <div class="user-logout-container">
+            {{#if (isEqual rolUsuario "ADMIN")}}{{else}}<div class="dropdown">
+        <div type="button" data-bs-toggle="dropdown" aria-expanded="false">{{/if}}
+                    <img src="{{fotoUsuario}}" alt="Perfil" class="profile">
+                    <span>{{nombreUsuario}}</span>
+            {{#if (isEqual rolUsuario "ADMIN")}}{{else}}
+                </div>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                </ul>
             </div>
+            {{/if}}
+            <form id="form-imagen" action="/logout" method="POST" class="logout">
+                <button type="submit" style="border: none; background: none; padding: 0;">
+                    <img class="image-logout" src="imagenes/logout.png" alt="Logout" style="cursor: pointer; width: 30px; height:30px; display: block;">
+                </button>
+            </form>
         </div>
+
     {{else}}
     <div class="profile ms-3 d-flex align-items-center position-relative">
         <a class="nav-link text-dark" href="/perfil" id="profile-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                 class="bi bi-person-circle" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                <path fill-rule="evenodd"
-                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-            </svg>
+            <img src="imagenes/user.png" alt="Perfil" class="profile">
         </a>
     </div>
     {{/if}}

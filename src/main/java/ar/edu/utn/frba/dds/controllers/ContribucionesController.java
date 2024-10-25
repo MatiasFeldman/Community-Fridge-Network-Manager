@@ -33,6 +33,7 @@ import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRe
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
@@ -94,7 +95,7 @@ public class ContribucionesController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void crearDistribucionDeViandas(Context ctx) {
@@ -167,7 +168,7 @@ public class ContribucionesController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void crearDonacionDeDinero(Context ctx) {
@@ -248,7 +249,7 @@ public class ContribucionesController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarPersonaVulnerable(Context ctx) {
@@ -326,7 +327,7 @@ public class ContribucionesController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarHeladeraACargo(Context ctx) {
@@ -397,7 +398,7 @@ public class ContribucionesController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarOferta(Context ctx) {
@@ -451,7 +452,7 @@ public class ContribucionesController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void cargaMasiva(Context ctx){
@@ -466,7 +467,7 @@ public class ContribucionesController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
 
         // todo: suma puntaje??
     }

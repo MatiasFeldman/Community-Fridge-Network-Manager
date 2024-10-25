@@ -1,6 +1,5 @@
 {{#partial "styles"}}
     <link rel="stylesheet" href="/css/perfil.css">
-    <script src="/js/perfil.js" defer></script>
 {{/partial}}
 
 {{#partial "contenido"}}
@@ -8,78 +7,82 @@
         <div class="d-flex justify-content-center flex-column gap-3">
             <h1 class="text-dark fw-bold fs-1 text-center">Perfil</h1>
             <picture class="w-100 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="dark"
-                     class="bi bi-person-circle text-center" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                    <path fill-rule="evenodd"
-                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                </svg>
+                <img src="{{fotoUsuario}}" alt="Perfil" class="profile2">
             </picture>
             <div class="d-flex flex-row gap-2 justify-content-center align-items-center">
                 {{#each roles}}
                     <p class="p-2 fs-6 rol" data-rol-nombre="{{this}}" id="{{this}}">{{this}}</p>
                 {{/each}}
             </div>
-            <p class="text-dark mb-1 text-center fs-2 fw-semibold">{{usuario}} - Id: {{id}} - Puntos disponibles: {{puntos}}</p>
-            <div class="campos-usuario">
-                {{#each humano.atributos}}
-                    <div class="form-group">
-                        <label class="text-dark" for="{{this.nombre}}">{{this.nombre}}</label>
-                        <input id="{{this.nombre}}" name="{{this.nombre}}" type="{{this.tipo}}" value="{{this.valor}}"
-                               placeholder="{{this.valor}}" {{#if this.constante}}disabled="disabled"{{/if}}>
-                    </div>
-                {{/each}}
-                {{#if esJuridica}}
-                    <div class="form-group">
-                        <label class="text-dark" for="razon-social">Razón Social</label>
-                        <input id="razon-social" name="razon-social" type="text" value="{{juridica.razonSocial}}"
-                               placeholder="{{juridica.razonSocial}}" disabled="disabled">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="tipo">Tipo</label>
-                        <input id="tipo" name="tipo" type="text" value="{{juridica.tipo}}" placeholder="{{juridica.tipo}}"
-                               disabled="disabled">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="rubro">Rubro</label>
-                        <input id="rubro" name="rubro" type="text" value="{{juridica.rubro}}"
-                               placeholder="{{juridica.rubro}}" disabled="disabled">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="direccion">Direccion</label>
-                        <input id="Direccion" name="direccion" type="text" value="{{juridica.direccion}}"
-                               placeholder="{{juridica.rubro}}">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="provincia">Provincia</label>
-                        <input id="Provincia" name="provincia" type="text" value="{{juridica.provincia}}"
-                               placeholder="{{juridica.provincia}}">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="mail">Mail</label>
-                        <input id="Mail" name="mail" type="email" value="{{juridica.mail}}"
-                               placeholder="{{juridica.mail}}">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="telegram">Telegram</label>
-                        <input id="Telegram" name="telegram" type="tel" value="{{juridica.telegram}}"
-                               placeholder="{{juridica.telegram}}">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-dark" for="whatsapp">Whatsapp</label>
-                        <input id="WhatsApp" name="whatsapp" type="tel" value="{{juridica.whatsapp}}"
-                               placeholder="{{juridica.whatsapp}}">
-                    </div>
+            <div>
+                <p class="text-dark mb-1 text-center fs-2 fw-semibold">{{usuario}} - Id: {{id}} - Puntos disponibles: {{puntos}}</p>
+                <form action="/perfil" method="POST" enctype="multipart/form-data" >
+                    <div class="campos-usuario">
+                        {{#each humano}}
+                            <div class="form-group">
+                                <label class="text-dark" for="{{this.atributo.nombre}}">{{this.atributo.nombre}}</label>
+                                <input id="{{this.atributo.nombre}}" name="{{this.atributo.nombre}}" type="{{this.atributo.tipo}}" value="{{this.valor}}"
+                                       placeholder="{{this.valor}}" >
+                            </div>
+                        {{/each}}
+                        {{#if esJuridica}}
+                            <div class="form-group">
+                                <label class="text-dark" for="razon-social">Razón Social</label>
+                                <input id="razon-social" name="razon-social" type="text" value="{{juridica.razonSocial}}"
+                                       placeholder="{{juridica.razonSocial}}" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="tipo">Tipo</label>
+                                <input id="tipo" name="tipo" type="text" value="{{juridica.tipo}}" placeholder="{{juridica.tipo}}"
+                                       disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="rubro">Rubro</label>
+                                <input id="rubro" name="rubro" type="text" value="{{juridica.rubro}}"
+                                       placeholder="{{juridica.rubro}}" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="direccion">Direccion</label>
+                                <input id="Direccion" name="direccion" type="text" value="{{juridica.direccion}}"
+                                       placeholder="{{juridica.rubro}}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="provincia">Provincia</label>
+                                <input id="Provincia" name="provincia" type="text" value="{{juridica.provincia}}"
+                                       placeholder="{{juridica.provincia}}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="mail">Mail</label>
+                                <input id="Mail" name="mail" type="email" value="{{juridica.mail}}"
+                                       placeholder="{{juridica.mail}}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="telegram">Telegram</label>
+                                <input id="Telegram" name="telegram" type="tel" value="{{juridica.telegram}}"
+                                       placeholder="{{juridica.telegram}}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-dark" for="whatsapp">Whatsapp</label>
+                                <input id="WhatsApp" name="whatsapp" type="tel" value="{{juridica.whatsapp}}"
+                                       placeholder="{{juridica.whatsapp}}">
+                            </div>
 
-                {{/if}}
-            </div>
-            <div class="d-flex mt-3 justify-content-center align-items-center gap-3">
-                <form method="POST" action="/logout" style="width: 100%;">
-                    <button type="submit" class="boton fw-bold w-100">Cerrar sesión</button>
+                        {{/if}}
+
+
+                        {{#if esAdmin}} {{else}}
+                            <div class="form-group">
+                                <label class="text-dark" for="profilePicture">Sube tu foto de perfil:</label>
+                                <input type="file" id="profilePicture" name="imagen" accept="image/*">
+                            </div>
+                        {{/if}}
+                    </div>
+                    {{#if esAdmin}} {{else}}
+                        <button type="submit" data-id="{{id}}" class="boton fw-bold w-100" id="guardar">Guardar cambios</button>
+                    {{/if}}
                 </form>
-
-    {{#if esAdmin}} {{else}} <button data-id="{{id}}" class="boton fw-bold w-100" id="guardar">Guardar cambios</button>{{/if}}
             </div>
+
         </div>
     </div>
 {{/partial}}

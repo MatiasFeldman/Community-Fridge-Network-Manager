@@ -16,7 +16,7 @@ public class SuscripcionesFactory {
     public static void crearSuscripcion(ColaboradorHumano colaboradorHumano, Heladera heladera, JsonNode suscripcionNode, String medioDeContacto){
         TIPOSUSCRIPCION tipo = TIPOSUSCRIPCION.valueOf(suscripcionNode.get("tipo").asText());
         Integer cantidad = suscripcionNode.get("cantidad").asInt();
-        String valorMedioDeContacto = colaboradorHumano.getMedioDeContacto(medioDeContacto);
+        String valorMedioDeContacto = colaboradorHumano.getMedioDeContacto(medioDeContacto).get().getNombreAtributo();
 
         if (medioDeContacto == null){
             throw new IllegalArgumentException("Medio de contacto no valido");

@@ -44,7 +44,7 @@ public class RegisterCargaMasiva {
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
-        ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, mediosDeContacto, userCreado);
+        ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, userCreado);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
@@ -61,8 +61,8 @@ public class RegisterCargaMasiva {
         return new Usuario(username, password, new ArrayList<>(List.of(TipoRol.HUMANO)));
     }
 
-    public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Contacto> contactos, Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios, contactos ,opcionales, userCreado, null);
+    public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, Usuario userCreado){
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales, userCreado, null);
         return HumanoFactory.crear(dto);
     }
 

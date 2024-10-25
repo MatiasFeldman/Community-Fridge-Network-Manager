@@ -27,7 +27,7 @@ public class HumanoOutputDTO {
         List<AtributoHumanoRespondido> atributosRespondidos = new ArrayList<>(h.getAtributosObligatorios());
         atributosRespondidos.addAll(h.getAtributosOpcionales());
 
-        List<AtributoHumanoRespondido> atributosAMostrar = AtributosFaltantes.todosLosAtributosDe(atributosRespondidos);
+        List<AtributoHumanoRespondido> atributosAMostrar = h.getAtributosIncompletos();
 
         List<AtributoRespondidoOutputDTO> atributos_dto = new ArrayList<>();
         for (AtributoHumanoRespondido a : atributosAMostrar) {
@@ -49,6 +49,7 @@ public class HumanoOutputDTO {
                     }
                     atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
                     break;
+                    /*
                 case "WhatsApp":
                     if (h.tieneMedioDeContacto("WhatsApp")) {
                         a.setValor(h.getMedioDeContacto("WhatsApp"));
@@ -67,6 +68,7 @@ public class HumanoOutputDTO {
                     }
                     atributos_dto.add(AtributoRespondidoOutputDTO.of(a, false));
                     break;
+                    */
                 default:
                     atributos_dto.add(AtributoRespondidoOutputDTO.of(a, true));
             }
@@ -76,7 +78,6 @@ public class HumanoOutputDTO {
         return HumanoOutputDTO
                 .builder()
                 .atributos(atributos_dto)
-                .mediosDeContacto(h.getMediosDeContacto())
                 .direccion(h.getDireccion() == null ? "" : h.getDireccion().getDireccion())
                 .build();
 

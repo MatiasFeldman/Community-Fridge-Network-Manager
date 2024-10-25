@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -110,6 +111,6 @@ public class ReportesController {
         Optional<Heladera> buscada = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(id);
         List<Incidente> incidentes= ServiceLocator.instanceOf(IncidentesRepository.class).buscarTodosPorHeladera(buscada.get());
         model.put("incidentes",incidentes);
-        ctx.render("heladeras/detalle_alertas.hbs", model);
+        RenderUtils.renderizar(ctx,"heladeras/detalle_alertas.hbs", model);
     }
 }

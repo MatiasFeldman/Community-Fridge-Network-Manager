@@ -30,6 +30,9 @@ public class Usuario extends Persistente {
     private String user;
     @Column(name = "contrasenia", nullable = false)
     private String password;
+    @Column(name = "foto", nullable = false)
+    private String foto;
+
 
     @ElementCollection(targetClass = TipoRol.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING) // Indica que el enum se almacenará como una cadena
@@ -45,6 +48,7 @@ public class Usuario extends Persistente {
     public Usuario(String user, String password, List<TipoRol> roles) {
             this.user = user;
             this.password = password;
+            this.foto = "imagenes/user.png";
             this.roles = roles;
             this.strategiaDeEnvio = null;
     }
@@ -53,6 +57,7 @@ public class Usuario extends Persistente {
     public Usuario(String user, String password) {
         this.user = user;
         this.password = password;
+        this.foto = "imagenes/user.png";
         this.roles = new ArrayList<>();
         this.strategiaDeEnvio = null;
     }

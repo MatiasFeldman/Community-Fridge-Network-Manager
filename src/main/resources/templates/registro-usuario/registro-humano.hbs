@@ -7,7 +7,7 @@
     <div class="form-colaboradorHumano">
         <div class="form-container">
             <h2>Registro de Usuario - Humano</h2>
-            <form id="form-colaboradorHumano" class="gap-3 my-3" method="POST" action="/registrar/humano">
+            <form id="form-colaboradorHumano" class="gap-3 my-3" method="POST" action="/registro/humano">
                 <div class="form-group">
                     <label for="user">Usuario</label>
                     <input type="text" id="user" name="user" required="true" placeholder="Ingrese su username">
@@ -25,7 +25,7 @@
                     </div>
                 {{/each}}
 
-            </form>
+
             <p class="mt-1 mb-0 fs-6 fw-bold">
                 Nota: Los campos marcados con * son obligatorios.
             </p>
@@ -33,6 +33,7 @@
                 Nota: Debe ser ingresado al menos un medio de contacto para poder registrarse
             </p>
             <button id="btn-submit-humana" class="boton btn-registro mt-3">Registrarse</button>
+            </form>
         </div>
     </div>
 {{/partial}}

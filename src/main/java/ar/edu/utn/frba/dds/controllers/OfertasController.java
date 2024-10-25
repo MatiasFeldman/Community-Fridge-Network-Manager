@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
 
 import java.util.*;
@@ -83,7 +84,7 @@ public class OfertasController {
         model.put("rubros",rubros);
         model.put("misPuntos",misPuntos);
 
-        ctx.render("colaboraciones/productos.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/productos.hbs", model);
     }
 
     public void showOferta(Context ctx) {
@@ -100,7 +101,7 @@ public class OfertasController {
             model.put("oferta", oferta);
             model.put("titulo",oferta.getNombre());
             model.put("ofertasRestantes",oferta.canjesRestantes());
-            ctx.render("colaboraciones/detalle_oferta.hbs",model);
+            RenderUtils.renderizar(ctx,"colaboraciones/detalle_oferta.hbs",model);
         } else {
             ctx.status(404).result("Oferta no encontrada");
         }

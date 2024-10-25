@@ -139,6 +139,11 @@ public class Initializer {
         Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
         Atributo apellido = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
         Atributo nacimiento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
+        Atributo mail = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
+        Atributo direccion = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Direccion").get();
+        Atributo provincia = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Provincia").get();
+        Atributo wpp = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("WhatsApp").get();
+        Atributo telegram = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Telegram").get();
 
         AtributoHumanoRespondido nombre_respondido1 = new AtributoHumanoRespondido("Pedro", nombre);
         AtributoHumanoRespondido apellido_respondido1 = new AtributoHumanoRespondido("Perez", apellido);
@@ -147,22 +152,26 @@ public class Initializer {
         List<AtributoHumanoRespondido> obligatorios = List.of(nombre_respondido1, apellido_respondido1);
         List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1);
 
-        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, new ArrayList<>(), opcionales, u1, d1);
+        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"), opcionales, u1, d1);
 
         ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
 
         AtributoHumanoRespondido nombre_respondido2 = new AtributoHumanoRespondido("Luquitas", nombre);
         AtributoHumanoRespondido apellido_respondido2 = new AtributoHumanoRespondido("Perez", apellido);
+        AtributoHumanoRespondido email_respondido = new AtributoHumanoRespondido("facu@gmail.com", mail);
         AtributoHumanoRespondido nacimiento_respondido2 = new AtributoHumanoRespondido("1992-01-01", nacimiento);
+        AtributoHumanoRespondido direccion_respondido = new AtributoHumanoRespondido("", direccion);
+        AtributoHumanoRespondido provincia_respondido = new AtributoHumanoRespondido("", provincia);
+        AtributoHumanoRespondido wss_respondido = new AtributoHumanoRespondido("", wpp);
+        AtributoHumanoRespondido telegram_respondido = new AtributoHumanoRespondido("", telegram);
 
-        List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2);
-        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2);
+        List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2,email_respondido);
+        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido);
 
-        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2, new ArrayList<>(), opcionales2, u2, d2);
+        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u2, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
-        c2.setPuntosGanados(2500.0); //funciona :)
-        c2.generarContacto(new Contacto(new TipoContacto("email"),"facu@gmail.com"));
+        c2.setPuntosGanados(2500.0);//funciona :)
         humanos.guardar(c1);
         humanos.guardar(c2);
 

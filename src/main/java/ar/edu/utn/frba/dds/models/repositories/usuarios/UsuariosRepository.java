@@ -20,7 +20,7 @@ public class UsuariosRepository {
         usuarios.eliminar(usuario);
     };
 
-    void modificar(Usuario usuario){
+    public void modificar(Usuario usuario){
         usuarios.modificar(usuario);
     };
 

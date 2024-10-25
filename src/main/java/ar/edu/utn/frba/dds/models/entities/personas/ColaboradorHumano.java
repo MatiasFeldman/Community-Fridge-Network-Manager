@@ -14,6 +14,9 @@ import net.bytebuddy.implementation.bind.annotation.Super;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.*;
 
@@ -42,9 +45,8 @@ public class ColaboradorHumano extends Persistente {
     @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_contacto")
-    private List<Contacto> mediosDeContacto;
+    @ElementCollection
+    private List<String> nombresMediosDeContacto = new ArrayList<>();
 
     @Embedded
     private Direccion direccion;
@@ -66,7 +68,7 @@ public class ColaboradorHumano extends Persistente {
                 .builder()
                 .atributosObligatorios(dto.getAtributosObligatorios())
                 .atributosOpcionales(dto.getAtributosOpcionales())
-                .mediosDeContacto(dto.getMediosDeContacto())
+                .nombresMediosDeContacto(dto.getNombresMediosDeContacto())
                 .direccion(dto.getDireccion())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
@@ -74,9 +76,27 @@ public class ColaboradorHumano extends Persistente {
                 .build();
     }
 
-    public void generarContacto(Contacto contacto) {
-        this.mediosDeContacto.add(contacto);
+    public List<AtributoHumanoRespondido> getAllAtributos() {
+        return Stream.concat(atributosObligatorios.stream(), atributosOpcionales.stream())
+                .collect(Collectors.toList());
     }
+
+    public void generarContacto(String medioDeContacto) {
+        boolean yaExiste = nombresMediosDeContacto.stream()
+                .anyMatch(medio -> medio.equalsIgnoreCase(medioDeContacto));
+        if (!yaExiste) {
+            nombresMediosDeContacto.add(medioDeContacto);
+        }
+    }
+    public void actualizarMedioDeContacto(String tipoMedioContacto, String nuevoValor) {
+        Optional<AtributoHumanoRespondido> medioContacto = getMedioDeContacto(tipoMedioContacto);
+        if (medioContacto.isPresent()) {
+            medioContacto.get().setValor(nuevoValor);
+        } else {
+            System.out.println("El medio de contacto '" + tipoMedioContacto + "' no fue encontrado.");
+        }
+    }
+
 
     public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor, TipoCampoAtributo tipoCampo) {
         if (tipo == TipoAtributo.OBLIGATORIO) {
@@ -116,19 +136,34 @@ public class ColaboradorHumano extends Persistente {
         return this.user.getUser();
     }
 
-    public String getMedioDeContacto(String medio) {
-        return this.tieneMedioDeContacto(medio) ? this.mediosDeContacto
-                .stream()
-                .filter(contacto -> contacto.getTipoContacto().getNombre().equals(medio))
-                .findFirst()
-                .get()
-                .getValorContacto() : "";
+    public List<AtributoHumanoRespondido> getMediosDeContacto() {
+        return Stream.concat(atributosObligatorios.stream(), atributosOpcionales.stream())
+                .filter(atributo -> nombresMediosDeContacto.contains(atributo.getNombreAtributo())) // Filtrar solo los que son medios de contacto
+                .collect(Collectors.toList());
+    }
+
+    public Optional<AtributoHumanoRespondido> getMedioDeContacto(String nombreContacto) {
+        return Stream.concat(atributosObligatorios.stream(), atributosOpcionales.stream())
+                .filter(atributo -> atributo.getNombreAtributo().equalsIgnoreCase(nombreContacto)) // Buscar el contacto sin importar mayúsculas/minúsculas
+                .findFirst(); // Devolver el primero que coincida (o vacío si no encuentra ninguno)
     }
 
     public Boolean tieneMedioDeContacto(String medio) {
-        return this.mediosDeContacto
+        return this.nombresMediosDeContacto
                 .stream()
-                .anyMatch(contacto -> contacto.getTipoContacto().getNombre().equals(medio));
+                .anyMatch(contacto -> contacto.equalsIgnoreCase(medio));
+    }
+
+    public List<AtributoHumanoRespondido> getAtributosCompletos() {
+        return Stream.concat(this.atributosObligatorios.stream(), this.atributosOpcionales.stream())
+                .filter(AtributoHumanoRespondido::completo)
+                .collect(Collectors.toList());
+    }
+
+    public List<AtributoHumanoRespondido> getAtributosIncompletos() {
+        return Stream.concat(this.atributosObligatorios.stream(), this.atributosOpcionales.stream())
+                .filter(atributo -> !atributo.completo())
+                .collect(Collectors.toList());
     }
 
     public Long getIdUsuario() {
@@ -140,7 +175,7 @@ public class ColaboradorHumano extends Persistente {
                 .builder()
                 .atributosObligatorios(new ArrayList<>())
                 .atributosOpcionales(new ArrayList<>())
-                .mediosDeContacto(new ArrayList<>())
+                .nombresMediosDeContacto(new ArrayList<>())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
                 .build();

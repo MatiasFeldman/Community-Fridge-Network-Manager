@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 public class HumanoInputDTO {
     private List<AtributoHumanoRespondido> atributosObligatorios;
-    private List<Contacto> mediosDeContacto;
+    private List<String> nombresMediosDeContacto;
     private List<AtributoHumanoRespondido> atributosOpcionales;
     private Usuario user;
     private Direccion direccion;
@@ -31,33 +31,19 @@ public class HumanoInputDTO {
         HumanoInputDTO dto = new HumanoInputDTO();
         dto.atributosObligatorios = new ArrayList<>();
         dto.atributosOpcionales = new ArrayList<>();
-        dto.mediosDeContacto = new ArrayList<>();
+        dto.nombresMediosDeContacto = new ArrayList<>();
+        dto.nombresMediosDeContacto.add("Mail");
+        dto.nombresMediosDeContacto.add("WhatsApp");
+        dto.nombresMediosDeContacto.add("Telegram");
         dto.direccion = null;
         dto.user = new Usuario(username, password, List.of(TipoRol.HUMANO));
 
         for (AtributoHumanoRespondido atributo : atributos) {
-            if (atributo.getNombreAtributo().equalsIgnoreCase("whatsapp")) {
-                if (!atributo.getValor().isEmpty()) {
-                    Contacto contacto = Contacto.of("WhatsApp", atributo.getValor());
-                    dto.mediosDeContacto.add(contacto);
-                }
-            } else if (atributo.getNombreAtributo().equalsIgnoreCase("mail")) {
-                if (!atributo.getValor().isEmpty()) {
-                    Contacto contacto = Contacto.of("Mail", atributo.getValor());
-                    dto.mediosDeContacto.add(contacto);
-                }
-            } else if (atributo.getNombreAtributo().equalsIgnoreCase("telegram")) {
-                if (!atributo.getValor().isEmpty()) {
-                    Contacto contacto = Contacto.of("Telegram", atributo.getValor());
-                    dto.mediosDeContacto.add(contacto);
-                }
-            } else {
                 if (atributo.getAtributo().getTipo() == TipoAtributo.OBLIGATORIO) {
                     dto.atributosObligatorios.add(atributo);
                 } else {
                     dto.atributosOpcionales.add(atributo);
                 }
-            }
         }
         return dto;
     }

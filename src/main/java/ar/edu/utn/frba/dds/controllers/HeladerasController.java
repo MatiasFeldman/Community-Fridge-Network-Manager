@@ -28,6 +28,7 @@ import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesReposi
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,36 +127,36 @@ public class HeladerasController {
         intentos.guardar(intento);
     }
 
-    public void mostrarHeladeras(Context context) {
-        List<Heladera> heladeras = obtenerHeladerasFiltradas(context);  // Mover la lógica de filtrado a un método separado
+    public void mostrarHeladeras(Context ctx) {
+        List<Heladera> heladeras = obtenerHeladerasFiltradas(ctx);  // Mover la lógica de filtrado a un método separado
 
-        List<HeladeraOutputDTO> dtos = generarDTOsDeHeladeras(heladeras, context);
+        List<HeladeraOutputDTO> dtos = generarDTOsDeHeladeras(heladeras, ctx);
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", dtos);
         model.put("titulo", "Heladeras");
 
-        boolean permisoSuscripcion = verificarPermisoSuscripcion(context);
+        boolean permisoSuscripcion = verificarPermisoSuscripcion(ctx);
         model.put("permisoSuscripcion", permisoSuscripcion);
 
-        context.render("heladeras/mapa-de-heladeras-user.hbs", model);
+        RenderUtils.renderizar(ctx,"heladeras/mapa-de-heladeras-user.hbs", model);
     }
 
-    private List<Heladera> obtenerHeladerasFiltradas(Context context) {
+    private List<Heladera> obtenerHeladerasFiltradas(Context ctx) {
         List<Heladera> heladeras;
 
         // Verificar si es una solicitud POST con filtros
-        if ("POST".equalsIgnoreCase(String.valueOf(context.method()))) {
-            String filtroActivo = context.formParam("activo");
-            String filtroInactivo = context.formParam("inactivo");
+        if ("POST".equalsIgnoreCase(String.valueOf(ctx.method()))) {
+            String filtroActivo = ctx.formParam("activo");
+            String filtroInactivo = ctx.formParam("inactivo");
             List<Heladera> todasHeladeras = this.heladeras.buscarTodos();
 
             // Filtrar según los parámetros
             heladeras = filtrarPorEstado(todasHeladeras, filtroActivo, filtroInactivo);
 
             // Aplicar otros tipos de búsqueda
-            String tipoBusqueda = context.formParam("busqueda");
-            String valorBusqueda = context.formParam("valor");
+            String tipoBusqueda = ctx.formParam("busqueda");
+            String valorBusqueda = ctx.formParam("valor");
 
             heladeras = buscarPorTipo(heladeras, tipoBusqueda, valorBusqueda);
         } else {
@@ -193,9 +194,9 @@ public class HeladerasController {
         };
     }
 
-    private List<HeladeraOutputDTO> generarDTOsDeHeladeras(List<Heladera> heladeras, Context context) {
+    private List<HeladeraOutputDTO> generarDTOsDeHeladeras(List<Heladera> heladeras, Context ctx) {
         List<SuscripcionAHeladera> suscripciones = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarTodos();
-        Long idUsuario = context.sessionAttribute("id");
+        Long idUsuario = ctx.sessionAttribute("id");
 
         List<SuscripcionAHeladera> suscripcionesUsuario = suscripciones.stream()
                 .filter(s -> s.getObserverSuscripcion().getId().equals(idUsuario))
@@ -210,17 +211,17 @@ public class HeladerasController {
         }).collect(Collectors.toList());
     }
 
-    private boolean verificarPermisoSuscripcion(Context context) {
-        List<String> rolesUsuario = context.sessionAttribute("roles");
+    private boolean verificarPermisoSuscripcion(Context ctx) {
+        List<String> rolesUsuario = ctx.sessionAttribute("roles");
         if (rolesUsuario == null || rolesUsuario.isEmpty()) return false;
 
         return rolesUsuario.stream()
                 .anyMatch(rol -> rol.equals("HUMANO") || rol.equals("JURIDICA"));
     }
 
-    private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context context) {
-        List<String> rolesUsuario = context.sessionAttribute("roles");
-        Long idUsuario = context.sessionAttribute("id");
+    private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context ctx) {
+        List<String> rolesUsuario = ctx.sessionAttribute("roles");
+        Long idUsuario = ctx.sessionAttribute("id");
 
         if (rolesUsuario == null || rolesUsuario.isEmpty())  return;
 
@@ -239,11 +240,11 @@ public class HeladerasController {
         }
     }
 
-    public void create(Context context) {
+    public void create(Context ctx) {
 
     }
 
-    public void editarHeladera(Context context) {
+    public void editarHeladera(Context ctx) {
         List<Heladera> heladeras = this.heladeras.buscarTodos();
         List<HeladeraOutputDTO> dtos = new ArrayList<>();
 
@@ -254,7 +255,7 @@ public class HeladerasController {
         Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
         model.put("heladeras", dtos);
 
-        context.render("heladeras/modificacion-heladera.hbs", model);
+        RenderUtils.renderizar(ctx,"heladeras/modificacion-heladera.hbs", model);
     }
 
     @SneakyThrows
@@ -385,7 +386,7 @@ public class HeladerasController {
                 if (rolUsuario.get(0).contains("HUMANO")) {
                      ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId)
                             .orElseThrow(() -> new Exception("Usuario Humano no encontrado"));
-                    humano.generarContacto(new Contacto(new TipoContacto(medioDeNotificacion),nuevoMedioNotificacion));
+                    humano.actualizarMedioDeContacto(medioDeNotificacion,nuevoMedioNotificacion);
                     ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
                 } else if (rolUsuario.get(0).contains("JURIDICA")) {
                      Juridica juridica =  ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId)
@@ -446,14 +447,14 @@ public class HeladerasController {
                     if (cantidad == null) {
                         throw new Exception("Debe especificar la cantidad de viandas disponibles");
                     }
-                    return ViandasDisponibles.of(colaborador.getMedioDeContacto(medioDeNotificacion), cantidad);
+                    return ViandasDisponibles.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo(), cantidad);
                 case "heladera_llena":
                     if (cantidad == null) {
                         throw new Exception("Debe especificar la cantidad de viandas faltantes");
                     }
-                    return HeladeraLlena.of(colaborador.getMedioDeContacto(medioDeNotificacion), cantidad);
+                    return HeladeraLlena.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo(), cantidad);
                 case "sufrio_desperfecto":
-                    return SufrioDesperfecto.of(colaborador.getMedioDeContacto(medioDeNotificacion));
+                    return SufrioDesperfecto.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo());
                 default:
                     throw new Exception("Tipo de suscripción no válido");
             }

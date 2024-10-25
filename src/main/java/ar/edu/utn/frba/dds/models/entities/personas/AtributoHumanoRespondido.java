@@ -40,4 +40,8 @@ public class AtributoHumanoRespondido extends Persistente {
     public String getNombreAtributo() {
         return this.atributo.getNombre();
     }
+
+    public Boolean completo(){
+        return valor != null && !this.valor.isEmpty();
+    }
 }

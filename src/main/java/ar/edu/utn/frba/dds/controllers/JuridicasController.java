@@ -97,6 +97,7 @@ public class JuridicasController {
 
         ServiceLocator.instanceOf(JuridicasRepository.class).guardar(juridica);
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
+        ctx.redirect("/");
 
 
 

@@ -15,6 +15,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.server.Server;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
@@ -43,7 +44,7 @@ public class HumanosController {
         Map<String, Object> model = new HashMap<>();
         model.put("campos", dtos);
 
-        context.render("registro-usuario/registro-humano.hbs", model);
+        RenderUtils.renderizar(context,"registro-usuario/registro-humano.hbs", model);
         System.out.println("Se renderizo el formulario de registro de humano");
     }
 
@@ -56,20 +57,12 @@ public class HumanosController {
         Map<String, Object> model = new HashMap<>();
         model.put("campos", dtos);
 
-        context.render("registro-usuario/modif-registro-humano.hbs", model);
+        RenderUtils.renderizar(context,"registro-usuario/modif-registro-humano.hbs", model);
     }
 
     public void save(Context context){
 
-
-
-        String body = context.body();
-
-        JsonNode json = ConversorJSON.convertir(body);
-
-        System.out.println(body);
-
-        String password = json.get("password").asText();
+        String password = context.formParam("password");
 
         ValidadorDeContrasenias validador = ServiceLocator.instanceOf(ValidadorDeContrasenias.class);
 
@@ -84,7 +77,7 @@ public class HumanosController {
             return;
         }
 
-        String username = json.get("user").asText();
+        String username = context.formParam("user");
 
         if(ValidadorUsernames.existe(username, "Humano")){
             context.status(HttpStatus.BAD_REQUEST);
@@ -96,34 +89,44 @@ public class HumanosController {
             return;
         }
 
-        String nombre = json.get("nombre").asText();
-        String apellido = json.get("apellido").asText();
-        String email = json.get("email").asText();
-        String telegram = json.get("telegram").asText();
-        String whatsapp = json.get("wpp").asText();
-        String direccionForm = json.get("direccion").asText();
-        String provinciaForm = json.get("provincia").asText();
-        String nacimiento = json.get("nacimiento").asText();
+        List<Atributo> atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarTodas();
+        List<AtributoHumanoRespondido> atributosRespondidos = new ArrayList<>();
+        String direccionValor = null;
+        String provinciaValor = null;
 
-        AtributoHumanoRespondido atributoNombre = MapeadorAtributos.mapear(nombre, "nombre");
-        AtributoHumanoRespondido atributoApellido = MapeadorAtributos.mapear(apellido, "apellido");
-        AtributoHumanoRespondido atributoEmail = MapeadorAtributos.mapear(email, "mail");
-        AtributoHumanoRespondido atributoTelegram = MapeadorAtributos.mapear(telegram, "telegram");
-        AtributoHumanoRespondido atributoWhatsapp = MapeadorAtributos.mapear(whatsapp, "whatsapp");
-        AtributoHumanoRespondido atributoNacimiento = MapeadorAtributos.mapear(nacimiento, "nacimiento");
+        for (Atributo atributo : atributos) {
+
+            String nombreAtributo = atributo.getNombre();
+            String valorFormulario = context.formParam(nombreAtributo);
+
+            AtributoHumanoRespondido atributoRespondido = MapeadorAtributos.mapear(valorFormulario, nombreAtributo);
+            atributosRespondidos.add(atributoRespondido);
+
+            if ("direccion".equalsIgnoreCase(nombreAtributo)) {
+                direccionValor = valorFormulario;
+            }
+            if ("provincia".equalsIgnoreCase(nombreAtributo)) {
+                provinciaValor = valorFormulario;
+            }
+        }
 
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         String passwordHashed = hash.hashPassword(password);
 
-        HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed, atributoNombre, atributoApellido, atributoEmail, atributoTelegram, atributoWhatsapp, atributoNacimiento);
-        if (!direccionForm.isEmpty()){
-            Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
+
+        HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
+        if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
+            Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
             dto.setDireccion(direccion);
+        } else {
+            dto.setDireccion(null);
         }
 
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(colaborador.getUser());
+        System.out.print("recibimos el formulario");
+        context.redirect("/");
     }
 
 }

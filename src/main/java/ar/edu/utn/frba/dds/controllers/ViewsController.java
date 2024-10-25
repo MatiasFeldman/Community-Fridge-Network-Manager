@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.services.georef.IGeoRefApi;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import lombok.SneakyThrows;
@@ -26,7 +27,7 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Inicio");
 
-        ctx.render("landing.hbs", model);
+        RenderUtils.renderizar(ctx,"landing.hbs",model);
     }
 
     public static void colaborar(Context ctx) {
@@ -36,14 +37,14 @@ public class ViewsController {
         model.put("titulo", "Colaborar");
         model.put("rol", roleUsuario);
 
-        ctx.render("colaborar.hbs", model);
+        RenderUtils.renderizar(ctx,"colaborar.hbs", model);
     }
 
     public static void formDonarDinero(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Donar dinero");
 
-        ctx.render("colaboraciones/dinero.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/dinero.hbs", model);
     }
 
     public static void formDistribuirViandas(Context ctx) {
@@ -54,7 +55,7 @@ public class ViewsController {
         model.put("titulo", "Distribuir viandas");
         model.put("heladeras", heladeras);
 
-        ctx.render("colaboraciones/distribucion-de-viandas.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/distribucion-de-viandas.hbs", model);
     }
 
     public static void formDonarViandas(Context ctx) {
@@ -70,7 +71,7 @@ public class ViewsController {
         model.put("titulo", "Donar viandas");
         model.put("heladeras", heladerasDisponibles);
 
-        ctx.render("colaboraciones/donacion-de-viandas.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/donacion-de-viandas.hbs", model);
     }
 
     public static void formHeladeraACargo(Context ctx) {
@@ -78,28 +79,28 @@ public class ViewsController {
         model.put("titulo", "Hacerse cargo de heladera");
 
 
-        ctx.render("colaboraciones/heladera-a-cargo.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/heladera-a-cargo.hbs", model);
     }
 
     public static void formRegistroPersonaVulnerable(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro de persona vulnerable");
 
-        ctx.render("colaboraciones/registro-vulnerable.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/registro-vulnerable.hbs", model);
     }
 
     public static void formCargaMasiva(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Carga masiva");
 
-        ctx.render("colaboraciones/carga_masiva.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/carga_masiva.hbs", model);
     }
 
     public static void formRegistrarOferta(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro de oferta");
 
-        ctx.render("colaboraciones/ofertar.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/ofertar.hbs", model);
     }
 
 
@@ -114,7 +115,7 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Login");
 
-        ctx.render("login.hbs", model);
+        RenderUtils.renderizar(ctx,"login.hbs", model);
     }
 
     public static void formRegistro(Context ctx) {
@@ -127,7 +128,7 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Registro");
 
-        ctx.render("registro-usuario/registro-tipo.hbs", model);
+        RenderUtils.renderizar(ctx,"registro-usuario/registro-tipo.hbs", model);
     }
 
 
@@ -143,7 +144,7 @@ public class ViewsController {
         model.put("heladeras", dtos);
 
 
-        ctx.render("heladeras/fallas-tecnicas.hbs", model);
+        RenderUtils.renderizar(ctx,"heladeras/fallas-tecnicas.hbs", model);
     }
 
     private static List<HeladeraOutputDTO> busquedaDeHeladeras(String tipoBusqueda, String valorBusqueda){
@@ -175,7 +176,7 @@ public class ViewsController {
         model.put("heladeras", dtos);
 
 
-        ctx.render("heladeras/alertas.hbs", model);
+        RenderUtils.renderizar(ctx,"heladeras/alertas.hbs", model);
     }
 
     public static void cargaCsv(Context context) {
@@ -244,7 +245,7 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        ctx.render("colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 }
 

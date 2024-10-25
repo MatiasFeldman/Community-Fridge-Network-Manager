@@ -6,9 +6,11 @@ import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
 import ar.edu.utn.frba.dds.exceptions.login.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.UsuarioIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
+import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
+import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
@@ -16,10 +18,20 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
+import lombok.SneakyThrows;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +75,15 @@ public class UsuariosController {
         } else {
             throw new UsuarioIncorrectoException("El usuario no existe");
         }
+        String nombreUsuario = user.get().getUser();
+        String rolUsuario = String.valueOf(user.get().getRoles().get(0)); // Si deseas obtener roles personalizados
+        String fotoUsuario =user.get().getFoto();
+        System.out.print(nombreUsuario);
+
+        // Guardar la información del usuario en el contexto para usar en las vistas
+        ctx.sessionAttribute("nombreUsuario", nombreUsuario);
+        ctx.sessionAttribute("rolUsuario", rolUsuario);
+        ctx.sessionAttribute("fotoUsuario", fotoUsuario);
     }
 
     public void handleLogout(Context ctx) {
@@ -89,9 +110,8 @@ public class UsuariosController {
                 model.put("esAdmin", true);
             }else if (roles.contains("HUMANO")) {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
-                HumanoOutputDTO dto = HumanoOutputDTO.of(humano);
                 model.put("puntos", humano.calcularPuntaje());
-                model.put("humano", dto);
+                model.put("humano", humano.getAllAtributos());
             } else if (roles.contains("JURIDICA")) {
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(id).get();
                 JuridicaOutpuDTO dto = JuridicaOutpuDTO.of(juridica);
@@ -100,11 +120,12 @@ public class UsuariosController {
                 model.put("esJuridica", true);
             }
 
-            ctx.render("perfil.hbs", model);
+            RenderUtils.renderizar(ctx,"perfil.hbs", model);
         } else {
             ctx.redirect("/login");
         }
     }
+
 
     public void handleUpdate(Context ctx) {
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
@@ -113,41 +134,43 @@ public class UsuariosController {
         Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
         if (usuario.isPresent()) {
-            String body = ctx.body();
-            JsonNode json = ConversorJSON.convertir(body);
+              if (roles.contains("HUMANO")) {
+                  Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id);
+                  List<AtributoHumanoRespondido> atributos = humano.get().getAllAtributos();
+                  String direccionValor = null;
+                  String provinciaValor = null;
+                  // Iterar sobre los atributos y asignarles el valor correspondiente
+                  for (AtributoHumanoRespondido atributoRespondido : atributos) {
+                      String nombreAtributo = atributoRespondido.getNombreAtributo();
 
-            Long idUsuario = json.get("id").asLong();
+                      String nuevoValor = ctx.formParam(nombreAtributo);
 
-            if (idUsuario != id) {
-                ctx.status(401);
-                return;
-            } else if (roles.contains("HUMANO")) {
-                String direccion = json.get("direccion").asText();
-                String provincia = json.get("provincia").asText();
-                String mail = json.get("mail").asText();
-                String telegram = json.get("telegram").asText();
-                String whatsapp = json.get("whatsapp").asText();
-                List<Contacto> mediosDeContacto = new ArrayList<>();
+                      if (nuevoValor != null && !nuevoValor.isEmpty()) {
+                          atributoRespondido.setValor(nuevoValor);
+                      }
+                      // Verificar si el atributo es "direccion" o "provincia"
+                      if ("direccion".equalsIgnoreCase(nombreAtributo)) {
+                          direccionValor = nuevoValor;
+                      }
+                      if ("provincia".equalsIgnoreCase(nombreAtributo)) {
+                          provinciaValor = nuevoValor;
+                      }
+                  }
+                  if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
+                      Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
+                      humano.get().setDireccion(direccion);
+                  } else {
+                      humano.get().setDireccion(null);
+                  }
+                  ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano.get());
 
-                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
-                if (direccion != null && provincia != null) {
-                    humano.setDireccion(DireccionFactory.create(new DireccionInputDTO(direccion, provincia)));
-                } else {
-                    humano.setDireccion(null);
-                }
-
-                if (!mail.isEmpty()) mediosDeContacto.add(Contacto.of("Mail", mail));
-                if (!telegram.isEmpty()) mediosDeContacto.add(Contacto.of("Telegram", telegram));
-                if (!whatsapp.isEmpty()) mediosDeContacto.add(Contacto.of("WhatsApp", whatsapp));
-                humano.setMediosDeContacto(mediosDeContacto);
-                ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
 
             } else if (roles.contains("JURIDICA")) {
-                String direccion = json.get("direccion").asText();
-                String provincia = json.get("provincia").asText();
-                String mail = json.get("mail").asText();
-                String telegram = json.get("telegram").asText();
-                String whatsapp = json.get("whatsapp").asText();
+                String direccion = ctx.formParam("direccion");
+                String provincia = ctx.formParam("provincia");
+                String mail = ctx.formParam("mail");
+                String telegram = ctx.formParam("telegram");
+                String whatsapp = ctx.formParam("whatsapp");
                 List<Contacto> mediosDeContacto = new ArrayList<>();
 
                 Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(id).get();
@@ -162,6 +185,41 @@ public class UsuariosController {
                 juridica.setMediosDeContacto(mediosDeContacto);
                 ServiceLocator.instanceOf(JuridicasRepository.class).modificar(juridica);
             }
+            //TODO:actualizar la foto de perfil en los atributos de sesion
+            UploadedFile archivoImagen = ctx.uploadedFile("imagen");
+
+            if (archivoImagen != null && archivoImagen.size() > 0) {
+                // Definir la carpeta donde se guardará la imagen
+                String nombreArchivo = id.toString() + "_" + archivoImagen.filename();
+                String directorioCompleto = Paths.get("src", "main", "resources", "public", "imagenes", "fotosUsuarios",nombreArchivo).toString();
+
+                if (usuario.get().getFoto() != null && !usuario.get().getFoto().isEmpty()) {
+                    String rutaFotoAnterior = Paths.get("src", "main", "resources", "public", usuario.get().getFoto()).toString();
+
+                    // Verificar si la foto anterior existe y borrarla
+                    File fotoAnterior = new File(rutaFotoAnterior);
+                    if (fotoAnterior.exists() && !fotoAnterior.getName().equalsIgnoreCase("user.png")) {
+                        if (fotoAnterior.delete()) {
+                            System.out.println("Foto anterior borrada correctamente.");
+                        } else {
+                            System.out.println("No se pudo borrar la foto anterior.");
+                        }
+                    }
+                }
+
+                try (InputStream inputStream = archivoImagen.content()) {
+                    Files.copy(inputStream, Paths.get(directorioCompleto), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace(); // Manejo de errores adecuado aquí
+                }
+
+                    usuario.get().setFoto("imagenes/fotosUsuarios/"+nombreArchivo); // Guardar la ruta de la imagen en el usuario
+                    ctx.sessionAttribute("fotoUsuario",usuario.get().getFoto());
+                    ServiceLocator.instanceOf(UsuariosRepository.class).modificar(usuario.get()); // Actualizar el usuario en la base de datos
+
+            }
+
+            ctx.redirect("/perfil");
         }
     }
 }

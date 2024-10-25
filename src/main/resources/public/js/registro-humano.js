@@ -1,62 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const input_user = document.getElementById('user')
-    const input_password = document.getElementById('password')
-    const input_nombre = document.getElementById('Nombre')
-    const input_apellido = document.getElementById('Apellido')
-    const input_nacimiento = document.getElementById('Nacimiento')
-    const input_direccion = document.getElementById('Direccion')
-    const input_provincia = document.getElementById('Provincia')
-    const input_email = document.getElementById('Mail')
-    const input_telegram = document.getElementById('Telegram')
-    const input_wpp = document.getElementById('WhatsApp')
+    const input_user = document.getElementById('user');
+    const input_password = document.getElementById('password');
+    const input_nombre = document.getElementById('Nombre');
+    const input_apellido = document.getElementById('Apellido');
+    const input_nacimiento = document.getElementById('Nacimiento');
+    const input_direccion = document.getElementById('Direccion');
+    const input_provincia = document.getElementById('Provincia');
+    const input_email = document.getElementById('Mail');
+    const input_telegram = document.getElementById('Telegram');
+    const input_wpp = document.getElementById('WhatsApp');
 
     const campos_obligatorios = Array.from(document.querySelectorAll('.obligatorio'));
 
-    const btn_register = document.getElementById('btn-submit-humana')
+    const formulario = document.getElementById('form-colaboradorHumano');
 
     function tieneMedioDeContacto() {
-        return input_email.value || input_telegram.value || input_wpp.value
+        console.log("Validando medios de contacto...");
+        return input_email.value || input_telegram.value || input_wpp.value;
     }
 
-    function camposObligatoriosLlenos(){
-        return campos_obligatorios.every(c => c.value)
+    function camposObligatoriosLlenos() {
+        const todosLlenos = campos_obligatorios.every(campo => campo.value.trim() !== "");
+        console.log("Campos obligatorios llenos: ", todosLlenos);
+        return todosLlenos;
     }
 
-    function direccionValida(){
-        if (input_provincia.value){
-            return input_direccion.value
-        } else if (input_direccion.value){
-            return input_provincia.value
+    function direccionValida() {
+        console.log("Validando dirección y provincia...");
+        if (input_provincia.value.trim()) {
+            return input_direccion.value.trim() !== "";
+        } else if (input_direccion.value.trim()) {
+            return input_provincia.value.trim() !== "";
         }
-        return true;
+        return true;  // Si ninguno está lleno, consideramos que es válido
     }
 
-    btn_register.addEventListener('click', () => {
-        if (camposObligatoriosLlenos() && tieneMedioDeContacto() && direccionValida()) {
-            const data = {
-                user: input_user.value,
-                password: input_password.value,
-                nombre: input_nombre.value,
-                apellido: input_apellido.value,
-                nacimiento: input_nacimiento.value,
-                direccion: input_direccion.value,
-                provincia: input_provincia.value,
-                email: input_email.value,
-                telegram: input_telegram.value,
-                wpp: input_wpp.value
-            }
+    formulario.addEventListener('submit', function (event) {
+        const validacionObligatorios = camposObligatoriosLlenos();
+        const validacionMedioContacto = tieneMedioDeContacto();
+        const validacionDireccion = direccionValida();
 
-            fetch('/registro/humano',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-
-            })
-            console.log(data)
+        if (!validacionObligatorios || !validacionMedioContacto || !validacionDireccion) {
+            event.preventDefault();  // Detener el envío del formulario
+            console.log("Validaciones fallidas, no se envía el formulario.");
+            alert('Faltan campos por completar o hay un error en los datos.');
         } else {
-            alert('Faltan campos por completar')
+            console.log("Formulario válido, se procede a enviar.");
         }
-    })
-})
+    });
+});

@@ -1,0 +1,14 @@
+{{#partial "styles"}}
+{{/partial}}
+
+{{#partial "contenido"}}
+    <div class="container d-flex flex-column justify-content-center">
+        <h1 class="text-dark fw-bold mx-auto">Posees puntos insuficientes para canjear la oferta</h1>
+        <div class="mt-5 text-center"> <!-- Alineación centrada -->
+            <form action="/ofertas" method="GET">
+                <button type="submit" class="boton mx-auto fw-bold">Volver a Ofertas</button>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

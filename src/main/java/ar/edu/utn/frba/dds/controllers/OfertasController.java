@@ -156,8 +156,7 @@ public class OfertasController {
                 ctx.status(404).result("Oferta no encontrada o ya no está presente");
             }
         }catch (PuntosInsuficientesException e) {
-            // En lugar de redirigir con un código, redirigimos con un mensaje más general
-            ctx.redirect("/ofertas/" + ctx.pathParam("id") + "?error=No tienes suficientes puntos para canjear esta oferta.");
+            throw e;
         } catch (Exception e) {
             ctx.status(500).result("Ocurrió un error al intentar canjear la oferta: " + e.getMessage());
             e.printStackTrace();

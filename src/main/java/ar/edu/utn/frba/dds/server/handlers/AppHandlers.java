@@ -21,7 +21,8 @@ public class AppHandlers {
             new CapacidadIncorrectaHandler(),
             new CantidadViandasIncorrectaHandler(),
             new MismaHeladeraHanlder(),
-            new APIIntegracionSinConexionHandler()
+            new APIIntegracionSinConexionHandler(),
+            new PuntosInsuficientesHandler()
     };
 
     public static void applyHandlers(Javalin app) {

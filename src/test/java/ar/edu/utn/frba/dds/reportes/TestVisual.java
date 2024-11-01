@@ -11,7 +11,6 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
-import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.GenerarReportesCronJob;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
@@ -23,9 +22,11 @@ import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Date;
+
 
 public class TestVisual {
     @BeforeEach
@@ -43,7 +44,17 @@ public class TestVisual {
 
     @Test
     public void testGeneracionDeReporte() {
-        String filePath = "C:\\Nico\\utn\\3°Año\\Diseño\\TPA\\probando_reportes";
+        String filePath = "src/main/resources/public/reportes/";
+
+        String dateFolder = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        filePath += dateFolder + "/";
+
+        File directory = new File(filePath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
         GeneradorPDF generadorPDF = new PDFgenerator();
         GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath);
 

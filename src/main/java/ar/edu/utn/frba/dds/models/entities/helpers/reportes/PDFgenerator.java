@@ -25,7 +25,7 @@ public class PDFgenerator implements GeneradorPDF {
         for (Reporte reporte : reportes) {
             String fechaActual = dateTime.format(dateFormat);
             String fechaInicioPeriodo = semanaAtras.format(dateFormat);
-            String nombrePDF = path + "/" + reporte.nombre().replaceAll(" ", "_") + "_" + dateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".pdf";
+            String nombrePDF = path + "/" + reporte.nombre().replaceAll(" ", "_") + ".pdf";
 
             int nroColumnas = reporte.getNroColumnas();
 

@@ -16,16 +16,22 @@ import io.javalin.http.Context;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class ReportesController {
     private ReporteFallas reporteFallas;
     private ReporteViandasDonadas reporteViandasDonadas;
     private ReporteMovimientoViandas reporteMovimientoViandas;
+
+    private static String reportesBasePath = "src/main/resources/public/reportes/";
 
     public ReportesController() {
         this.reporteFallas = new ReporteFallas(ServiceLocator.instanceOf(IncidentesRepository.class), ServiceLocator.instanceOf(HeladerasRepository.class));
@@ -35,12 +41,36 @@ public class ReportesController {
 
     public void generarReporteDeTodos(Context context) {
         try {
-            PDFgenerator pdfgenerator = ServiceLocator.instanceOf(PDFgenerator.class);
-            ByteArrayOutputStream pdf = pdfgenerator.generarPdfParaEnviar(List.of(reporteFallas, reporteViandasDonadas, reporteMovimientoViandas));
+            // Obtener el directorio más reciente (con el nombre de fecha más alta)
+            File latestDir = Files.list(Paths.get(reportesBasePath))
+                    .filter(Files::isDirectory)
+                    .map(Path::toFile)
+                    .max(Comparator.comparing(File::getName))
+                    .orElseThrow(() -> new RuntimeException("No se encontraron carpetas de reportes"));
 
-            context.contentType("application/pdf");
-            context.header("Content-Disposition", "attachment; filename=\"reporte_todos_" + LocalDate.now() + ".pdf\"");
-            context.result(pdf.toByteArray());
+            // Generar los PDFs individuales
+            Path reporteFallasPath = Paths.get(latestDir.getPath(), "Reporte_de_fallas.pdf");
+            Path reporteDonacionPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_donadas.pdf");
+            Path reporteMovimientoPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_por_heladera.pdf");
+
+            byte[] pdfContentFallas = Files.readAllBytes(reporteFallasPath);
+            byte[] pdfContentDonacion = Files.readAllBytes(reporteDonacionPath);
+            byte[] pdfContentMovimiento = Files.readAllBytes(reporteMovimientoPath);
+
+            // Crear un ByteArrayOutputStream para el ZIP
+            ByteArrayOutputStream zipOutputStream = new ByteArrayOutputStream();
+            try (ZipOutputStream zipStream = new ZipOutputStream(zipOutputStream)) {
+                // Agregar cada PDF al ZIP
+                addToZip(zipStream, "Reporte_de_fallas.pdf", pdfContentFallas);
+                addToZip(zipStream, "Reporte_de_viandas_donadas.pdf", pdfContentDonacion);
+                addToZip(zipStream, "Reporte_de_movimiento_viandas.pdf", pdfContentMovimiento);
+            }
+
+            // Configurar la respuesta para la descarga del archivo ZIP
+            context.contentType("application/zip");
+            context.header("Content-Disposition", "attachment; filename=\"reporte_todos_" + LocalDate.now() + ".zip\"");
+            context.result(zipOutputStream.toByteArray());
+
         } catch (Exception e) {
             // Registrar la excepción en el log
             e.printStackTrace();
@@ -52,52 +82,97 @@ public class ReportesController {
 
     public void generarReporteDeFallas(Context context) {
         try {
-            PDFgenerator pdfgenerator = ServiceLocator.instanceOf(PDFgenerator.class);
+            // Obtener el directorio más reciente (con el nombre de fecha más alta)
+            File latestDir = Files.list(Paths.get(reportesBasePath))
+                    .filter(Files::isDirectory)
+                    .map(Path::toFile)
+                    .max(Comparator.comparing(File::getName))
+                    .orElseThrow(() -> new RuntimeException("No se encontraron carpetas de reportes"));
 
-            ByteArrayOutputStream pdf = pdfgenerator.generarPdfParaEnviar(List.of(reporteFallas));
+            // Obtener el archivo "Reporte_de_fallas" dentro del directorio más reciente
+            Path reporteFallasPath = Paths.get(latestDir.getPath(), "Reporte_de_fallas.pdf");
 
+            if (!Files.exists(reporteFallasPath)) {
+                throw new RuntimeException("El archivo 'Reporte_de_fallas.pdf' no existe en el directorio más reciente");
+            }
+
+            // Leer el archivo en bytes
+            byte[] pdfContent = Files.readAllBytes(reporteFallasPath);
+
+            // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "attachment; filename=\"reporte_todos_" + LocalDate.now() + ".pdf\"");
-            context.result(pdf.toByteArray());
+            context.header("Content-Disposition", "inline; filename=\"reporte_fallas_" + LocalDate.now() + ".pdf\"");
+            context.result(pdfContent);
+
         } catch (Exception e) {
             // Registrar la excepción en el log
             e.printStackTrace();
             // Enviar una respuesta de error
-            context.status(500).result("Error al generar el reporte: " + e.getMessage());
+            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
     public void generarReporteDeViandasDonadas(Context context) {
         try {
-            PDFgenerator pdfgenerator = ServiceLocator.instanceOf(PDFgenerator.class);
+            // Obtener el directorio más reciente (con el nombre de fecha más alta)
+            File latestDir = Files.list(Paths.get(reportesBasePath))
+                    .filter(Files::isDirectory)
+                    .map(Path::toFile)
+                    .max(Comparator.comparing(File::getName))
+                    .orElseThrow(() -> new RuntimeException("No se encontraron carpetas de reportes"));
 
-            ByteArrayOutputStream pdf = pdfgenerator.generarPdfParaEnviar(List.of(reporteViandasDonadas));
+            // Obtener el archivo "Reporte_de_fallas" dentro del directorio más reciente
+            Path reporteDonacionPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_donadas.pdf");
 
+            if (!Files.exists(reporteDonacionPath)) {
+                throw new RuntimeException("El archivo 'Reporte_de_viandas_donadas.pdf' no existe en el directorio más reciente");
+            }
+
+            // Leer el archivo en bytes
+            byte[] pdfContent = Files.readAllBytes(reporteDonacionPath);
+
+            // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "attachment; filename=\"reporte_todos_" + LocalDate.now() + ".pdf\"");
-            context.result(pdf.toByteArray());
+            context.header("Content-Disposition", "inline; filename=\"Reporte_de_viandas_donadas_" + LocalDate.now() + ".pdf\"");
+            context.result(pdfContent);
+
         } catch (Exception e) {
             // Registrar la excepción en el log
             e.printStackTrace();
             // Enviar una respuesta de error
-            context.status(500).result("Error al generar el reporte: " + e.getMessage());
+            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
     public void generarReporteDeMovimientoViandas(Context context) {
         try {
-            PDFgenerator pdfgenerator = ServiceLocator.instanceOf(PDFgenerator.class);
+            // Obtener el directorio más reciente (con el nombre de fecha más alta)
+            File latestDir = Files.list(Paths.get(reportesBasePath))
+                    .filter(Files::isDirectory)
+                    .map(Path::toFile)
+                    .max(Comparator.comparing(File::getName))
+                    .orElseThrow(() -> new RuntimeException("No se encontraron carpetas de reportes"));
 
-            ByteArrayOutputStream pdf = pdfgenerator.generarPdfParaEnviar(List.of(reporteMovimientoViandas));
+            // Obtener el archivo "Reporte_de_fallas" dentro del directorio más reciente
+            Path reporteMovimientoPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_por_heladera.pdf");
 
+            if (!Files.exists(reporteMovimientoPath)) {
+                throw new RuntimeException("El archivo 'Reporte_de_viandas_por_heladera.pdf' no existe en el directorio más reciente");
+            }
+
+            // Leer el archivo en bytes
+            byte[] pdfContent = Files.readAllBytes(reporteMovimientoPath);
+
+            // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "attachment; filename=\"reporte_todos_" + LocalDate.now() + ".pdf\"");
-            context.result(pdf.toByteArray());
+            context.header("Content-Disposition", "inline; filename=\"Reporte_de_viandas_por_heladera_" + LocalDate.now() + ".pdf\"");
+            context.result(pdfContent);
+
         } catch (Exception e) {
             // Registrar la excepción en el log
             e.printStackTrace();
             // Enviar una respuesta de error
-            context.status(500).result("Error al generar el reporte: " + e.getMessage());
+            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
@@ -112,5 +187,12 @@ public class ReportesController {
         List<Incidente> incidentes= ServiceLocator.instanceOf(IncidentesRepository.class).buscarTodosPorHeladera(buscada.get());
         model.put("incidentes",incidentes);
         RenderUtils.renderizar(ctx,"heladeras/detalle_alertas.hbs", model);
+    }
+
+    private void addToZip(ZipOutputStream zipStream, String fileName, byte[] content) throws IOException {
+        ZipEntry entry = new ZipEntry(fileName);
+        zipStream.putNextEntry(entry);
+        zipStream.write(content);
+        zipStream.closeEntry();
     }
 }

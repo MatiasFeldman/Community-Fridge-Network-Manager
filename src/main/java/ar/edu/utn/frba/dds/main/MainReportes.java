@@ -10,6 +10,10 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class MainReportes {
     GenerarReportesCronJob generarReportesCronJob;
@@ -23,7 +27,17 @@ public class MainReportes {
     }
 
     public static void main(String[] args) {
-        String filePath = "";
+        String filePath = "src/main/resources/public/reportes/";
+
+        String dateFolder = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        filePath += dateFolder + "/";
+
+        File directory = new File(filePath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
         GeneradorPDF generadorPDF = new PDFgenerator();
 
         GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath);

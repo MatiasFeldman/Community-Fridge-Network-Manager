@@ -10,14 +10,18 @@ import java.util.Optional;
 
 public class OfertasCollection implements OfertasDAO {
     private List<Oferta> ofertas;
+    private Long currentId;
 
     public OfertasCollection() {
         this.ofertas = new ArrayList<>();
+        this.currentId = 20L; // Hardcodeado para que no se repitan ids
     }
 
     @Override
     public void guardar(Oferta oferta) {
+        oferta.setId(currentId);
         ofertas.add(oferta);
+        currentId++;
     }
 
     @Override

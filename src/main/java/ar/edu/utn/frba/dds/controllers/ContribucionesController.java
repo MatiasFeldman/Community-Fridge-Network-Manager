@@ -40,9 +40,15 @@ import io.javalin.http.UploadedFile;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import static com.mysql.cj.conf.PropertyKey.logger;
 
 public class ContribucionesController {
 
@@ -421,7 +427,24 @@ public class ContribucionesController {
 
         // Obtener archivo de imagen (si se cargó uno)
         UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
-        // todo: guardar imagen en el servidor
+        String rutaImagen = null;
+
+        if (imagenProducto != null && imagenProducto.size() > 0) {
+            // Definir el nombre del archivo y la ruta de almacenamiento
+            String nombreArchivo = nombreProducto.replaceAll("\\s+", "_") + "_" + imagenProducto.filename();
+
+            rutaImagen = "imagenes/fotosOfertas/" + nombreArchivo;
+
+            String directorioCompleto = Paths.get("src", "main", "resources", "public", rutaImagen).toString();
+
+            // Guardar la imagen en el servidor
+            try (InputStream inputStream = imagenProducto.content()) {
+                Files.copy(inputStream, Paths.get(directorioCompleto), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new SolicitudIncorrectaException();
+            }
+        }
+
 
         Long userId = ctx.sessionAttribute("id");
 
@@ -438,10 +461,14 @@ public class ContribucionesController {
                 puntosNecesariosDouble,
                 tipoProducto,
                 canjesTotalesInt,
-                null);
+                rutaImagen);
 
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         ofertasRepository.guardar(oferta);
+
+        // Obtener y registrar el ID de la oferta guardada
+        Long ofertaId = oferta.getId(); // Asegúrate de que el método getId() exista en tu clase Oferta
+        System.out.println("Oferta guardada con ID: " + ofertaId); // Imprimir el ID en la consola
 
         OfrecerProductoOServicio ofrecerProductoOServicio = OfrecerProductoOServicio.of(oferta, juridica);
 

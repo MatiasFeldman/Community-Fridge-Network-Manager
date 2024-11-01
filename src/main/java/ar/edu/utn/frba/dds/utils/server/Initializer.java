@@ -43,6 +43,8 @@ public class Initializer {
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
 
+        // creacion de heladeras
+
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
         Direccion d2 = DireccionFactory.create(new DireccionInputDTO("Pepiri 1234", "CABA"));
@@ -120,6 +122,8 @@ public class Initializer {
 
         Initializer.inicializarAtributos();
 
+        // creacion de usuarios
+
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
         u1.setId(1L);
@@ -131,6 +135,8 @@ public class Initializer {
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u2);
         usuariosRepository.guardar(u3);
+
+        // creacion de atributos juridica
 
         JuridicoInputDTO juridicoInputDTO = new JuridicoInputDTO(u3, "Razon Social", Tipo.EMPRESA, "Rubro 1" ,new ArrayList<>(), d3);
 
@@ -152,6 +158,8 @@ public class Initializer {
         List<AtributoHumanoRespondido> obligatorios = List.of(nombre_respondido1, apellido_respondido1);
         List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1);
 
+        // creacion de atributos colaboradores humanos
+
         HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"), opcionales, u1, d1);
 
         ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
@@ -171,6 +179,9 @@ public class Initializer {
         HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u2, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
+
+        // creacion de donaciones y distribuciones
+
         c2.setPuntosGanados(2500.0);//funciona :)
         humanos.guardar(c1);
         humanos.guardar(c2);
@@ -186,6 +197,8 @@ public class Initializer {
 
         donaciones.guardar(donacion1);
         donaciones.guardar(donacion2);
+
+        // creacion de incidentes
 
         Incidente incidente1 = Incidente.builder()
                 .fecha(LocalDateTime.now())
@@ -215,6 +228,8 @@ public class Initializer {
                 .build();
         incidentesRepository.guardar(incidente4);
 
+        // creacion de rubros
+
         Rubro peluqueria = new Rubro("Peluqueria");
         Rubro tecnologia = new Rubro("Tecnologia");
         Rubro deportivo = new Rubro("Deportivo");
@@ -230,6 +245,8 @@ public class Initializer {
         rubrosRepository.guardar(gastronomia);
         rubrosRepository.guardar(viajes);
         rubrosRepository.guardar(educacion);
+
+        // creacion de ofertas
 
         Oferta oferta1 = Oferta.builder()
                         .nombre("holaaaa")

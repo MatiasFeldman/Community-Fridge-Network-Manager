@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
+import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.UsuarioIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
@@ -210,7 +211,7 @@ public class UsuariosController {
                 try (InputStream inputStream = archivoImagen.content()) {
                     Files.copy(inputStream, Paths.get(directorioCompleto), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    e.printStackTrace(); // Manejo de errores adecuado aquí
+                    throw new SolicitudIncorrectaException();
                 }
 
                     usuario.get().setFoto("imagenes/fotosUsuarios/"+nombreArchivo); // Guardar la ruta de la imagen en el usuario

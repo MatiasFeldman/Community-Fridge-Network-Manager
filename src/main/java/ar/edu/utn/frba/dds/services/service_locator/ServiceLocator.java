@@ -38,6 +38,9 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDataBase;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRepository;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.dao.OfrecerProductoCollection;
+import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.dao.OfrecerProductoDB;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesCollection;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.dao.PersonasVulnerablesDataBase;
@@ -221,6 +224,9 @@ public class ServiceLocator {
                 }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
                     SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionCollection(new ArrayList<>()));
                     instances.put(componentName, suscripcionesRepository);
+                }else if(componentName.equals(OfrecerProductoRepository.class.getName())) {
+                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>()));
+                    instances.put(componentName, ofrecerProductoRepository);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -281,6 +287,9 @@ public class ServiceLocator {
                 }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
                     SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionDataBase());
                     instances.put(componentName, suscripcionesRepository);
+                } else if(componentName.equals(OfrecerProductoRepository.class.getName())) {
+                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoDB());
+                    instances.put(componentName, ofrecerProductoRepository);
                 }
             }
         }

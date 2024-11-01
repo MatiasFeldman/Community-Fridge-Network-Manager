@@ -144,8 +144,8 @@ public class TestVisual {
         colaboradorHumano3.setUser(usuario);
 
 
-        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera3, heladera3, 5, "Motivo1", colaboradorHumano3);
-        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera4, heladera4, 3, "Motivo2", colaboradorHumano3);
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera3, heladera4, 5, "Motivo1", colaboradorHumano3);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera4, heladera3, 3, "Motivo2", colaboradorHumano3);
 
         distribucionesDeViandasRepository.guardar(distribucion1);
         distribucionesDeViandasRepository.guardar(distribucion2);
@@ -165,11 +165,20 @@ public class TestVisual {
         // Crear donación de viandas
         DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera3, colaboradorHumano3);
         DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera4, colaboradorHumano3);
+        DonacionDeVianda donacion3 = DonacionDeVianda.of(heladera3, colaboradorHumano3);
+        DonacionDeVianda donacion4 = DonacionDeVianda.of(heladera4, colaboradorHumano3);
 
         donacionesDeViandaRepository.guardar(donacion1);
         donacionesDeViandaRepository.guardar(donacion2);
+        donacionesDeViandaRepository.guardar(donacion3);
+        donacionesDeViandaRepository.guardar(donacion4);
 
         colaboradorHumano3.sumarPuntaje(donacion1);
         colaboradorHumano3.sumarPuntaje(donacion2);
+        colaboradorHumano3.sumarPuntaje(donacion3);
+        colaboradorHumano3.sumarPuntaje(donacion4);
+
+        // entraron 5 en la heladera3 y 7 en la heladera4
+        // salieron 6 de la heladera3 y 4 de la heladera4
     }
 }

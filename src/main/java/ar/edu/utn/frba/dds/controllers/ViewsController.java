@@ -183,35 +183,35 @@ public class ViewsController {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Carga Csv");
 
-        context.render("carga-csv.hbs", model);
+        RenderUtils.renderizar(context,"carga-csv.hbs", model);
     }
 
     public static void reportesHeladerasInicio(Context context) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Reportes de heladeras");
 
-        context.render("reportes/main-reportes.hbs", model);
+        RenderUtils.renderizar(context,"reportes/main-reportes.hbs", model);
     }
 
     public static void notFound(Context context) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Error 404");
 
-        context.render("404.hbs", model);
+        RenderUtils.renderizar(context,"404.hbs", model);
     }
 
     public static void badRequest(Context context) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Error 400");
 
-        context.render("400.hbs", model);
+        RenderUtils.renderizar(context,"400.hbs", model);
     }
 
     public static void dondeDonar(Context context) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Donde donar");
 
-        context.render("donde-donar.hbs", model);
+        RenderUtils.renderizar(context,"donde-donar.hbs", model);
     }
 
     @SneakyThrows
@@ -238,7 +238,7 @@ public class ViewsController {
         String lugaresJson = objectMapper.writeValueAsString(lugares);
         model.put("lugares", lugaresJson);
         model.put("lugaresDTO", lugares);
-        context.render("donde-donar-resultados.hbs", model);
+        RenderUtils.renderizar(context,"donde-donar-resultados.hbs", model);
     }
 
     public static void confirmacionColaboracion(Context ctx) {

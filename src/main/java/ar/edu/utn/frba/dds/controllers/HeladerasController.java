@@ -344,7 +344,7 @@ public class HeladerasController {
             Heladera h = buscada.get();
             HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
             model.put("heladera", dto);
-            ctx.render("heladeras/form-falla-tecnica.hbs", model);
+            RenderUtils.renderizar(ctx,"heladeras/form-falla-tecnica.hbs", model);
         } else{
             ctx.redirect("/not-found");
         }
@@ -517,7 +517,7 @@ public class HeladerasController {
             Heladera h = buscada.get();
             HeladeraOutputDTO dto = HeladeraOutputDTO.of(h);
             model.put("heladera", dto);
-            ctx.render("heladeras/form-suscripcion-heladera.hbs", model);
+            RenderUtils.renderizar(ctx,"heladeras/form-suscripcion-heladera.hbs", model);
         } else{
             ctx.redirect("/not-found");
         }

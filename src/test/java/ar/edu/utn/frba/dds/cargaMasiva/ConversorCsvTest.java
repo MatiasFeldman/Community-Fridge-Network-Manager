@@ -25,7 +25,7 @@ public class ConversorCsvTest {
 
     @BeforeEach
     public void setUp() {
-        humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>()));
+        humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>(), 100L));
         ofertas = Mockito.mock(OfertasRepository.class);
         mailSender = Mockito.mock(MailSender.class);
         conversor = new ConversorCSVReader(humanos, ofertas, mailSender);

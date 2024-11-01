@@ -38,8 +38,9 @@ public class ReporteMovimientoViandas implements Reporte {
             return contenido.toString();
         }
 
-        contenido.append("Reporte de viandas por heladera\n");
-        contenido.append("Heladera Nombre\t\tEntraron\tSalieron\n");
+        contenido.append("Heladera Nombre\n");
+        contenido.append("Entraron\n");
+        contenido.append("Salieron\n");
 
         for (Heladera heladera : heladeras.buscarTodos()) {
             contenido.append(heladera.getNombre())
@@ -65,5 +66,10 @@ public class ReporteMovimientoViandas implements Reporte {
     @Override
     public String contenido() {
         return generarReporteMovimientoViandas();
+    }
+
+    @Override
+    public int getNroColumnas() {
+        return 3;
     }
 }

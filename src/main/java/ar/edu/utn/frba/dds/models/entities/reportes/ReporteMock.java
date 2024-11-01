@@ -19,4 +19,9 @@ public class ReporteMock implements Reporte {
     public String contenido() {
         return contenido;
     }
+
+    @Override
+    public int getNroColumnas() {
+        return 2;
+    }
 }

@@ -26,10 +26,13 @@ public class ReporteViandasDonadas implements Reporte {
         return generarReporteViandas();
     }
 
+    @Override
+    public int getNroColumnas(){return 2;}
+
     public String generarReporteViandas() {
         StringBuilder contenido = new StringBuilder();
-        contenido.append("Reporte de viandas donadas\n");
-        contenido.append("ColaboradorHumano\tCantidad de viandas\n");
+        contenido.append("ColaboradorHumano\n");
+        contenido.append("Cantidad de viandas\n");
         for (ColaboradorHumano colaboradorHumano : humanosRepository.buscarTodos()) {
             System.out.println(donacionesDeViandaRepository.cantViandasDonadasPor(colaboradorHumano));
             contenido.append(colaboradorHumano.getIdUsuario()).append("\t").append(donacionesDeViandaRepository.cantViandasDonadasPor(colaboradorHumano)).append("\n");

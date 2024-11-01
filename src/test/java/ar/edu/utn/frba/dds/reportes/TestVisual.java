@@ -103,7 +103,7 @@ public class TestVisual {
         colaboradorHumano1.setUser(usuario1);
 
         Usuario usuario2 = new Usuario("usuario2", "prueba", null);
-        usuario1.setId(2L);
+        usuario2.setId(2L);
         ColaboradorHumano colaboradorHumano2 = ColaboradorHumano.crearVacio();
         colaboradorHumano2.setUser(usuario2);
 
@@ -126,49 +126,50 @@ public class TestVisual {
 
 
     public void cargarReporteMovimientos(HeladerasRepository heladerasRepository, DistribucionesDeViandasRepository distribucionesDeViandasRepository, HumanosRepository humanosRepository, DonacionesDeViandaRepository donacionesDeViandaRepository) {
-        Heladera heladera1 = Heladera.of("Heladera1");
-        heladera1.setCapActual(10);  // Inicializar capacidad actual
-        heladera1.setCapacidadMaxima(10);
+        Heladera heladera3 = Heladera.of("Heladera3");
+        heladera3.setCapActual(10);  // Inicializar capacidad actual
+        heladera3.setCapacidadMaxima(10);
 
 
-        Heladera heladera2 = Heladera.of("Heladera2");
-        heladera2.setCapActual(10);  // Inicializar capacidad actual
-        heladera2.setCapacidadMaxima(10);
+        Heladera heladera4 = Heladera.of("Heladera4");
+        heladera4.setCapActual(10);  // Inicializar capacidad actual
+        heladera4.setCapacidadMaxima(10);
 
-        heladerasRepository.guardar(heladera1);
-        heladerasRepository.guardar(heladera2);
+        heladerasRepository.guardar(heladera3);
+        heladerasRepository.guardar(heladera4);
 
-        Usuario usuario = new Usuario("usuario1", "Pedritoclavounclavito123@", null);
-        ColaboradorHumano colaboradorHumano1 = ColaboradorHumano.crearVacio();
-        colaboradorHumano1.setUser(usuario);
+        Usuario usuario = new Usuario("usuario3", "Pedritoclavounclavito123@", null);
+        usuario.setId(3L);
+        ColaboradorHumano colaboradorHumano3 = ColaboradorHumano.crearVacio();
+        colaboradorHumano3.setUser(usuario);
 
 
-        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera1, heladera2, 5, "Motivo1", colaboradorHumano1);
-        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera2, heladera1, 3, "Motivo2", colaboradorHumano1);
+        DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera3, heladera3, 5, "Motivo1", colaboradorHumano3);
+        DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(heladera4, heladera4, 3, "Motivo2", colaboradorHumano3);
 
         distribucionesDeViandasRepository.guardar(distribucion1);
         distribucionesDeViandasRepository.guardar(distribucion2);
 
-        colaboradorHumano1.sumarPuntaje(distribucion1);
-        colaboradorHumano1.sumarPuntaje(distribucion2);
+        colaboradorHumano3.sumarPuntaje(distribucion1);
+        colaboradorHumano3.sumarPuntaje(distribucion2);
 
-        humanosRepository.guardar(colaboradorHumano1);
+        humanosRepository.guardar(colaboradorHumano3);
 
         TarjetaPersonaVulnerable tarjetaVulnerable = new TarjetaPersonaVulnerable();
         tarjetaVulnerable.setId(2L);
 
         // Usar la tarjeta para añadir usos
-        tarjetaVulnerable.usarEn(heladera1); // Añadir un uso en heladera1
-        tarjetaVulnerable.usarEn(heladera2); // Añadir un uso en heladera2
+        tarjetaVulnerable.usarEn(heladera3); // Añadir un uso en heladera1
+        tarjetaVulnerable.usarEn(heladera4); // Añadir un uso en heladera2
 
         // Crear donación de viandas
-        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera1, colaboradorHumano1);
-        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera2, colaboradorHumano1);
+        DonacionDeVianda donacion1 = DonacionDeVianda.of(heladera3, colaboradorHumano3);
+        DonacionDeVianda donacion2 = DonacionDeVianda.of(heladera4, colaboradorHumano3);
 
         donacionesDeViandaRepository.guardar(donacion1);
         donacionesDeViandaRepository.guardar(donacion2);
 
-        colaboradorHumano1.sumarPuntaje(donacion1);
-        colaboradorHumano1.sumarPuntaje(donacion2);
+        colaboradorHumano3.sumarPuntaje(donacion1);
+        colaboradorHumano3.sumarPuntaje(donacion2);
     }
 }

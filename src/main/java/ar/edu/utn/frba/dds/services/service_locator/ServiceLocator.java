@@ -174,31 +174,31 @@ public class ServiceLocator {
                     AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoCollection(new ArrayList<>()));
                     instances.put(componentName, atributos);
                 } else if (componentName.equals(TarjetasColaboradoresRepository.class.getName())) {
-                    TarjetasColaboradoresRepository tarjetas = new TarjetasColaboradoresRepository(new TarjetasColaboradoresCollection(new ArrayList<>()));
+                    TarjetasColaboradoresRepository tarjetas = new TarjetasColaboradoresRepository(new TarjetasColaboradoresCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, tarjetas);
                 } else if (componentName.equals(DistribucionesDeViandasRepository.class.getName())) {
-                    DistribucionesDeViandasRepository instance = new DistribucionesDeViandasRepository(new DistribucionesDeViandasCollection(new ArrayList<>()));
+                    DistribucionesDeViandasRepository instance = new DistribucionesDeViandasRepository(new DistribucionesDeViandasCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, instance);
                 } else if (componentName.equals(SolicitudesDeAperturaRepository.class.getName())) {
-                    SolicitudesDeAperturaRepository solicitudes = new SolicitudesDeAperturaRepository(new SolicitudDeAperturaCollection(new ArrayList<>()));
+                    SolicitudesDeAperturaRepository solicitudes = new SolicitudesDeAperturaRepository(new SolicitudDeAperturaCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, solicitudes);
                 } else if (componentName.equals(IntentosDeAperturaRepository.class.getName())) {
-                    IntentosDeAperturaRepository intentos = new IntentosDeAperturaRepository(new IntentosDeAperturaCollection(new ArrayList<>()));
+                    IntentosDeAperturaRepository intentos = new IntentosDeAperturaRepository(new IntentosDeAperturaCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, intentos);
                 } else if (componentName.equals(Accionador.class.getName())) {
                     Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
                     instances.put(componentName, accionador);
                 } else if (componentName.equals(HeladerasRepository.class.getName())) {
-                    HeladerasRepository heladeras = new HeladerasRepository(new HeladerasCollection(new ArrayList<>()));
+                    HeladerasRepository heladeras = new HeladerasRepository(new HeladerasCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, heladeras);
                 } else if (componentName.equals(HumanosRepository.class.getName())) {
-                    HumanosRepository humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>()));
+                    HumanosRepository humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, humanos);
                 } else if (componentName.equals(PersonasVulnerablesRepository.class.getName())) {
                     PersonasVulnerablesRepository personasVulnerables = new PersonasVulnerablesRepository(new PersonasVulnerablesCollection(new ArrayList<>()));
                     instances.put(componentName, personasVulnerables);
                 } else if (componentName.equals(DonacionesDeViandaRepository.class.getName())) {
-                    DonacionesDeViandaRepository donaciones = new DonacionesDeViandaRepository(new DonacionesDeViandaCollection(new ArrayList<>()));
+                    DonacionesDeViandaRepository donaciones = new DonacionesDeViandaRepository(new DonacionesDeViandaCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, donaciones);
                 } else if (componentName.equals(IncidentesRepository.class.getName())) {
                     IncidentesRepository incidentes = new IncidentesRepository(new IncidentesCollection(new ArrayList<>()));
@@ -207,25 +207,25 @@ public class ServiceLocator {
                     JuridicasRepository humanos = new JuridicasRepository(new JuridicasCollection(new ArrayList<>()));
                     instances.put(componentName, humanos);
                 } else if (componentName.equals(UsuariosRepository.class.getName())) {
-                    UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>()));
+                    UsuariosRepository usuarios = new UsuariosRepository(new UsuariosCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, usuarios);
                 } else if (componentName.equals(OfertasRepository.class.getName())) {
                     OfertasRepository oferta = new OfertasRepository(new OfertasCollection());
                     instances.put(componentName, oferta);
                 } else if (componentName.equals(RubrosRepository.class.getName())) {
-                    RubrosRepository rubro = new RubrosRepository(new RubroCollection(new ArrayList<>()));
+                    RubrosRepository rubro = new RubrosRepository(new RubroCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, rubro);
                 } else if (componentName.equals(TarjetasVulnerablesRepository.class.getName())) {
-                    TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesCollection(new ArrayList<>()));
+                    TarjetasVulnerablesRepository tarjetasVulnerablesRepository = new TarjetasVulnerablesRepository(new TarjetasVulnerablesCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, tarjetasVulnerablesRepository);
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
-                    DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>()));
+                    DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, donacionDineroRepository);
                 }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
-                    SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionCollection(new ArrayList<>()));
+                    SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, suscripcionesRepository);
                 }else if(componentName.equals(OfrecerProductoRepository.class.getName())) {
-                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>()));
+                    OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, ofrecerProductoRepository);
                 }
 

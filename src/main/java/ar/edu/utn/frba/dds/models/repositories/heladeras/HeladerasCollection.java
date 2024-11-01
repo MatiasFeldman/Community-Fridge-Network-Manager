@@ -9,11 +9,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HeladerasCollection implements HeladerasDAO {
     private List<Heladera> heladeras;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(Heladera heladera) {
-        heladera.setId(Long.valueOf(this.heladeras.size()));
+        heladera.setId(currentId);
         heladeras.add(heladera);
+        currentId++;
     }
 
     @Override

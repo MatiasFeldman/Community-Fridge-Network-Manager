@@ -2,10 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.exceptions.OfertaAgotadaException;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -34,6 +31,7 @@ public class Oferta extends Persistente {
     @Column(name = "canjes_usados")
     private Integer canjesUsados;
 
+    @Setter
     @Column(name = "Image")
     private String image;
 

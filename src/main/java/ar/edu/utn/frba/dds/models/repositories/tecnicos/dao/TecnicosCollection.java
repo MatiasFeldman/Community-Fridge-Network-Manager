@@ -9,10 +9,13 @@ import java.util.Optional;
 
 public class TecnicosCollection implements TecnicosDAO{
     private List<Tecnico> tecnicos;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(Tecnico creado) {
+        creado.setId(currentId);
         this.tecnicos.add(creado);
+        currentId++;
     }
 
     @Override

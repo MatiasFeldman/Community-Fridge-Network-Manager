@@ -11,10 +11,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SolicitudDeAperturaCollection implements SolicitudDeAperturaDAO{
     private List<SolicitudApertura> solicitudes;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(SolicitudApertura solicitud){
+        solicitud.setId(currentId);
         solicitudes.add(solicitud);
+        currentId++;
     }
 
     @Override

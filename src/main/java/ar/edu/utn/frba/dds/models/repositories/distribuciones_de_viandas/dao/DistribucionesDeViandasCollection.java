@@ -9,11 +9,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DistribucionesDeViandasCollection implements DistribucionesDeViandasDAO{
     private List<DistribucionViandas> distribuciones;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(DistribucionViandas donacionDeVianda) {
-
+        donacionDeVianda.setId(currentId);
         this.distribuciones.add(donacionDeVianda);
+        currentId++;
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TarjetasVulnerablesCollection implements TarjetasVulnerablesDAO {
     private List<TarjetaPersonaVulnerable> tarjetas;
+    private Long currentId = 100L;
 
     @Override
     public Optional<TarjetaPersonaVulnerable> buscarPorId(Long idTarjetaRepartida) {
@@ -28,7 +29,9 @@ public class TarjetasVulnerablesCollection implements TarjetasVulnerablesDAO {
 
     @Override
     public void guardar(TarjetaPersonaVulnerable tarjeta) {
+        tarjeta.setId(currentId);
         tarjetas.add(tarjeta);
+        currentId++;
     }
 
     @Override

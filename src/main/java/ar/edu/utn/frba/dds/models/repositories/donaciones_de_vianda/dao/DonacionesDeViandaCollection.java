@@ -12,10 +12,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DonacionesDeViandaCollection implements DonacionesDeViandaDAO {
     private List<DonacionDeVianda> donaciones;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(DonacionDeVianda donacionDeVianda) {
+        donacionDeVianda.setId(currentId);
         this.donaciones.add(donacionDeVianda);
+        currentId++;
     }
 
     @Override

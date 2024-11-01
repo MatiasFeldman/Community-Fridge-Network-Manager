@@ -9,9 +9,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RubroCollection implements RubroDAO{
     private List<Rubro> rubro;
+    private Long currentId = 100L;
 
     @Override
-    public void guardar(Rubro rubro){this.rubro.add(rubro);}
+    public void guardar(Rubro rubro){
+        rubro.setId(currentId);
+        this.rubro.add(rubro);
+        currentId++;}
 
     @Override
     public void eliminar(Rubro rubro){this.rubro.remove(rubro);}

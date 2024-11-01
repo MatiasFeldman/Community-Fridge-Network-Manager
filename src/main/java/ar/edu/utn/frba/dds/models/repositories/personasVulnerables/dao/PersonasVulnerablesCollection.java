@@ -10,13 +10,16 @@ import java.util.UUID;
 public class PersonasVulnerablesCollection implements PersonaVulnerableDAO{
 
     private List<PersonaVulnerable> personaVulnerables;
+    private Long currentId = 100L;
     public PersonasVulnerablesCollection(List<PersonaVulnerable> personaVulnerable) {
         this.personaVulnerables = personaVulnerable;
     }
 
     @Override
     public void guardar(PersonaVulnerable personaVulnerable) {
+        personaVulnerable.setId(currentId);
         personaVulnerables.add(personaVulnerable);
+        currentId++;
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public class IncidentesCollection implements IncidentesDAO{
     private List<Incidente> incidentes;
+    private Long currentId = 100L;
 
     public IncidentesCollection(List<Incidente> incidentes) {
         this.incidentes = incidentes;
@@ -17,7 +18,9 @@ public class IncidentesCollection implements IncidentesDAO{
 
     @Override
     public void guardar(Incidente incidente) {
+        incidente.setId(currentId);
         incidentes.add(incidente);
+        currentId++;
     }
 
     @Override

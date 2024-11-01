@@ -9,11 +9,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UsuariosCollection implements UsuariosDAO{
     private List<Usuario> usuarios;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(Usuario usuario) {
-        usuario.setId((long) this.usuarios.size() + 12);
+        usuario.setId(currentId);
         this.usuarios.add(usuario);
+        this.currentId++;
     }
 
     @Override

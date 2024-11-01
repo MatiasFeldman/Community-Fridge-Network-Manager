@@ -425,27 +425,6 @@ public class ContribucionesController {
             throw new SolicitudIncorrectaException();
         }
 
-        // Obtener archivo de imagen (si se cargó uno)
-        UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
-        String rutaImagen = null;
-
-        if (imagenProducto != null && imagenProducto.size() > 0) {
-            // Definir el nombre del archivo y la ruta de almacenamiento
-            String nombreArchivo = nombreProducto.replaceAll("\\s+", "_") + "_" + imagenProducto.filename();
-
-            rutaImagen = "imagenes/fotosOfertas/" + nombreArchivo;
-
-            String directorioCompleto = Paths.get("src", "main", "resources", "public", rutaImagen).toString();
-
-            // Guardar la imagen en el servidor
-            try (InputStream inputStream = imagenProducto.content()) {
-                Files.copy(inputStream, Paths.get(directorioCompleto), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                throw new SolicitudIncorrectaException();
-            }
-        }
-
-
         Long userId = ctx.sessionAttribute("id");
 
         JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
@@ -461,14 +440,32 @@ public class ContribucionesController {
                 puntosNecesariosDouble,
                 tipoProducto,
                 canjesTotalesInt,
-                rutaImagen);
+                null);
 
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         ofertasRepository.guardar(oferta);
 
-        // Obtener y registrar el ID de la oferta guardada
-        Long ofertaId = oferta.getId(); // Asegúrate de que el método getId() exista en tu clase Oferta
-        System.out.println("Oferta guardada con ID: " + ofertaId); // Imprimir el ID en la consola
+        // Obtener archivo de imagen (si se cargó uno)
+        UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
+        String rutaImagen = null;
+
+        if (imagenProducto != null && imagenProducto.size() > 0) {
+            // Definir el nombre del archivo y la ruta de almacenamiento
+            String nombreArchivo = "oferta_" + oferta.getId();
+
+            rutaImagen = "/imagenes/fotosOfertas/" + nombreArchivo + ".png";
+
+            String directorioCompleto = Paths.get("src", "main", "resources", "public" ,rutaImagen).toString();
+
+            // Guardar la imagen en el servidor
+            try (InputStream inputStream = imagenProducto.content()) {
+                Files.copy(inputStream, Paths.get(directorioCompleto), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new SolicitudIncorrectaException();
+            }
+        }
+
+        oferta.setImage(rutaImagen);
 
         OfrecerProductoOServicio ofrecerProductoOServicio = OfrecerProductoOServicio.of(oferta, juridica);
 

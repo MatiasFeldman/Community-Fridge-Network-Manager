@@ -11,9 +11,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OfrecerProductoCollection implements OfrecerProductoDAO {
     private List<OfrecerProductoOServicio> colaboraciones;
+    private Long currentId = 100L;
     @Override
     public void guardar(OfrecerProductoOServicio ofrecerProductoOServicio) {
+        ofrecerProductoOServicio.setId(currentId);
         this.colaboraciones.add(ofrecerProductoOServicio);
+        currentId++;
     }
 
     @Override

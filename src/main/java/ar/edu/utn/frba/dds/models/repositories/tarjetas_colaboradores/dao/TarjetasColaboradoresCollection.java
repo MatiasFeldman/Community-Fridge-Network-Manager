@@ -10,6 +10,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TarjetasColaboradoresCollection implements TarjetasColaboradoresDAO, WithSimplePersistenceUnit {
     private List<TarjetaColaborador> tarjetas;
+    private Long currentId = 100L;
 
     @Override
     public Optional<TarjetaColaborador> buscarPorId(Long idTarjetaRepartida) {
@@ -30,7 +31,9 @@ public class TarjetasColaboradoresCollection implements TarjetasColaboradoresDAO
 
     @Override
     public void guardar(TarjetaColaborador tarjeta) {
+        tarjeta.setId(currentId);
         tarjetas.add(tarjeta);
+        currentId++;
     }
 
     @Override

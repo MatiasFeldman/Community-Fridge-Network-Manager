@@ -8,10 +8,13 @@ import java.util.List;
 @AllArgsConstructor
 public class IntentosDeAperturaCollection implements IntentosDeAperturaDAO{
     private List<IntentoAperturaResuelto> intentos;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(IntentoAperturaResuelto intento){
+        intento.setId(currentId);
         intentos.add(intento);
+        currentId++;
     }
 
     @Override

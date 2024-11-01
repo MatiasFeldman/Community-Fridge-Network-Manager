@@ -8,11 +8,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SuscripcionCollection implements SuscripcionDAO {
     private List<SuscripcionAHeladera> suscripcionAHeladeras;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(SuscripcionAHeladera suscripcionAHeladera) {
-        suscripcionAHeladera.setId((long) (suscripcionAHeladeras.size() + 1));
+        suscripcionAHeladera.setId(currentId);
         this.suscripcionAHeladeras.add(suscripcionAHeladera);
+        currentId++;
     }
 
     @Override

@@ -7,10 +7,13 @@ import java.util.Optional;
 
 public class ServiciosAHeladeraCollection implements VisitasDAO {
     private List<VisitaAHeladera> serviciosRealizados;
+    private Long currentId = 100L;
 
     @Override
     public void guardar(VisitaAHeladera visita) {
+        visita.setId(currentId);
         serviciosRealizados.add(visita);
+        currentId++;
     }
 
     @Override

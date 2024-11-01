@@ -14,7 +14,7 @@ public class OfertasCollection implements OfertasDAO {
 
     public OfertasCollection() {
         this.ofertas = new ArrayList<>();
-        this.currentId = 20L; // Hardcodeado para que no se repitan ids
+        this.currentId = 100L; // Hardcodeado para que no se repitan ids
     }
 
     @Override

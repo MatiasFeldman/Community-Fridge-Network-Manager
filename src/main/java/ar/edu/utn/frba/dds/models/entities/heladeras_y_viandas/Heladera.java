@@ -94,6 +94,10 @@ public class Heladera extends Persistente {
     @Transient
     private static String topic_intentos = "heladeras/intentos_de_apertura";
 
+    @Setter
+    @Transient
+    private String mensajeDisponiblididad;
+
 
     @SneakyThrows
     public static Heladera of(HeladeraDTO dto) {

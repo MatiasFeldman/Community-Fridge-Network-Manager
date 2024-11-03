@@ -7,7 +7,6 @@
         <div class="col-md-6">
             <div class="image-container">
                 <img src="../imagenes/caridad.jpg" alt="Foto con título" class="img-fluid rounded shadow">
-                <h2 class="h5 text-center mt-3">Foto con Título</h2>
             </div>
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
@@ -19,7 +18,7 @@
                         <select class="form-control mt-2" name="heladeraOrigen" required>
                             <option value="">Selecciona la Heladera de Origen</option>
                             {{#each heladeras}}
-                                <option value="{{this.id}}">{{this.nombre}} (Cantidad actual: {{this.cantActual}})</option>
+                                <option value="{{this.id}}">{{this.nombre}} ({{this.mensajeDisponiblididad}})</option>
                             {{/each}}
                         </select>
                     </div>
@@ -28,7 +27,7 @@
                         <select class="form-control mt-2" name="heladeraDestino" required>
                             <option value="">Selecciona la Heladera de Destino</option>
                             {{#each heladeras}}
-                                <option value="{{this.id}}">{{this.nombre}} (Cantidad actual: {{this.cantActual}}, Capacidad: {{this.capacidadMaxima}})</option>
+                                <option value="{{this.id}}">{{this.nombre}} ({{this.mensajeDisponiblididad}})</option>
                             {{/each}}
                         </select>
                     </div>

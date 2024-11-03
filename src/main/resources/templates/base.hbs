@@ -41,36 +41,39 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/heladeras">Heladeras</a>
             </li>
-            </li class = "nav-item">
+            <li class="nav-item">
                 <a class="nav-link text-dark" href="/donde-donar">Dónde Donar</a>
             </li>
         </ul>
     </nav>
+
     {{#if rolUsuario}}
         <div class="user-logout-container">
-            {{#if (isEqual rolUsuario "ADMIN")}}{{else}}<div class="dropdown">
-        <div type="button" data-bs-toggle="dropdown" aria-expanded="false">{{/if}}
+            <div class="dropdown">
+                <div type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{fotoUsuario}}" alt="Perfil" class="profile">
-            {{#if (isEqual rolUsuario "ADMIN")}}{{else}}
                 </div>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                    {{#if (isEqual rolUsuario "ADMIN")}}
+                        <li><a class="dropdown-item" href="/heladeras/reportes">Ver Reportes</a></li>
+                    {{else}}
+                        <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                    {{/if}}
                 </ul>
             </div>
-            {{/if}}
+
             <form id="form-imagen" action="/logout" method="POST" class="logout">
                 <button type="submit" style="border: none; background: none; padding: 0;">
                     <img class="image-logout" src="imagenes/logout.png" alt="Logout" style="cursor: pointer; width: 30px; height:30px; display: block;">
                 </button>
             </form>
         </div>
-
     {{else}}
-    <div class="profile ms-3 d-flex align-items-center position-relative">
-        <a class="nav-link text-dark" href="/perfil" id="profile-icon">
-            <img src="imagenes/user.png" alt="Perfil" class="profile">
-        </a>
-    </div>
+        <div class="profile ms-3 d-flex align-items-center position-relative">
+            <a class="nav-link text-dark" href="/perfil" id="profile-icon">
+                <img src="imagenes/user.png" alt="Perfil" class="profile">
+            </a>
+        </div>
     {{/if}}
 </header>
 

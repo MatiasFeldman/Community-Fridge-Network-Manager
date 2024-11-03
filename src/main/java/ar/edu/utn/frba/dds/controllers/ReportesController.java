@@ -101,7 +101,7 @@ public class ReportesController {
 
             // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "inline; filename=\"reporte_fallas_" + LocalDate.now() + ".pdf\"");
+            context.header("Content-Disposition", "attachment; filename=\"reporte_fallas_" + LocalDate.now() + ".pdf\"");
             context.result(pdfContent);
 
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class ReportesController {
 
             // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "inline; filename=\"Reporte_de_viandas_donadas_" + LocalDate.now() + ".pdf\"");
+            context.header("Content-Disposition", "attachment; filename=\"Reporte_de_viandas_donadas_" + LocalDate.now() + ".pdf\"");
             context.result(pdfContent);
 
         } catch (Exception e) {
@@ -165,7 +165,7 @@ public class ReportesController {
 
             // Configurar la respuesta para la descarga del archivo
             context.contentType("application/pdf");
-            context.header("Content-Disposition", "inline; filename=\"Reporte_de_viandas_por_heladera_" + LocalDate.now() + ".pdf\"");
+            context.header("Content-Disposition", "attachment; filename=\"Reporte_de_viandas_por_heladera_" + LocalDate.now() + ".pdf\"");
             context.result(pdfContent);
 
         } catch (Exception e) {

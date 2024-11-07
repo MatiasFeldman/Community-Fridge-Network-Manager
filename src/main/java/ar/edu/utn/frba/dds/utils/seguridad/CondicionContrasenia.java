@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public interface CondicionContrasenia {
 
-    @SneakyThrows
     public boolean cumpleConCondicion(String contrasenia);
     public String getMensaje();
 }

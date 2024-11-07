@@ -367,6 +367,7 @@ public class HeladerasController {
             Heladera heladera = heladera_buscada.get();
             DenunciaFallaTecnica denuncia = DenunciaFallaTecnica.of(null, descripcion, foto, fecha, heladera);
             accionador.sucedeFallaTecnica(denuncia, heladera);
+            heladera.notificarFallaTecnica();
             ctx.status(HttpStatus.OK).result("Falla técnica registrada");
         }
 

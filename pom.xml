@@ -26,6 +26,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- TWILIO API -->
+    <dependency>
+      <groupId>com.twilio.sdk</groupId>
+      <artifactId>twilio</artifactId>
+      <version>10.6.2</version>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/io.javalin/javalin -->
     <dependency>
       <groupId>io.javalin</groupId>

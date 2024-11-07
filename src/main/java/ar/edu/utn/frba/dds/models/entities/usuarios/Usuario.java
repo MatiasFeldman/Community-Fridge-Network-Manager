@@ -4,7 +4,10 @@ import ar.edu.utn.frba.dds.converter.SendingStrategyConverter;
 import ar.edu.utn.frba.dds.exceptions.ContraseniaInseguraException;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.SendingStrategy;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSender;
+import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.whatsapp.WhatsAppSendingStrategy;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.IOException;
+import java.security.Provider.Service;
 
 import javax.mail.MessagingException;
 import javax.persistence.*;
@@ -63,7 +67,8 @@ public class Usuario extends Persistente {
     }
 
     public void serNotificado(Mensaje mensaje) throws MessagingException, IOException {
-        strategiaDeEnvio.enviarMensaje(mensaje);
+        WhatsAppSendingStrategy wpp = new WhatsAppSendingStrategy();
+        wpp.enviarMensaje(mensaje);
     }
 
 

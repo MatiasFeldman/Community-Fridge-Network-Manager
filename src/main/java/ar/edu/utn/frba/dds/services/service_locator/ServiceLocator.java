@@ -64,6 +64,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
+import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
@@ -95,6 +96,8 @@ public class ServiceLocator {
             if (componentName.equals(Accionador.class.getName())) {
                 Accionador accionador = new Accionador();
                 instances.put(componentName, accionador);
+            } else if (componentName.equals(GeorefCaba.class.getName())) {
+                instances.put(componentName, new GeorefCaba());
             } else if (componentName.equals(ReportesController.class.getName())) {
                 ReportesController reportesController = new ReportesController();
                 instances.put(componentName, reportesController);
@@ -147,13 +150,13 @@ public class ServiceLocator {
                         instanceOf(MimeMailSender.class)
                 );
                 instances.put(componentName, conversorCSVReader);
-            }else if (componentName.equals(MailSender.class.getName())) {
+            } else if (componentName.equals(MailSender.class.getName())) {
                 MailSender mailSender = new MimeMailSender();
                 instances.put(componentName, mailSender);
-            }else if (componentName.equals(ContribucionesController.class.getName())) {
+            } else if (componentName.equals(ContribucionesController.class.getName())) {
                 ContribucionesController contribucionesController = new ContribucionesController();
                 instances.put(componentName, contribucionesController);
-            }else if (componentName.equals(HashPassword.class.getName())) {
+            } else if (componentName.equals(HashPassword.class.getName())) {
                 HashPassword hashPassword = new HashPassword();
                 instances.put(componentName, hashPassword);
             }
@@ -221,10 +224,10 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, donacionDineroRepository);
-                }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
+                } else if (componentName.equals(SuscripcionesRepository.class.getName())) {
                     SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, suscripcionesRepository);
-                }else if(componentName.equals(OfrecerProductoRepository.class.getName())) {
+                } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
                     OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, ofrecerProductoRepository);
                 }
@@ -284,10 +287,10 @@ public class ServiceLocator {
                 } else if (componentName.equals(DonacionDineroRepository.class.getName())) {
                     DonacionDineroRepository donacionDineroRepository = new DonacionDineroRepository(new DonacionDineroDB());
                     instances.put(componentName, donacionDineroRepository);
-                }else if(componentName.equals(SuscripcionesRepository.class.getName())) {
+                } else if (componentName.equals(SuscripcionesRepository.class.getName())) {
                     SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionDataBase());
                     instances.put(componentName, suscripcionesRepository);
-                } else if(componentName.equals(OfrecerProductoRepository.class.getName())) {
+                } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
                     OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoDB());
                     instances.put(componentName, ofrecerProductoRepository);
                 }

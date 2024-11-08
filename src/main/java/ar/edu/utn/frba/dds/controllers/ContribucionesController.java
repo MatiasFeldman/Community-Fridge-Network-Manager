@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.CantidadViandasIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.MismaHeladeraException;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
@@ -22,6 +23,7 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.Comuna;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Provincia;
+import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donacion_dinero.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
@@ -32,6 +34,7 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
+import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import com.google.gson.Gson;
@@ -504,12 +507,22 @@ public class ContribucionesController {
 
         APIRecomendadoraDePuntos apiRecomendadoraDePuntos = APIRecomendadoraDePuntos.getInstance();
         ListaDeUbicaciones ubicaciones = apiRecomendadoraDePuntos.puntosIdeales(new Coordenada(latitud,longitud),radio);
-        String jsonResponse = new Gson().toJson(ubicaciones.getCoordenadas());
-        /*
-        List<Coordenada> coordenadas = new ArrayList<>();
-        coordenadas.add(new Coordenada(123.0,123.0));
-        coordenadas.add(new Coordenada(1223.0,1233.0));
-        String jsonResponse = new Gson().toJson(coordenadas);*/
+
+        GeorefCaba georefCaba = ServiceLocator.instanceOf(GeorefCaba.class);
+
+
+        List<Direccion> direcciones = new ArrayList<>();
+
+        for (Coordenada coordenada : ubicaciones.getCoordenadas()){
+            String direccion_calle = georefCaba.getDirecc(coordenada);
+            Direccion direc = DireccionFactory.create(new DireccionInputDTO(direccion_calle, "CABA"));
+            direcciones.add(direc);
+        }
+
+
+        String jsonResponse = new Gson().toJson(direcciones);
+
+
         ctx.json(jsonResponse);
 
     }

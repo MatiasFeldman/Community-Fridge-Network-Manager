@@ -8,10 +8,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 public class APIRecomendadoraDePuntos {
     private static APIRecomendadoraDePuntos instance = null;
-    private static String urlBase; //recibirlo por constructor
+    private static String urlBase = "http://example.com";
     protected Retrofit retrofit;
 
     public APIRecomendadoraDePuntos(String urlBase) {
@@ -30,16 +31,22 @@ public class APIRecomendadoraDePuntos {
 
     public static APIRecomendadoraDePuntos getInstance() {
         if (instance == null) {
-            instance = new APIRecomendadoraDePuntos("www.example.com");
+            instance = new APIRecomendadoraDePuntos("http://www.example.com");
         }
         return instance;
     }
 
     public ListaDeUbicaciones puntosIdeales(Coordenada coordenadas, double radio) throws IOException {
+        /*
         RecomendadoraDePuntosAPIService iRecomendadoraDePuntosAPI = this.retrofit.create(RecomendadoraDePuntosAPIService.class);
         Call<ListaDeUbicaciones> requestUbis = iRecomendadoraDePuntosAPI.recomendados(coordenadas.getLatitud(),coordenadas.getLongitud(),radio);
         Response<ListaDeUbicaciones> responseUbis = requestUbis.execute();
-        return responseUbis.body();
+         */
+        Coordenada coord1 = new Coordenada(-34.61634160945483, -58.429962561286445);
+        Coordenada coord2 = new Coordenada(-34.61631687945472, -58.432101499999995);
+        Coordenada coor3 = new Coordenada(-34.62403915581325, -58.46523206057033);
+
+        return new ListaDeUbicaciones(List.of(coord1,coord2, coor3));
     }
 
 }

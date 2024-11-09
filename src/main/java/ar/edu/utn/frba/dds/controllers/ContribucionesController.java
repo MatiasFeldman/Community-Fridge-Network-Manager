@@ -343,11 +343,11 @@ public class ContribucionesController {
         String nombre = ctx.formParam("nombre");
         String capacidadMaximaStr = ctx.formParam("capacidadMaxima");
         String calle = ctx.formParam("calle");
-        String comuna = ctx.formParam("comuna");
+        String provincia = ctx.formParam("provincia");
         String temperaturaMaximaStr = ctx.formParam("temperaturaMaxima");
         String temperaturaMinimaStr = ctx.formParam("temperaturaMinima");
 
-        if (nombre == null || capacidadMaximaStr == null || calle == null || comuna == null ||
+        if (nombre == null || capacidadMaximaStr == null || calle == null || provincia == null ||
                 temperaturaMaximaStr == null || temperaturaMinimaStr == null) {
             throw new SolicitudIncorrectaException();
         }
@@ -394,7 +394,7 @@ public class ContribucionesController {
                 .ultFechaRegistrada(null)
                 .viandasColocadas(0)
                 .viandasRetiradas(0)
-                .direccion(new Direccion(calle, new Comuna(comuna), new Provincia("CABA"), null)) // TODO: obtener correctamente la direccion
+                .direccion(DireccionFactory.create(new DireccionInputDTO(calle, provincia)))
                 .build();
 
         HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.of(heladera, juridica);

@@ -4,124 +4,171 @@
 {{/partial}}
 
 {{#partial "contenido"}}
-    <div>
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-6 d-flex flex-column justify-content-center">
-                <h1 class="fw-bold text-center text-dark">Registrar Heladera</h1>
-                <form action="/colaborar/heladera-a-cargo" method="POST">
-                    <div class="row mt-4">
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Nombre</h3>
-                            <input type="text" class="form-control mt-2" name="nombre" placeholder="Nombre" required>
-                        </div>
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Capacidad Máxima</h3>
-                            <input type="number" class="form-control mt-2" name="capacidadMaxima"
-                                   placeholder="Capacidad de viandas" required>
-                        </div>
-                        {{#if capacidadError}}
-                            <span class="text-danger">La capacidad debe ser > 0</span>
-                        {{/if}}
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Direccion</h3>
-                            <input type="text" class="form-control mt-2" name="calle" placeholder="Calle" required>
-                        </div>
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Comuna</h3>
-                            <select class="form-control mt-2" name="comuna" required>
-                                <option value="">Selecciona la comuna</option>
-                                <option value="comuna1">Comuna 1</option>
-                                <option value="comuna2">Comuna 2</option>
-                                <option value="comuna3">Comuna 3</option>
-                                <!-- Se puede completar dinámicamente desde backend -->
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Temperatura Maxima</h3>
-                            <input type="number" class="form-control mt-2" name="temperaturaMaxima"
-                                   placeholder="temperatura maxima" required>
-                        </div>
-                        <div class="col-12 col-md-6 mb-3">
-                            <h3 class="h5 fw-semibold">Temperatura Minima</h3>
-                            <input type="number" class="form-control mt-2" name="temperaturaMinima"
-                                   placeholder="temperatura minima" required>
-                        </div>
-                        {{#if temperaturaError}}
-                            <span class="text-danger">Temperatura incorrecta</span>
-                        {{/if}}
-                        <div class="row mt-4">
-                            <div class="col text-center">
-                                <button class="boton fs-3 fw-bold" type="submit">Registrar</button>
-                            </div>
-                        </div>
-                </form>
-            </div>
-                <div class="recomendacion-puntos mt-5">
-                    <h2 class="h5 text-recomendacion ps-2">Solicitar Recomendación de Puntos:</h2>
-                    <form id="recomendacionForm">
-                        <div class="d-flex flex-wrap mt-4 justify-content-between align-items-center">
-                            <div class="form-group">
-                                <h3 class="text-dark fs-6 fw-semibold ps-2">Latitud</h3>
-                                <input type="number" class="form-control latitud" name="latitud" placeholder="Latitud"
-                                       required>
-                            </div>
-                            <div class="form-group">
-                                <h3 class="text-dark fs-6 fw-semibold ps-2">Longitud</h3>
-                                <input type="number" class="form-control longitud" name="longitud"
-                                       placeholder="Longitud" required>
-                            </div>
-                            <div class="form-group">
-                                <h3 class="text-dark fs-6 fw-semibold ps-2">Radio (en metros)</h3>
-                                <input type="number" class="form-control radio" name="radio" placeholder="Radio"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col text-center">
-                                <button class="boton fs-3 fw-bold" type="submit">Solicitar Recomendación</button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- Sección de coordenadas recomendadas (inicialmente oculta) -->
-                    <div id="recomendacionesContainer" style="display:none;" class="mt-5">
-                        <h2 class="h5 text-recomendacion ps-2">Coordenadas Recomendadas:</h2>
-                        <ul id="coordenadasList" class="list-group"></ul>
+    <div></div>
+    <div class="row justify-content-center align-items-center">
+        <div class="d-flex flex-column justify-content-center">
+            <h1 class="fw-bold text-center text-dark">Registrar Heladera</h1>
+            <form action="/colaborar/heladera-a-cargo" method="POST">
+                <div class="row mt-4 grid" style="grid-template-columns: repeat(2,1fr);">
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Nombre</h3>
+                        <input type="text" class="form-control mt-2" name="nombre" placeholder="Nombre" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Capacidad Máxima</h3>
+                        <input type="number" class="form-control mt-2" name="capacidadMaxima"
+                               placeholder="Capacidad de viandas" required>
+                    </div>
+                    {{#if capacidadError}}
+                        <span class="text-danger">La capacidad debe ser > 0</span>
+                    {{/if}}
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Direccion</h3>
+                        <input type="text" class="form-control mt-2" name="calle" placeholder="Calle" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Provincia</h3>
+                        <input type="text" class="form-control mt-2" name="provincia" placeholder="Provincia" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Temperatura Maxima</h3>
+                        <input type="number" class="form-control mt-2" name="temperaturaMaxima"
+                               placeholder="temperatura maxima" required>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5 fw-semibold">Temperatura Minima</h3>
+                        <input type="number" class="form-control mt-2" name="temperaturaMinima"
+                               placeholder="temperatura minima" required>
+                    </div>
+                    {{#if temperaturaError}}
+                        <span class="text-danger">Temperatura incorrecta</span>
+                    {{/if}}
+                </div>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Registrar</button>
                     </div>
                 </div>
-                <script>
-                    // Manejar el evento submit del formulario
-                    document.getElementById("recomendacionForm").addEventListener("submit", function (event) {
-                        event.preventDefault();  // Evitar el envío tradicional del formulario
-
-                        // Obtener los valores del formulario
-                        const latitud = document.querySelector("input[name='latitud']").value;
-                        const longitud = document.querySelector("input[name='longitud']").value;
-                        const radio = document.querySelector("input[name='radio']").value;
-
-                        // Crear los datos para la solicitud POST
-                        const formData = new URLSearchParams();
-                        formData.append("latitud", latitud);
-                        formData.append("longitud", longitud);
-                        formData.append("radio", radio);
-
-                        // Hacer la solicitud POST
-                        fetch("/recomendar-puntos", {
-                            method: "POST",
-                            body: formData
-                        })
-                                .then(response => response.json())  // Convertir la respuesta en JSON
-                                .then(data => {
-                                    console.log(data)
-
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert("Hubo un error al obtener las coordenadas recomendadas.");
-                                });
-                    });
-                </script>
+            </form>
+        </div>
+        <div class="recomendacion-puntos mt-5">
+            <h2 class="h5 text-recomendacion ps-2">Solicitar Recomendación de Puntos:</h2>
+            <form id="recomendacionForm">
+                <div class="mt-4 gap-3" style="display: grid;  grid-template-columns: repeat(3,1fr);">
+                    <div class="form-group">
+                        <h3 class="text-dark fs-6 fw-semibold ps-2">Latitud</h3>
+                        <input type="number" class="form-control latitud" name="latitud" placeholder="Latitud" required>
+                    </div>
+                    <div class="form-group">
+                        <h3 class="text-dark fs-6 fw-semibold ps-2">Longitud</h3>
+                        <input type="number" class="form-control longitud" name="longitud" placeholder="Longitud"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <h3 class="text-dark fs-6 fw-semibold ps-2">Radio (en metros)</h3>
+                        <input type="number" class="form-control radio" name="radio" placeholder="Radio" required>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button class="boton fs-3 fw-bold" type="submit">Solicitar Recomendación</button>
+                    </div>
+                </div>
+            </form>
+            <!-- Sección de coordenadas recomendadas (inicialmente oculta) -->
+            <div id="recomendacionesContainer" style="display: none">
+                <h2 class="h5 text-recomendacion ps-2">Coordenadas Recomendadas:</h2>
+                <div class="gap-3" id="coordenadasContainer"
+                     style="display: grid; grid-template-columns: repeat(3,1fr);">
+                </div>
             </div>
         </div>
+        <script>
+            // Manejar el evento submit del formulario
+            document.getElementById("recomendacionForm").addEventListener("submit", function (event) {
+                event.preventDefault();  // Evitar el envío tradicional del formulario
+                const recomendacionesContainer = document.getElementById("recomendacionesContainer");
+                recomendacionesContainer.style.display = "block";
+
+                recomendacionesContainer.innerHTML = "";
+
+                const cargandoText = document.createElement("p");
+                cargandoText.textContent = "Cargando...";
+                cargandoText.style.color = "black";
+                cargandoText.style.paddingLeft = "0.5rem"
+                recomendacionesContainer.appendChild(cargandoText);
+
+
+                // Obtener los valores del formulario
+                const latitud = document.querySelector("input[name='latitud']").value;
+                const longitud = document.querySelector("input[name='longitud']").value;
+                const radio = document.querySelector("input[name='radio']").value;
+
+                // Crear los datos para la solicitud POST
+                const formData = new URLSearchParams();
+                formData.append("latitud", latitud);
+                formData.append("longitud", longitud);
+                formData.append("radio", radio);
+
+                // Hacer la solicitud POST
+                fetch("/recomendar-puntos", {
+                    method: "POST",
+                    body: formData
+                })
+                        .then(response => response.json())  // Convertir la respuesta en JSON
+                        .then(data => {
+                            if (data.error) {
+                                recomendacionesContainer.innerHTML = "";
+                                const errorText = document.createElement("p");
+                                errorText.textContent = data.error;
+                                recomendacionesContainer.appendChild(errorText);
+                                return;
+                            } else {
+                                recomendacionesContainer.innerHTML = ""
+                                const titulo = document.createElement("h2");
+                                titulo.textContent = "Coordenadas Recomendadas:";
+                                titulo.classList.add("h5", "text-recomendacion", "ps-2");
+                                recomendacionesContainer.appendChild(titulo);
+
+                                const coordenadasContainer = document.createElement("div")
+                                coordenadasContainer.classList.add("gap-3");
+                                coordenadasContainer.style.display = "grid";
+                                coordenadasContainer.style.gridTemplateColumns = "repeat(3,1fr)";
+                                coordenadasContainer.id = "coordenadasContainer";
+
+                                recomendacionesContainer.appendChild(coordenadasContainer);
+
+                                const coordis = document.getElementById("coordenadasContainer");
+
+                                for (const recomendacion of data) {
+                                    const btn = document.createElement("button");
+                                    console.log(recomendacion)
+                                    const direccion = recomendacion.direccion;
+                                    const latitud = recomendacion.coordenadas.latitud;
+                                    const longitud = recomendacion.coordenadas.longitud;
+                                    const provincia = recomendacion.provincia.nombre;
+                                    btn.classList.add("btn-coordenada")
+                                    btn.setAttribute('data-calle', direccion);
+                                    btn.setAttribute('data-provincia', provincia);
+                                    btn.innerHTML = `<p>${direccion}, ${provincia}</p>
+                                                    <p>Latitud: ${latitud}</p>
+                                                    <p>Longitud: ${longitud}</p>`;
+                                    coordis.appendChild(btn);
+
+                                    btn.addEventListener("click", () =>{
+                                        document.querySelector("input[name='calle']").value = direccion;
+                                        document.querySelector("input[name='provincia']").value = provincia;
+                                    })
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert("Hubo un error al obtener las coordenadas recomendadas.");
+                        });
+            });
+        </script>
     </div>
+
 {{/partial}}
 {{> templates/base }}

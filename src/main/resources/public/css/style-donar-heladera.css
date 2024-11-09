@@ -8,13 +8,6 @@ input.form-control {
     color: #333;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
-    max-width: 300px; /* Limita el ancho máximo */
-    width: 100%;
-}
-
-/* Ajuste específico para cada input */
-input.latitud, input.longitud, input.radio {
-    width: 250px; /* Ancho fijo opcional */
 }
 
 .h5{
@@ -27,6 +20,27 @@ button#recomendarPuntosBtn {
     padding: 10px 15px;
     font-size: 1rem;
     border-radius: 50px;
+}
+
+.btn-coordenada{
+    border: none;
+    transition: all .3s;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    padding: 10px 15px;
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-coordenada:hover{
+    background-color: #9c9c9c;
+    cursor: pointer;
+}
+
+.btn-coordenada > p{
+    margin: 0;
 }
 
 /* Ajustes responsivos */

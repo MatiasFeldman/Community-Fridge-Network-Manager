@@ -8,7 +8,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class APIRecomendadoraDePuntos {
     private static APIRecomendadoraDePuntos instance = null;
@@ -42,11 +44,27 @@ public class APIRecomendadoraDePuntos {
         Call<ListaDeUbicaciones> requestUbis = iRecomendadoraDePuntosAPI.recomendados(coordenadas.getLatitud(),coordenadas.getLongitud(),radio);
         Response<ListaDeUbicaciones> responseUbis = requestUbis.execute();
          */
-        Coordenada coord1 = new Coordenada(-34.61634160945483, -58.429962561286445);
-        Coordenada coord2 = new Coordenada(-34.61631687945472, -58.432101499999995);
-        Coordenada coor3 = new Coordenada(-34.62403915581325, -58.46523206057033);
+        List<Coordenada> todasCoordenadas = List.of(
+                new Coordenada(-34.61634160945483, -58.429962561286445),
+                new Coordenada(-34.61631687945472, -58.432101499999995),
+                new Coordenada(-34.62403915581325, -58.46523206057033),
+                new Coordenada(-34.61455152995398, -58.432745477595454),
+                new Coordenada(-34.58842940934453, -58.391932174862596),
+                new Coordenada(-34.584772081976844, -58.39812472988439)
+        );
 
-        return new ListaDeUbicaciones(List.of(coord1,coord2, coor3));
+        List<Coordenada> seleccionadas = new ArrayList<>();
+        Random random = new Random();
+
+        while (seleccionadas.size() < 3) {
+            int index = random.nextInt(todasCoordenadas.size());
+            Coordenada seleccionada = todasCoordenadas.get(index);
+            if (!seleccionadas.contains(seleccionada)) {
+                seleccionadas.add(seleccionada);
+            }
+        }
+
+        return new ListaDeUbicaciones(seleccionadas);
     }
 
 }

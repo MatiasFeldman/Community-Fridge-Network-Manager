@@ -16,8 +16,6 @@ public class ContraseniaJuridicaInseguraHanlder implements IHandler {
             model.put("titulo", "Registro Juridica");
             model.put("contraseniaInsegura", e.getMessage());
 
-            System.out.println("Contrasenia insegura detectada: " + e.getMessage());
-
             ctx.render("registro-usuario/registro-juridica.hbs",model);
         });
     }

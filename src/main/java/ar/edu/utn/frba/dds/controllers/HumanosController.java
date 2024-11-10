@@ -3,11 +3,17 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.AtributoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaHumanoInseguraException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaJuridicaInseguraException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.UsuarioHumanoExistenteException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.UsuarioJuridicaExistenteException;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -70,11 +76,7 @@ public class HumanosController {
             context.status(HttpStatus.BAD_REQUEST);
             String motivoInvalidez = validador.condicionQueNoCumple(password).get().getMensaje();
 
-            Map<String, String> response = new HashMap<>();
-            response.put("motivo", motivoInvalidez);
-
-            context.json(response);
-            return;
+            throw new ContraseniaHumanoInseguraException(motivoInvalidez);
         }
 
         String username = context.formParam("user");
@@ -82,11 +84,7 @@ public class HumanosController {
         if(ValidadorUsernames.existe(username, "Humano")){
             context.status(HttpStatus.BAD_REQUEST);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("motivo", "El nombre de usuario ya existe");
-
-            context.json(response);
-            return;
+            throw new UsuarioHumanoExistenteException("El nombre de usuario ya existe");
         }
 
         List<Atributo> atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarTodas();
@@ -113,6 +111,8 @@ public class HumanosController {
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         String passwordHashed = hash.hashPassword(password);
 
+        Usuario usuario = new Usuario(username, passwordHashed, List.of(TipoRol.HUMANO));
+
 
         HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
         if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
@@ -124,7 +124,7 @@ public class HumanosController {
 
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
-        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(colaborador.getUser());
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         System.out.print("recibimos el formulario");
         context.redirect("/");
     }

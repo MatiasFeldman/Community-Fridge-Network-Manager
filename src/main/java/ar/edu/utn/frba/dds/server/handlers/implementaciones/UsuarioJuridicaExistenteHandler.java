@@ -16,8 +16,6 @@ public class UsuarioJuridicaExistenteHandler implements IHandler {
             model.put("titulo", "Registro Juridica");
             model.put("usuarioExistente", e.getMessage());
 
-            System.out.println("Usuario juridica existente detectado: " + e.getMessage());
-
             ctx.render("registro-usuario/registro-juridica.hbs",model);
         });
     }

@@ -23,6 +23,7 @@ import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesReposito
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
@@ -36,12 +37,14 @@ public class Initializer {
     public static void init() {
         HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
         HumanosRepository humanos = ServiceLocator.instanceOf(HumanosRepository.class);
+        JuridicasRepository juridicas = ServiceLocator.instanceOf(JuridicasRepository.class);
         DistribucionesDeViandasRepository distribuciones = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         DonacionesDeViandaRepository donaciones = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         IncidentesRepository incidentesRepository = ServiceLocator.instanceOf(IncidentesRepository.class);
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
+        TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
 
         // creacion de heladeras
 
@@ -179,6 +182,22 @@ public class Initializer {
         HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u2, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
+
+        // creacion de tarjetas
+
+        TarjetaPersonaVulnerable tarjeta1 = new TarjetaPersonaVulnerable(); // 100
+        TarjetaPersonaVulnerable tarjeta2 = new TarjetaPersonaVulnerable(); // 101
+        TarjetaPersonaVulnerable tarjeta3 = new TarjetaPersonaVulnerable(); // 102
+        TarjetaPersonaVulnerable tarjeta4 = new TarjetaPersonaVulnerable(); // 103
+        TarjetaPersonaVulnerable tarjeta5 = new TarjetaPersonaVulnerable(); // 104
+        TarjetaPersonaVulnerable tarjeta6 = new TarjetaPersonaVulnerable(); // 105
+
+        tarjetasVulnerablesRepository.guardar(tarjeta1);
+        tarjetasVulnerablesRepository.guardar(tarjeta2);
+        tarjetasVulnerablesRepository.guardar(tarjeta3);
+        tarjetasVulnerablesRepository.guardar(tarjeta4);
+        tarjetasVulnerablesRepository.guardar(tarjeta5);
+        tarjetasVulnerablesRepository.guardar(tarjeta6);
 
         // creacion de donaciones y distribuciones
 

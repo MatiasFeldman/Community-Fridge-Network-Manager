@@ -21,8 +21,8 @@ import javax.persistence.*;
 public class PersonaVulnerable extends Persistente {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_humano", nullable = false)
-    private ColaboradorHumano registradaPor;
+    @JoinColumn(name = "id_juridica", nullable = false)
+    private Juridica registradaPor;
 
     @Column(name = "nombre", nullable = false)
     private String nombre;
@@ -45,7 +45,7 @@ public class PersonaVulnerable extends Persistente {
     @OneToMany(mappedBy = "duenio")
     private List<TarjetaPersonaVulnerable> tarjetas;
 
-    public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, ColaboradorHumano registradaPor) {
+    public PersonaVulnerable(String nombre, LocalDate fechaNacimiento, LocalDate fechaDeRegistro, Direccion domicilio, String nroDocumento, Integer menoresACargo, Juridica registradaPor) {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.fechaDeRegistro = fechaDeRegistro;

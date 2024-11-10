@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,16 +19,16 @@ public class RegistroPersonaVulnerable extends Persistente implements Contribuci
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
-    private ColaboradorHumano colaborador;
+    private Juridica colaborador;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_tarjeta", referencedColumnName = "id")
     private TarjetaPersonaVulnerable tarjetaRepartida;
 
-    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida, ColaboradorHumano h) {
+    public static RegistroPersonaVulnerable of(TarjetaPersonaVulnerable tarjetaRepartida, Juridica j) {
         return RegistroPersonaVulnerable
                 .builder()
-                .colaborador(h)
+                .colaborador(j)
                 .tarjetaRepartida(tarjetaRepartida)
                 .build();
     }

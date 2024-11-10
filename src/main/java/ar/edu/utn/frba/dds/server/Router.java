@@ -44,8 +44,8 @@ public class Router {
         app.get("/colaborar/heladera-a-cargo", ViewsController::formHeladeraACargo, TipoRol.JURIDICA);
         app.post("/colaborar/heladera-a-cargo", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarHeladeraACargo(ctx), TipoRol.JURIDICA);
 
-        app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.HUMANO);
-        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.HUMANO);
+        app.get("/colaborar/registro-persona-vulnerable", ViewsController::formRegistroPersonaVulnerable, TipoRol.JURIDICA);
+        app.post("/colaborar/registro-persona-vulnerable", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarPersonaVulnerable(ctx), TipoRol.JURIDICA);
 
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.JURIDICA);
         app.post("/colaborar/ofertar", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarOferta(ctx), TipoRol.JURIDICA);

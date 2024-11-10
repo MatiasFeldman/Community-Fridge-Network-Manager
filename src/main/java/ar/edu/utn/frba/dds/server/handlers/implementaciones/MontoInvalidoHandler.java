@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.server.handlers.implementaciones;
 
 import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
-import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
 import ar.edu.utn.frba.dds.server.handlers.IHandler;
 import io.javalin.Javalin;
 

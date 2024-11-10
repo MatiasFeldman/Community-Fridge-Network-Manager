@@ -1,21 +1,22 @@
 package ar.edu.utn.frba.dds.server.handlers.implementaciones;
 
-import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.TarjetaRepetidaException;
 import ar.edu.utn.frba.dds.server.handlers.IHandler;
 import io.javalin.Javalin;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistroTarjetaInexistenteHandler implements IHandler {
+public class TarjetaRepetidaHandler implements IHandler {
     @Override
     public void setHandle(Javalin app) {
-        app.exception(RegistroTarjetaInexistenteException.class, (e, context) -> {
+        app.exception(TarjetaRepetidaException.class, (e, ctx) -> {
+            ctx.status(400);
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Registro Vulnerable");
             model.put("errorTarjeta", e.getMessage());
 
-            context.render("colaboraciones/registro-vulnerable.hbs", model);
+            ctx.render("colaboraciones/registro-vulnerable.hbs", model);
         });
     }
 }

@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.exceptions.registroHeladera.TemperaturaIncorrectaExce
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.FechaNacimientoIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.MenoresACargoIncorrectoException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.TarjetaRepetidaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
@@ -295,26 +296,30 @@ public class ContribucionesController {
 
         Long userId = ctx.sessionAttribute("id");
 
-        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
-        Optional<ColaboradorHumano> posibleColaboradorHumano = humanosRepository.buscarPorIdUsuario(userId);
+        JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
+        Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
 
-        if (posibleColaboradorHumano.isEmpty()) {
+        if (posibleJuridica.isEmpty()) {
             throw new SolicitudIncorrectaException();
         }
 
-        ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
+        Juridica juridica = posibleJuridica.get();
 
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
         Optional<TarjetaPersonaVulnerable> posibleTarjeta = tarjetasVulnerablesRepository.buscarPorId(Long.valueOf(numeroTarjeta));
 
         if (posibleTarjeta.isEmpty()) {
-            throw new RegistroTarjetaInexistenteException();
+            throw new RegistroTarjetaInexistenteException("La tarjeta ingresada no existe");
         }
 
         TarjetaPersonaVulnerable tarjeta = posibleTarjeta.get();
 
+        if (tarjeta.getDuenio() != null) {
+            throw new TarjetaRepetidaException("La tarjeta ya fue registrada");
+        }
+
         PersonaVulnerable personaVulnerable = new PersonaVulnerable(
-                colaboradorHumano,
+                juridica,
                 nombre,
                 LocalDate.parse(fechaNacimiento),
                 LocalDate.now(),
@@ -327,11 +332,11 @@ public class ContribucionesController {
         PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
         personasVulnerablesRepository.guardar(personaVulnerable);
 
-        RegistroPersonaVulnerable registroPersonaVulnerable = RegistroPersonaVulnerable.of(tarjeta, colaboradorHumano);
+        RegistroPersonaVulnerable registroPersonaVulnerable = RegistroPersonaVulnerable.of(tarjeta, juridica);
 
-        // todo: agregar al repo
+        tarjeta.setDuenio(personaVulnerable);
 
-        colaboradorHumano.sumarPuntaje(registroPersonaVulnerable);
+        juridica.sumarPuntaje(registroPersonaVulnerable);
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");

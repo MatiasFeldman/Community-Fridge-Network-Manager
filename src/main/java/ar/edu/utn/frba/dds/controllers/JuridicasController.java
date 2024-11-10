@@ -1,21 +1,20 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
-import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
+import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.DireccionJuridicaInexsistenteException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaJuridicaInseguraException;
+import ar.edu.utn.frba.dds.exceptions.registro_usuario.UsuarioJuridicaExistenteException;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.Tipo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
-import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import ar.edu.utn.frba.dds.utils.MapeadorAtributos;
 import ar.edu.utn.frba.dds.utils.ValidadorUsernames;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import ar.edu.utn.frba.dds.utils.seguridad.ValidadorDeContrasenias;
@@ -41,21 +40,13 @@ public class JuridicasController {
             ctx.status(HttpStatus.BAD_REQUEST);
             String motivoInvalidez = validador.condicionQueNoCumple(password).get().getMensaje();
 
-            Map<String, String> response = new HashMap<>();
-            response.put("motivo", motivoInvalidez);
-
-            ctx.json(response);
-            return;
+            throw new ContraseniaJuridicaInseguraException(motivoInvalidez);
         }
 
         if(ValidadorUsernames.existe(ctx.formParam("user"), "Juridico")){
             ctx.status(HttpStatus.BAD_REQUEST);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("motivo", "El nombre de usuario ya existe");
-
-            ctx.json(response);
-            return;
+            throw new UsuarioJuridicaExistenteException("El nombre de usuario ya existe");
         }
 
         String username = ctx.formParam("user");
@@ -89,8 +80,11 @@ public class JuridicasController {
 
         Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionForm, provinciaForm));
 
-        //TODO
-        //fijarnos de poner obligatorio en el front que si pone direccion tiene que poner provincia
+        if (direccion == null) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            throw new DireccionJuridicaInexsistenteException("La dirección ingresada no es válida");
+        }
+
         JuridicoInputDTO dto = new JuridicoInputDTO(usuario,razon_social, Tipo.valueOf(tipo), rubro,medioContacto, direccion);
 
         Juridica juridica = Juridica.create(dto);
@@ -98,8 +92,6 @@ public class JuridicasController {
         ServiceLocator.instanceOf(JuridicasRepository.class).guardar(juridica);
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         ctx.redirect("/");
-
-
 
     }
 }

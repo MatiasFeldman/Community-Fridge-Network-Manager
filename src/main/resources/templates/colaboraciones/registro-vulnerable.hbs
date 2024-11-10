@@ -43,7 +43,7 @@
                         <h3 class="h5 fw-semibold">Número de Tarjeta</h3>
                         <input type="text" class="form-control mt-2" placeholder="Número de tarjeta" id="numeroTarjeta" name="numeroTarjeta" required>
                         {{#if errorTarjeta}}
-                             <span class="text-danger">Tarjeta no existe</span>
+                             <span class="text-danger">{{errorTarjeta}}</span>
                         {{/if}}
                     </div>
                 </div>

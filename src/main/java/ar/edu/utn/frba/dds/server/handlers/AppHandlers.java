@@ -22,7 +22,11 @@ public class AppHandlers {
             new CantidadViandasIncorrectaHandler(),
             new MismaHeladeraHanlder(),
             new APIIntegracionSinConexionHandler(),
-            new PuntosInsuficientesHandler()
+            new PuntosInsuficientesHandler(),
+            new ContraseniaJuridicaInseguraHanlder(),
+            new UsuarioJuridicaExistenteHandler(),
+            new DireccionJuridicaInexsistenteHandler(),
+            new TarjetaRepetidaHandler()
     };
 
     public static void applyHandlers(Javalin app) {

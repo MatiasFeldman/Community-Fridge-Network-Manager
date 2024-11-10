@@ -58,12 +58,12 @@ public class ContribucionHumanaFactory {
         return donacion;
     }
 
-    public static RegistroPersonaVulnerable registrarPersonaVulnerable(TarjetaPersonaVulnerable tarjeta, PersonaVulnerable persona, ColaboradorHumano h) {
-        persona.setRegistradaPor(h);
+    public static RegistroPersonaVulnerable registrarPersonaVulnerable(TarjetaPersonaVulnerable tarjeta, PersonaVulnerable persona, Juridica j) {
+        persona.setRegistradaPor(j);
         persona.setTarjetas(List.of(tarjeta));
         tarjeta.setDuenio(persona);
-        RegistroPersonaVulnerable registro = RegistroPersonaVulnerable.of(tarjeta, h);
-        h.sumarPuntaje(registro);
+        RegistroPersonaVulnerable registro = RegistroPersonaVulnerable.of(tarjeta, j);
+        j.sumarPuntaje(registro);
         return registro;
     }
 

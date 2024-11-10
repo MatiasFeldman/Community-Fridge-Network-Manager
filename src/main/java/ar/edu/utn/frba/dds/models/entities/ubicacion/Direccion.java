@@ -33,7 +33,9 @@ public class Direccion {
         GobiernoAPI api = new GobiernoAPI();
         GeoRefDeDirecc geoRefDeDirecc = api.getCoordYComuna(direccion, provincia);
 
-
+        if (geoRefDeDirecc == null) {
+            return null;
+        }
 
         return Direccion
                 .builder()

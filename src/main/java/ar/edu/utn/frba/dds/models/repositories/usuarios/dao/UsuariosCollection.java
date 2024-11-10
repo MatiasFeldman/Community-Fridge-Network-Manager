@@ -49,4 +49,10 @@ public class UsuariosCollection implements UsuariosDAO{
                 .filter(usuario -> usuario.getUser().equals(username))
                 .findFirst();
     }
+
+    public boolean existeUsername(String username){
+        return this.usuarios
+                .stream()
+                .anyMatch(usuario -> usuario.getUser().equals(username));
+    }
 }

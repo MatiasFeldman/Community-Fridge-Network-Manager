@@ -49,4 +49,14 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
                 .stream()
                 .findFirst();
     }
+
+    @Override
+    public boolean existeUsername(String username) {
+        Long count = entityManager()
+                .createQuery("SELECT COUNT(u) FROM Usuario u WHERE u.user = :username AND u.presente = true", Long.class)
+                .setParameter("username", username)
+                .getSingleResult();
+
+        return count > 0;
+    }
 }

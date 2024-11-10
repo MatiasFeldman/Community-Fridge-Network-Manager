@@ -35,4 +35,8 @@ public class UsuariosRepository {
     public Optional<Usuario> buscarPorUsername(String username){
         return usuarios.buscarPorUsername(username);
     };
+
+    public boolean existeUsername(String username){
+        return usuarios.existeUsername(username);
+    };
 }

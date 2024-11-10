@@ -17,4 +17,6 @@ public interface UsuariosDAO {
     public Optional<Usuario> buscarPorId(Long id);
 
     public Optional<Usuario> buscarPorUsername(String email);
+
+    public boolean existeUsername(String username);
 }

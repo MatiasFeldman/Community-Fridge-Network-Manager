@@ -1,0 +1,28 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="/css/style-misCanjes.css">
+{{/partial}}
+{{#partial "contenido"}}
+    <h1>Historial de Canjes</h1>
+    <h3 class="h5 text-muted">Mis puntos: <span id="mis-puntos">{{misPuntos}}</span></h3>
+    <p>Esta es la lista de todos los canjes que has realizado.</p>
+
+    {{#if canjesRealizados}}
+        <div class="canjes-lista">
+            {{#each canjesRealizados}}
+                <div class="canje-item">
+                    <div class="canje-detalle">
+                        <h3>Oferta: {{this.oferta.nombre}}</h3>
+                        <p>Fecha de Canje: {{this.fecha_de_canje}}</p>
+                        <p>Puntos Canjeados: {{this.puntos_necesario}}</p>
+                    </div>
+                    <div class="canje-imagen">
+                        <img src="{{this.oferta.image}}" alt="{{this.oferta.nombre}}" width="150" height="100">
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p>No has realizado ningún canje aún.</p>
+    {{/if}}
+{{/partial}}
+{{> templates/base }}

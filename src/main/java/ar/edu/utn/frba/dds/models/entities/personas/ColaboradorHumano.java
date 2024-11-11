@@ -12,6 +12,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import net.bytebuddy.implementation.bind.annotation.Super;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,10 @@ public class ColaboradorHumano extends Persistente {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_canje")
+    private List<Canjes> canjesRealizados = new ArrayList<>();
+
     public void agregarTarejta(TarjetaColaborador tarjeta) {
         tarjeta.setDuenio(this);
         this.tarjetas.add(tarjeta);
@@ -72,6 +77,7 @@ public class ColaboradorHumano extends Persistente {
                 .direccion(dto.getDireccion())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
+                .canjesRealizados(dto.getCanjesRealizados())
                 .user(dto.getUser())
                 .build();
     }
@@ -115,6 +121,8 @@ public class ColaboradorHumano extends Persistente {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
+        Canjes canje = new Canjes(oferta, LocalDate.now(), oferta.getPuntosNecesarios());
+        canjesRealizados.add(canje);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }

@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva;
 
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Canjes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
@@ -44,7 +45,7 @@ public class RegisterCargaMasiva {
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
-        ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales, userCreado);
+        ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales,new ArrayList<>() ,userCreado);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
@@ -61,8 +62,8 @@ public class RegisterCargaMasiva {
         return new Usuario(username, password, new ArrayList<>(List.of(TipoRol.HUMANO)));
     }
 
-    public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales, userCreado, null);
+    public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Canjes> canjes , Usuario userCreado){
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales,canjes , userCreado, null);
         return HumanoFactory.crear(dto);
     }
 

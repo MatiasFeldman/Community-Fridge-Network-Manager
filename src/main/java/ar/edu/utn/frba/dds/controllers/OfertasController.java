@@ -79,6 +79,8 @@ public class OfertasController {
         List<Rubro> rubros = ServiceLocator.instanceOf(RubrosRepository.class).buscarTodos();
 
         Map<String, Object> model = new HashMap<>();
+
+        model.put("success", Boolean.parseBoolean(ctx.queryParam("success")));
         model.put("titulo", "Productos y Servicios");
         model.put("ofertas",dtos);
         model.put("rubros",rubros);
@@ -126,11 +128,9 @@ public class OfertasController {
 
                         usuario.canjearOferta(oferta);
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
-                        System.out.print(oferta.getCanjesUsados());
-
                         ServiceLocator.instanceOf(HumanosRepository.class).actualizar(usuario);
 
-                        ctx.redirect("/ofertas?success=true");//por ahroa klo dejamos asi podriamos hacer uan apgina de canjeo exitoso mas linda
+                        ctx.redirect("/ofertas?success=true");//TODO por ahroa klo dejamos asi podriamos hacer uan apgina de canjeo exitoso mas linda
                     } else {
 
                         ctx.status(404).result("Usuario no encontrado");

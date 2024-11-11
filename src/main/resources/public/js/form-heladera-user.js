@@ -1,60 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
-        // Mostrar/ocultar el campo de configuración para N (número de viandas)
+    let nConfiguradoMin = null;
+    let nConfiguradoMax = null;
 
-        const notificacionViandasMin = document.getElementById('notificacionViandasMin');
-        const notificacionViandasMax = document.getElementById('notificacionViandasMax');
+    const notificacionViandasMin = document.getElementById('notificacionViandasMin');
+    const notificacionViandasMax = document.getElementById('notificacionViandasMax');
+    const medioNotificacion = document.getElementById('medioNotificacion');
+    const contactoAdicional = document.getElementById('contactoAdicional');
+    const contactoAdicionalInput = document.getElementById('contactoAdicionalInput');
+    const tipoContacto = document.getElementById('tipoContacto');
+    const formSuscripcion = document.getElementById('formSuscripcion');
+    const heladeraIdInput = document.getElementById('heladeraIdInput');
 
-        notificacionViandasMin.addEventListener('change', function () {
-            if (this.checked) {
-                abrirModalConfigurarN('min');
-            } else {
-                nConfiguradoMin = null;
-            }
+    notificacionViandasMin.addEventListener('change', function () {
+        if (this.checked) {
+            abrirModalConfigurarN('min');
+        } else {
+            nConfiguradoMin = null;
+        }
+    });
+
+    notificacionViandasMax.addEventListener('change', function () {
+        if (this.checked) {
+            abrirModalConfigurarN('max');
+        } else {
+            nConfiguradoMax = null;
+        }
+    });
+
+    function abrirModalConfigurarN(tipo) {
+        const modal = new bootstrap.Modal(document.getElementById('configurarNModal'), {
+            backdrop: false
         });
-
-        notificacionViandasMax.addEventListener('change', function () {
-            if (this.checked) {
-                abrirModalConfigurarN('max');
-            } else {
-                nConfiguradoMax = null;
-            }
-        });
-
-
-        // Función para abrir el modal y configurar N
-        function abrirModalConfigurarN(tipo) {
-            const modal = new bootstrap.Modal(document.getElementById('configurarNModal'), {
-                backdrop: false  // Deshabilitar bloqueo de fondo
-            });
-            document.getElementById('guardarNValue').onclick = function () {
-                const nValue = document.getElementById('nValueInput').value;
-                if (nValue) {
-                    if (tipo === 'min') {
-                        nConfiguradoMin = nValue;
-                        alert(`Valor de N para mínimas configurado: ${nConfiguradoMin}`);
-                    } else if (tipo === 'max') {
-                        nConfiguradoMax = nValue;
-                        alert(`Valor de N para máximas configurado: ${nConfiguradoMax}`);
-                    }
+        document.getElementById('guardarNValue').onclick = function () {
+            const nValue = document.getElementById('nValueInput').value;
+            if (nValue) {
+                if (tipo === 'min') {
+                    nConfiguradoMin = nValue;
+                    alert(`Valor de N para mínimas configurado: ${nConfiguradoMin}`);
+                } else if (tipo === 'max') {
+                    nConfiguradoMax = nValue;
+                    alert(`Valor de N para máximas configurado: ${nConfiguradoMax}`);
                 }
-                modal.hide(); // Cerrar el modal
-            };
-            modal.show();
-        }
-
-        // Función para encontrar un contacto según el medio seleccionado
-        function encontrarContactoPorTipo(tipo) {
-            return contactosGuardados.find(contacto => contacto.tipoContacto.nombre === tipo);
-        }
-
-    // Cambiar el tipo de contacto según el medio seleccionado
+            }
+            modal.hide();
+        };
+        modal.show();
+    }
 
     medioNotificacion.addEventListener('change', function () {
-        const medio = medioNotificacion.value;
-
-        const contactoExistente = encontrarContactoPorTipo(medio);
-
-        if (contactoExistente && contactoExistente.valorContacto) {
+        const medio = medioNotificacion.value.toLowerCase();
+        if (encontrarContactoPorTipo(medio)) {
             contactoAdicional.style.display = 'none';
         } else {
             tipoContacto.textContent = medio;
@@ -63,67 +58,74 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function encontrarContactoPorTipo(tipo) {
+        return contactosGuardados && contactosGuardados.find(contacto => contacto.tipoContacto.toLowerCase() === tipo.toLowerCase());
+    }
 
-    // Enviar el formulario de suscripción
     formSuscripcion.addEventListener('submit', function (event) {
-        let isValid = true; // Bandera de validación
+        event.preventDefault();
+        let isValid = true;
 
-        // Verificar si se seleccionó un tipo de suscripción
         const tipoSuscripcion = document.querySelectorAll('input[name="tipo_suscripcion"]:checked');
         if (tipoSuscripcion.length === 0) {
             alert('Debe seleccionar al menos un tipo de suscripción.');
             isValid = false;
         }
 
-        // Verificar si el usuario ha ingresado el contacto adicional (si es necesario)
-        if (contactoAdicional.style.display === 'block' && !contactoAdicionalInput.value.trim()) {
-            alert('Por favor, ingrese el contacto adicional.');
-            isValid = false;
+        if (contactoAdicional.style.display === 'block') {
+            const medio = medioNotificacion.value.toLowerCase();
+            const contactoValor = contactoAdicionalInput.value.trim();
+
+            if (!contactoValor) {
+                alert('Por favor, ingrese el contacto adicional.');
+                isValid = false;
+            } else if (medio === 'whatsapp' || medio === 'telegram') {
+                // Nueva expresión regular para validar el número de teléfono
+                const phoneRegex = /^\+?[0-9]{7,15}$/;
+                if (!phoneRegex.test(contactoValor)) {
+                    alert('Por favor, ingrese un número de teléfono válido (solo dígitos y opcional + al inicio).');
+                    isValid = false;
+                }
+            } else if (medio === 'mail') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(contactoValor)) {
+                    alert('Por favor, ingrese un correo electrónico válido.');
+                    isValid = false;
+                }
+            }
         }
 
-        // Verificar si se configuró N cuando es necesario (mínimas o máximas)
-        if (nConfiguradoMin === null && document.getElementById('notificacionViandasMin').checked) {
+        if (nConfiguradoMin === null && notificacionViandasMin.checked) {
             alert('Debe configurar el valor de N para las viandas disponibles.');
             isValid = false;
         }
-
-        if (nConfiguradoMax === null && document.getElementById('notificacionViandasMax').checked) {
+        if (nConfiguradoMax === null && notificacionViandasMax.checked) {
             alert('Debe configurar el valor de N para la heladera llena.');
             isValid = false;
         }
 
-        // Si la validación falla, prevenimos el envío
-        if (!isValid) {
-            event.preventDefault(); // Detener envío si hay errores de validación
-        } else {
-            // Asegurarnos de que el heladera_id esté incluido en el formulario
-            const heladeraIdInput = document.getElementById('heladeraIdInput');
-            if (!heladeraIdInput.value) {
-                alert('El ID de la heladera no está definido.');
-                event.preventDefault();
-                return;
-            }
+        if (!heladeraIdInput.value) {
+            alert('El ID de la heladera no está definido.');
+            isValid = false;
+        }
 
-            // Adjuntar el valor de N configurado al formulario
+        if (isValid) {
             if (nConfiguradoMin !== null) {
                 const inputMin = document.createElement('input');
                 inputMin.type = 'hidden';
-                inputMin.name = 'cantidad';
+                inputMin.name = 'cantidadMin';
                 inputMin.value = nConfiguradoMin;
                 formSuscripcion.appendChild(inputMin);
             }
-
             if (nConfiguradoMax !== null) {
                 const inputMax = document.createElement('input');
                 inputMax.type = 'hidden';
-                inputMax.name = 'cantidad';
+                inputMax.name = 'cantidadMax';
                 inputMax.value = nConfiguradoMax;
                 formSuscripcion.appendChild(inputMax);
             }
 
-            // Aquí se permite el envío normal del formulario
+            formSuscripcion.submit();
         }
     });
-
-
 });

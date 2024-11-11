@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.dao;
 
-import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.OfrecerProductoOServicio;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;

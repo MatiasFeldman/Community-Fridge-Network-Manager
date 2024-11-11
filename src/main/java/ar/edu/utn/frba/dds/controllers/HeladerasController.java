@@ -1,4 +1,9 @@
 package ar.edu.utn.frba.dds.controllers;
+import ar.edu.utn.frba.dds.dtos.ContactosDTO;
+import ar.edu.utn.frba.dds.exceptions.suscripcion.HeladeraNoEncontradaException;
+import ar.edu.utn.frba.dds.exceptions.suscripcion.InputValidationException;
+import ar.edu.utn.frba.dds.exceptions.suscripcion.UsuarioNoEncontradoException;
+import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
@@ -8,10 +13,6 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.IntentoAperturaResuelto;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.helpers.json_to_entidad.JSONtoDenunciaFallaTecnica;
-import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
-import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
-import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
-import ar.edu.utn.frba.dds.models.entities.personas.TipoContacto;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.HeladeraLlena;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.tipo_suscripciones.SufrioDesperfecto;
@@ -222,6 +223,8 @@ public class HeladerasController {
     private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context ctx) {
         List<String> rolesUsuario = ctx.sessionAttribute("roles");
         Long idUsuario = ctx.sessionAttribute("id");
+        List<ContactosDTO> contactosDTO = new ArrayList<>();
+
 
         if (rolesUsuario == null || rolesUsuario.isEmpty())  return;
 
@@ -230,14 +233,26 @@ public class HeladerasController {
             ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class)
                     .buscarPorIdUsuario(idUsuario).get();
 
-            model.put("contactos", humano.getMediosDeContacto());
+            for (AtributoHumanoRespondido nombreContacto : humano.getMediosDeContacto()) {
+                if(!nombreContacto.getValor().isEmpty()){
+                    String tipoContacto = nombreContacto.getNombreAtributo();
+                    String valor = nombreContacto.getValor();
+                    contactosDTO.add(new ContactosDTO(tipoContacto, valor));
+                }
+            }
+
         } else if (rolesUsuario.get(0).contains("JURIDICA")) {
 
             Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class)
                     .buscarPorIdUsuario(idUsuario).get();
 
-            model.put("contactos", juridica.getMediosDeContacto());
+            for(Contacto contacto: juridica.getMediosDeContacto()){
+                String tipoContacto = contacto.getTipoContacto().getNombre();
+                String valor = contacto.getValorContacto();
+                contactosDTO.add(new ContactosDTO(tipoContacto, valor));
+            }
         }
+        model.put("contactos",contactosDTO);
     }
 
     public void create(Context ctx) {
@@ -375,57 +390,73 @@ public class HeladerasController {
 
     public void suscribirse(Context ctx) {
         try {
-            Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
-            Long usuarioId = ctx.sessionAttribute("id");
+            Long heladeraId = validarHeladeraId(ctx);
+            Long usuarioId = obtenerUsuarioId(ctx);
             List<String> rolUsuario = ctx.sessionAttribute("roles");
             String tipoSuscripcion = ctx.formParam("tipo_suscripcion");
             Integer cantidad = !Objects.equals(ctx.formParam("cantidad"), "") ? Integer.parseInt(ctx.formParam("cantidad")) : null;
             String medioDeNotificacion = ctx.formParam("notificador");
-            String nuevoMedioNotificacion = Objects.equals(ctx.formParam("contacto_adicional"),"") ? null : ctx.formParam("contacto_adicional");
+            String nuevoMedioNotificacion = Objects.equals(ctx.formParam("contacto_adicional"), "") ? null : ctx.formParam("contacto_adicional");
 
-            if(nuevoMedioNotificacion != null){
+            if(tipoSuscripcion == null){
+                throw new InputValidationException("tipo de suscripcion invalido o nulo");
+            }
+
+            if (nuevoMedioNotificacion != null) {
+                //validaciones de tipos de datosmedioDeNotificacion
+                if (medioDeNotificacion.equalsIgnoreCase("whatsapp") || medioDeNotificacion.equalsIgnoreCase("telegram")) {
+                    validarNumeroTelefono(nuevoMedioNotificacion);
+
+                }else if(medioDeNotificacion.equalsIgnoreCase("mail") ){
+                    validarCorreoElectronico(nuevoMedioNotificacion);
+                }else {
+                    throw new InputValidationException("El medio de notificacion recibido es desconocido");
+                }
+
                 if (rolUsuario.get(0).contains("HUMANO")) {
-                     ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId)
-                            .orElseThrow(() -> new Exception("Usuario Humano no encontrado"));
-                    humano.actualizarMedioDeContacto(medioDeNotificacion,nuevoMedioNotificacion);
+                    ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId)
+                            .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario Humano no encontrado"));
+                    humano.actualizarMedioDeContacto(medioDeNotificacion, nuevoMedioNotificacion);
                     ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano);
                 } else if (rolUsuario.get(0).contains("JURIDICA")) {
-                     Juridica juridica =  ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId)
-                            .orElseThrow(() -> new Exception("Usuario Jurídico no encontrado"));
-                    juridica.generarContacto(new Contacto(new TipoContacto(medioDeNotificacion),nuevoMedioNotificacion));
+                    Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId)
+                            .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario Jurídico no encontrado"));
+                    juridica.generarContacto(new Contacto(new TipoContacto(medioDeNotificacion), nuevoMedioNotificacion));
                     ServiceLocator.instanceOf(JuridicasRepository.class).modificar(juridica);
                 } else {
-                    throw new Exception("Este rol no tiene permitido suscribirse");
+                    throw new InputValidationException("Este rol no tiene permitido suscribirse");
                 }
             }
 
-            // Obtener la instancia de Heladera
             Heladera heladera = ServiceLocator.instanceOf(HeladerasRepository.class)
-                    .buscarPorId(heladeraId).orElseThrow(() -> new Exception("Heladera no encontrada"));
+                    .buscarPorId(heladeraId).orElseThrow(() -> new HeladeraNoEncontradaException("Heladera no encontrada"));
 
-            // Obtener el usuario en función de su rol (como Object)
             Object usuario = obtenerUsuarioPorRol(usuarioId, rolUsuario);
-
-            // Crear la suscripción según el tipo seleccionado
             Suscripcion suscripcion = crearSuscripcion(tipoSuscripcion, usuario, medioDeNotificacion, cantidad);
-
-            // Crear la suscripción a la heladera y agregarla
-            SuscripcionAHeladera nuevaSuscripcion = new SuscripcionAHeladera(ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId)
-                    .orElseThrow(() -> new Exception("Heladera no encontrada")), suscripcion, heladera);
+            SuscripcionAHeladera nuevaSuscripcion = new SuscripcionAHeladera(
+                    ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId)
+                            .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado")),
+                    suscripcion, heladera);
 
             heladera.suscribir(nuevaSuscripcion);
 
-            // Persistir la suscripción y actualizar la heladera
             ServiceLocator.instanceOf(SuscripcionesRepository.class).guardar(nuevaSuscripcion);
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
 
-            // Redirigir a la página de éxito
             ctx.redirect("/heladeras");
+        } catch (UsuarioNoEncontradoException | HeladeraNoEncontradaException | InputValidationException e) {
+            // Renderizar la vista de error 400 con el mensaje específico
+            Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
+            model.put("titulo", "Error en la solicitud");
+            model.put("error",  e.getMessage());
+            model.put("paginaAnterior", "/heladeras");
+            ctx.status(400).render("400Personalizado.hbs", model);
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Error al suscribirse: " + e.getMessage());
+            // Otros errores no anticipados se manejan como errores internos
+            ctx.status(500).result("Error en el servidor: " + e.getMessage());
         }
     }
+
 
 
     private Object obtenerUsuarioPorRol(Long usuarioId, List<String> rolUsuario) throws Exception {
@@ -481,6 +512,41 @@ public class HeladerasController {
             throw new Exception("Tipo de usuario no reconocido");
         }
     }
+    private Long validarHeladeraId(Context ctx) throws InputValidationException {
+        try {
+            return Long.parseLong(ctx.formParam("heladera_id"));
+        } catch (NumberFormatException e) {
+            throw new InputValidationException("El ID de la heladera no es válido");
+        }
+    }
+
+    private Long obtenerUsuarioId(Context ctx) throws InputValidationException {
+        Long usuarioId = ctx.sessionAttribute("id");
+        if (usuarioId == null) {
+            throw new InputValidationException("ID de usuario no encontrado en sesión");
+        }
+        return usuarioId;
+    }
+
+    public static String validarNumeroTelefono(String numero) throws InputValidationException {
+            // La expresión regular permite solo dígitos y opcionalmente un "+" al inicio
+            if (!numero.matches("^\\+?[0-9]{7,15}$")) {
+                throw new InputValidationException("El número de teléfono solo debe contener dígitos y un prefijo opcional '+'.");
+            }
+        return numero;
+    }
+    public static String validarCorreoElectronico(String correo) throws InputValidationException {
+        // Expresión regular para un correo electrónico básico
+        String emailRegex = "^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$";
+        if (!correo.matches(emailRegex)) {
+            throw new InputValidationException("El correo electrónico no es válido. Asegúrese de que tenga el formato nombre@dominio.extension.");
+        }
+        return correo;
+    }
+
+// Otros métodos de validación similares para cada parámetro que requiera validación...
+
+
     public void desuscribirse(Context ctx){
         Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
         Long usuarioId = ctx.sessionAttribute("id");
@@ -500,7 +566,7 @@ public class HeladerasController {
     public void suscripcionView(Context ctx) {
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Suscripción");
-        // Añadir la lógica de medios de contacto a un método separado
+        // Añadir la lógica de medios de contacto a un metodo separado
         agregarContactosUsuarioAlModelo(model, ctx);
 
         String idParam = ctx.pathParam("id");

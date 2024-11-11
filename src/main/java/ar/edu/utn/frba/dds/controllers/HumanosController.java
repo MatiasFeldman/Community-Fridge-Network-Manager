@@ -29,10 +29,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HumanosController {
     public Object crear(Object solicitud){
@@ -127,6 +124,20 @@ public class HumanosController {
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         System.out.print("recibimos el formulario");
         context.redirect("/");
+    }
+    public void viewMisCanjes(Context ctx){
+        Long usuarioId = ctx.sessionAttribute("id");
+        Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
+        Map<String, Object> model = new HashMap<>();
+        if(humano.isPresent()){
+            model.put("canjesRealizados", humano.get().getCanjesRealizados());
+        }
+
+        model.put("titulo", "misCanjes");
+        model.put("misPuntos", humano.get().calcularPuntaje());
+
+        RenderUtils.renderizar(ctx,"/misCanjes.hbs", model);
+
     }
 
 }

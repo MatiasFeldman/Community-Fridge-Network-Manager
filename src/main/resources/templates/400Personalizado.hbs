@@ -1,0 +1,48 @@
+{{#partial "styles"}}
+    <style>
+        /* Estilo para centrar el contenido en la pantalla */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            font-weight: bold; /* Hace que todo el texto sea negrita */
+        }
+
+        /* Estilo para el título */
+        h1 {
+            color: black;
+            font-weight: bolder; /* Hace el título aún más destacado */
+        }
+        p{
+            color: black;
+        }
+
+        /* Enlace estilizado */
+        a {
+            margin-top: 20px;
+            color: #007bff; /* Color azul para el enlace */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{{/partial}}
+
+{{#partial "contenido"}}
+
+    <div class="container">
+        <h1>Solicitud Incorrecta</h1>
+        <p>Hubo un error al procesar su solicitud.</p>
+
+        <!-- Mensaje de error personalizado -->
+        <p><strong>Error:</strong> {{error}}</p>
+
+        <a href="{{paginaAnterior}}">Volver a la página anterior</a>
+    </div>
+{{/partial}}
+{{> templates/base }}

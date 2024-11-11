@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.services.service_locator;
 
 import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
+import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
@@ -59,6 +60,9 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.dao.Tarjet
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesCollection;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.dao.TarjetasVulnerablesDB;
+import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnicos.dao.TecnicosCollection;
+import ar.edu.utn.frba.dds.models.repositories.tecnicos.dao.TecnicosDataBase;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
@@ -70,6 +74,7 @@ import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServiceLocator {
@@ -94,7 +99,7 @@ public class ServiceLocator {
 
         if (!instances.containsKey(componentName)) {
             if (componentName.equals(Accionador.class.getName())) {
-                Accionador accionador = new Accionador();
+                Accionador accionador = Accionador.of(List.of(new AvisarTecnico(ServiceLocator.instanceOf(TecnicosRepository.class))), ServiceLocator.instanceOf(IncidentesRepository.class));
                 instances.put(componentName, accionador);
             } else if (componentName.equals(GeorefCaba.class.getName())) {
                 instances.put(componentName, new GeorefCaba());
@@ -230,6 +235,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
                     OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, ofrecerProductoRepository);
+                } else if (componentName.equals(TecnicosRepository.class.getName())) {
+                    TecnicosRepository tecnicos = new TecnicosRepository(new TecnicosCollection(new ArrayList<>(), 100L));
+                    instances.put(componentName, tecnicos);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -290,6 +298,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(SuscripcionesRepository.class.getName())) {
                     SuscripcionesRepository suscripcionesRepository = new SuscripcionesRepository(new SuscripcionDataBase());
                     instances.put(componentName, suscripcionesRepository);
+                } else if (componentName.equals(TecnicosRepository.class.getName())) {
+                    TecnicosRepository tecnicos = new TecnicosRepository(new TecnicosDataBase());
+                    instances.put(componentName, tecnicos);
                 } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
                     OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoDB());
                     instances.put(componentName, ofrecerProductoRepository);

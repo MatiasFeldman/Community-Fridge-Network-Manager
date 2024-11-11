@@ -7,20 +7,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import lombok.SneakyThrows;
+import org.eclipse.paho.client.mqttv3.*;
 
 import java.util.Optional;
 
 @Builder
 public class ReceptorMovimiento implements IMqttMessageListener {
     private HeladerasRepository heladeras;
-    private static final String BROKER_URL = "";
+    private final String BROKER_URL = "tcp://localhost:1883";
 
 
-    public ReceptorMovimiento create(HeladerasRepository heladeras) throws MqttException {
+    @SneakyThrows
+    public static ReceptorMovimiento create(HeladerasRepository heladeras) {
         ReceptorMovimiento receptor = ReceptorMovimiento
                 .builder()
                 .heladeras(heladeras)
@@ -30,8 +29,14 @@ public class ReceptorMovimiento implements IMqttMessageListener {
         return receptor;
     }
 
-    private void suscribirseATopic(ReceptorMovimiento receptor) throws MqttException {
+    @SneakyThrows
+    private void suscribirseATopic(ReceptorMovimiento receptor){
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setAutomaticReconnect(true);
+        options.setKeepAliveInterval(10);
+
         MqttClient client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+        client.connect(options);
         client.subscribe("heladera/movimiento", receptor);
     }
 
@@ -40,6 +45,7 @@ public class ReceptorMovimiento implements IMqttMessageListener {
         ObjectMapper mapper = new ObjectMapper();
         String jsonMessage = new String(mqttMessage.getPayload());
         MensajeSensorMovimiento mensaje = mapper.readValue(jsonMessage, MensajeSensorMovimiento.class);
+        System.out.println("Se detecto movimiento en la heladera con id: " + mensaje.getIdHeladera());
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(mensaje.getIdHeladera());
         posibleHeladera.ifPresent(Heladera::hayMovimiento);
     }

@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.suscripciones.SuscripcionAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Coordenada;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -78,11 +79,6 @@ public class Heladera extends Persistente {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SuscripcionAHeladera> suscriptores;
 
-
-    @Transient
-    private Accionador accionadorParaTemperatura;
-    @Transient
-    private Accionador accionadorParaMovimiento;
 
 
     @Transient
@@ -250,19 +246,20 @@ public class Heladera extends Persistente {
         this.ultimaTemperaturaRegistrada = temp;
         this.ultFechaRegistrada = LocalDateTime.now();
         if (!this.temperaturaValida(temp)) {
-            this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
+            ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
         }
     }
 
     public void evaluarConexion() {
         if (this.ultFechaRegistrada.plusMinutes(5).isBefore(LocalDateTime.now())) {
-            this.accionadorParaTemperatura.sucedeIncidente(TipoEvento.FALLA_CONEXION, LocalDateTime.now(), this);
+            ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.FALLA_CONEXION, LocalDateTime.now(), this);
         }
     }
 
     public void hayMovimiento() {
         this.activa = false;
-        this.accionadorParaMovimiento.sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
+        System.out.println("Se detectó movimiento en la heladera " + this.nombre);
+        ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.MOVIMIENTO, LocalDateTime.now(), this);
 
     }
 

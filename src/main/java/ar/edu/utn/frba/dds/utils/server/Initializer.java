@@ -8,6 +8,8 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorDeMovimiento;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorTemperatura;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
@@ -25,6 +27,8 @@ import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.services.receptores.ReceptorMovimiento;
+import ar.edu.utn.frba.dds.services.receptores.ReceptorTemperatura;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 
@@ -66,6 +70,8 @@ public class Initializer {
                 .capActual(25)
                 .viandasColocadas(32)
                 .viandasRetiradas(7)
+                .tempMaxima(7.2)
+                .tempMinima(-4.1)
                 .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
@@ -78,6 +84,8 @@ public class Initializer {
                 .capActual(28)
                 .viandasColocadas(22)
                 .viandasRetiradas(20)
+                .tempMaxima(9.8)
+                .tempMinima(-5.4)
                 .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
@@ -88,6 +96,8 @@ public class Initializer {
                 .direccion(d3)
                 .capacidadMaxima(20)
                 .capActual(18)
+                .tempMaxima(8.4)
+                .tempMinima(-3.1)
                 .viandasColocadas(17)
                 .viandasRetiradas(15)
                 .suscriptores(new ArrayList<>())
@@ -100,6 +110,8 @@ public class Initializer {
                 .direccion(d4)
                 .capacidadMaxima(70)
                 .capActual(63)
+                .tempMaxima(9.8)
+                .tempMinima(-5.4)
                 .viandasColocadas(12)
                 .viandasRetiradas(5)
                 .suscriptores(new ArrayList<>())
@@ -112,6 +124,8 @@ public class Initializer {
                 .direccion(d5)
                 .capacidadMaxima(70)
                 .capActual(63)
+                .tempMaxima(9.8)
+                .tempMinima(-5.4)
                 .viandasColocadas(12)
                 .viandasRetiradas(5)
                 .suscriptores(new ArrayList<>())
@@ -122,6 +136,28 @@ public class Initializer {
         heladeras.guardar(h2);
         heladeras.guardar(h3);
         heladeras.guardar(h4);
+        heladeras.guardar(h5);
+
+        SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
+        SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
+        SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
+        SensorTemperatura sensorTemp4 = new SensorTemperatura(h4.getId());
+        SensorTemperatura sensorTemp5 = new SensorTemperatura(h5.getId());
+
+        ReceptorTemperatura receptorTemp = ReceptorTemperatura.create(ServiceLocator.instanceOf(HeladerasRepository.class));
+
+
+        SensorDeMovimiento sensorMov1 = new SensorDeMovimiento(h1.getId());
+        SensorDeMovimiento sensorMov2 = new SensorDeMovimiento(h2.getId());
+        SensorDeMovimiento sensorMov3 = new SensorDeMovimiento(h3.getId());
+        SensorDeMovimiento sensorMov4 = new SensorDeMovimiento(h4.getId());
+        SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
+
+        ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
+
+        sensorMov1.enviarMovimiento();
+
+
 
         Initializer.inicializarAtributos();
 

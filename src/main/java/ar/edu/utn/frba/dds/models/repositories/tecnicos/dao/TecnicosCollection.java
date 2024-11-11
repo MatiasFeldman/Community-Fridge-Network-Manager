@@ -1,13 +1,16 @@
 package ar.edu.utn.frba.dds.models.repositories.tecnicos.dao;
 
+import ar.edu.utn.frba.dds.models.entities.helpers.distancia_entre_coordenadas.CalculadoraDistancia;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import lombok.AllArgsConstructor;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class TecnicosCollection implements TecnicosDAO{
+@AllArgsConstructor
+public class TecnicosCollection implements TecnicosDAO {
     private List<Tecnico> tecnicos;
     private Long currentId = 100L;
 
@@ -35,21 +38,15 @@ public class TecnicosCollection implements TecnicosDAO{
 
     @Override
     public Optional<Tecnico> buscarMasCercano(Direccion origen) {
-        Optional<Tecnico> tecnicoConMismaDirec = tecnicos.stream().filter(tecnico -> tecnico.getAreaCobertura().getDireccionRaiz().equals(origen)).findFirst();
-        if (tecnicoConMismaDirec.isPresent()) {
-            return tecnicoConMismaDirec;
+        List<Tecnico> tecnicos = this.buscarTodos();
+        if (tecnicos.isEmpty()) {
+            return Optional.empty();
+        } else if (tecnicos.size() == 1) {
+            return Optional.of(tecnicos.get(0));
+        } else if (tecnicos.stream().anyMatch(t -> t.getAreaCobertura().getDireccionRaiz() == origen)) {
+            return tecnicos.stream().filter(t -> t.getAreaCobertura().getDireccionRaiz() == origen).findFirst();
         } else {
-            List<Tecnico> tecnicosQuePuedenIr = tecnicos
-                    .stream()
-                    .filter(t -> t.puedeIrA(origen))
-                    .toList();
-            if (tecnicosQuePuedenIr.isEmpty()) {
-                return Optional.empty();
-            } else {
-                return tecnicosQuePuedenIr
-                        .stream()
-                        .min(Comparator.comparing(t -> t.distanciaA(origen)));
-            }
+            return tecnicos.stream().min(Comparator.comparing(t -> t.distanciaA(origen)));
         }
     }
 

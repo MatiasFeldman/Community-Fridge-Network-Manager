@@ -19,43 +19,27 @@ import java.util.Optional;
 @Getter
 @Builder
 public class ReceptorTemperatura implements IMqttMessageListener {
-    private static String BROKER_URL = null;
+    private final String BROKER_URL = "tcp://localhost:1883";
     private HeladerasRepository heladeras;
     private MqttClient client;
 
-    public ReceptorTemperatura create(HeladerasRepository heladeras) throws MqttException {
-        ReceptorTemperatura receptor = ReceptorTemperatura
+    @SneakyThrows
+    public static ReceptorTemperatura create(HeladerasRepository heladeras){
+        ReceptorTemperatura receptor =  ReceptorTemperatura
                 .builder()
                 .heladeras(heladeras)
                 .build();
 
-        if (BROKER_URL != null) receptor.suscribirseATopic(receptor);
+        receptor.suscribirseATopic(receptor);
         return receptor;
     }
 
     private void suscribirseATopic(ReceptorTemperatura receptor) throws MqttException {
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+        client.connect();
         client.subscribe("heladera/temperatura", receptor);
     }
 
-    @SneakyThrows
-    public void setBrokerUrl(String url){
-        if (BROKER_URL == null){
-            BROKER_URL = url;
-            this.suscribirseATopic(this);
-        }
-        else {
-            BROKER_URL = url;
-            this.cambioDeBroker();
-        }
-    }
-
-    @SneakyThrows
-    public void cambioDeBroker(){
-        client.unsubscribe("heladera/temperatura");
-        client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        client.subscribe("heladera/temperatura", this);
-    }
 
 
     @Override

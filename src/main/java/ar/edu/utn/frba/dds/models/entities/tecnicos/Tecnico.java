@@ -62,4 +62,8 @@ public class Tecnico extends Persistente {
     public Double distanciaA(Direccion direccion){
         return areaCobertura.distanciaA(direccion);
     }
+
+    public String getMail() {
+        return this.medioContacto.getValorContacto();
+    }
 }

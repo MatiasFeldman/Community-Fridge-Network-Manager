@@ -9,12 +9,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.util.UUID;
 
 public class SensorTemperatura {
-    private static String BROKER_URL;
+    private static String BROKER_URL = "tcp://localhost:1883";
     private String topic;
     private MqttClient client;
     private Long idHeladera;
 
-    public SensorTemperatura(UUID idHeladera) throws MqttException {
+    @SneakyThrows
+    public SensorTemperatura(Long idHeladera){
         this.topic = "heladera/temperatura";
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client.connect();

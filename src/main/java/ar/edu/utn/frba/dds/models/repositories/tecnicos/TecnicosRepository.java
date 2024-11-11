@@ -3,10 +3,12 @@ package ar.edu.utn.frba.dds.models.repositories.tecnicos;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.repositories.tecnicos.dao.TecnicosDAO;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class TecnicosRepository {
     TecnicosDAO tecnicosDAO;
     public void guardar(Tecnico tecnico) {tecnicosDAO.guardar(tecnico);}

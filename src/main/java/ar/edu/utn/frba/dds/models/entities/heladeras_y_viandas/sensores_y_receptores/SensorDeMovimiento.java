@@ -11,12 +11,13 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class SensorDeMovimiento {
-    private static String BROKER_URL;
+    private static String BROKER_URL = "tcp://localhost:1883";
     private static String topic = "heladera/movimiento";
     private MqttClient client;
     private Long idHeladera;
 
-    public SensorDeMovimiento(Long idHeladera) throws MqttException {
+    @SneakyThrows
+    public SensorDeMovimiento(Long idHeladera){
         this.idHeladera = idHeladera;
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client.connect();

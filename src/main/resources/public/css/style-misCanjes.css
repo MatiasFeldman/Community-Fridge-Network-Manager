@@ -1,37 +1,81 @@
-/* Archivo styles.css */
-
-.container {
+/* Contenedor principal */
+.historial-container {
+    width: 90%;
     max-width: 800px;
-    margin: auto;
-    padding: 20px;
     font-family: Arial, sans-serif;
+    color: black;
 }
 
-h1 {
+/* Encabezado principal */
+.historial-container h1 {
     text-align: center;
-    color: #333;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
 }
 
+/* Descripción de la lista */
+.descripcion {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+/* Puntos del usuario */
+.puntos-usuario {
+    text-align: left;
+    font-size: 1rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Lista de canjes */
 .canjes-lista {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    align-items: center;
 }
 
+/* Cada canje como tarjeta */
 .canje-item {
     display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    padding: 10px;
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid var(--secondary-color);
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Asegura que los bordes redondeados también afecten a la imagen */
 }
 
+/* Imagen de cada canje, alineada a la izquierda */
+.canje-imagen img {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-right: 1px solid var(--secondary-color);
+}
+
+/* Detalles de cada canje */
 .canje-detalle {
     flex: 1;
-    margin-right: 10px;
+    padding: 15px;
+    color: var(--text-color);
 }
 
-.canje-imagen img {
-    border-radius: 5px;
+/* Título de la oferta */
+.canje-detalle h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Texto de detalles */
+.canje-detalle p {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin: 4px 0;
 }

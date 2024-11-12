@@ -23,5 +23,5 @@ public class Persistente {
     private Long id;
 
     @Column(name = "presente")
-    private Boolean presente;
+    private Boolean presente = true;
 }

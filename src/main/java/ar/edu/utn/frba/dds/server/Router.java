@@ -5,6 +5,9 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import io.javalin.Javalin;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 
 public class Router {
     public static void init(Javalin app) {
@@ -111,6 +114,9 @@ public class Router {
         // servicio externo donde donar
         app.get("/donde-donar", ViewsController::dondeDonar);
         app.post("/donde-donar", ViewsController::dondeDonarMapa);
+
+        // obtener imagenes
+        app.get("/imagenes/{nombreCarpeta}/{nombreArchivo}",ViewsController::viewImage);
 
         // pantallas de error
         app.get("/not-found", ViewsController::notFound);

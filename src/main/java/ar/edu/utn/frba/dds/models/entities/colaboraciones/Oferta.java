@@ -44,6 +44,7 @@ public class Oferta extends Persistente {
                 .canjesTotales(canjesTotales)
                 .canjesUsados(0)
                 .image(image)
+                .presente(true)
                 .build();
     }
 

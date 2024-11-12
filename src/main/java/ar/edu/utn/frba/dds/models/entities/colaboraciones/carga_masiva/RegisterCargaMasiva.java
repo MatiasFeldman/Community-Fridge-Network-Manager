@@ -10,8 +10,10 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
+import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
 
 import java.io.IOException;
@@ -37,11 +39,24 @@ public class RegisterCargaMasiva {
         String formaColaboracion = line[6];
         Integer cantidad = Integer.parseInt(line[7]);
 
-        ArrayList<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create("Nombre", nombre, TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT), AtributoHumanoRespondido.create("Apellido", apellido, TipoAtributo.OBLIGATORIO, TipoCampoAtributo.TEXT)));
+        Atributo nombreAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
+        Atributo apellidoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
+        Atributo nacimientoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
+        Atributo mailAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
+        Atributo direccionAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Direccion").get();
+        Atributo provinciaAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Provincia").get();
+        Atributo wppAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("WhatsApp").get();
+        Atributo telegramAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Telegram").get();
 
-        ArrayList<Contacto> mediosDeContacto = new ArrayList<>(List.of(Contacto.of("Mail", mail)));
+        ArrayList<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create(nombreAtributo, nombre),
+                AtributoHumanoRespondido.create(apellidoAtributo, apellido),
+                AtributoHumanoRespondido.create(mailAtributo, mail)));
 
-        ArrayList<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>(List.of(AtributoHumanoRespondido.create(tipoDocumento, documento, TipoAtributo.OPCIONAL, TipoCampoAtributo.TEXT)));
+        ArrayList<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>(Arrays.asList(AtributoHumanoRespondido.create(nacimientoAtributo, ""),
+                AtributoHumanoRespondido.create(direccionAtributo, ""),
+                AtributoHumanoRespondido.create(provinciaAtributo, ""),
+                AtributoHumanoRespondido.create(wppAtributo, ""),
+                AtributoHumanoRespondido.create(telegramAtributo, "")));
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 

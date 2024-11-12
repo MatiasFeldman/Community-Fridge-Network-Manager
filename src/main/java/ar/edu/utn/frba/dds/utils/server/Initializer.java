@@ -137,7 +137,7 @@ public class Initializer {
         heladeras.guardar(h3);
         heladeras.guardar(h4);
         heladeras.guardar(h5);
-
+        /*
         SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
@@ -157,7 +157,7 @@ public class Initializer {
 
         sensorMov1.enviarMovimiento();
 
-
+        */
 
         Initializer.inicializarAtributos();
 
@@ -312,7 +312,6 @@ public class Initializer {
         rubrosRepository.guardar(educacion);
 
         // creacion de ofertas
-
         Oferta oferta1 = Oferta.builder()
                         .nombre("holaaaa")
                         .puntosNecesarios(1000.0)

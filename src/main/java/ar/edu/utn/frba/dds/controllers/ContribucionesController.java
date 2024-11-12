@@ -449,10 +449,10 @@ public class ContribucionesController {
                 tipoProducto,
                 canjesTotalesInt,
                 null);
-
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         ofertasRepository.guardar(oferta);
-
+        System.out.print(oferta.getId());
+        System.out.print(oferta.getPresente());
         // Obtener archivo de imagen (si se cargó uno)
         UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
         String rutaImagen = null;
@@ -461,9 +461,8 @@ public class ContribucionesController {
             // Definir el nombre del archivo y la ruta de almacenamiento
             String nombreArchivo = "oferta_" + oferta.getId();
 
-            rutaImagen = "/imagenes/fotosOfertas/" + nombreArchivo + ".png";
-
-            String directorioCompleto = Paths.get("src", "main", "resources", "public" ,rutaImagen).toString();
+            String directorioCompleto = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas","fotosOfertas" ,nombreArchivo).toString();
+            rutaImagen = "/imagenes/fotosOfertas/"+nombreArchivo;
 
             // Guardar la imagen en el servidor
             try (InputStream inputStream = imagenProducto.content()) {

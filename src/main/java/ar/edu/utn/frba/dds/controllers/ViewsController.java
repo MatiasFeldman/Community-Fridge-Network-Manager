@@ -15,6 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import lombok.SneakyThrows;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -265,6 +268,31 @@ public class ViewsController {
         model.put("titulo", "Colaboración confirmada");
 
         RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
+    }
+
+    public static void viewImage(Context ctx) {
+        // Obtener los parámetros de la ruta
+        String nombreCarpeta = ctx.pathParam("nombreCarpeta");
+        String nombreArchivo = ctx.pathParam("nombreArchivo");
+
+
+        File archivo = new File("src/main/java/ar/edu/utn/frba/dds/imagenesDinamicas/" + nombreCarpeta + "/" + nombreArchivo);
+
+
+        if (archivo.exists()) {
+
+            String mimeType = "image/jpeg";
+            ctx.contentType(mimeType);
+
+            try {
+                ctx.result(new FileInputStream(archivo));
+            } catch (FileNotFoundException e) {
+                ctx.status(500).result("Error al cargar la imagen.");
+            }
+        } else {
+
+            ctx.status(404).result("Imagen no encontrada");
+        }
     }
 }
 

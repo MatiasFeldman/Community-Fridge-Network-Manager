@@ -29,10 +29,9 @@ public class AtributoHumanoRespondido extends Persistente {
         this.atributo = atributo;
     }
 
-    public static AtributoHumanoRespondido create(String nombre, String valor, TipoAtributo tipoAtributo, TipoCampoAtributo tipoCampo){
-        Atributo atrib = Atributo.create(nombre, tipoAtributo, tipoCampo);
+    public static AtributoHumanoRespondido create(Atributo atributo, String valor){
         AtributoHumanoRespondido respondido = new AtributoHumanoRespondido();
-        respondido.setAtributo(atrib);
+        respondido.setAtributo(atributo);
         respondido.setValor(valor);
         return respondido;
     }

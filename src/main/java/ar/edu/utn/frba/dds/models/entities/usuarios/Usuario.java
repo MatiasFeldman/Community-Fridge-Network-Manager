@@ -52,7 +52,7 @@ public class Usuario extends Persistente {
     public Usuario(String user, String password, List<TipoRol> roles) {
             this.user = user;
             this.password = password;
-            this.foto = "imagenes/user.png";
+            this.foto = "/imagenes/fotosUsuarios/user.png";
             this.roles = roles;
             this.strategiaDeEnvio = null;
     }
@@ -61,7 +61,7 @@ public class Usuario extends Persistente {
     public Usuario(String user, String password) {
         this.user = user;
         this.password = password;
-        this.foto = "imagenes/user.png";
+        this.foto = "/imagenes/fotosUsuarios/user.png";
         this.roles = new ArrayList<>();
         this.strategiaDeEnvio = null;
     }

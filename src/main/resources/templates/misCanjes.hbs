@@ -2,9 +2,11 @@
     <link rel="stylesheet" href="/css/style-misCanjes.css">
 {{/partial}}
 {{#partial "contenido"}}
+    <div class="historial-container">
     <h1>Historial de Canjes</h1>
-    <h3 class="h5 text-muted">Mis puntos: <span id="mis-puntos">{{misPuntos}}</span></h3>
-    <p>Esta es la lista de todos los canjes que has realizado.</p>
+        <p class="descripcion">Esta es la lista de todos los canjes que has realizado.</p>
+        <h3 class="puntos-usuario">Mis puntos: <span id="mis-puntos">{{misPuntos}}</span></h3>
+
 
     {{#if canjesRealizados}}
         <div class="canjes-lista">
@@ -24,5 +26,6 @@
     {{else}}
         <p>No has realizado ningún canje aún.</p>
     {{/if}}
+    </div>
 {{/partial}}
 {{> templates/base }}

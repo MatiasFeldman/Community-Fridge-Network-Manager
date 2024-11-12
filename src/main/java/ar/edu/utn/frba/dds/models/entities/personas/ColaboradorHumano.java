@@ -104,14 +104,6 @@ public class ColaboradorHumano extends Persistente {
     }
 
 
-    public void generarAtributo(TipoAtributo tipo, String nombreAtributo, String valor, TipoCampoAtributo tipoCampo) {
-        if (tipo == TipoAtributo.OBLIGATORIO) {
-            this.atributosObligatorios.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo, tipoCampo));
-        } else {
-            this.atributosOpcionales.add(AtributoHumanoRespondido.create(nombreAtributo, valor, tipo, tipoCampo));
-        }
-    }
-
     public double calcularPuntaje() {
         return puntosGanados - puntosCanjeados;
     }

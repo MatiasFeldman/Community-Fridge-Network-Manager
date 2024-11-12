@@ -186,16 +186,18 @@ public class UsuariosController {
                 juridica.setMediosDeContacto(mediosDeContacto);
                 ServiceLocator.instanceOf(JuridicasRepository.class).modificar(juridica);
             }
-            //TODO:actualizar la foto de perfil en los atributos de sesion
+
             UploadedFile archivoImagen = ctx.uploadedFile("imagen");
 
             if (archivoImagen != null && archivoImagen.size() > 0) {
                 // Definir la carpeta donde se guardará la imagen
-                String nombreArchivo = id.toString() + "_" + archivoImagen.filename();
-                String directorioCompleto = Paths.get("src", "main", "resources", "public", "imagenes", "fotosUsuarios",nombreArchivo).toString();
+                String nombreArchivo = id.toString() + "_" + "perfil";
+                String directorioCompleto = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas", "fotosUsuarios",nombreArchivo).toString();
 
                 if (usuario.get().getFoto() != null && !usuario.get().getFoto().isEmpty()) {
-                    String rutaFotoAnterior = Paths.get("src", "main", "resources", "public", usuario.get().getFoto()).toString();
+                    String foto = usuario.get().getFoto(); // Obtiene la ruta de la foto
+                    String nombreArchivoU = foto.replaceFirst("/imagenes/", ""); // Elimina el prefijo "/imagenes/"
+                    String rutaFotoAnterior = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas", nombreArchivoU).toString();
 
                     // Verificar si la foto anterior existe y borrarla
                     File fotoAnterior = new File(rutaFotoAnterior);
@@ -214,7 +216,7 @@ public class UsuariosController {
                     throw new SolicitudIncorrectaException();
                 }
 
-                    usuario.get().setFoto("imagenes/fotosUsuarios/"+nombreArchivo); // Guardar la ruta de la imagen en el usuario
+                    usuario.get().setFoto("/imagenes/fotosUsuarios/"+nombreArchivo); // Guardar la ruta de la imagen en el usuario
                     ctx.sessionAttribute("fotoUsuario",usuario.get().getFoto());
                     ServiceLocator.instanceOf(UsuariosRepository.class).modificar(usuario.get()); // Actualizar el usuario en la base de datos
 

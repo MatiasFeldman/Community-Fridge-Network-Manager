@@ -25,6 +25,9 @@
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Direccion</h3>
                         <input type="text" class="form-control mt-2" name="calle" placeholder="Calle" required>
+                        {{#if errorDireccion}}
+                            <span class="text-danger">{{errorDireccion}}</span>
+                        {{/if}}
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Provincia</h3>

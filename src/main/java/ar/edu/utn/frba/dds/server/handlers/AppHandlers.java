@@ -28,7 +28,8 @@ public class AppHandlers {
             new DireccionJuridicaInexsistenteHandler(),
             new TarjetaRepetidaHandler(),
             new ContraseniaHumanoInseguraHandler(),
-            new UsuarioHumanoExistenteHandler()
+            new UsuarioHumanoExistenteHandler(),
+            new DireccionIncorrectaHeladeraHandler()
     };
 
     public static void applyHandlers(Javalin app) {

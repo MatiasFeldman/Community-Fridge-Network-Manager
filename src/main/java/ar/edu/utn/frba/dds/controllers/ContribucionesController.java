@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.exceptions.DistribucionViandas.MismaHeladeraException
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.donacionDinero.MontoInvalidoException;
 import ar.edu.utn.frba.dds.exceptions.registroHeladera.CapacidadIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.registroHeladera.DireccionIncorrectaHeladeraException;
 import ar.edu.utn.frba.dds.exceptions.registroHeladera.TemperaturaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.FechaNacimientoIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.MenoresACargoIncorrectoException;
@@ -387,6 +388,12 @@ public class ContribucionesController {
 
         Juridica juridica = posibleJuridica.get();
 
+        Direccion direccion = DireccionFactory.create(new DireccionInputDTO(calle, provincia));
+
+        if (direccion == null) {
+            throw new DireccionIncorrectaHeladeraException("La dirección ingresada no es válida");
+        }
+
         Heladera heladera = Heladera.builder()
                 .nombre(nombre)
                 .capacidadMaxima(capacidadMaxima)
@@ -399,7 +406,7 @@ public class ContribucionesController {
                 .ultFechaRegistrada(null)
                 .viandasColocadas(0)
                 .viandasRetiradas(0)
-                .direccion(DireccionFactory.create(new DireccionInputDTO(calle, provincia)))
+                .direccion(direccion)
                 .build();
 
         HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.of(heladera, juridica);

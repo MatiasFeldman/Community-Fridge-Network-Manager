@@ -38,4 +38,8 @@ public class HumanosRepository {
     public void actualizar(ColaboradorHumano humano) {
         humanos.modificar(humano);
     }
+
+    public Optional<ColaboradorHumano> buscarPorTarjeta(Long id) {
+        return humanos.buscarPorTarjeta(id);
+    }
 }

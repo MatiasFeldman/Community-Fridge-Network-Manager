@@ -42,7 +42,6 @@ public class DonacionDeVianda extends Persistente implements Contribucion {
                 .finalizada(false)
                 .fecha(LocalDate.now())
                 .presente(true);
-        heladera.agregarViandas(1);
         return builder.build();
     }
 

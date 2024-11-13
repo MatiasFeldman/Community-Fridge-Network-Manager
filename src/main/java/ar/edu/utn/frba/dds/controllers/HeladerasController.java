@@ -28,7 +28,7 @@ import ar.edu.utn.frba.dds.models.repositories.solicitudes_de_apertura_de_helade
 import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
-import ar.edu.utn.frba.dds.services.receptores.MqttReceptorApertura;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,7 +38,7 @@ import io.javalin.http.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,47 +81,6 @@ public class HeladerasController {
 
     }
 
-    @SneakyThrows
-    public void avisarApertura(String json) {
-        JsonNode node = ConversorJSON.convertir(json);
-
-        LocalDateTime fechaSoli = LocalDateTime.parse(node.get("fechaHoraSolicitud").asText());
-        Integer cantViandas = node.get("cantidadDeViandas").asInt();
-        Long idUsuario = Long.parseLong(node.get("id_usuario").asText());
-        Long idTarjeta = Long.parseLong(node.get("id_tarjeta").asText());
-        String rol = node.get("rol").asText();
-        String heladera = node.get("heladera").asText();
-
-        if (heladeras.buscarPorNombre(heladera).isEmpty()) {
-            throw new HeladeraInexistenteException("No se encontro la heladera");
-        }
-
-        Heladera heladeraObj = heladeras.buscarPorNombre(heladera).get();
-
-        MqttReceptorApertura receptor = new MqttReceptorApertura();
-
-        if (!Objects.equals(rol, "HUMANO")) {
-            throw new PermisoDenegadoException("No tiene permisos para realizar esta accion");
-        }
-
-        Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorIdUsuario(idUsuario);
-
-        if (posibleHumano.isEmpty()) {
-            throw new UsuarioSinTarjetaException("No se encontro el usuario");
-        }
-
-        TarjetaColaborador tarjeta = tarjetas.buscarPorId(idTarjeta).get();
-
-
-        SolicitudApertura solicitud = SolicitudApertura.create(fechaSoli, tarjeta, heladeraObj, cantViandas);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMessage = objectMapper.writeValueAsString(solicitud);
-
-        receptor.publicarSolicitudApertura(jsonMessage);
-
-        solicitudes.guardar(solicitud);
-    }
 
 
     public void registrarIntentoDeApertura(IntentoAperturaResuelto intento) {

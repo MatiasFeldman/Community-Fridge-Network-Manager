@@ -189,55 +189,15 @@ public class Heladera extends Persistente {
         solicitudes.add(soliApertura);
     }
 
-    @SneakyThrows
-    public void verificarAcceso(TarjetaColaborador tarjeta, LocalDateTime fecha) {
-        Optional<SolicitudApertura> aviso = this.buscarSolicitud(tarjeta);
-        IntentoAperturaResuelto intento;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonMensaje;
-        MqttMessage message;
-        if (aviso.isPresent()) {
-            SolicitudApertura aviso_posta = aviso.get();
-            solicitudes.remove(aviso_posta);
-            if (aviso_posta.getFechaDeExpiracion().isBefore(fecha)) {
-                intento = new IntentoAperturaResuelto(tarjeta, this, fecha, false);
 
-                jsonMensaje = mapper.writeValueAsString(intento);
-                message = new MqttMessage(jsonMensaje.getBytes());
-                message.setQos(1);
-
-                client_intentos.publish(topic_intentos, message);
-                throw new AccesoDenegadoHeladeraException("La solicitud de ingreso ya venció");
-            } else {
-                intento = new IntentoAperturaResuelto(tarjeta, this, fecha, true);
-            }
-        } else {
-            intento = new IntentoAperturaResuelto(tarjeta, this, fecha, false);
-
-            jsonMensaje = mapper.writeValueAsString(intento);
-            message = new MqttMessage(jsonMensaje.getBytes());
-            message.setQos(1);
-
-            client_intentos.publish(topic_intentos, message);
-            throw new AccesoDenegadoHeladeraException("No se encontró la solicitud de ingreso");
-        }
-        jsonMensaje = mapper.writeValueAsString(intento);
-
-        message = new MqttMessage(jsonMensaje.getBytes());
-        message.setQos(1);
-
-        client_intentos.publish(topic_intentos, message);
-
+    public Boolean tieneAcceso(Long idTarjeta) {
+        return solicitudes.stream().anyMatch(soli -> soli.getIdTarjeta().equals(idTarjeta));
     }
 
-    public Optional<SolicitudApertura> buscarSolicitud(TarjetaColaborador tarjeta) {
-        return solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(tarjeta.getId())).findFirst();
+    public Optional<SolicitudApertura> buscarSolicitud(Long idColab) {
+        return solicitudes.stream().filter(soli -> soli.getIdTarjeta().equals(idColab)).findFirst();
     }
 
-    public void intentoAcceso(Object solicitud) {
-        IntentoApertura intento = (IntentoApertura) solicitud;
-        this.verificarAcceso(intento.getSolicitante(), intento.getFechaHoraDeIntento());
-    }
 
 
     public boolean temperaturaValida(Double temp) {
@@ -276,5 +236,12 @@ public class Heladera extends Persistente {
 
     public Coordenada getCoordenada() {
         return this.direccion.getCoordenadas();
+    }
+
+    public void eliminarSolicitud(Long idTarjeta) {
+        solicitudes.stream()
+                .filter(soli -> soli.getIdTarjeta().equals(idTarjeta))
+                .findFirst()
+                .ifPresent(solicitudes::remove);
     }
 }

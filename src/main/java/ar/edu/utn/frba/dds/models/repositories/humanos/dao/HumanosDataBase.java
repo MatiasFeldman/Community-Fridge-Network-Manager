@@ -52,6 +52,14 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
         return count > 0;
     }
 
+    @Override
+    public Optional<ColaboradorHumano> buscarPorTarjeta(Long id) {
+        return Optional.ofNullable(entityManager()
+                .createQuery("SELECT h FROM ColaboradorHumano h JOIN h.tarjetas t WHERE t.id = :idTarjeta AND h.presente = true", ColaboradorHumano.class)
+                .setParameter("idTarjeta", id)
+                .getSingleResult());
+    }
+
 
     @Override
     public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro) {

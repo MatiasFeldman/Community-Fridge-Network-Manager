@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -16,11 +17,15 @@ import java.time.LocalDateTime;
 public class IntentoAperturaResuelto extends Persistente {
 
     @ManyToOne
-    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id_tarjeta")
+    @JoinColumn(name = "id_tarjeta", referencedColumnName = "id")
     private TarjetaColaborador tarjeta;
 
     @ManyToOne
-    @JoinColumn(name = "id_heladera", referencedColumnName = "id_heladera")
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
+    private ColaboradorHumano colaborador;
+
+    @ManyToOne
+    @JoinColumn(name = "id_heladera", referencedColumnName = "id")
     private Heladera heladera;
 
     @Column(name = "fecha")

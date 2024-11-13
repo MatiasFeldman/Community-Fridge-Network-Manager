@@ -20,4 +20,6 @@ public interface HumanosDAO {
 
     public boolean existeUsername(String username);
 
+    public Optional<ColaboradorHumano> buscarPorTarjeta(Long id);
+
 }

@@ -10,8 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tarjeta_humano")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class TarjetaColaborador extends Persistente {
@@ -20,9 +20,7 @@ public class TarjetaColaborador extends Persistente {
     @JoinColumn(name = "id_humano", referencedColumnName = "id")
     private ColaboradorHumano duenio;
 
-    public void usarEn(Heladera heladera){
-        heladera.verificarAcceso(this, LocalDateTime.now());
-    }
+    private Boolean principal;
 
 
 

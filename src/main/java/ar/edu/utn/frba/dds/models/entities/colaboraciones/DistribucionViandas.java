@@ -43,8 +43,11 @@ public class DistribucionViandas extends Persistente implements Contribucion{
     @Column(name = "fecha_distribucion")
     private LocalDate fechaDistribucion;
 
-    @Column(name = "distribuidas")
-    private Boolean distribuidas;
+    @Column(name = "colocadas")
+    private Boolean colocadas;
+
+    @Column(name = "retiradas")
+    private Boolean retiradas;
 
 
     public static DistribucionViandas of(Heladera origen, Heladera destino, Integer cant, String motivo, ColaboradorHumano colaboradorHumano) {
@@ -56,7 +59,8 @@ public class DistribucionViandas extends Persistente implements Contribucion{
                 .cantidadViandas(cant)
                 .motivo(motivo)
                 .fechaDistribucion(null)
-                .distribuidas(false)
+                .colocadas(false)
+                .retiradas(false)
                 .build();
     }
 
@@ -65,14 +69,15 @@ public class DistribucionViandas extends Persistente implements Contribucion{
                 .builder()
                 .colaborador(colaboradorHumano)
                 .cantidadViandas(cantViandas)
-                .distribuidas(true)
+                .retiradas(true)
+                .colocadas(true)
                 .build();
     }
 
     @Override
     public Double calcularPuntaje() {
         ConstantesMultiplicativas constantes = new ConstantesMultiplicativas();
-        return distribuidas ? constantes.getCteViandasDistribuidas() * cantidadViandas : 0;
+        return (colocadas && retiradas) ? constantes.getCteViandasDistribuidas() * cantidadViandas : 0;
     }
 
 

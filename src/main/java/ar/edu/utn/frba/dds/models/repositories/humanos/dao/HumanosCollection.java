@@ -61,4 +61,12 @@ public class HumanosCollection implements HumanosDAO {
                 .stream()
                 .anyMatch(humano -> humano.getUsername().equals(username));
     }
+
+    @Override
+    public Optional<ColaboradorHumano> buscarPorTarjeta(Long id) {
+        return this.colaboradorHumanos
+                .stream()
+                .filter(humano -> humano.getTarjetas().stream().anyMatch(tarjeta -> tarjeta.getId().equals(id)))
+                .findFirst();
+    }
 }

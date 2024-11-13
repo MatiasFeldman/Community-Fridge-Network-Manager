@@ -16,6 +16,8 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.SolicitudApertura;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.apertura.MotivoApertura;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.APIRecomendadoraDePuntos;
 import ar.edu.utn.frba.dds.models.entities.helpers.recomendar_puntos.molde.ListaDeUbicaciones;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
@@ -51,6 +53,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -100,9 +103,9 @@ public class ContribucionesController {
         DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         donacionesDeViandaRepository.guardar(donacionDeVianda);
 
-        heladera.agregarViandas(1);
+        SolicitudApertura solicitud = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladera, 1, MotivoApertura.DONAR, donacionDeVianda.getId());
 
-        colaboradorHumano.sumarPuntaje(donacionDeVianda);
+        heladera.agregarSolicitudApertura(solicitud);
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");

@@ -67,6 +67,10 @@ public class ColaboradorHumano extends Persistente {
         this.tarjetas.add(tarjeta);
     }
 
+    public TarjetaColaborador getTarjetaPrincipal() {
+        return this.tarjetas.stream().filter(TarjetaColaborador::getPrincipal).findFirst().get();
+    }
+
     public static ColaboradorHumano create(HumanoInputDTO dto) {
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(dto.getUser());
         return ColaboradorHumano
@@ -181,4 +185,7 @@ public class ColaboradorHumano extends Persistente {
                 .build();
     }
 
+    public TarjetaColaborador buscarTarjetaPorId(Long idTarjeta) {
+        return this.tarjetas.stream().filter(tarjeta -> tarjeta.getId().equals(idTarjeta)).findFirst().get();
+    }
 }

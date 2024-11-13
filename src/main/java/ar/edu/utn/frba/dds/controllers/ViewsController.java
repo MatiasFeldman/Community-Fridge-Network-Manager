@@ -299,6 +299,7 @@ public class ViewsController {
             ctx.status(404).result("Imagen no encontrada");
         }
     }
+
 }
 
 

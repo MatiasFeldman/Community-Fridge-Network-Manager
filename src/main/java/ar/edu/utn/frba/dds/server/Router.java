@@ -115,6 +115,9 @@ public class Router {
         app.get("/donde-donar", ViewsController::dondeDonar);
         app.post("/donde-donar", ViewsController::dondeDonarMapa);
 
+        // Ver colaboradores creados
+        app.get("/colaboradores", ctx -> ServiceLocator.instanceOf(UsuariosController.class).showUsuarios(ctx), TipoRol.ADMIN);
+
         // obtener imagenes
         app.get("/imagenes/{nombreCarpeta}/{nombreArchivo}",ViewsController::viewImage);
 

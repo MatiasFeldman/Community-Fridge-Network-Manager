@@ -2,7 +2,9 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
+import ar.edu.utn.frba.dds.dtos.humanos.UsuarioHumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
+import ar.edu.utn.frba.dds.dtos.juridico.UsuarioJuridicaOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.UsuarioIncorrectoException;
@@ -13,6 +15,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
+import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -224,5 +227,28 @@ public class UsuariosController {
 
             ctx.redirect("/perfil");
         }
+    }
+
+    public void showUsuarios(Context ctx) {
+        UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
+        List<Usuario> usuarios = usuariosRepository.buscarTodos();
+        List<UsuarioHumanoOutputDTO> humanos = new ArrayList<>();
+        List<UsuarioJuridicaOutputDTO> juridicas = new ArrayList<>();
+
+        int i = 0;
+        for (Usuario usuario : usuarios) {
+            if (usuario.getRoles().contains(TipoRol.HUMANO)) {
+                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuario.getId()).get();
+                humanos.add(UsuarioHumanoOutputDTO.of(humano));
+            } else if (usuario.getRoles().contains(TipoRol.JURIDICA)) {
+                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuario.getId()).get();
+                juridicas.add(UsuarioJuridicaOutputDTO.of(juridica));
+            }
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("humanos", humanos);
+        model.put("juridicas", juridicas);
+        RenderUtils.renderizar(ctx, "colaboradores.hbs", model);
     }
 }

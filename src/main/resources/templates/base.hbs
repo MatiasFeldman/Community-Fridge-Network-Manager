@@ -56,6 +56,7 @@
                 <ul class="dropdown-menu">
                     {{#if (isEqual rolUsuario "ADMIN")}}
                         <li><a class="dropdown-item" href="/heladeras/reportes">Ver Reportes</a></li>
+                        <li><a class="dropdown-item" href="/colaboradores">Ver Colaboradores</a></li>
                     {{else}}
                         <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
                         {{#if (isEqual rolUsuario "HUMANO")}}

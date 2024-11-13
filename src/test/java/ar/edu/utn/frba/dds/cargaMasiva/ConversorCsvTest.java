@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -30,7 +32,18 @@ public class ConversorCsvTest {
         mailSender = Mockito.mock(MailSender.class);
         conversor = new ConversorCSVReader(humanos, ofertas, mailSender);
         path = "/Users/juanc/Downloads/colaboradores.csv";
-        cargaMasiva = new CargaMasiva(path, conversor);
+        // convertir el archivo a inputstream
+        InputStream inputStream = this.archivoAInputStream(path);
+        cargaMasiva = new CargaMasiva(inputStream, conversor);
+    }
+
+    private InputStream archivoAInputStream(String path) {
+        // a partir de un path, convertirlo a inputstream
+        try {
+            return new FileInputStream(path);
+        } catch (Exception e) {
+            throw new RuntimeException("Archivo no encontrado: " + path, e);
+        }
     }
 
     @Test

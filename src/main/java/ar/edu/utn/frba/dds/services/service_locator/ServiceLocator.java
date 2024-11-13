@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.services.service_locator;
 import ar.edu.utn.frba.dds.controllers.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.ConversorCSVReader;
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
+import ar.edu.utn.frba.dds.models.entities.comandos.Comando;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
@@ -71,6 +72,7 @@ import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
+import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +101,8 @@ public class ServiceLocator {
 
         if (!instances.containsKey(componentName)) {
             if (componentName.equals(Accionador.class.getName())) {
-                Accionador accionador = Accionador.of(List.of(new AvisarTecnico(ServiceLocator.instanceOf(TecnicosRepository.class))), ServiceLocator.instanceOf(IncidentesRepository.class));
+                Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
+                accionador.agregarComando(new AvisarTecnico(ServiceLocator.instanceOf(TecnicosRepository.class)));
                 instances.put(componentName, accionador);
             } else if (componentName.equals(GeorefCaba.class.getName())) {
                 instances.put(componentName, new GeorefCaba());
@@ -193,9 +196,6 @@ public class ServiceLocator {
                 } else if (componentName.equals(IntentosDeAperturaRepository.class.getName())) {
                     IntentosDeAperturaRepository intentos = new IntentosDeAperturaRepository(new IntentosDeAperturaCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, intentos);
-                } else if (componentName.equals(Accionador.class.getName())) {
-                    Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
-                    instances.put(componentName, accionador);
                 } else if (componentName.equals(HeladerasRepository.class.getName())) {
                     HeladerasRepository heladeras = new HeladerasRepository(new HeladerasCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, heladeras);

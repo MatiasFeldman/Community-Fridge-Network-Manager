@@ -5,12 +5,16 @@ import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorDeMovimiento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorTemperatura;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.AreaCobertura;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.TipoTecnico;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -26,6 +30,7 @@ import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorMovimiento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorTemperatura;
@@ -49,6 +54,8 @@ public class Initializer {
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
+        TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
+        Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
 
         // creacion de heladeras
 
@@ -61,6 +68,12 @@ public class Initializer {
         Direccion d4 = DireccionFactory.create(new DireccionInputDTO("Nazca 2000", "CABA"));
 
         Direccion d5 = DireccionFactory.create(new DireccionInputDTO("Avenida Medrano 951", "CABA"));
+
+        Direccion d6 = DireccionFactory.create(new DireccionInputDTO("Avenida Rivadavia 4300", "CABA"));
+
+        Direccion d7 = DireccionFactory.create(new DireccionInputDTO("Yatay 125", "CABA"));
+
+        Direccion d8 = DireccionFactory.create(new DireccionInputDTO("Avenida Rivadavia 4500", "CABA"));
 
         Heladera h1 = Heladera
                 .builder()
@@ -139,6 +152,39 @@ public class Initializer {
         heladeras.guardar(h5);
 
 
+        Tecnico t1 = new Tecnico(
+                "Pedro",
+                "Martinez",
+                new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
+                new TipoTecnico("Tecnico de Heladeras"),
+                "123444",
+                "20-12345678-9",
+                new AreaCobertura(d6, 1500.0)
+        );
+
+        Tecnico t2 = new Tecnico(
+                "Marcos",
+                "Gutierrez",
+                new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
+                new TipoTecnico("Tecnico de Heladeras"),
+                "4455512",
+                "20-4455512-9",
+                new AreaCobertura(d7, 1500.0)
+        );
+
+        Tecnico t3 = new Tecnico(
+                "Gastón",
+                "Fernandez",
+                new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
+                new TipoTecnico("Tecnico de Heladeras"),
+                "2211223",
+                "20-2211223-9",
+                new AreaCobertura(d8, 300.0)
+        );
+
+        tecnicos.guardar(t1);
+        tecnicos.guardar(t2);
+        tecnicos.guardar(t3);
 
         SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());

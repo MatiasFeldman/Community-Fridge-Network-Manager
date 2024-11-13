@@ -24,7 +24,6 @@ public class AvisarTecnico implements Comando {
     @Override
     @SneakyThrows
     public void ejecutar(Heladera heladera, String mensaje) {
-        System.out.println("Le voy a avisar a los tecnicos");
         CompletableFuture.runAsync(() -> {
             try {
                 Direccion origen = heladera.getDireccion();
@@ -41,6 +40,8 @@ public class AvisarTecnico implements Comando {
 
                     Mail mail = new Mail("Se ha encontrado el siguiente problema en la heladera " + heladera.getId() + " - " + heladera.getDireccion().getDireccion() + ": " + tipo, "FALLA EN LA HELADERA");
                     mailSender.enviarMail(tecnico.get().getMail(), mail);
+
+
                 } else {
                     throw new NoHayTecnicosDisponiblesException("No hay técnicos disponibles por la zona");
                 }

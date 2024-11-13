@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesReposito
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class Accionador {
+
     private List<Comando> comandos;
     private IncidentesRepository incidentesRepository;
 
@@ -34,8 +37,15 @@ public class Accionador {
                 .build();
     }
 
+    public void agregarComando(Comando comando) {
+        this.comandos.add(comando);
+    }
+
     public void sucedeIncidente(TipoEvento tipo, LocalDateTime fecha, Heladera heladera) {
+        System.out.println("Se ha registrado un incidente de tipo " + tipo.name() + " en la heladera: " + heladera.getId());
         this.registrarIncidente(tipo, fecha, heladera);
+        System.out.println(this.comandos.size());
+        this.comandos.forEach(c -> System.out.println("Ejecutando comando: " + c.getClass().getSimpleName()));
         this.comandos.forEach(comando -> comando.ejecutar(heladera, tipo.name()));
     }
 

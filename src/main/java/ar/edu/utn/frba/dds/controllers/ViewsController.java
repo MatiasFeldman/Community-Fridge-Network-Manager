@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.GeoRefDeDirecc;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.LugarDonacion;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.services.api_integracion.APIAdapter;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
@@ -120,7 +122,10 @@ public class ViewsController {
 
     public static void formRegistrarOferta(Context ctx) {
         Map<String, Object> model = new HashMap<>();
+        List<Rubro> rubros;
         model.put("titulo", "Registro de oferta");
+        rubros = ServiceLocator.instanceOf(RubrosRepository.class).buscarTodos();
+        model.put("rubros", rubros);
 
         RenderUtils.renderizar(ctx,"colaboraciones/ofertar.hbs", model);
     }

@@ -35,12 +35,12 @@ public class Oferta extends Persistente {
     @Column(name = "Image")
     private String image;
 
-    public static Oferta of(String nombre, Double puntosNecesarios, String rubro, Integer canjesTotales,String image) {
+    public static Oferta of(String nombre, Double puntosNecesarios, Rubro rubro, Integer canjesTotales,String image) {
         return Oferta
                 .builder()
                 .nombre(nombre)
                 .puntosNecesarios(puntosNecesarios)
-                .rubro(new Rubro(rubro))
+                .rubro(rubro)
                 .canjesTotales(canjesTotales)
                 .canjesUsados(0)
                 .image(image)

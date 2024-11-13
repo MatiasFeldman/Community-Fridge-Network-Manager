@@ -15,6 +15,7 @@ import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OfertasController {
     private OfertasRepository ofertas;
@@ -58,7 +59,7 @@ public class OfertasController {
 
 
     public void showOfertas( Context ctx) {
-        List<Oferta> Ofertas = ServiceLocator.instanceOf(OfertasRepository.class).buscarTodos();
+        List<Oferta> ofertas = ServiceLocator.instanceOf(OfertasRepository.class).buscarTodos();
         List<OfertaOutputDTO> dtos = new ArrayList<>();
         Long idUsuario = ctx.sessionAttribute("id");
         List<String> rolUsuario = ctx.sessionAttribute("roles");
@@ -72,8 +73,19 @@ public class OfertasController {
         }else{
             misPuntos = 0.0;
         }
+        List<String> rubroIds = ctx.queryParams("filtrar");
+        System.out.println("Rubros seleccionados: " + rubroIds);
+        if(rubroIds != null && !rubroIds.isEmpty()){
+            List<Long> rubroIdsLong = rubroIds.stream()
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
 
-        Ofertas.forEach(h -> {
+            // Filtrar las ofertas por rubro
+            ofertas = ofertas.stream()
+                    .filter(oferta -> rubroIdsLong.contains(oferta.getRubro().getId()))
+                    .collect(Collectors.toList());
+        }
+        ofertas.forEach(h -> {
             dtos.add(OfertaOutputDTO.of(h));
         });
         List<Rubro> rubros = ServiceLocator.instanceOf(RubrosRepository.class).buscarTodos();
@@ -112,7 +124,16 @@ public class OfertasController {
 
     public void canjearOferta(Context ctx) {
         try {
-            Long ofertaId = Long.parseLong(ctx.pathParam("id"));
+            Long ofertaId;
+            try {
+                ofertaId = Long.parseLong(ctx.pathParam("id"));
+            } catch (NumberFormatException e) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("error","ID de oferta inválido. Debe ser un número.");
+                model.put("paginaAnterior","/ofertas");
+                ctx.status(400).render("400Personalizado.hbs",model);
+                return;
+            }
             Long usuarioId = ctx.sessionAttribute("id");
             List<String> rolUsuario = ctx.sessionAttribute("roles");
             Optional<Oferta> ofertaOptional = ServiceLocator.instanceOf(OfertasRepository.class).buscarPorId(ofertaId);

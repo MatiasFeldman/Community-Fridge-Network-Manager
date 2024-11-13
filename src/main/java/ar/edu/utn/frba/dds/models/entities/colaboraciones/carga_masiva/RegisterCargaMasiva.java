@@ -36,10 +36,12 @@ public class RegisterCargaMasiva {
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
-        String formaColaboracion = line[6];
-        Integer cantidad = Integer.parseInt(line[7]);
+        String formaColaboracion = line[5];
+        Integer cantidad = Integer.parseInt(line[6]);
 
         Atributo nombreAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
+        Atributo tipoDocumentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Tipo Documento").get();
+        Atributo documentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Documento").get();
         Atributo apellidoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
         Atributo nacimientoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
         Atributo mailAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
@@ -56,6 +58,8 @@ public class RegisterCargaMasiva {
                 AtributoHumanoRespondido.create(direccionAtributo, ""),
                 AtributoHumanoRespondido.create(provinciaAtributo, ""),
                 AtributoHumanoRespondido.create(wppAtributo, ""),
+                AtributoHumanoRespondido.create(tipoDocumentoAtributo, tipoDocumento),
+                AtributoHumanoRespondido.create(documentoAtributo, documento),
                 AtributoHumanoRespondido.create(telegramAtributo, "")));
 
         Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
@@ -74,6 +78,7 @@ public class RegisterCargaMasiva {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = GeneradorDeContrasenias.generateRandomString(16);
+        System.out.println("Usuario creado: " + username + " " + password);
         return new Usuario(username, password, new ArrayList<>(List.of(TipoRol.HUMANO)));
     }
 

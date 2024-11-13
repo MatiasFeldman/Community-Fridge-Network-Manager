@@ -127,13 +127,25 @@ public class ColaboradorHumano extends Persistente {
         puntosGanados += contribucion.calcularPuntaje();
     }
 
-    public String getDocumento(String tipo) {
-        return this.atributosOpcionales
-                .stream()
-                .filter(atributo -> atributo.getNombreAtributo().equals(tipo))
+    public String getDocumento() {
+        System.out.println("Buscando documento...");
+        for (AtributoHumanoRespondido atributo : atributosOpcionales) {
+            System.out.println("Atributo: " + atributo.getNombreAtributo() + " - " + atributo.getValor());
+        }
+
+        return atributosOpcionales.stream()
+                .filter(atributo -> atributo.getNombreAtributo().equalsIgnoreCase("Documento"))
                 .findFirst()
-                .get()
-                .getValor();
+                .map(AtributoHumanoRespondido::getValor)
+                .orElse(null);
+    }
+
+    public String getTipoDocumento() {
+        return atributosOpcionales.stream()
+                .filter(atributo -> atributo.getNombreAtributo().equalsIgnoreCase("Tipo Documento"))
+                .findFirst()
+                .map(AtributoHumanoRespondido::getValor)
+                .orElse(null);
     }
 
     public String getUsername() {

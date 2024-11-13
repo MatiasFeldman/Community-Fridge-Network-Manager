@@ -55,8 +55,9 @@ public class ConversorCsvTest {
         System.out.println("Puntaje esperado de Luis Martinez: " + puntaje2Supuesto);
         System.out.println("Puntaje obtenido: " + h2.get().calcularPuntaje());
 
-        Assertions.assertEquals(h.get().getDocumento("DNI"), "12345678");
-        Assertions.assertEquals(h2.get().getDocumento("DNI"), "9101112");
+        Assertions.assertTrue(h.get().getTipoDocumento().equals("DNI") && h.get().getDocumento().equals("12345678"));
+        Assertions.assertTrue(h2.get().getTipoDocumento().equals("DNI") && h2.get().getDocumento().equals("9101112"));
+
 
     }
 }

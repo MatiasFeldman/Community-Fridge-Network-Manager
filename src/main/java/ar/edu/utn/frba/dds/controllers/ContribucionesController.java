@@ -505,13 +505,21 @@ public class ContribucionesController {
     }
 
     public void cargaMasiva(Context ctx){
-        String path = ctx.formParam("path");
+        UploadedFile file = ctx.uploadedFile("csvFile");
+        if (file == null) {
+            System.out.println("No se subió ningún archivo");
+            throw new SolicitudIncorrectaException();
+        }
+        String path = file.filename();
+        System.out.println("Path: " + path);
 
-        ConversorCSVReader conversorCSV = ServiceLocator.instanceOf(ConversorCSVReader.class);
-
-        CargaMasiva cargaMasiva = new CargaMasiva(path, conversorCSV);
-
-        cargaMasiva.cargar();
+        try (InputStream inputStream = file.content()) {
+            ConversorCSVReader conversorCSV = ServiceLocator.instanceOf(ConversorCSVReader.class);
+            CargaMasiva cargaMasiva = new CargaMasiva(inputStream, conversorCSV);
+            cargaMasiva.cargar();
+        } catch (IOException e) {
+            throw new SolicitudIncorrectaException();
+        }
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");

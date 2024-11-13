@@ -20,13 +20,15 @@ public class ValidadorCargaMasiva {
 
 
     public boolean validarLinea(String[] line){
+
         String tipoDocumento = line[0];
         String documento = line[1];
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
-        String formaColaboracion = line[6];
-        Integer cantidad = Integer.parseInt(line[7]);
+        String formaColaboracion = line[5];
+        Integer cantidad = Integer.parseInt(line[6]);
+
 
         return cumpleTipoDNI(tipoDocumento, documento) &&
                 cumpleFromatoMail(mail) &&

@@ -51,7 +51,7 @@ public class HumanosCollection implements HumanosDAO {
     public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro) {
         return this.colaboradorHumanos
                 .stream()
-                .filter(humano -> humano.getDocumento(tipo).equals(nro))
+                .filter(humano -> humano.getTipoDocumento().equals(tipo) && humano.getDocumento().equals(nro))
                 .findFirst();
     }
 

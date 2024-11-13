@@ -53,8 +53,8 @@ public class Router {
         app.get("/colaborar/ofertar", ViewsController::formRegistrarOferta, TipoRol.JURIDICA);
         app.post("/colaborar/ofertar", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).registrarOferta(ctx), TipoRol.JURIDICA);
 
-        app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva, TipoRol.ADMIN);
-        app.post("/colaborar/carga-csv", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx),TipoRol.ADMIN);
+        app.get("/colaborar/carga-csv", ViewsController::formCargaMasiva);
+        app.post("/colaborar/carga-csv", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).cargaMasiva(ctx));
 
         app.post("/recomendar-puntos", ctx -> ServiceLocator.instanceOf(ContribucionesController.class).recomendarPuntos(ctx), TipoRol.JURIDICA);
 

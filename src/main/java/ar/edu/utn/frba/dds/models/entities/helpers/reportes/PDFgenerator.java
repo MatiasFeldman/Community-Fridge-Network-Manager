@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.helpers.reportes;
 import ar.edu.utn.frba.dds.models.entities.reportes.Reporte;
+import ar.edu.utn.frba.dds.models.entities.reportes.ReporteFallas;
+import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
+import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -54,41 +57,44 @@ public class PDFgenerator implements GeneradorPDF {
                 tabla.setWidthPercentage(100);
                 tabla.setSpacingBefore(10f);
 
-                String[] lineas = reporte.contenido().split("\n");
-
                 // Encabezados de la tabla
-                PdfPCell celdaEncabezado1 = new PdfPCell(new Phrase(lineas[0], fontContenido));
-                PdfPCell celdaEncabezado2 = new PdfPCell(new Phrase(lineas[1], fontContenido));
-                celdaEncabezado1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                celdaEncabezado2.setHorizontalAlignment(Element.ALIGN_CENTER);
-                tabla.addCell(celdaEncabezado1);
-                tabla.addCell(celdaEncabezado2);
-                if(nroColumnas == 3){
-                    PdfPCell celdaEncabezado3 = new PdfPCell(new Phrase(lineas[2], fontContenido));
-                    celdaEncabezado3.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    tabla.addCell(celdaEncabezado3);
+                String[] headers = this.devolverHeaders(reporte);
+                for (int i = 0; i < nroColumnas; i++) {
+                    PdfPCell headerCell = new PdfPCell(new Phrase(headers[i], fontContenido));
+                    headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    tabla.addCell(headerCell);
                 }
 
                 // Datos del reporte en la tabla
-                for (int j = nroColumnas; j < lineas.length; j++) { // Saltar encabezados del contenido
-                    String[] datos = lineas[j].split("\t");
-                    if (datos.length >= 2) { // Asegurarse de que haya al menos dos columnas de datos
-                        tabla.addCell(new PdfPCell(new Phrase(datos[0], fontContenido)));
-                        tabla.addCell(new PdfPCell(new Phrase(datos[1], fontContenido)));
-                        if(nroColumnas == 3){
-                            tabla.addCell(new PdfPCell(new Phrase(datos[2], fontContenido)));
-                        }
+                String[] lineas = reporte.contenido().split("\n");
+                for (int j = 2; j < lineas.length; j++) { // Saltar encabezados
+                    String[] datos = lineas[j].split("\\t+"); // Dividir por tabulación
+                    for (int k = 0; k < nroColumnas && k < datos.length; k++) {
+                        PdfPCell dataCell = new PdfPCell(new Phrase(datos[k], fontContenido));
+                        dataCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        tabla.addCell(dataCell);
                     }
                 }
 
                 document.add(tabla);
-
-                System.out.println("PDF generado: " + nombrePDF);
                 document.close();
 
             } catch (DocumentException | FileNotFoundException e) {
                 throw new RuntimeException("Error al generar el PDF para " + reporte.nombre(), e);
             }
+        }
+    }
+
+    private String[] devolverHeaders(Reporte reporte) {
+        if (reporte instanceof ReporteFallas){
+            return new String[]{"Heladera", "Cantidad de fallas"};
+        } else if (reporte instanceof ReporteMovimientoViandas) {
+            return new String[]{"Heladera", "Viandas Colocadas", "Viandas Retiradas"};
+        } else if (reporte instanceof ReporteViandasDonadas){
+            return new String[]{"Nombre", "Cantidad de viandas donadas"};
+        } else {
+            throw new RuntimeException("Tipo de reporte no soportado");
         }
     }
 

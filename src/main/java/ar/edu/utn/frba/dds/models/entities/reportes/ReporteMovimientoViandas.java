@@ -32,29 +32,27 @@ public class ReporteMovimientoViandas implements Reporte {
 
 
     public String generarReporteMovimientoViandas() {
-        StringBuilder contenido = new StringBuilder();
+        StringBuilder tabla = new StringBuilder();
 
-        if (this.contenido != null && (this.fechaUltimoReporte != null && this.fechaUltimoReporte.isAfter(LocalDate.now().minusWeeks(1)))) {
-            return contenido.toString();
-        }
+        // Cabecera de la tabla
+        tabla.append("Heladera\t\tViandas Colocadas\t\tViandas Retiradas\n");
+        tabla.append("------------------------------------------------------------\n");
 
-        contenido.append("Heladera Nombre\n");
-        contenido.append("Entraron\n");
-        contenido.append("Salieron\n");
-
+        // Recorremos el repositorio y agregamos cada fila a la tabla
         for (Heladera heladera : heladeras.buscarTodos()) {
-            contenido.append(heladera.getNombre())
+            tabla.append(heladera.getNombre())
                     .append("\t\t")
                     .append(heladera.getViandasColocadas())
-                    .append("\t\t")
+                    .append("\t\t\t")
                     .append(heladera.getViandasRetiradas())
                     .append("\n");
+
+            // Reseteamos las viandas para la próxima semana
             heladera.setViandasColocadas(0);
             heladera.setViandasRetiradas(0);
         }
-        this.fechaUltimoReporte = LocalDate.now();
-        this.contenido = contenido.toString();
-        return this.contenido;
+
+        return tabla.toString();
     }
 
 

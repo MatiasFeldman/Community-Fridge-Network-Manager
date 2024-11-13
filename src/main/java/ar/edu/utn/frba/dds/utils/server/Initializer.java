@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
+import ar.edu.utn.frba.dds.main.MainReportes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
@@ -11,7 +12,10 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorDeMovimiento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorTemperatura;
+import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
+import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
+import ar.edu.utn.frba.dds.models.entities.reportes.GenerarReportesCronJob;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.AreaCobertura;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.TipoTecnico;
@@ -38,8 +42,11 @@ import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Initializer {
@@ -81,8 +88,8 @@ public class Initializer {
                 .direccion(d1)
                 .capacidadMaxima(50)
                 .capActual(25)
-                .viandasColocadas(32)
-                .viandasRetiradas(7)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .tempMaxima(7.2)
                 .tempMinima(-4.1)
                 .suscriptores(new ArrayList<>())
@@ -95,8 +102,8 @@ public class Initializer {
                 .direccion(d2)
                 .capacidadMaxima(30)
                 .capActual(28)
-                .viandasColocadas(22)
-                .viandasRetiradas(20)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .tempMaxima(9.8)
                 .tempMinima(-5.4)
                 .suscriptores(new ArrayList<>())
@@ -111,8 +118,8 @@ public class Initializer {
                 .capActual(18)
                 .tempMaxima(8.4)
                 .tempMinima(-3.1)
-                .viandasColocadas(17)
-                .viandasRetiradas(15)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
@@ -125,8 +132,8 @@ public class Initializer {
                 .capActual(63)
                 .tempMaxima(9.8)
                 .tempMinima(-5.4)
-                .viandasColocadas(12)
-                .viandasRetiradas(5)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
@@ -139,8 +146,8 @@ public class Initializer {
                 .capActual(63)
                 .tempMaxima(9.8)
                 .tempMinima(-5.4)
-                .viandasColocadas(12)
-                .viandasRetiradas(5)
+                .viandasColocadas(0)
+                .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
                 .activa(true)
                 .build();
@@ -186,6 +193,7 @@ public class Initializer {
         tecnicos.guardar(t2);
         tecnicos.guardar(t3);
 
+        /*
         SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
@@ -202,7 +210,7 @@ public class Initializer {
         SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
 
         ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
-
+            */
 
         Initializer.inicializarAtributos();
 
@@ -292,7 +300,7 @@ public class Initializer {
 
         // creacion de donaciones y distribuciones
 
-        c2.setPuntosGanados(2500.0);//funciona :)
+        c2.setPuntosGanados(2500.0);
         humanos.guardar(c1);
         humanos.guardar(c2);
 

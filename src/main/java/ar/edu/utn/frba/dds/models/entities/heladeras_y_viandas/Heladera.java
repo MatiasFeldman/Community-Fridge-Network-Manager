@@ -156,6 +156,7 @@ public class Heladera extends Persistente {
             this.setCapActual(this.getCapActual() - cantidad);
             this.notificarColaboradores();
             this.viandasColocadas += cantidad;
+            System.out.println("Heladeras colocadas en la ultima semana en:" + this.getId() + " - " + viandasColocadas);
         }
     }
 
@@ -167,6 +168,7 @@ public class Heladera extends Persistente {
             this.setCapActual(resultado);
             this.notificarColaboradores();
             this.viandasRetiradas += cantidad;
+            System.out.println("Heladeras retiradas en la ultima semana en: " + this.getId() + " - " + viandasRetiradas);
         }
 
     }

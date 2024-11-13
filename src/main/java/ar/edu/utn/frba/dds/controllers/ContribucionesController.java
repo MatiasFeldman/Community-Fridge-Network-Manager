@@ -35,6 +35,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofrecerProducto.OfrecerProductoRepository;
 import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
+import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -426,16 +427,18 @@ public class ContribucionesController {
         String nombreProducto = ctx.formParam("nombreProducto");
         String puntosNecesarios = ctx.formParam("puntosNecesarios");
         String canjesTotales = ctx.formParam("canjesTotales");
-        String tipoProducto = ctx.formParam("tipoProducto");
+        String rubro = ctx.formParam("rubro");
 
-        if(nombreProducto == null || puntosNecesarios == null || canjesTotales == null || tipoProducto == null){
+        if(nombreProducto == null || puntosNecesarios == null || canjesTotales == null || rubro == null){
             throw new SolicitudIncorrectaException();
         }
         Double puntosNecesariosDouble;
         Integer canjesTotalesInt;
+        Long rubroId;
         try {
             puntosNecesariosDouble = Double.parseDouble(puntosNecesarios);
             canjesTotalesInt = Integer.parseInt(canjesTotales);
+            rubroId = Long.parseLong(rubro);
         } catch (NumberFormatException e) {
             throw new SolicitudIncorrectaException();
         }
@@ -448,18 +451,23 @@ public class ContribucionesController {
         if (posibleJuridica.isEmpty()) {
             throw new SolicitudIncorrectaException();
         }
+        Optional<Rubro> rubroOFerta = ServiceLocator.instanceOf(RubrosRepository.class).buscarPorId(rubroId);
+        if(!rubroOFerta.isPresent()){
+            throw new SolicitudIncorrectaException();
+        }
+
+
 
         Juridica juridica = posibleJuridica.get();
 
         Oferta oferta = Oferta.of(nombreProducto,
                 puntosNecesariosDouble,
-                tipoProducto,
+                rubroOFerta.get(),
                 canjesTotalesInt,
                 null);
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         ofertasRepository.guardar(oferta);
-        System.out.print(oferta.getId());
-        System.out.print(oferta.getPresente());
+
         // Obtener archivo de imagen (si se cargó uno)
         UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
         String rutaImagen = null;

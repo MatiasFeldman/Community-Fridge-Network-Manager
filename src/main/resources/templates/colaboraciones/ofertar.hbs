@@ -31,10 +31,11 @@
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Tipo</h3>
-                        <select class="form-control mt-2" name="tipoProducto" required>
-                            <option value="">Selecciona el tipo</option>
-                            <option value="producto">Producto</option>
-                            <option value="servicio">Servicio</option>
+                        <select class="form-control mt-2" name="rubro" required>
+                            <option value="">Selecciona el tipo </option>
+                            {{#each rubros}}
+                            <option value="{{this.id}}">{{this.nombre}}</option>
+                            {{/each}}
                         </select>
                     </div>
                 </div>

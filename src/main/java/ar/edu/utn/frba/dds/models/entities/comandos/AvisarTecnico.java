@@ -24,6 +24,7 @@ public class AvisarTecnico implements Comando {
     @Override
     @SneakyThrows
     public void ejecutar(Heladera heladera, String mensaje) {
+        System.out.println("Le voy a avisar a los tecnicos");
         CompletableFuture.runAsync(() -> {
             try {
                 Direccion origen = heladera.getDireccion();

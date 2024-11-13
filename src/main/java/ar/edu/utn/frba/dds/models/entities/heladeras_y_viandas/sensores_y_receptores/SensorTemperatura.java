@@ -18,6 +18,9 @@ public class SensorTemperatura {
     public SensorTemperatura(Long idHeladera){
         this.topic = "heladera/temperatura";
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+
+        this.idHeladera = idHeladera;
+        System.out.println("Sensor de temperatura de heladera " + idHeladera + " conectado");
         client.connect();
     }
 

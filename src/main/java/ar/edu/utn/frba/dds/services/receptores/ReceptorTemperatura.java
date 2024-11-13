@@ -2,16 +2,18 @@ package ar.edu.utn.frba.dds.services.receptores;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.MensajeSensorTemperatura;
+import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ import java.util.Optional;
 @Getter
 @Builder
 public class ReceptorTemperatura implements IMqttMessageListener {
-    private final String BROKER_URL = "tcp://localhost:1883";
+    private final String BROKER_URL = "tcp://broker.hivemq.com:1883";
     private HeladerasRepository heladeras;
     private MqttClient client;
 
@@ -34,10 +36,24 @@ public class ReceptorTemperatura implements IMqttMessageListener {
         return receptor;
     }
 
-    private void suscribirseATopic(ReceptorTemperatura receptor) throws MqttException {
-        client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        client.connect();
-        client.subscribe("heladera/temperatura", receptor);
+    private void suscribirseATopic(ReceptorTemperatura receptor){
+        try{
+            client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+
+            client.connect();
+
+            client.subscribe("heladera/temperatura", 1 ,receptor);
+
+            System.out.println("Receptor de temperatura conectado");
+        } catch (MqttException me){
+            System.out.println("reason " + me.getReasonCode());
+            System.out.println("msg " + me.getMessage());
+            System.out.println("loc " + me.getLocalizedMessage());
+            System.out.println("cause " + me.getCause());
+            System.out.println("excep " + me);
+            me.printStackTrace();
+        }
+
     }
 
 
@@ -45,9 +61,21 @@ public class ReceptorTemperatura implements IMqttMessageListener {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonMessage = new String(mqttMessage.getPayload());
-        MensajeSensorTemperatura mensaje = mapper.readValue(jsonMessage, MensajeSensorTemperatura.class);
-        Optional<Heladera> posibleHeladera = heladeras.buscarPorId(mensaje.getIdHeladera());
-        posibleHeladera.ifPresent(h -> h.evaluarTemperatura(mensaje.getTemperatura()));
+        String jsonMessage = mqttMessage.toString();
+
+        JsonNode json = ConversorJSON.convertir(jsonMessage);
+        Double temperatura = Double.valueOf(json.get("temperatura").asText());
+        Long idHeladera = Long.valueOf(json.get("idHeladera").asText());
+
+        Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
+
+        posibleHeladera.ifPresent(h -> {
+            h.evaluarTemperatura(temperatura);
+            ServiceLocator.instanceOf(HeladerasRepository.class).modificar(h);
+            System.out.println("Heladera actualizada en el repositorio");
+        });
+        if (!posibleHeladera.isPresent()){
+            System.out.println("Heladera no encontrada");
+        }
     }
 }

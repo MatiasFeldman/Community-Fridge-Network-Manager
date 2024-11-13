@@ -21,6 +21,7 @@ public class SensorDeMovimiento {
         this.idHeladera = idHeladera;
         client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client.connect();
+        System.out.println("Sensor de movimiento de heladera " + idHeladera + " conectado");
     }
 
     public SensorDeMovimiento(Long idHeladera, String url) throws MqttException {
@@ -32,10 +33,12 @@ public class SensorDeMovimiento {
 
     @SneakyThrows
     public void enviarMovimiento() {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonMessage = mapper.writeValueAsString(new MensajeSensorMovimiento(this.idHeladera));
+        String jsonMessage = String.valueOf(this.idHeladera);
         MqttMessage message = new MqttMessage(jsonMessage.getBytes());
         message.setQos(1);
+        message.setRetained(true); // Retener el mensaje hasta que el suscriptor lo reciba
         client.publish(topic, message);
+        System.out.println("Mensaje de movimiento enviado para heladera con id: " + this.idHeladera);
     }
+
 }

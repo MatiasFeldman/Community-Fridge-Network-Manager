@@ -20,7 +20,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Setter
 public class MqttReceptorApertura implements IMqttMessageListener {
-    private static String BROKER_URL;
+    private static String BROKER_URL = "tcp://broker.hivemq.com:1883";
     private static String topic_solicitudes = "heladeras/solicitudes_de_apertura";
     private static String topic_intentos = "heladeras/intentos_de_apertura";
     private MqttClient client_solicitudes;

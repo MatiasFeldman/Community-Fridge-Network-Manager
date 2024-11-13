@@ -71,7 +71,7 @@ public class Heladera extends Persistente {
     @Column(name = "viandas_retiradas")
     private Integer viandasRetiradas;
 
-    private static final String BROKER_URL = "";
+    private static final String BROKER_URL = "tcp://broker.hivemq.com:1883";
 
     @Transient
     private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
@@ -247,6 +247,7 @@ public class Heladera extends Persistente {
         this.ultFechaRegistrada = LocalDateTime.now();
         if (!this.temperaturaValida(temp)) {
             ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
+            System.out.println("Temperatura fuera de rango en la healdera " + this.getId());
         }
     }
 

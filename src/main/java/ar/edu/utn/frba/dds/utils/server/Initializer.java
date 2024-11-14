@@ -230,10 +230,10 @@ public class Initializer {
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
 
-        usuariosRepository.guardar(u1);
+        usuariosRepository.guardar(u1);/*
         usuariosRepository.guardar(u2);
         usuariosRepository.guardar(u3);
-        usuariosRepository.guardar(u4);
+        usuariosRepository.guardar(u4);*/
 
         // creacion de atributos juridica
         TipoContacto tipoContacto = new TipoContacto("WhatsApp");

@@ -13,6 +13,7 @@ public class UsuariosCollection implements UsuariosDAO{
 
     @Override
     public void guardar(Usuario usuario) {
+        System.out.println("Guardando usuario " + usuario.getUser() + " con password " + usuario.getPassword());
         usuario.setId(currentId);
         this.usuarios.add(usuario);
         this.currentId++;

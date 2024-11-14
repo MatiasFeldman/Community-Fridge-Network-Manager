@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.server.handlers;
 
 
+import ar.edu.utn.frba.dds.exceptions.InvalidContribucionException;
 import ar.edu.utn.frba.dds.server.handlers.implementaciones.*;
 import io.javalin.Javalin;
 
@@ -29,7 +30,8 @@ public class AppHandlers {
             new TarjetaRepetidaHandler(),
             new ContraseniaHumanoInseguraHandler(),
             new UsuarioHumanoExistenteHandler(),
-            new DireccionIncorrectaHeladeraHandler()
+            new DireccionIncorrectaHeladeraHandler(),
+            new InvalidContribucionHandler(),
     };
 
     public static void applyHandlers(Javalin app) {

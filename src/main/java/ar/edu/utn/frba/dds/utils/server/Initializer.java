@@ -203,7 +203,7 @@ public class Initializer {
         tecnicos.guardar(t3);
 
 
-        SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
+        /*SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
         SensorTemperatura sensorTemp4 = new SensorTemperatura(h4.getId());
@@ -220,7 +220,7 @@ public class Initializer {
 
         ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
 
-        
+        */
 
         // creacion de usuarios
 

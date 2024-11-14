@@ -15,6 +15,7 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.seguridad.GeneradorDeContrasenias;
+import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,8 +79,10 @@ public class RegisterCargaMasiva {
         UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
         String username = usernameGenerator.generateUsername(nombre, apellido);
         String password = GeneradorDeContrasenias.generateRandomString(16);
+        // hashear password
+
         System.out.println("Usuario creado: " + username + " " + password);
-        return new Usuario(username, password, new ArrayList<>(List.of(TipoRol.HUMANO)));
+        return new Usuario(username, ServiceLocator.instanceOf(HashPassword.class).hashPassword(password), new ArrayList<>(List.of(TipoRol.HUMANO)));
     }
 
     public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Canjes> canjes , Usuario userCreado){

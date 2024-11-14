@@ -39,6 +39,7 @@ public class ConversorCSVReader implements ConversorCSV {
                 line = line[0].split(";");
 
                 if (!validador.validarLinea(line)) {
+                    System.out.println("La linea no cumple con los requisitos");
                     continue;
                 }
 

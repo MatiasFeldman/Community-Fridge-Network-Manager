@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.TipoEvento;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorApertura;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorDeMovimiento;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.SensorTemperatura;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
@@ -36,6 +37,7 @@ import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorMovimiento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorTemperatura;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -64,7 +66,12 @@ public class Initializer {
         RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
+
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
+        ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
+        MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
+
+
 
         // creacion de heladeras
 
@@ -195,7 +202,7 @@ public class Initializer {
         tecnicos.guardar(t2);
         tecnicos.guardar(t3);
 
-        /*
+
         SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
@@ -212,7 +219,7 @@ public class Initializer {
         SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
 
         ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
-        */
+
         
 
         // creacion de usuarios

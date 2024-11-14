@@ -38,6 +38,7 @@ public class ReceptorApertura implements IMqttMessageListener {
         cliente_intentos = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         cliente_intentos.connect();
 
+        System.out.println("Receptor de apertura de heladeras iniciado");
     }
 
     @Override

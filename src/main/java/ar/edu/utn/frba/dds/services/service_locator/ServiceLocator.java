@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.Conversor
 import ar.edu.utn.frba.dds.models.entities.comandos.AvisarTecnico;
 import ar.edu.utn.frba.dds.models.entities.comandos.Comando;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Accionador;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_receptores.ReceptorApertura;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.mail.MimeMailSender;
 import ar.edu.utn.frba.dds.models.entities.helpers.mensajeria.telegram.TelegramSender;
@@ -70,6 +71,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
+import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
 import ar.edu.utn.frba.dds.utils.seguridad.*;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
 import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
@@ -104,7 +106,14 @@ public class ServiceLocator {
                 Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
                 accionador.agregarComando(new AvisarTecnico(ServiceLocator.instanceOf(TecnicosRepository.class)));
                 instances.put(componentName, accionador);
-            } else if (componentName.equals(GeorefCaba.class.getName())) {
+            } else if (componentName.equals(ReceptorApertura.class.getName())){
+                ReceptorApertura receptorApertura = new ReceptorApertura(ServiceLocator.instanceOf(HeladerasRepository.class));
+                instances.put(componentName, receptorApertura);
+            } else if (componentName.equals(MqttReceptorIntento.class.getName())){
+                MqttReceptorIntento mqttReceptorIntento = new MqttReceptorIntento(ServiceLocator.instanceOf(HeladerasRepository.class));
+                instances.put(componentName, mqttReceptorIntento);
+            }
+            else if (componentName.equals(GeorefCaba.class.getName())) {
                 instances.put(componentName, new GeorefCaba());
             } else if (componentName.equals(ReportesController.class.getName())) {
                 ReportesController reportesController = new ReportesController();

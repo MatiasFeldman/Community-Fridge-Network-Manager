@@ -45,6 +45,8 @@ public class MqttReceptorIntento implements IMqttMessageListener {
         client_intentos = new MqttClient(BROKER_URL, MqttClient.generateClientId());
         client_intentos.connect();
         client_intentos.subscribe(topic_intentos, this);
+
+        System.out.println("Receptor de intentos de apertura de heladeras iniciado");
     }
 
 
@@ -70,6 +72,7 @@ public class MqttReceptorIntento implements IMqttMessageListener {
                         DonacionDeVianda donacion = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class).buscarPorId(idColab).get();
                         donacion.setFinalizada(true);
                         ServiceLocator.instanceOf(DonacionesDeViandaRepository.class).actualizar(donacion);
+                        heladera.agregarViandas(1);
                         colaborador.sumarPuntaje(donacion);
 
                     }
@@ -77,18 +80,20 @@ public class MqttReceptorIntento implements IMqttMessageListener {
                         DistribucionViandas distribucionViandas = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class).buscarPorId(idColab).get();
                         distribucionViandas.setColocadas(true);
                         ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class).actualizar(distribucionViandas);
+                        heladera.agregarViandas(distribucionViandas.getCantidadViandas());
                         colaborador.sumarPuntaje(distribucionViandas);
                     }
                     case RETIRAR -> {
                         DistribucionViandas distribucionViandas = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class).buscarPorId(idColab).get();
                         distribucionViandas.setRetiradas(true);
                         ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class).actualizar(distribucionViandas);
+                        heladera.quitarViandas(distribucionViandas.getCantidadViandas());
                         colaborador.sumarPuntaje(distribucionViandas);
                     }
                 }
             }
 
-            IntentoAperturaResuelto intento = new IntentoAperturaResuelto(colaborador.buscarTarjetaPorId(idTarjeta),colaborador, heladera, fecha, exitoso);
+            IntentoAperturaResuelto intento = new IntentoAperturaResuelto(colaborador.buscarTarjetaPorId(idTarjeta), colaborador, heladera, fecha, exitoso);
             ServiceLocator.instanceOf(IntentosDeAperturaRepository.class).guardar(intento);
         }
 

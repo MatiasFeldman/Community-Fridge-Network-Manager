@@ -23,7 +23,7 @@ public class Frecuencia {
         LocalDate fechaInicio = fechaUltimaDonacion;
         LocalDate fechaActual = LocalDate.now();
 
-        long vecesCumplidas = 0;
+        long vecesCumplidas = 1;
         while (fechaInicio.isBefore(fechaActual)) {
             fechaInicio = fechaInicio.plus(frecuencia, unidad);
             if (fechaInicio.isBefore(fechaActual) || fechaInicio.isEqual(fechaActual)) {

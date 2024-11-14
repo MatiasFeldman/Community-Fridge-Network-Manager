@@ -36,7 +36,7 @@ public class ColaboradorHumano extends Persistente {
     private Usuario user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "duenio")
-    private List<TarjetaColaborador> tarjetas = new ArrayList<>();
+    private List<TarjetaColaborador> tarjetas;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_atributo_obligatorio")
@@ -64,6 +64,7 @@ public class ColaboradorHumano extends Persistente {
 
     public void agregarTarejta(TarjetaColaborador tarjeta) {
         tarjeta.setDuenio(this);
+        tarjeta.setPrincipal(true);
         this.tarjetas.add(tarjeta);
     }
 
@@ -83,6 +84,7 @@ public class ColaboradorHumano extends Persistente {
                 .puntosGanados(0.0)
                 .canjesRealizados(dto.getCanjesRealizados())
                 .user(dto.getUser())
+                .tarjetas(new ArrayList<>())
                 .build();
     }
 

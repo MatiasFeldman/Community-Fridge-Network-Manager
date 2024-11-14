@@ -34,6 +34,7 @@ import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesReposito
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
@@ -65,12 +66,13 @@ public class Initializer {
         OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
         RubrosRepository rubrosRepository = ServiceLocator.instanceOf(RubrosRepository.class);
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
+        TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
-
+        /*
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
-
+        */
 
 
         // creacion de heladeras
@@ -102,6 +104,7 @@ public class Initializer {
                 .tempMaxima(7.2)
                 .tempMinima(-4.1)
                 .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -116,6 +119,7 @@ public class Initializer {
                 .tempMaxima(9.8)
                 .tempMinima(-5.4)
                 .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -130,6 +134,7 @@ public class Initializer {
                 .viandasColocadas(0)
                 .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -144,6 +149,7 @@ public class Initializer {
                 .viandasColocadas(0)
                 .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -158,6 +164,7 @@ public class Initializer {
                 .viandasColocadas(0)
                 .viandasRetiradas(0)
                 .suscriptores(new ArrayList<>())
+                .solicitudes(new ArrayList<>())
                 .activa(true)
                 .build();
 
@@ -230,10 +237,10 @@ public class Initializer {
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
 
-        usuariosRepository.guardar(u1);/*
-        usuariosRepository.guardar(u2);
+        usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u3);
-        usuariosRepository.guardar(u4);*/
+        usuariosRepository.guardar(u2);
+        usuariosRepository.guardar(u4);
 
         // creacion de atributos juridica
         TipoContacto tipoContacto = new TipoContacto("WhatsApp");
@@ -295,8 +302,18 @@ public class Initializer {
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
 
         c2.setPuntosGanados(2500.0);
+
         humanos.guardar(c1);
         humanos.guardar(c2);
+
+        TarjetaColaborador tarjetaColaborador1 = new TarjetaColaborador();
+        TarjetaColaborador tarjetaColaborador2 = new TarjetaColaborador();
+
+        tarjetasColaboradoresRepository.guardar(tarjetaColaborador1);
+        tarjetasColaboradoresRepository.guardar(tarjetaColaborador2);
+
+        c1.agregarTarejta(tarjetaColaborador1);
+        c2.agregarTarejta(tarjetaColaborador2);
 
         // creacion de tarjetas
 

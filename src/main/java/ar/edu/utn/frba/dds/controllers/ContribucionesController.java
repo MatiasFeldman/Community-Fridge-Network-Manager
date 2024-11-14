@@ -173,10 +173,12 @@ public class ContribucionesController {
 
         DistribucionViandas distribucionDeViandas = DistribucionViandas.of(heladeraOrigen, heladeraDestino, cantidadViandasInt, motivoDistribucion, colaboradorHumano);
 
-        heladeraOrigen.quitarViandas(cantidadViandasInt);
-        heladeraDestino.agregarViandas(cantidadViandasInt);
 
-        colaboradorHumano.sumarPuntaje(distribucionDeViandas);
+        SolicitudApertura solicitudColocar = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraDestino, cantidadViandasInt, MotivoApertura.COLOCAR, distribucionDeViandas.getId());
+        SolicitudApertura solicitudRetirar = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraOrigen, cantidadViandasInt, MotivoApertura.RETIRAR, distribucionDeViandas.getId());
+
+        heladeraOrigen.agregarSolicitudApertura(solicitudRetirar);
+        heladeraDestino.agregarSolicitudApertura(solicitudColocar);
 
         DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         distribucionesDeViandasRepository.guardar(distribucionDeViandas);

@@ -219,15 +219,14 @@ public class Initializer {
 
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
-        u1.setId(1L);
         Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
-        u2.setId(2L);
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
-        u3.setId(3L);
+        Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
 
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u2);
         usuariosRepository.guardar(u3);
+        usuariosRepository.guardar(u4);
 
         // creacion de atributos juridica
         TipoContacto tipoContacto = new TipoContacto("WhatsApp");
@@ -237,7 +236,7 @@ public class Initializer {
 
         JuridicoInputDTO juridicoInputDTO = new JuridicoInputDTO(u3, "Razon Social", Tipo.EMPRESA, "Rubro 1" ,listaDeContactos, d3);
 
-        ServiceLocator.instanceOf(JuridicasRepository.class).guardar(Juridica.create(juridicoInputDTO));
+        juridicas.guardar(Juridica.create(juridicoInputDTO));
 
         //creamos los tributos posibles
         Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
@@ -266,7 +265,7 @@ public class Initializer {
         List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1, tipoDocumento_respondido1, documento_respondido1);
         // creacion de atributos colaboradores humanos
 
-        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales,new ArrayList<>(), u1, d1);
+        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales,new ArrayList<>(), u2, d1);
 
         ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
 
@@ -284,9 +283,13 @@ public class Initializer {
         List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2,email_respondido);
         List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido,tipoDocumento_respondido2,documento_respondido2);
 
-        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2,new ArrayList<>() , u2, d2);
+        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2,new ArrayList<>() , u4, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
+
+        c2.setPuntosGanados(2500.0);
+        humanos.guardar(c1);
+        humanos.guardar(c2);
 
         // creacion de tarjetas
 
@@ -305,10 +308,6 @@ public class Initializer {
         tarjetasVulnerablesRepository.guardar(tarjeta6);
 
         // creacion de donaciones y distribuciones
-
-        c2.setPuntosGanados(2500.0);
-        humanos.guardar(c1);
-        humanos.guardar(c2);
 
         DistribucionViandas distribucion1 = ContribucionHumanaFactory.crearDistribucionDeViandas(h1, h2, 5, "Motivo1", c1);
         DistribucionViandas distribucion2 = ContribucionHumanaFactory.crearDistribucionDeViandas(h2, h1, 3, "Motivo2", c2);

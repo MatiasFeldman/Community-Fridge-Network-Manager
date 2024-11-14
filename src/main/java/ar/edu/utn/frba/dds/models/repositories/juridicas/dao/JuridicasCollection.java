@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class JuridicasCollection implements JuridicasDAO{
     private List<Juridica> juridicas;
-    private Long currentId = 100L;
+
 
     public JuridicasCollection(List<Juridica> juridicas) {
         this.juridicas = juridicas;
@@ -15,9 +15,8 @@ public class JuridicasCollection implements JuridicasDAO{
 
     @Override
     public void guardar(Juridica juridica) {
-        juridica.setId(currentId);
+        juridica.setId(juridica.getUser().getId());
         this.juridicas.add(juridica);
-        currentId++;
     }
 
     @Override

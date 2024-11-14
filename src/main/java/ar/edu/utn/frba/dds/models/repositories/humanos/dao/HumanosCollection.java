@@ -9,14 +9,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HumanosCollection implements HumanosDAO {
     private List<ColaboradorHumano> colaboradorHumanos;
-    private Long currentId = 100L;
 
 
     @Override
     public void guardar(ColaboradorHumano colaboradorHumano) {
-        colaboradorHumano.setId(currentId);
+        colaboradorHumano.setId(colaboradorHumano.getIdUsuario());
         this.colaboradorHumanos.add(colaboradorHumano);
-        currentId++;
     }
 
     @Override

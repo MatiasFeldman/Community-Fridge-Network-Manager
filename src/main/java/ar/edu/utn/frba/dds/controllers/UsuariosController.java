@@ -230,20 +230,22 @@ public class UsuariosController {
     }
 
     public void showUsuarios(Context ctx) {
-        UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
-        List<Usuario> usuarios = usuariosRepository.buscarTodos();
+        HumanosRepository humanosRepository = ServiceLocator.instanceOf(HumanosRepository.class);
+        List<ColaboradorHumano> humanosR = humanosRepository.buscarTodos();
+
         List<UsuarioHumanoOutputDTO> humanos = new ArrayList<>();
+
+        for (ColaboradorHumano humano : humanosR) {
+            humanos.add(UsuarioHumanoOutputDTO.of(humano));
+        }
+
+        JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
+        List<Juridica> juridicasR = juridicasRepository.buscarTodos();
+
         List<UsuarioJuridicaOutputDTO> juridicas = new ArrayList<>();
 
-        int i = 0;
-        for (Usuario usuario : usuarios) {
-            if (usuario.getRoles().contains(TipoRol.HUMANO)) {
-                ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuario.getId()).get();
-                humanos.add(UsuarioHumanoOutputDTO.of(humano));
-            } else if (usuario.getRoles().contains(TipoRol.JURIDICA)) {
-                Juridica juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuario.getId()).get();
-                juridicas.add(UsuarioJuridicaOutputDTO.of(juridica));
-            }
+        for (Juridica juridica : juridicasR) {
+            juridicas.add(UsuarioJuridicaOutputDTO.of(juridica));
         }
 
         Map<String, Object> model = new HashMap<>();

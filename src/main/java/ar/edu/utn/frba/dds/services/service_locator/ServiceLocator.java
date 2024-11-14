@@ -200,7 +200,7 @@ public class ServiceLocator {
                     HeladerasRepository heladeras = new HeladerasRepository(new HeladerasCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, heladeras);
                 } else if (componentName.equals(HumanosRepository.class.getName())) {
-                    HumanosRepository humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>(), 100L));
+                    HumanosRepository humanos = new HumanosRepository(new HumanosCollection(new ArrayList<>()));
                     instances.put(componentName, humanos);
                 } else if (componentName.equals(PersonasVulnerablesRepository.class.getName())) {
                     PersonasVulnerablesRepository personasVulnerables = new PersonasVulnerablesRepository(new PersonasVulnerablesCollection(new ArrayList<>()));

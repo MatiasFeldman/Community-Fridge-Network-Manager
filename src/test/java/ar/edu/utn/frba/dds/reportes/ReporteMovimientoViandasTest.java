@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.reportes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.personas.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -105,8 +106,10 @@ class ReporteMovimientoViandasTest {
         colaboradorHumano1.sumarPuntaje(donacion1);
         colaboradorHumano1.sumarPuntaje(donacion2);
 
+        Juridica juridica = new Juridica();
+
         // Crear persona vulnerable y asignar tarjeta
-        PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, colaboradorHumano1);
+        PersonaVulnerable personaVulnerable = new PersonaVulnerable("Persona1", LocalDate.now(), LocalDate.now(), null, "12345678", 2, juridica);
         personaVulnerable.setTarjetas(List.of(tarjetaVulnerable));
         personasVulnerablesRepository.guardar(personaVulnerable);
 

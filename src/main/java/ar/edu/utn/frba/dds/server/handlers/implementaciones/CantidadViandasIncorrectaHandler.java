@@ -21,10 +21,17 @@ public class CantidadViandasIncorrectaHandler implements IHandler {
             HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
             List<Heladera> heladeras = heladerasRepository.buscarTodos();
 
+            String motivoDistribucion = ctx.formParam("motivoDistribucion");
+            String heladeraOrigenId = ctx.formParam("heladeraOrigen");
+            String heladeraDestinoId = ctx.formParam("heladeraDestino");
+
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Distribuir viandas");
             model.put("heladeras", heladeras);
             model.put("errorCantidad", e.getMessage());
+            model.put("motivoDistribucion", motivoDistribucion);
+            model.put("heladeraOrigenId", heladeraOrigenId);
+            model.put("heladeraDestinoId", heladeraDestinoId);
 
             ctx.render("colaboraciones/distribucion-de-viandas.hbs", model);
         });

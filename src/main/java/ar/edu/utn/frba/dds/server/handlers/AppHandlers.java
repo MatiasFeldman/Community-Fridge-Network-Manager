@@ -32,6 +32,8 @@ public class AppHandlers {
             new UsuarioHumanoExistenteHandler(),
             new DireccionIncorrectaHeladeraHandler(),
             new InvalidContribucionHandler(),
+            new puntosNecesariosIncorretoHandler(),
+            new canjesTotalesIncorretoHandler(),
     };
 
     public static void applyHandlers(Javalin app) {

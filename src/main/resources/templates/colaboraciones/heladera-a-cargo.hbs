@@ -11,37 +11,37 @@
             <form action="/colaborar/heladera-a-cargo" method="POST">
                 <div class="row mt-4 grid" style="grid-template-columns: repeat(2,1fr);">
                     <div class="col-12 col-md-6 mb-3">
-                        <h3 class="h5 fw-semibold">Nombre</h3>
-                        <input type="text" class="form-control mt-2" name="nombre" placeholder="Nombre" required>
+                        <h3 class="h5 fw-semibold" >Nombre</h3>
+                        <input type="text" class="form-control mt-2" name="nombre" placeholder="Nombre"  value="{{nombre}}" required>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Capacidad Máxima</h3>
                         <input type="number" class="form-control mt-2" name="capacidadMaxima"
-                               placeholder="Capacidad de viandas" required>
+                               placeholder="Capacidad de viandas"  value="{{capacidadMaxima}}" required>
+                        {{#if capacidadError}}
+                            <span class="text-danger">La capacidad debe ser > 0</span>
+                        {{/if}}
                     </div>
-                    {{#if capacidadError}}
-                        <span class="text-danger">La capacidad debe ser > 0</span>
-                    {{/if}}
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Direccion</h3>
-                        <input type="text" class="form-control mt-2" name="calle" placeholder="Calle" required>
+                        <input type="text" class="form-control mt-2" name="calle" placeholder="Calle"  value="{{calle}}" required>
                         {{#if errorDireccion}}
                             <span class="text-danger">{{errorDireccion}}</span>
                         {{/if}}
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Provincia</h3>
-                        <input type="text" class="form-control mt-2" name="provincia" placeholder="Provincia" required>
+                        <input type="text" class="form-control mt-2" name="provincia" placeholder="Provincia" value="{{provincia}}" required>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Temperatura Maxima</h3>
                         <input type="number" class="form-control mt-2" name="temperaturaMaxima"
-                               placeholder="temperatura maxima" required>
+                               placeholder="temperatura maxima" value="{{temperaturaMaxima}}" required>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Temperatura Minima</h3>
                         <input type="number" class="form-control mt-2" name="temperaturaMinima"
-                               placeholder="temperatura minima" required>
+                               placeholder="temperatura minima" value="{{temperaturaMinima}}" required>
                     </div>
                     {{#if temperaturaError}}
                         <span class="text-danger">Temperatura incorrecta</span>

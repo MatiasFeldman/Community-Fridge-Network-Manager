@@ -36,6 +36,12 @@ public class JuridicasController {
 
         ValidadorDeContrasenias validador = ServiceLocator.instanceOf(ValidadorDeContrasenias.class);
 
+        if(ValidadorUsernames.existe(ctx.formParam("user"), "Juridico")){
+            ctx.status(HttpStatus.BAD_REQUEST);
+
+            throw new UsuarioJuridicaExistenteException("El nombre de usuario ya existe");
+        }
+
         if (!validador.esValida(password)){
             ctx.status(HttpStatus.BAD_REQUEST);
             String motivoInvalidez = validador.condicionQueNoCumple(password).get().getMensaje();
@@ -43,19 +49,13 @@ public class JuridicasController {
             throw new ContraseniaJuridicaInseguraException(motivoInvalidez);
         }
 
-        if(ValidadorUsernames.existe(ctx.formParam("user"), "Juridico")){
-            ctx.status(HttpStatus.BAD_REQUEST);
-
-            throw new UsuarioJuridicaExistenteException("El nombre de usuario ya existe");
-        }
-
         String username = ctx.formParam("user");
         String razon_social = ctx.formParam("razon-social");
         String tipo = ctx.formParam("tipo") ;
         String rubro = ctx.formParam("rubro");
-        String email = ctx.formParam("email");
-        String telegram = ctx.formParam("telegram");
-        String whatsapp = ctx.formParam("whatsapp");
+        String email = ctx.formParam("Mail");
+        String telegram = ctx.formParam("Telegram");
+        String whatsapp = ctx.formParam("Whatsapp");
 
         List<Contacto> medioContacto = new ArrayList<>();
 

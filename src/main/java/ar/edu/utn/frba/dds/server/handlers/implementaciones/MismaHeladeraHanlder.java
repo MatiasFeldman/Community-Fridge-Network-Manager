@@ -20,10 +20,18 @@ public class MismaHeladeraHanlder implements IHandler {
             HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
             List<Heladera> heladeras = heladerasRepository.buscarTodos();
 
+            String heladeraOrigenId = ctx.formParam("heladeraOrigen");
+            String cantidadViandas = ctx.formParam("cantidadViandas");
+            String motivoDistribucion = ctx.formParam("motivoDistribucion");
+
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Distribuir viandas");
             model.put("heladeras", heladeras);
             model.put("mismaHeladeraError", e.getMessage());
+
+            model.put("heladeraOrigenId", heladeraOrigenId);
+            model.put("cantidadViandas", cantidadViandas);
+            model.put("motivoDistribucion", motivoDistribucion);
 
             ctx.render("colaboraciones/distribucion-de-viandas.hbs", model);
         });

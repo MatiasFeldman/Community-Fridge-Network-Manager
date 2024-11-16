@@ -11,6 +11,8 @@ import ar.edu.utn.frba.dds.exceptions.registroHeladera.TemperaturaIncorrectaExce
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.FechaNacimientoIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.MenoresACargoIncorrectoException;
 import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.RegistroTarjetaInexistenteException;
+import ar.edu.utn.frba.dds.exceptions.registro_oferta.canjesTotalesIncorretoException;
+import ar.edu.utn.frba.dds.exceptions.registro_oferta.puntosNecesariosIncorretoException;
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.TarjetaRepetidaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.carga_masiva.CargaMasiva;
@@ -446,6 +448,14 @@ public class ContribucionesController {
             rubroId = Long.parseLong(rubro);
         } catch (NumberFormatException e) {
             throw new SolicitudIncorrectaException();
+        }
+
+        if (puntosNecesariosDouble < 0) {
+            throw new puntosNecesariosIncorretoException("Los puntos necesarios deben ser mayores a 0");
+        }
+
+        if (canjesTotalesInt < 0){
+            throw new canjesTotalesIncorretoException("Los canjes totales deben ser mayores a 0");
         }
 
         Long userId = ctx.sessionAttribute("id");

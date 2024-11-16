@@ -15,15 +15,21 @@
                 <div class="row mt-4">
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Nombre Producto</h3>
-                        <input type="text" class="form-control mt-2" name="nombreProducto" placeholder="Nombre" required>
+                        <input type="text" class="form-control mt-2" name="nombreProducto" placeholder="Nombre"  value="{{nombreProducto}}" required>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Puntos Necesarios</h3>
-                        <input type="number" class="form-control mt-2" name="puntosNecesarios" placeholder="Cantidad de Puntos" required>
+                        <input type="number" class="form-control mt-2" name="puntosNecesarios" placeholder="Cantidad de Puntos" value="{{puntosNecesarios}}" required>
+                        {{#if errorPuntosNecesarios}}
+                             <span class="text-danger">{{errorPuntosNecesarios}}</span>
+                        {{/if}}
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Canjes Totales</h3>
-                        <input type="number" class="form-control mt-2" name="canjesTotales" placeholder="Cantidad de Canjes Totales" required>
+                        <input type="number" class="form-control mt-2" name="canjesTotales" placeholder="Cantidad de Canjes Totales" value="{{canjesTotales}}" required>
+                        {{#if errorCanjesTotales}}
+                             <span class="text-danger">{{errorCanjesTotales}}</span>
+                        {{/if}}
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold">Imagen (Opcional)</h3>
@@ -34,7 +40,7 @@
                         <select class="form-control mt-2" name="rubro" required>
                             <option value="">Selecciona el tipo </option>
                             {{#each rubros}}
-                            <option value="{{this.id}}">{{this.nombre}}</option>
+                            <option value="{{this.id}}"{{#if (isEqual rubro this.id )}} selected {{/if}}>{{this.nombre}}</option>
                             {{/each}}
                         </select>
                     </div>

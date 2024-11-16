@@ -11,10 +11,21 @@ public class FechaNacimientoIncorrectaHandler implements IHandler {
     @Override
     public void setHandle(Javalin app) {
         app.exception(FechaNacimientoIncorrectaException.class, (e, ctx) -> {
+            String nombre = ctx.formParam("nombre");
+            String menoresACargo = ctx.formParam("menoresACargo");
+            String domicilio = ctx.formParam("domicilio");
+            String dni = ctx.formParam("dni");
+            String numeroTarjeta = ctx.formParam("numeroTarjeta");
+
             ctx.status(401);
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Registro de persona vulnerable");
             model.put("fechaIncorrecta", true);
+            model.put("nombre", nombre);
+            model.put("menoresACargo", menoresACargo);
+            model.put("domicilio", domicilio);
+            model.put("dni", dni);
+            model.put("numeroTarjeta", numeroTarjeta);
 
             ctx.render("colaboraciones/registro-vulnerable.hbs", model);
         });

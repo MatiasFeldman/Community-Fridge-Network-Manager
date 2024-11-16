@@ -18,8 +18,8 @@
                         <h3 class="h5">Frecuencia</h3>
                         <select class="form-control mt-2" id="frecuencia" name="frecuencia" required>
                             <option value="">Seleccione la frecuencia</option>
-                            <option value="mensual">Mensual</option>
-                            <option value="unica">Única</option>
+                            <option value="mensual" {{#if (isEqual frecuencia "mensual" )}} selected {{/if}}>Mensual</option>
+                            <option value="unica" {{#if (isEqual frecuencia "unica" )}} selected {{/if}}>Única</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-6 mb-3">

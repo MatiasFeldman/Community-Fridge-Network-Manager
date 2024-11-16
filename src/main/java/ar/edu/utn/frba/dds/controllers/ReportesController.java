@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.exceptions.ReportesProblemaException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
@@ -31,7 +32,7 @@ public class ReportesController {
     private ReporteViandasDonadas reporteViandasDonadas;
     private ReporteMovimientoViandas reporteMovimientoViandas;
 
-    private static String reportesBasePath = "src/main/resources/public/reportes/";
+    private static String reportesBasePath = "src/main/java/ar/edu/utn/frba/dds/reportesDinamicos/";
 
     public ReportesController() {
         this.reporteFallas = new ReporteFallas(ServiceLocator.instanceOf(IncidentesRepository.class), ServiceLocator.instanceOf(HeladerasRepository.class));
@@ -73,9 +74,7 @@ public class ReportesController {
 
         } catch (Exception e) {
             // Registrar la excepción en el log
-            e.printStackTrace();
-            // Enviar una respuesta de error
-            context.status(500).result("Error al generar el reporte: " + e.getMessage());
+            throw new ReportesProblemaException("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
@@ -93,7 +92,7 @@ public class ReportesController {
             Path reporteFallasPath = Paths.get(latestDir.getPath(), "Reporte_de_fallas.pdf");
 
             if (!Files.exists(reporteFallasPath)) {
-                throw new RuntimeException("El archivo 'Reporte_de_fallas.pdf' no existe en el directorio más reciente");
+                throw new ReportesProblemaException("El archivo 'Reporte_de_fallas.pdf' no existe en el directorio más reciente");
             }
 
             // Leer el archivo en bytes
@@ -106,9 +105,7 @@ public class ReportesController {
 
         } catch (Exception e) {
             // Registrar la excepción en el log
-            e.printStackTrace();
-            // Enviar una respuesta de error
-            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
+            throw new ReportesProblemaException("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
@@ -125,7 +122,7 @@ public class ReportesController {
             Path reporteDonacionPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_donadas.pdf");
 
             if (!Files.exists(reporteDonacionPath)) {
-                throw new RuntimeException("El archivo 'Reporte_de_viandas_donadas.pdf' no existe en el directorio más reciente");
+                throw new ReportesProblemaException("El archivo 'Reporte_de_viandas_donadas.pdf' no existe en el directorio más reciente");
             }
 
             // Leer el archivo en bytes
@@ -138,9 +135,7 @@ public class ReportesController {
 
         } catch (Exception e) {
             // Registrar la excepción en el log
-            e.printStackTrace();
-            // Enviar una respuesta de error
-            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
+            throw new ReportesProblemaException("Error al descargar el reporte: " + e.getMessage());
         }
     }
 
@@ -157,7 +152,7 @@ public class ReportesController {
             Path reporteMovimientoPath = Paths.get(latestDir.getPath(), "Reporte_de_viandas_por_heladera.pdf");
 
             if (!Files.exists(reporteMovimientoPath)) {
-                throw new RuntimeException("El archivo 'Reporte_de_viandas_por_heladera.pdf' no existe en el directorio más reciente");
+                throw new ReportesProblemaException("El archivo 'Reporte_de_viandas_por_heladera.pdf' no existe en el directorio más reciente");
             }
 
             // Leer el archivo en bytes
@@ -170,9 +165,7 @@ public class ReportesController {
 
         } catch (Exception e) {
             // Registrar la excepción en el log
-            e.printStackTrace();
-            // Enviar una respuesta de error
-            context.status(500).result("Error al descargar el reporte: " + e.getMessage());
+            throw new ReportesProblemaException("Error al descargar el reporte: " + e.getMessage());
         }
     }
 

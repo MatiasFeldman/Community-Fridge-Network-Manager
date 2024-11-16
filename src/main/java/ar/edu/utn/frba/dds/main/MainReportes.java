@@ -27,7 +27,7 @@ public class MainReportes {
     }
 
     public static void main(String[] args) {
-        String filePath = "src/main/resources/public/reportes/";
+        String filePath = "src/main/java/ar/edu/utn/frba/dds/reportesDinamicos/";
 
         String dateFolder = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 

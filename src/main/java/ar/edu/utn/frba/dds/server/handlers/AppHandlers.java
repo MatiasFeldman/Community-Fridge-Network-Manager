@@ -34,6 +34,7 @@ public class AppHandlers {
             new InvalidContribucionHandler(),
             new puntosNecesariosIncorretoHandler(),
             new canjesTotalesIncorretoHandler(),
+            new ReporteProblemaHandler(),
     };
 
     public static void applyHandlers(Javalin app) {

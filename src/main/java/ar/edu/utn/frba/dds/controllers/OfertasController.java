@@ -85,6 +85,11 @@ public class OfertasController {
                     .filter(oferta -> rubroIdsLong.contains(oferta.getRubro().getId()))
                     .collect(Collectors.toList());
         }
+
+        ofertas = ofertas.stream()
+                .filter(Oferta::getPresente)
+                .collect(Collectors.toList());
+
         ofertas.forEach(h -> {
             dtos.add(OfertaOutputDTO.of(h));
         });

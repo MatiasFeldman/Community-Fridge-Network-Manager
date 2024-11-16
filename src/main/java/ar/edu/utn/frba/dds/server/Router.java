@@ -84,10 +84,13 @@ public class Router {
         app.get("/heladeras/{id}/reporte-falla-tecnica/nueva", ctx -> ServiceLocator.instanceOf(HeladerasController.class).reporteFallaTecnicaView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
         app.get("/heladeras/incidentes",ViewsController::formAlertas,TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
-        app.get("/heladeras/incidentes/{id}", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleInicidenteView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+        app.get("/heladeras/{id}/incidentes", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleInicidenteView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
         app.get("/heladeras/{id}/visita",TecnicosController::formSolucionIncidente,TipoRol.ADMIN,TipoRol.TECNICO);
         app.post("/heladeras/{id}/visita",TecnicosController::registrarVisita,TipoRol.TECNICO);
+
+
+        app.get("/heladeras/{id}/visitas", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleVisitasView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
         // modificar heladeras
         app.get("/heladeras/modificar", ctx -> ServiceLocator.instanceOf(HeladerasController.class).editarHeladera(ctx), TipoRol.ADMIN);

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao;
 
 
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface VisitaHeladeraDAO {
     void actualizar(VisitaAHeladera visita);
     void eliminar(VisitaAHeladera visita);
 
+    List<VisitaAHeladera> buscarPorHeladera(Heladera heladera);
 }

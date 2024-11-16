@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.OfrecerProductoOServicio;
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
@@ -39,5 +40,13 @@ public class VisitaHeladeraDB implements VisitaHeladeraDAO, WithSimplePersistenc
     public void eliminar(VisitaAHeladera visita) {
         visita.setPresente(false);
         this.actualizar(visita);
+    }
+
+    @Override
+    public List<VisitaAHeladera> buscarPorHeladera(Heladera heladera) {
+        return entityManager()
+                .createQuery("SELECT c FROM VisitaAHeladera c WHERE c.incidenteAResolver.heladera = :heladera", VisitaAHeladera.class)
+                .setParameter("heladera", heladera)
+                .getResultList();
     }
 }

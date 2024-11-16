@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao;
 
+import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import lombok.AllArgsConstructor;
 
@@ -38,5 +39,13 @@ public class VisitaHeladeraCollection implements VisitaHeladeraDAO{
     @Override
     public void eliminar(VisitaAHeladera visita) {
         this.visitas.remove(visita);
+    }
+
+    @Override
+    public List<VisitaAHeladera> buscarPorHeladera(Heladera heladera) {
+        return this.visitas
+                .stream()
+                .filter(c -> Objects.equals(c.getHeladeraFallada().getId(), heladera.getId()))
+                .toList();
     }
 }

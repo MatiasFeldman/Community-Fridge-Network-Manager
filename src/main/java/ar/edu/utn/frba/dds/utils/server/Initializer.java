@@ -175,8 +175,15 @@ public class Initializer {
         heladeras.guardar(h4);
         heladeras.guardar(h5);
 
-/*
+        HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+
+        Usuario u5 = new Usuario("usuario5", hash.hashPassword("prueba"), List.of(TipoRol.TECNICO));
+        Usuario u6 = new Usuario("usuario6", hash.hashPassword("prueba"), List.of(TipoRol.TECNICO));
+        Usuario u7 = new Usuario("usuario7", hash.hashPassword("prueba"), List.of(TipoRol.TECNICO));
+
+
         Tecnico t1 = new Tecnico(
+                u5,
                 "Pedro",
                 "Martinez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
@@ -187,6 +194,7 @@ public class Initializer {
         );
 
         Tecnico t2 = new Tecnico(
+                u6,
                 "Marcos",
                 "Gutierrez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
@@ -197,6 +205,7 @@ public class Initializer {
         );
 
         Tecnico t3 = new Tecnico(
+                u7,
                 "Gastón",
                 "Fernandez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
@@ -209,7 +218,7 @@ public class Initializer {
         tecnicos.guardar(t1);
         tecnicos.guardar(t2);
         tecnicos.guardar(t3);
-*/
+
 
 
 
@@ -234,18 +243,21 @@ public class Initializer {
 
         // creacion de usuarios
 
-        HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
+
         Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
         Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
-        Usuario u5 = new Usuario("usuario5", hash.hashPassword("prueba"), List.of(TipoRol.TECNICO));
+
 
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u3);
         usuariosRepository.guardar(u2);
         usuariosRepository.guardar(u4);
         usuariosRepository.guardar(u5);
+        usuariosRepository.guardar(u6);
+        usuariosRepository.guardar(u7);
+
 
         // creacion de atributos juridica
         TipoContacto tipoContacto = new TipoContacto("WhatsApp");
@@ -320,12 +332,6 @@ public class Initializer {
         c1.agregarTarejta(tarjetaColaborador1);
         c2.agregarTarejta(tarjetaColaborador2);
 
-        // Creacion de Tecnico
-        TipoTecnico tipo = new TipoTecnico("especialista");
-        AreaCobertura cobertura = new AreaCobertura(d5,45.0);
-        Tecnico tecnico = new Tecnico(u5,"pablo","Martinez",new Contacto(tipoContacto,"1146873965"),tipo,"45523698","204563156482",cobertura);
-        ServiceLocator.instanceOf(TecnicosRepository.class).guardar(tecnico);
-
         // creacion de tarjetas
 
         TarjetaPersonaVulnerable tarjeta1 = new TarjetaPersonaVulnerable(); // 100
@@ -361,8 +367,11 @@ public class Initializer {
         Incidente incidente1 = Incidente.builder()
                 .fecha(LocalDateTime.now())
                 .heladera(h1)
+                .colaborador(u5)
                 .tipo(TipoEvento.FALLA_TECNICA)
-                .build();
+                .resuelto(false)
+                .build()
+                ;
         incidentesRepository.guardar(incidente1);
         h1.desactivar();
         heladeras.modificar(h1);
@@ -370,6 +379,8 @@ public class Initializer {
         Incidente incidente2 = Incidente.builder()
                 .fecha(LocalDateTime.now())
                 .heladera(h2)
+                .colaborador(u7)
+                .resuelto(false)
                 .tipo(TipoEvento.FALLA_TECNICA)
                 .build();
         incidentesRepository.guardar(incidente2);
@@ -377,19 +388,23 @@ public class Initializer {
         heladeras.modificar(h2);
 
         Incidente incidente3 = Incidente.builder()
-                .fecha(LocalDateTime.now())
+                .fecha(LocalDateTime.now().minusHours(3))
                 .heladera(h1)
+                .colaborador(u3)
                 .tipo(TipoEvento.FALLA_TECNICA)
                 .build();
         incidente3.setResuelto(true);
+        incidente3.setFechaResuelto(LocalDateTime.now());
         incidentesRepository.guardar(incidente3);
 
         Incidente incidente4 = Incidente.builder()
-                .fecha(LocalDateTime.now())
+                .fecha(LocalDateTime.now().minusDays(5))
                 .heladera(h2)
+                .colaborador(u1)
                 .tipo(TipoEvento.MOVIMIENTO)
                 .build();
         incidente4.setResuelto(true);
+        incidente4.setFechaResuelto(LocalDateTime.now());
         incidentesRepository.guardar(incidente4);
 
         // creacion de rubros

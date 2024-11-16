@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteOutputDTO;
+import ar.edu.utn.frba.dds.dtos.visita_heladera.VisitaHeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.ReportesProblemaException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
@@ -7,13 +10,16 @@ import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteFallas;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteMovimientoViandas;
 import ar.edu.utn.frba.dds.models.entities.reportes.ReporteViandasDonadas;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
+import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.VisitaHeladeraRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.io.ByteArrayOutputStream;
@@ -171,15 +177,31 @@ public class ReportesController {
 
     public void detalleInicidenteView(Context ctx){
 
-        Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
-        model.put("titulo", "incidente de Heladera");
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Incidentes de Heladera");
 
-        String idParam = ctx.pathParam("id");
-        Long id = Long.parseLong(idParam);
+        Long id = Long.parseLong(ctx.pathParam("id"));
         Optional<Heladera> buscada = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(id);
-        List<Incidente> incidentes= ServiceLocator.instanceOf(IncidentesRepository.class).buscarTodosPorHeladera(buscada.get());
-        model.put("incidentes",incidentes);
-        RenderUtils.renderizar(ctx,"heladeras/detalle_alertas.hbs", model);
+
+        if (buscada.isEmpty()){
+            ctx.status(404);
+            ctx.redirect("/not-found");
+        } else{
+            Heladera heladera = buscada.get();
+            model.put("heladera", HeladeraOutputDTO.of(heladera));
+            List<Incidente> incidentes = ServiceLocator.instanceOf(IncidentesRepository.class).buscarTodosPorHeladera(buscada.get());
+            List<IncidenteOutputDTO> incidentes_dto = new ArrayList<>();
+            incidentes.forEach(i -> incidentes_dto.add(IncidenteOutputDTO.of(i)));
+
+
+            model.put("incidentes", incidentes_dto);
+
+
+
+            RenderUtils.renderizar(ctx,"heladeras/detalle_alertas.hbs", model);
+        }
+
+
     }
 
     private void addToZip(ZipOutputStream zipStream, String fileName, byte[] content) throws IOException {
@@ -187,5 +209,27 @@ public class ReportesController {
         zipStream.putNextEntry(entry);
         zipStream.write(content);
         zipStream.closeEntry();
+    }
+
+    public void detalleVisitasView(Context ctx) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Visitas de Heladera");
+
+        Long id = Long.parseLong(ctx.pathParam("id"));
+        Optional<Heladera> buscada = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(id);
+
+        if (buscada.isEmpty()) {
+            ctx.status(404);
+            ctx.redirect("/not-found");
+        } else {
+            Heladera heladera = buscada.get();
+            List<VisitaAHeladera> visitas = ServiceLocator.instanceOf(VisitaHeladeraRepository.class).buscarPorHeladera(buscada.get());
+            List<VisitaHeladeraOutputDTO> visitas_dto = new ArrayList<>();
+            visitas.forEach(v -> visitas_dto.add(VisitaHeladeraOutputDTO.of(v)));
+
+            model.put("heladera", HeladeraOutputDTO.of(heladera));
+            model.put("visitas", visitas_dto);
+            RenderUtils.renderizar(ctx, "heladeras/detalle-visitas.hbs", model);
+        }
     }
 }

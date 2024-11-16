@@ -81,7 +81,7 @@ public class TecnicosController {
         Long heladera_id = Long.parseLong(ctx.pathParam("id"));
         Optional<Heladera> heladera =  ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(heladera_id);
         List<Incidente> incidentes = ServiceLocator.instanceOf(IncidentesRepository.class).buscarTodosPorHeladera(heladera.get());
-        Optional<Incidente> incidente = incidentes.stream().filter(incidente2 ->  !incidente2.isResuelto()).findFirst();//TODO: estoy suponiendo que solo pude tener un incidente activo
+        Optional<Incidente> incidente = incidentes.stream().filter(incidente2 ->  !incidente2.getResuelto()).findFirst();//TODO: estoy suponiendo que solo pude tener un incidente activo
         if(!incidente.isPresent() || incidente.get() == null ){
             ctx.redirect("/heladeras/"+String.valueOf(heladera_id)+"/visita?noHayIncidentes=true");
             return;
@@ -93,6 +93,9 @@ public class TecnicosController {
         String descripcion = ctx.formParam("descripcion");
         VisitaAHeladera visita = VisitaAHeladera.crear(incidente.get(),tecnico.get(),fechaYHora,resuelto,descripcion);
         if(resuelto){
+            incidente.get().setResuelto(true);
+            incidente.get().setFechaResuelto(LocalDateTime.now());
+            ServiceLocator.instanceOf(IncidentesRepository.class).modificar(incidente.get());
             heladera.get().activar();
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera.get());
         }

@@ -43,7 +43,10 @@ public class Incidente extends Persistente {
     private String foto;
 
     @Column(name = "resuelto", nullable = false)
-    private boolean resuelto;
+    private Boolean resuelto;
+
+    @Column(name = "fecha_resuelto")
+    private LocalDateTime fechaResuelto;
 
     public static Incidente of(IncidenteDTO dto){
         return Incidente

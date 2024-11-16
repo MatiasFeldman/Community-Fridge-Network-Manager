@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = '/heladeras/incidentes?busqueda=' + select_busqueda.value + '&valor=' + encodeURIComponent(valorBusqueda);
     };
 
-    cards_heladeras.forEach(card =>{
+    cards_heladeras.forEach(card => {
         card.addEventListener('click', () => {
             const idHeladera = card.getAttribute('data-id');
-            window.location.href = '/heladeras/incidentes/' + idHeladera;
+            window.location.href = '/heladeras/' + idHeladera + '/incidentes/';
         });
 
     })

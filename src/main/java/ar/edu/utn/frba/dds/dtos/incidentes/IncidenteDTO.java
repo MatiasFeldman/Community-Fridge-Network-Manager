@@ -52,7 +52,7 @@ public class IncidenteDTO {
                 .colaborador(incidente.getColaborador())
                 .descripcion(incidente.getDescripcion())
                 .foto(incidente.getFoto())
-                .resuelto(incidente.isResuelto())
+                .resuelto(incidente.getResuelto())
                 .build();
     }
 

@@ -72,4 +72,8 @@ public class Tecnico extends Persistente {
     public String getMail() {
         return this.medioContacto.getValorContacto();
     }
+
+    public String nombreCompleto(){
+        return this.apellido + ", " + this.nombre;
+    }
 }

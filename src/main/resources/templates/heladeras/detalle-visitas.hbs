@@ -1,0 +1,62 @@
+{{#partial "styles"}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+
+        .visita-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            min-height: 350px;
+        }
+        .visita-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+        .visita-card .status {
+            font-weight: bold;
+        }
+        .visita-card .status.resuelto {
+            color: green;
+        }
+        .visita-card .status.no-resuelto {
+            color: red;
+        }
+    </style>
+    <script>
+
+    </script>
+
+
+{{/partial}}
+{{#partial "contenido"}}
+    <div class="container mt-5">
+        <h1 style="text-align: center">Visitas a la {{heladera.nombre}}</h1>
+        <div class="row">
+            {{#each visitas}}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card visita-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Fecha de visita: {{this.fecha}}</h5>
+                            <p class="card-text">Incidente a resolver: {{this.tipo}}</p>
+                            <p class="card-text">Realizada por:  {{#if this.tecnico}}{{this.tecnico}}{{else}}Sin Técnico{{/if}}</p>
+                            <p class="card-text">Descripción: {{#if this.descripcion}}{{this.descripcion}}{{else}}Sin Descripción{{/if}} </p>
+
+                            {{#if foto}}
+                                <img src="{{this.foto}}" alt="Foto de la visita" class="img-fluid">
+                            {{/if}}
+
+                            <p class="status {{#if this.resuelto}}resuelto{{else}}no-resuelto{{/if}}">
+                                {{#if this.resuelto}}Resuelto{{else}}No Resuelto{{/if}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

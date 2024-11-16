@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.ContactosDTO;
+import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.HeladeraNoEncontradaException;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.InputValidationException;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.UsuarioNoEncontradoException;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
+import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.HeladeraInexistenteException;
@@ -569,5 +571,6 @@ public class HeladerasController {
             ctx.redirect("/not-found");
         }
     }
+
 }
 

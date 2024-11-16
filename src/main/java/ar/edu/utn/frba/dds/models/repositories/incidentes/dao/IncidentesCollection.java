@@ -48,7 +48,7 @@ public class IncidentesCollection implements IncidentesDAO{
 
     @Override
     public boolean buscarFallaTecnicaEnHeladera(Heladera heladera) {
-        return incidentes.stream().anyMatch(incidente -> incidente.getHeladera().equals(heladera) && incidente.getTipo().equals(TipoEvento.FALLA_TECNICA) && incidente.isResuelto());
+        return incidentes.stream().anyMatch(incidente -> incidente.getHeladera().equals(heladera) && incidente.getTipo().equals(TipoEvento.FALLA_TECNICA) && incidente.getResuelto());
     }
 
     @Override

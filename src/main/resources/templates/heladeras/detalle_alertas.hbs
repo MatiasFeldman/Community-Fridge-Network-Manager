@@ -9,6 +9,7 @@
             border-radius: 0.5rem;
             margin-bottom: 2rem;
             padding: 1rem;
+            min-height: 350px;
         }
         .incident-card img {
             max-width: 100%;
@@ -25,6 +26,9 @@
             color: red;
         }
     </style>
+    <script>
+
+    </script>
 
 
 {{/partial}}
@@ -36,9 +40,9 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="card incident-card">
                     <div class="card-body">
-                        <h5 class="card-title">Fecha: {{this.fecha}}</h5>
+                        <h5 class="card-title">Fecha de reporte: {{this.fechaReporte}}</h5>
                         <p class="card-text">Tipo de incidente: {{this.tipo}}</p>
-                        <p class="card-text">Reportado por:  {{#if this.colaborador.nombre}}{{this.colaborador.nombre}}{{else}}Sin Colaborador{{/if}}</p>
+                        <p class="card-text">Reportado por:  {{#if this.reportadoPor}}{{this.reportadoPor}}{{else}}Sin Colaborador{{/if}}</p>
                         <p class="card-text">Descripción: {{#if this.descripcion}}{{this.descripcion}}{{else}}Sin Descripción{{/if}} </p>
 
                         {{#if foto}}
@@ -48,6 +52,9 @@
                         <p class="status {{#if this.resuelto}}resuelto{{else}}no-resuelto{{/if}}">
                             {{#if this.resuelto}}Resuelto{{else}}No Resuelto{{/if}}
                         </p>
+                        {{# if this.resuelto}}
+                            <p class="card-text">Fecha de resolución: {{this.fechaResuelto}}</p>
+                        {{/if}}
                     </div>
                 </div>
             </div>

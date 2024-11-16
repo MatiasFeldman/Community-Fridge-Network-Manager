@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     medioNotificacion.addEventListener('change', function () {
         const medio = medioNotificacion.value.toLowerCase();
-        if (encontrarContactoPorTipo(medio)) {
+        if (encontrarContactoPorTipo(medio) || medio === "") {
             contactoAdicional.style.display = 'none';
         } else {
             tipoContacto.textContent = medio;

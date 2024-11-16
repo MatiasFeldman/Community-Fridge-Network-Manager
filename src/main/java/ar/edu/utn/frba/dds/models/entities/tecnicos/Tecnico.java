@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tecnico")
 public class Tecnico extends Persistente {
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario user;
 
     @Column(name = "nombre")
     private String nombre;
@@ -45,6 +50,7 @@ public class Tecnico extends Persistente {
 
     public static Tecnico create(TecnicoDTO dto) {
         return Tecnico.builder()
+                .user(new Usuario(dto.getNombreUsuario(),dto.getContrasenia()))
                 .nombre(dto.getNombre())
                 .apellido(dto.getApellido())
                 .medioContacto(dto.getMedioContacto())

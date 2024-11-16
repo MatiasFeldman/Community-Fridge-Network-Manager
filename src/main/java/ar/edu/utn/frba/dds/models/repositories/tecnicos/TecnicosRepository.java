@@ -16,6 +16,7 @@ public class TecnicosRepository {
     public List<Tecnico> buscarTodos(){return tecnicosDAO.buscarTodos();}
     public void eliminar(Tecnico tecnico){tecnicosDAO.eliminar(tecnico);}
     public Optional<Tecnico> buscarPorId(Long id){return tecnicosDAO.buscarPorId(id);}
+    public Optional<Tecnico> buscarPorIdUsuario(Long id){return tecnicosDAO.buscarPorIdUsuario(id);}
     public void modificar(Tecnico tecnico){tecnicosDAO.modificar(tecnico);}
 
     public Optional<Tecnico> buscarMasCercano(Direccion origen) {

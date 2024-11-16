@@ -35,6 +35,10 @@ public class TecnicosCollection implements TecnicosDAO {
     public Optional<Tecnico> buscarPorId(Long id) {
         return tecnicos.stream().filter(tecnico -> tecnico.getId().equals(id)).findFirst();
     }
+    @Override
+    public Optional<Tecnico> buscarPorIdUsuario(Long id) {
+        return tecnicos.stream().filter(tecnico -> tecnico.getUser().getId().equals(id)).findFirst();
+    }
 
     @Override
     public Optional<Tecnico> buscarMasCercano(Direccion origen) {

@@ -25,6 +25,7 @@ import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
+import ar.edu.utn.frba.dds.models.factories.tecnicos.TecnicosFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
@@ -174,7 +175,7 @@ public class Initializer {
         heladeras.guardar(h4);
         heladeras.guardar(h5);
 
-
+/*
         Tecnico t1 = new Tecnico(
                 "Pedro",
                 "Martinez",
@@ -208,6 +209,8 @@ public class Initializer {
         tecnicos.guardar(t1);
         tecnicos.guardar(t2);
         tecnicos.guardar(t3);
+*/
+
 
 
         /*SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
@@ -236,11 +239,13 @@ public class Initializer {
         Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
+        Usuario u5 = new Usuario("usuario5", hash.hashPassword("prueba"), List.of(TipoRol.TECNICO));
 
         usuariosRepository.guardar(u1);
         usuariosRepository.guardar(u3);
         usuariosRepository.guardar(u2);
         usuariosRepository.guardar(u4);
+        usuariosRepository.guardar(u5);
 
         // creacion de atributos juridica
         TipoContacto tipoContacto = new TipoContacto("WhatsApp");
@@ -315,6 +320,12 @@ public class Initializer {
         c1.agregarTarejta(tarjetaColaborador1);
         c2.agregarTarejta(tarjetaColaborador2);
 
+        // Creacion de Tecnico
+        TipoTecnico tipo = new TipoTecnico("especialista");
+        AreaCobertura cobertura = new AreaCobertura(d5,45.0);
+        Tecnico tecnico = new Tecnico(u5,"pablo","Martinez",new Contacto(tipoContacto,"1146873965"),tipo,"45523698","204563156482",cobertura);
+        ServiceLocator.instanceOf(TecnicosRepository.class).guardar(tecnico);
+
         // creacion de tarjetas
 
         TarjetaPersonaVulnerable tarjeta1 = new TarjetaPersonaVulnerable(); // 100
@@ -353,6 +364,8 @@ public class Initializer {
                 .tipo(TipoEvento.FALLA_TECNICA)
                 .build();
         incidentesRepository.guardar(incidente1);
+        h1.desactivar();
+        heladeras.modificar(h1);
 
         Incidente incidente2 = Incidente.builder()
                 .fecha(LocalDateTime.now())
@@ -360,12 +373,15 @@ public class Initializer {
                 .tipo(TipoEvento.FALLA_TECNICA)
                 .build();
         incidentesRepository.guardar(incidente2);
+        h2.desactivar();
+        heladeras.modificar(h2);
 
         Incidente incidente3 = Incidente.builder()
                 .fecha(LocalDateTime.now())
                 .heladera(h1)
                 .tipo(TipoEvento.FALLA_TECNICA)
                 .build();
+        incidente3.setResuelto(true);
         incidentesRepository.guardar(incidente3);
 
         Incidente incidente4 = Incidente.builder()
@@ -373,6 +389,7 @@ public class Initializer {
                 .heladera(h2)
                 .tipo(TipoEvento.MOVIMIENTO)
                 .build();
+        incidente4.setResuelto(true);
         incidentesRepository.guardar(incidente4);
 
         // creacion de rubros

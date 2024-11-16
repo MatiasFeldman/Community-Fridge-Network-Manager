@@ -3,10 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.tecnicos;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder

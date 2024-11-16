@@ -10,6 +10,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class TecnicoDTO {
+    private String nombreUsuario;
+    private String Contrasenia;
     private String nombre;
     private String apellido;
     private Contacto medioContacto;

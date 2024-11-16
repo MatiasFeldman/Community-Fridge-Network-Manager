@@ -11,6 +11,7 @@ public interface TecnicosDAO {
     List<Tecnico> buscarTodos();
     void eliminar(Tecnico tecnico);
     Optional<Tecnico> buscarPorId(Long id);
+    Optional<Tecnico> buscarPorIdUsuario(Long id);
     Optional<Tecnico> buscarMasCercano(Direccion origen);
     void modificar(Tecnico tecnico);
 }

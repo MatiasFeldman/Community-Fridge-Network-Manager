@@ -68,6 +68,9 @@ import ar.edu.utn.frba.dds.models.repositories.tecnicos.dao.TecnicosDataBase;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosCollection;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.dao.UsuariosDataBase;
+import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.VisitaHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao.VisitaHeladeraCollection;
+import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao.VisitaHeladeraDB;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
@@ -247,6 +250,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(TecnicosRepository.class.getName())) {
                     TecnicosRepository tecnicos = new TecnicosRepository(new TecnicosCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, tecnicos);
+                }else if (componentName.equals(VisitaHeladeraRepository.class.getName())) {
+                    VisitaHeladeraRepository visitaAHeladera = new VisitaHeladeraRepository(new VisitaHeladeraCollection(new ArrayList<>(), 100L));
+                    instances.put(componentName, visitaAHeladera);
                 }
 
             } else if (persistence.equals("sql")) {
@@ -313,6 +319,9 @@ public class ServiceLocator {
                 } else if (componentName.equals(OfrecerProductoRepository.class.getName())) {
                     OfrecerProductoRepository ofrecerProductoRepository = new OfrecerProductoRepository(new OfrecerProductoDB());
                     instances.put(componentName, ofrecerProductoRepository);
+                } else if (componentName.equals(VisitaHeladeraRepository.class.getName())) {
+                    VisitaHeladeraRepository visitaAHeladera = new VisitaHeladeraRepository(new VisitaHeladeraDB());
+                    instances.put(componentName, visitaAHeladera);
                 }
             }
         }

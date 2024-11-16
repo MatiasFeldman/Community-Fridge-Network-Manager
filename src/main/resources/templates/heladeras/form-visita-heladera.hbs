@@ -1,0 +1,64 @@
+{{#partial "styles"}}
+    <link rel="stylesheet" href="../css/style-carga-csv.css">
+{{/partial}}
+
+{{#partial "contenido"}}
+
+    <div class="row justify-content-center align-items-center">
+        <!--
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/heladeras">Heladeras</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Suscripcion</li>
+            </ol>
+        </nav>
+        -->
+        <div class="col-md-8 d-flex flex-column justify-content-center">
+            <h1 class="display-4 font-weight-bold text-center">Visita Heladera</h1>
+            <p class="fw-semibold text-center fs-4">
+                {{heladera.nombre}} - {{heladera.direccion.direccion}}
+            </p>
+            {{#if noIncidentes}}
+                <div class="alert alert-danger" role="alert">
+                    No hay incidentes de la heladera seleccionada
+                </div>
+            {{/if}}
+            <form method="POST" enctype="multipart/form-data" action="/heladeras/{{heladera.id}}/visita">
+                <div class="row mt-4">
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Fecha de la visita</h3>
+                        <input type="date" class="form-control mt-2" id="fechaVisita" name="fechaVisita">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Hora del incidente</h3>
+                        <input type="time" class="form-control mt-2" id="horaVisita" name="horaVisita">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Resolución de Incidente</h3>
+                        <select class="form-control mt-2" id="resolucionIncidente" name="resolucionIncidente">
+                            <option value="">Selecciona una opción</option>
+                            <option value="true">Solucionado</option>
+                            <option value="false">No Solucionado</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <h3 class="h5">Foto</h3>
+                        <input type="file" class="form-control mt-2" id="foto" accept="image/png, image/jpeg" name="foto">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <h3 class="h5">Descripción</h3>
+                        <textarea class="form-control mt-2" rows="4" placeholder="Descripción de la visita"
+                                  id="descripcion" name="descripcion"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col text-end">
+                        <button data-id="{{heladera.id}}" class="boton" id="reportar-btn">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

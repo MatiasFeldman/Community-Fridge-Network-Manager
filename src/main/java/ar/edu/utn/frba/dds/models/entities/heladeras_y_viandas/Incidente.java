@@ -3,10 +3,8 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kotlin.jvm.internal.SerializedIr;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.awt.*;
@@ -19,6 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Setter
 @Table(name = "incidente")
 public class Incidente extends Persistente {
 

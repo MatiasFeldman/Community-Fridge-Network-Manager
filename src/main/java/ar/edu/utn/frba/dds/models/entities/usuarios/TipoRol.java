@@ -5,5 +5,6 @@ import io.javalin.security.RouteRole;
 public enum TipoRol implements RouteRole {
     ADMIN,
     HUMANO,
-    JURIDICA
+    JURIDICA,
+    TECNICO
 }

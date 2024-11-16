@@ -325,6 +325,7 @@ public class HeladerasController {
     }
 
     public void registrarFallaTecnica(Context ctx) {
+        try{
         String body = ctx.body();
 
         JsonNode node = ConversorJSON.convertir(body);
@@ -333,16 +334,31 @@ public class HeladerasController {
         LocalDateTime fecha = LocalDateTime.parse(node.get("fecha").asText());
         String descripcion = node.get("descripcion").asText();
         String foto = node.get("foto").asText();
+        Long idUsuario = obtenerUsuarioId(ctx);
+        Optional<Usuario> usuario = ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(idUsuario);
+        if(!usuario.isPresent()){
+            throw new UsuarioNoEncontradoException("usuario no econtrado");
+        }
 
         Optional<Heladera> heladera_buscada = heladeras.buscarPorId(id_heladera);
         if (heladera_buscada.isEmpty()) {
             ctx.status(HttpStatus.NOT_FOUND).result("Heladera no encontrada");
         } else {
             Heladera heladera = heladera_buscada.get();
-            DenunciaFallaTecnica denuncia = DenunciaFallaTecnica.of(null, descripcion, foto, fecha, heladera);
+            DenunciaFallaTecnica denuncia = DenunciaFallaTecnica.of(usuario.get(), descripcion, foto, fecha, heladera);
             accionador.sucedeFallaTecnica(denuncia, heladera);
             heladera.notificarFallaTecnica();
+            ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
             ctx.status(HttpStatus.OK).result("Falla técnica registrada");
+        }
+        }catch ( InputValidationException e) {
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Error en la solicitud");
+            model.put("error",  e.getMessage());
+            model.put("paginaAnterior", "/heladeras");
+            ctx.status(400).render("400Personalizado.hbs", model);
+        } catch (Exception e) {
+            ctx.status(500).result("Error en el servidor: " + e.getMessage());
         }
 
     }
@@ -356,9 +372,14 @@ public class HeladerasController {
             Integer cantidad = !Objects.equals(ctx.formParam("cantidad"), "") ? Integer.parseInt(ctx.formParam("cantidad")) : null;
             String medioDeNotificacion = ctx.formParam("notificador");
             String nuevoMedioNotificacion = Objects.equals(ctx.formParam("contacto_adicional"), "") ? null : ctx.formParam("contacto_adicional");
-
             if(tipoSuscripcion == null){
                 throw new InputValidationException("tipo de suscripcion invalido o nulo");
+            }
+            if(cantidad != null && cantidad<=0 ){
+                throw new InputValidationException("La cantidad ingresada es invalida");
+            }
+            if(medioDeNotificacion == null || medioDeNotificacion.equalsIgnoreCase("")){
+                throw new InputValidationException("Medio de notificacion invalido");
             }
 
             if (nuevoMedioNotificacion != null) {

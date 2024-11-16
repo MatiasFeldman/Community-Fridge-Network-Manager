@@ -33,6 +33,13 @@ public class TecnicosDataBase implements TecnicosDAO, WithSimplePersistenceUnit 
     public Optional<Tecnico> buscarPorId(Long id) {
         return Optional.ofNullable(entityManager().find(Tecnico.class, id));
     }
+    @Override
+    public Optional<Tecnico> buscarPorIdUsuario(Long id) {
+        return Optional.ofNullable(entityManager()
+                .createQuery("SELECT h FROM Tecnico h WHERE h.user.id = :idUsuario AND h.presente = true", Tecnico.class)
+                .setParameter("idUsuario", id)
+                .getSingleResult());
+    }
 
     @Override
     public void modificar(Tecnico tecnico) {

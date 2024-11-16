@@ -10,7 +10,7 @@
             <form method="POST" action="registro/juridica" id="form-juridico" class="gap-3 my-3">
                 <div class="form-group">
                     <label for="user">Usuario *</label>
-                    <input class="obligatorio" type="text" id="user" name="user" required="true" placeholder="Ingrese su username">
+                    <input class="obligatorio" type="text" id="user" name="user" required="true" placeholder="Ingrese su username" value="{{username}}">
                     {{#if usuarioExistente}}
                           <span class="text-danger">{{usuarioExistente}}</span>
                     {{/if}}

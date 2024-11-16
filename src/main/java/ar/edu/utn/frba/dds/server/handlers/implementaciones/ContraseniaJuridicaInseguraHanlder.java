@@ -19,6 +19,7 @@ public class ContraseniaJuridicaInseguraHanlder implements IHandler {
             String whatsapp = ctx.formParam("Whatsapp");
             String direccionForm = ctx.formParam("direccion");
             String provinciaForm = ctx.formParam("provincia");
+            String username = ctx.formParam("user");
 
             ctx.status(400);
             Map<String, Object> model = new HashMap<>();
@@ -33,6 +34,7 @@ public class ContraseniaJuridicaInseguraHanlder implements IHandler {
             model.put("whatsapp", whatsapp);
             model.put("direccionForm", direccionForm);
             model.put("provinciaForm", provinciaForm);
+            model.put("username", username);
 
             ctx.render("registro-usuario/registro-juridica.hbs",model);
         });

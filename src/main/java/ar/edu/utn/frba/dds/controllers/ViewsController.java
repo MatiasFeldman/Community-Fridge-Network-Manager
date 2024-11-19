@@ -1,11 +1,17 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
+import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.dondeDonarDireccionIncorrectaException;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.GeoRefDeDirecc;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.LugarDonacion;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
+import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.services.api_integracion.APIAdapter;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
@@ -245,25 +251,25 @@ public class ViewsController {
         IGeoRefApi apiGeoRef = ServiceLocator.instanceOf(GobiernoAPI.class);
         GeoRefDeDirecc geoRefDeDirecc = apiGeoRef.getCoord(direccion);
         APIAdapter apiLugaresCercanos = ServiceLocator.instanceOf(ApiIntegracionGrupo1.class);
-        List<LugarDonacion> lugares = apiLugaresCercanos.getLugaresCercanos(geoRefDeDirecc.getCoords());
+        try {
+            List<LugarDonacion> lugares = apiLugaresCercanos.getLugaresCercanos(geoRefDeDirecc.getCoords());
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("titulo", "Donde donar");
-        model.put("direccion", direccion);
-        model.put("latitud", geoRefDeDirecc.getCoords().getLatitud());
-        model.put("longitud", geoRefDeDirecc.getCoords().getLongitud());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        /*for (LugarDonacion lugar : lugares) {
-            System.out.println(lugar.getNombre());
-            System.out.println(lugar.getDireccion());
-            System.out.println(lugar.getCoordenadas().getLatitud());
-            System.out.println(lugar.getCoordenadas().getLongitud());
-        }*/
-        String lugaresJson = objectMapper.writeValueAsString(lugares);
-        model.put("lugares", lugaresJson);
-        model.put("lugaresDTO", lugares);
-        RenderUtils.renderizar(context,"donde-donar-resultados.hbs", model);
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Donde donar");
+            model.put("direccion", direccion);
+            model.put("latitud", geoRefDeDirecc.getCoords().getLatitud());
+            model.put("longitud", geoRefDeDirecc.getCoords().getLongitud());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String lugaresJson = objectMapper.writeValueAsString(lugares);
+            model.put("lugares", lugaresJson);
+            model.put("lugaresDTO", lugares);
+            RenderUtils.renderizar(context,"donde-donar-resultados.hbs", model);
+        } catch (Exception e) {
+            throw new dondeDonarDireccionIncorrectaException("La dirección ingresada no es válida");
+        }
+
     }
 
     public static void confirmacionColaboracion(Context ctx) {
@@ -298,6 +304,37 @@ public class ViewsController {
         }
     }
 
+    public void viewMisCanjes(Context ctx){
+        Long usuarioId = ctx.sessionAttribute("id");
+        List<String> roles = ctx.sessionAttribute("roles");
+        Double puntos = 0.0;
+        Map<String, Object> model = new HashMap<>();
+        if(roles.contains("HUMANO")){
+            Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
+            if(humano.isPresent()){
+                puntos = humano.get().calcularPuntaje();
+                model.put("canjesRealizados", humano.get().getCanjesRealizados());
+            } else {
+                throw new SolicitudIncorrectaException();
+            }
+        } else if (roles.contains("JURIDICA")){
+            Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId);
+            if(juridica.isPresent()){
+                puntos = juridica.get().calcularPuntaje();
+                model.put("canjesRealizados", juridica.get().getCanjesRealizados());
+            } else {
+                throw new SolicitudIncorrectaException();
+            }
+        } else {
+            throw new SolicitudIncorrectaException();
+        }
+
+        model.put("titulo", "misCanjes");
+        model.put("misPuntos", puntos);
+
+        RenderUtils.renderizar(ctx,"/misCanjes.hbs", model);
+
+    }
 }
 
 

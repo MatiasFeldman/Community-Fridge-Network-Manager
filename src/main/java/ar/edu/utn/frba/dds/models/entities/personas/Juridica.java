@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicoInputDTO;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Canjes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
@@ -17,6 +18,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -54,6 +57,10 @@ public class Juridica extends Persistente {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_canje")
+    private List<Canjes> canjesRealizados = new ArrayList<>();
+
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
         return ServiceLocator.instanceOf(RecomendarPuntos.class).solicitarRecomendacionParaHeladera(coord, radio);
@@ -76,6 +83,8 @@ public class Juridica extends Persistente {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
+        Canjes canje = new Canjes(oferta, LocalDate.now(), oferta.getPuntosNecesarios());
+        canjesRealizados.add(canje);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }
@@ -110,5 +119,7 @@ public class Juridica extends Persistente {
                 .user(dto.getUser())
                 .build();
     }
+
+
 }
 

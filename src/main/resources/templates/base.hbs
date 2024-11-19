@@ -60,9 +60,7 @@
                         <li><a class="dropdown-item" href="/registro/modificar-registro-humano">Administar Registro Humanos</a></li>
                     {{else}}
                         <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                        {{#if (isEqual rolUsuario "HUMANO")}}
-                            <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
-                        {{/if}}
+                        <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
                     {{/if}}
                 </ul>
             </div>

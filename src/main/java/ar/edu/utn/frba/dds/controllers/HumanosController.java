@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.AtributoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
+import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaHumanoInseguraException;
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaJuridicaInseguraException;
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.UsuarioHumanoExistenteException;
@@ -11,12 +12,14 @@ import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
+import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
+import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.server.Server;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
@@ -124,20 +127,6 @@ public class HumanosController {
         ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         System.out.print("recibimos el formulario");
         context.redirect("/");
-    }
-    public void viewMisCanjes(Context ctx){
-        Long usuarioId = ctx.sessionAttribute("id");
-        Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
-        Map<String, Object> model = new HashMap<>();
-        if(humano.isPresent()){
-            model.put("canjesRealizados", humano.get().getCanjesRealizados());
-        }
-
-        model.put("titulo", "misCanjes");
-        model.put("misPuntos", humano.get().calcularPuntaje());
-
-        RenderUtils.renderizar(ctx,"/misCanjes.hbs", model);
-
     }
 
 }

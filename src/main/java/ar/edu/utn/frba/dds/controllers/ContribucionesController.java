@@ -450,11 +450,11 @@ public class ContribucionesController {
             throw new SolicitudIncorrectaException();
         }
 
-        if (puntosNecesariosDouble < 0) {
+        if (puntosNecesariosDouble <= 0) {
             throw new puntosNecesariosIncorretoException("Los puntos necesarios deben ser mayores a 0");
         }
 
-        if (canjesTotalesInt < 0){
+        if (canjesTotalesInt <= 0){
             throw new canjesTotalesIncorretoException("Los canjes totales deben ser mayores a 0");
         }
 

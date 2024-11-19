@@ -114,11 +114,11 @@ public class Router {
         app.post("/oferta/{id}/canjear",  ServiceLocator.instanceOf(OfertasController.class)::canjearOferta,TipoRol.ADMIN, TipoRol.JURIDICA,TipoRol.HUMANO);
 
         //paginas de usuario
-        app.get("/misCanjes",  ctx ->  ServiceLocator.instanceOf(HumanosController.class).viewMisCanjes(ctx), TipoRol.HUMANO);
+        app.get("/misCanjes",  ctx ->  ServiceLocator.instanceOf(ViewsController.class).viewMisCanjes(ctx), TipoRol.HUMANO, TipoRol.JURIDICA);
 
         // servicio externo donde donar
-        app.get("/donde-donar", ViewsController::dondeDonar);
-        app.post("/donde-donar", ViewsController::dondeDonarMapa);
+        app.get("/donde-donar", ViewsController::dondeDonar, TipoRol.HUMANO, TipoRol.JURIDICA);
+        app.post("/donde-donar", ViewsController::dondeDonarMapa, TipoRol.HUMANO, TipoRol.JURIDICA);
 
         // Ver colaboradores creados
         app.get("/colaboradores", ctx -> ServiceLocator.instanceOf(UsuariosController.class).showUsuarios(ctx), TipoRol.ADMIN);

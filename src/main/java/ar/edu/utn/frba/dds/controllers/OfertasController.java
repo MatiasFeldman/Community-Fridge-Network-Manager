@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.ofertas.OfertaOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
+import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
+import ar.edu.utn.frba.dds.exceptions.error404exception;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
@@ -21,42 +23,6 @@ public class OfertasController {
     private OfertasRepository ofertas;
     private HumanosRepository humanos;
     private JuridicasRepository juridicas;
-
-    /*
-    public void canjearOferta(String json){
-        JsonNode node = ConversorJSON.convertir(json);
-        Long id = Long.parseLong(node.get("id_usuario").asText());
-        Long idOferta = node.get("id_oferta").asLong();
-        String rol = node.get("rol").asText();
-
-        Optional<Oferta> posibleOferta = ofertas.buscarPorId(idOferta);
-        if (posibleOferta.isEmpty()){
-            throw new RuntimeException("No se encontro la oferta");
-        }
-        Oferta oferta = posibleOferta.get();
-
-        if (rol.equals("HUMANO")){
-            Optional<ColaboradorHumano> posibleHumano = humanos.buscarPorId(id);
-            if (posibleHumano.isEmpty()){
-                throw new RuntimeException("No se encontro el colaboradorHumano");
-            }
-
-            ColaboradorHumano colaboradorHumano = posibleHumano.get();
-            colaboradorHumano.canjearOferta(oferta);
-        } else if (rol.equals("JURIDICA")){
-            Optional<Juridica> posibleJuridica = juridicas.buscarPorId(id);
-            if (posibleJuridica.isEmpty()){
-                throw new RuntimeException("No se encontro el humano");
-            }
-
-            Juridica juridica = posibleJuridica.get();
-            juridica.canjearOferta(oferta);
-        }
-
-        oferta.serCanjeada();
-    }
-    */
-
 
     public void showOfertas( Context ctx) {
         List<Oferta> ofertas = ServiceLocator.instanceOf(OfertasRepository.class).buscarTodos();
@@ -88,6 +54,7 @@ public class OfertasController {
 
         ofertas = ofertas.stream()
                 .filter(Oferta::getPresente)
+                .filter(oferta -> oferta.canjesRestantes() > 0)
                 .collect(Collectors.toList());
 
         ofertas.forEach(h -> {
@@ -112,6 +79,9 @@ public class OfertasController {
 
         if (ofertaOptional.isPresent()) {
             Oferta oferta = ofertaOptional.get();
+            if(!oferta.getPresente() || oferta.canjesRestantes() == 0){
+                throw new error404exception("Oferta no encontrada");
+            }
             Map<String, Object> model = new HashMap<>();
             String error = ctx.queryParam("error");
             if (error != null) {
@@ -122,7 +92,7 @@ public class OfertasController {
             model.put("ofertasRestantes",oferta.canjesRestantes());
             RenderUtils.renderizar(ctx,"colaboraciones/detalle_oferta.hbs",model);
         } else {
-            ctx.status(404).result("Oferta no encontrada");
+            throw new error404exception("Oferta no encontrada");
         }
     }
 
@@ -145,6 +115,9 @@ public class OfertasController {
 
             if (ofertaOptional.isPresent() && ofertaOptional.get().getPresente()) {
                 Oferta oferta = ofertaOptional.get();
+                if (oferta.canjesRestantes() == 0) {
+                    throw new SolicitudIncorrectaException();
+                }
                 // Verificamos si el rol del usuario es HUMANO
                 if (rolUsuario.get(0).contains("HUMANO")) {
                     Optional<ColaboradorHumano> usuarioOptional = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
@@ -156,7 +129,7 @@ public class OfertasController {
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
                         ServiceLocator.instanceOf(HumanosRepository.class).actualizar(usuario);
 
-                        ctx.redirect("/ofertas?success=true");//TODO por ahroa klo dejamos asi podriamos hacer uan apgina de canjeo exitoso mas linda
+                        ctx.redirect("/ofertas?success=true");
                     } else {
 
                         ctx.status(404).result("Usuario no encontrado");

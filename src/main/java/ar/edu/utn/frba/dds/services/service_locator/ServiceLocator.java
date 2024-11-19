@@ -176,6 +176,9 @@ public class ServiceLocator {
             } else if (componentName.equals(ContribucionesController.class.getName())) {
                 ContribucionesController contribucionesController = new ContribucionesController();
                 instances.put(componentName, contribucionesController);
+            }else if (componentName.equals(ViewsController.class.getName())) {
+                ViewsController viewsController = new ViewsController();
+                instances.put(componentName, viewsController);
             } else if (componentName.equals(HashPassword.class.getName())) {
                 HashPassword hashPassword = new HashPassword();
                 instances.put(componentName, hashPassword);

@@ -186,6 +186,13 @@ public class Heladera extends Persistente {
     }
 
     public void agregarSolicitudApertura(SolicitudApertura soliApertura) {
+        System.out.println("Solicitud de apertura recibida en la heladera " + this.getId());
+        System.out.println("Solicitante: " + soliApertura.getColaboradorHumano().getId());
+        System.out.println("Cantidad de viandas: " + soliApertura.getCantidadDeViandas());
+        System.out.println("Tarjeta autorizada: " + soliApertura.getIdTarjeta());
+        System.out.println("Fecha de expiracion: " + soliApertura.getFechaDeExpiracion());
+
+
         solicitudes.add(soliApertura);
     }
 

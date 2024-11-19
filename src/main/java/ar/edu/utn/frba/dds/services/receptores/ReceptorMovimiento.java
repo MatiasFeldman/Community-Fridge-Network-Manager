@@ -17,7 +17,7 @@ import java.util.Optional;
 @Builder
 public class ReceptorMovimiento implements IMqttMessageListener {
     private HeladerasRepository heladeras;
-    private final String BROKER_URL = "tcp://broker.hivemq.com:1883";
+    private final String BROKER_URL = "ssl://8e252e51d75f43e39ab207604b518d35.s1.eu.hivemq.cloud:8883";
 
 
     @SneakyThrows
@@ -35,9 +35,13 @@ public class ReceptorMovimiento implements IMqttMessageListener {
     private void suscribirseATopic(ReceptorMovimiento receptor) {
         String topic = "heladera/movimiento";
 
-        MqttClient client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName("ddslanaranjamecanica");
+        options.setPassword("U2yZtv,^T2xWxapQw}r>".toCharArray());
 
-        client.connect();
+        MqttClient client = new MqttClient(BROKER_URL, "ReceptorMovimiento", new MemoryPersistence());
+
+        client.connect(options);
         client.subscribe(topic, receptor);
 
         System.out.println("Receptor de movimiento conectado");

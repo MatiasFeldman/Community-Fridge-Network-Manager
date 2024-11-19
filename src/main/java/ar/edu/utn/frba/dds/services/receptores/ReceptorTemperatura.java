@@ -21,7 +21,7 @@ import java.util.Optional;
 @Getter
 @Builder
 public class ReceptorTemperatura implements IMqttMessageListener {
-    private final String BROKER_URL = "tcp://broker.hivemq.com:1883";
+    private final String BROKER_URL = "ssl://8e252e51d75f43e39ab207604b518d35.s1.eu.hivemq.cloud:8883";
     private HeladerasRepository heladeras;
     private MqttClient client;
 
@@ -38,9 +38,14 @@ public class ReceptorTemperatura implements IMqttMessageListener {
 
     private void suscribirseATopic(ReceptorTemperatura receptor){
         try{
-            client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+            client = new MqttClient(BROKER_URL, "ReceptorTemperatura", new MemoryPersistence());
 
-            client.connect();
+
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setUserName("ddslanaranjamecanica");
+            options.setPassword("U2yZtv,^T2xWxapQw}r>".toCharArray());
+
+            client.connect(options);
 
             client.subscribe("heladera/temperatura", 1 ,receptor);
 

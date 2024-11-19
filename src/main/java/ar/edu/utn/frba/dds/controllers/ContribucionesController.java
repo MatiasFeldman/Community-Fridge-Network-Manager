@@ -109,6 +109,8 @@ public class ContribucionesController {
 
         heladera.agregarSolicitudApertura(solicitud);
 
+        ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 

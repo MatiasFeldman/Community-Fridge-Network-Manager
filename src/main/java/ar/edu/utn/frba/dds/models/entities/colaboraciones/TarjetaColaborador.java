@@ -1,11 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@SuperBuilder
 public class TarjetaColaborador extends Persistente {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -21,6 +21,15 @@ public class TarjetaColaborador extends Persistente {
     private ColaboradorHumano duenio;
 
     private Boolean principal;
+
+    public static TarjetaColaborador create(Long id, ColaboradorHumano duenio, Boolean principal) {
+        return TarjetaColaborador
+                .builder()
+                .id(id)
+                .duenio(duenio)
+                .principal(principal)
+                .build();
+    }
 
 
 

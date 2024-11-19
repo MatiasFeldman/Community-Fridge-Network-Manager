@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.factories.sending_strategy.SendingStrategyFactory;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,6 +47,18 @@ public class HumanoInputDTO {
                     dto.atributosObligatorios.add(atributo);
                 } else {
                     dto.atributosOpcionales.add(atributo);
+                }
+                // si alguno de los atributos tiene tipo 'whatsapp', 'mail' o 'telegram' se agrega a los medios de contacto
+                switch (atributo.getAtributo().getNombre()) {
+                    case "Whatsapp":
+                        dto.user.setStrategiaDeEnvio(SendingStrategyFactory.create("WHATSAPP"));
+                        break;
+                    case "Mail":
+                        dto.user.setStrategiaDeEnvio(SendingStrategyFactory.create("EMAIL"));
+                        break;
+                    case "Telegram":
+                        dto.user.setStrategiaDeEnvio(SendingStrategyFactory.create("TELEGRAM"));
+                        break;
                 }
         }
         return dto;

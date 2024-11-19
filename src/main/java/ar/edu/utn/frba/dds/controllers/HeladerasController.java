@@ -461,14 +461,14 @@ public class HeladerasController {
                     if (cantidad == null) {
                         throw new Exception("Debe especificar la cantidad de viandas disponibles");
                     }
-                    return ViandasDisponibles.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo(), cantidad);
+                    return ViandasDisponibles.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getValor(), cantidad);
                 case "heladera_llena":
                     if (cantidad == null) {
                         throw new Exception("Debe especificar la cantidad de viandas faltantes");
                     }
-                    return HeladeraLlena.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo(), cantidad);
+                    return HeladeraLlena.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getValor(), cantidad);
                 case "sufrio_desperfecto":
-                    return SufrioDesperfecto.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getNombreAtributo());
+                    return SufrioDesperfecto.of(colaborador.getMedioDeContacto(medioDeNotificacion).get().getValor());
                 default:
                     throw new Exception("Tipo de suscripción no válido");
             }

@@ -67,8 +67,10 @@ public class Usuario extends Persistente {
     }
 
     public void serNotificado(Mensaje mensaje) throws MessagingException, IOException {
-        WhatsAppSendingStrategy wpp = new WhatsAppSendingStrategy();
-        wpp.enviarMensaje(mensaje);
+        /*WhatsAppSendingStrategy wpp = new WhatsAppSendingStrategy();
+        wpp.enviarMensaje(mensaje);*/
+        System.out.println("Usuario notificado con mensaje: " + mensaje + " por " + this.getStrategiaDeEnvio().getClass());
+        this.getStrategiaDeEnvio().enviarMensaje(mensaje);
     }
 
 

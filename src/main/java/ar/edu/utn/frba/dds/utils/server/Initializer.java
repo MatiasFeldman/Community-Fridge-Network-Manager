@@ -69,11 +69,11 @@ public class Initializer {
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
         TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
-        /*
+
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
-        */
+
 
 
         // creacion de heladeras
@@ -222,7 +222,7 @@ public class Initializer {
 
 
 
-        /*SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
+        SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
         SensorTemperatura sensorTemp4 = new SensorTemperatura(h4.getId());
@@ -239,7 +239,7 @@ public class Initializer {
 
         ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
 
-        */
+
 
         // creacion de usuarios
 
@@ -320,17 +320,19 @@ public class Initializer {
 
         c2.setPuntosGanados(2500.0);
 
-        humanos.guardar(c1);
-        humanos.guardar(c2);
 
-        TarjetaColaborador tarjetaColaborador1 = new TarjetaColaborador();
-        TarjetaColaborador tarjetaColaborador2 = new TarjetaColaborador();
+
+        TarjetaColaborador tarjetaColaborador1 = TarjetaColaborador.create(100L, c1, true);
+
+        TarjetaColaborador tarjetaColaborador2 = TarjetaColaborador.create(101L, c2, true);
 
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador1);
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador2);
 
         c1.agregarTarejta(tarjetaColaborador1);
         c2.agregarTarejta(tarjetaColaborador2);
+
+
 
         // creacion de tarjetas
 
@@ -424,6 +426,9 @@ public class Initializer {
         rubrosRepository.guardar(gastronomia);
         rubrosRepository.guardar(viajes);
         rubrosRepository.guardar(educacion);
+
+        humanos.guardar(c1);
+        humanos.guardar(c2);
 
         // creacion de ofertas
         Oferta oferta1 = Oferta.builder()

@@ -15,7 +15,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.SneakyThrows;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +25,7 @@ import java.util.Optional;
 
 public class ReceptorApertura implements IMqttMessageListener {
     private HeladerasRepository heladeras;
-    private String BROKER_URL = "tcp://broker.hivemq.com:1883";
+    private final String BROKER_URL = "ssl://8e252e51d75f43e39ab207604b518d35.s1.eu.hivemq.cloud:8883";
     private MqttClient cliente_solicitudes;
     private MqttClient cliente_intentos;
 
@@ -31,12 +33,16 @@ public class ReceptorApertura implements IMqttMessageListener {
     public ReceptorApertura(HeladerasRepository heladeras) {
         this.heladeras = heladeras;
 
-        cliente_solicitudes = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        cliente_solicitudes.connect();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName("ddslanaranjamecanica");
+        options.setPassword("U2yZtv,^T2xWxapQw}r>".toCharArray());
+
+        cliente_solicitudes = new MqttClient(BROKER_URL, "ReceptorSolicitudes", new MemoryPersistence());
+        cliente_solicitudes.connect(options);
         cliente_solicitudes.subscribe("heladeras/apertura", this);
 
-        cliente_intentos = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        cliente_intentos.connect();
+        cliente_intentos = new MqttClient(BROKER_URL, "ReceptorIntentosApertura", new MemoryPersistence());
+        cliente_intentos.connect(options);
 
         System.out.println("Receptor de apertura de heladeras iniciado");
     }
@@ -47,9 +53,15 @@ public class ReceptorApertura implements IMqttMessageListener {
         Long idTarjeta = json.get("id_tarjeta").asLong();
         Long idHeladera = json.get("id_heladera").asLong();
 
+        System.out.println("Mensaje de apertura recibido: " + mqttMessage.toString());
+
         ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorTarjeta(idTarjeta).get();
 
+        System.out.println("Colaborador: " + colaborador.getUsername());
+
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
+
+        System.out.println("Heladera: " + posibleHeladera.isPresent());
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonRta = mapper.createObjectNode();

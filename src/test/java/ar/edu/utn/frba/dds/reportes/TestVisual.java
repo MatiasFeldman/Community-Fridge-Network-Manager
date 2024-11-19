@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.main.MainReportes;
+import ar.edu.utn.frba.dds.main.CroneTask_Reportes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.DonacionDeVianda;
@@ -58,7 +58,7 @@ public class TestVisual {
         GeneradorPDF generadorPDF = new PDFgenerator();
         GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath);
 
-        MainReportes main = new MainReportes(reportesCronJob);
+        CroneTask_Reportes main = new CroneTask_Reportes(reportesCronJob);
         main.ejecutarUnaVez();
     }
 

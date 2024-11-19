@@ -1,24 +1,21 @@
 package ar.edu.utn.frba.dds.main;
 
-import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
-import ar.edu.utn.frba.dds.models.repositories.donaciones_de_vianda.DonacionesDeViandaRepository;
-import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.GeneradorPDF;
 import ar.edu.utn.frba.dds.models.entities.helpers.reportes.PDFgenerator;
 import ar.edu.utn.frba.dds.models.entities.reportes.GenerarReportesCronJob;
-import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
-import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
-import ar.edu.utn.frba.dds.models.repositories.personasVulnerables.PersonasVulnerablesRepository;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainReportes {
+public class CroneTask_Reportes implements Job {
     GenerarReportesCronJob generarReportesCronJob;
 
-    public MainReportes(GenerarReportesCronJob generarReportesCronJob) {
+    public CroneTask_Reportes(GenerarReportesCronJob generarReportesCronJob) {
         this.generarReportesCronJob = generarReportesCronJob;
     }
 
@@ -26,7 +23,8 @@ public class MainReportes {
         generarReportesCronJob.run();
     }
 
-    public static void main(String[] args) {
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         String filePath = "src/main/java/ar/edu/utn/frba/dds/reportesDinamicos/";
 
         String dateFolder = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -42,7 +40,7 @@ public class MainReportes {
 
         GenerarReportesCronJob reportesCronJob = new GenerarReportesCronJob(generadorPDF, filePath);
 
-        MainReportes main = new MainReportes(reportesCronJob);
+        CroneTask_Reportes main = new CroneTask_Reportes(reportesCronJob);
         main.ejecutarUnaVez();
     }
 }

@@ -80,14 +80,17 @@
                                 <p class="fs-6 fw-medium text-body-tertiary mb-2">Viandas
                                     disponibles: {{this.capacidadActual}}</p>
                                 {{#if permisoSuscripcion}}
-                                    <div class="d-flex gap-2">
-                                        <a href="/heladeras/{{this.id}}/suscripcion/nueva"
-                                           class="boton suscribirse-btn">
-                                            Suscribirse
+                                    <div class="dropdown-center">
+                                        <a class="boton d-block dropdown-toggle w-100" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Acciones
                                         </a>
-                                        <a class="boton" href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">
-                                            Falla técnica
-                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/suscripcion/nueva">Suscribirse</a></li>
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">Falla técnica</a></li>
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/incidentes">Incidentes</a></li>
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/visitas">Visitas</a></li>
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/suscripciones">Suscripciones</a></li>
+                                        </ul>
                                     </div>
                                 {{/if}}
                             </div>

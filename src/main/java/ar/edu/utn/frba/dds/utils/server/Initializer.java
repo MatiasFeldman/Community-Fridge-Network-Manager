@@ -60,9 +60,13 @@ public class Initializer {
         TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
 
+
+        /*
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
+
+         */
 
 
 
@@ -211,7 +215,7 @@ public class Initializer {
 
 
 
-
+/*
         SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
         SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
         SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
@@ -228,6 +232,8 @@ public class Initializer {
         SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
 
         ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
+
+ */
 
 
 

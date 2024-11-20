@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.ContactosDTO;
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteOutputDTO;
+import ar.edu.utn.frba.dds.dtos.suscripcion.SuscripcionOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.HeladeraNoEncontradaException;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.InputValidationException;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.UsuarioNoEncontradoException;
@@ -414,7 +415,7 @@ public class HeladerasController {
                     .buscarPorId(heladeraId).orElseThrow(() -> new HeladeraNoEncontradaException("Heladera no encontrada"));
 
             Object usuario = obtenerUsuarioPorRol(usuarioId, rolUsuario);
-            Suscripcion suscripcion = crearSuscripcion(tipoSuscripcion, usuario, medioDeNotificacion, cantidad);
+            Suscripcion suscripcion = this.crearSuscripcion(tipoSuscripcion, usuario, medioDeNotificacion, cantidad);
             SuscripcionAHeladera nuevaSuscripcion = new SuscripcionAHeladera(
                     ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId)
                             .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado")),
@@ -531,14 +532,18 @@ public class HeladerasController {
 
     public void desuscribirse(Context ctx){
         Long heladeraId = Long.parseLong(ctx.formParam("heladera_id"));
-        Long usuarioId = ctx.sessionAttribute("id");
+        Long suscripcionId = Long.parseLong(ctx.formParam("suscripcion_id"));
+
+        System.out.println("heladeraId: " + heladeraId);
+        System.out.println("suscripcionId: " + suscripcionId);
 
         Optional<Heladera> heladera = ServiceLocator.instanceOf(HeladerasRepository.class).buscarPorId(heladeraId);
-        Optional<SuscripcionAHeladera> suscrip = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioIdYHeladeraId(usuarioId,heladeraId);
-        if(suscrip.isPresent() && heladera.isPresent()){
-            heladera.get().desuscribir(suscrip.get());
+        if(heladera.isPresent()){
+            Heladera h = heladera.get();
+            SuscripcionAHeladera suscri = h.getSuscriptores().stream().filter(s -> s.getId().equals(suscripcionId)).findFirst().orElse(null);
+            h.desuscribir(suscri);
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera.get());
-            ServiceLocator.instanceOf(SuscripcionesRepository.class).eliminar(suscrip.get());
+            ServiceLocator.instanceOf(SuscripcionesRepository.class).eliminar(suscri);
         }
 
         ctx.redirect("/heladeras");
@@ -552,14 +557,7 @@ public class HeladerasController {
         agregarContactosUsuarioAlModelo(model, ctx);
 
         String idParam = ctx.pathParam("id");
-        Long usuarioId = ctx.sessionAttribute("id");
         Long heladeraId = Long.parseLong(idParam);
-        Optional<SuscripcionAHeladera> suscripcionYaExistente = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarPorUsuarioIdYHeladeraId(usuarioId,heladeraId);
-        if (suscripcionYaExistente.isPresent()) {
-            // Si la suscripción ya existe, redirigir a una página de error o mostrar mensaje
-            ctx.render("/404.hbs");
-            return;
-        }
 
         Optional<Heladera> buscada = heladeras.buscarPorId(heladeraId);
         if (buscada.isPresent()) {
@@ -572,5 +570,47 @@ public class HeladerasController {
         }
     }
 
+    public void verSuscripcionesAHeladera(Context ctx){
+        Long idHeladera = Long.parseLong(ctx.pathParam("id"));
+        Long idUsuario = ctx.sessionAttribute("id");
+        Optional<Heladera> heladera = heladeras.buscarPorId(idHeladera);
+        if(heladera.isEmpty()) {
+            ctx.status(404);
+            ctx.redirect("/not-found");
+        } else{
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Suscripciones a heladera");
+            Heladera h = heladera.get();
+            List<SuscripcionOutputDTO> suscripciones = new ArrayList<>();
+            h.getSuscriptores().forEach(s -> {
+                if(s.getObserverSuscripcion().getId().equals(idUsuario)){
+                    SuscripcionOutputDTO dto = SuscripcionOutputDTO.of(s);
+                    suscripciones.add(dto);
+                }
+            });
+            model.put("suscripciones", suscripciones);
+            model.put("heladera", heladera.get().getNombre());
+            model.put("idHeladera", idHeladera);
+            RenderUtils.renderizar(ctx,"heladeras/suscripciones.hbs", model);
+
+        }
+    }
+
+    public void verSuscripcionesDeUsuario(Context ctx) {
+        Long idUsuario = ctx.sessionAttribute("id");
+        List<SuscripcionAHeladera> suscripciones = ServiceLocator.instanceOf(SuscripcionesRepository.class).buscarTodos();
+        List<SuscripcionOutputDTO> suscripcionesDTO = new ArrayList<>();
+        suscripciones.forEach(s -> {
+            if(s.getObserverSuscripcion().getId().equals(idUsuario)){
+                SuscripcionOutputDTO dto = SuscripcionOutputDTO.of(s);
+                suscripcionesDTO.add(dto);
+            }
+        });
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("titulo", "Mis suscripciones");
+        model.put("suscripciones", suscripcionesDTO);
+        RenderUtils.renderizar(ctx,"heladeras/mis-suscripciones.hbs", model);
+    }
 }
 

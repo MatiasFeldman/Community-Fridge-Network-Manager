@@ -1,0 +1,28 @@
+{{#partial "contenido"}}
+    <div class="container">
+        <h1 class="mb-4">Mis Suscripciones</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {{#each suscripciones}}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div class="card-content">
+                                <h4 class="card-title text-dark fs-5 mb-2">Heladera: {{this.nombreHeladera}}</h4>
+                                <h5 class="card-text text-dark fs-5">Tipo: {{this.tipo}}</h5>
+                                {{#if this.cantidad}}
+                                    <p class="card-text">Cantidad: {{this.cantidad}}</p>
+                                {{/if}}
+                            </div>
+                            <form action="/desuscribirse" method="POST" class="mt-3">
+                                <input type="hidden" name="heladera_id" value="{{this.idHeladera}}">
+                                <input type="hidden" name="suscripcion_id" value="{{this.idSuscripcion}}">
+                                <button class="btn btn-danger w-100" type="submit">Desuscribirse</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base }}

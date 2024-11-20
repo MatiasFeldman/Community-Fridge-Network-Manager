@@ -75,6 +75,10 @@ public class Router {
         app.post("/suscribirse",ServiceLocator.instanceOf(HeladerasController.class)::suscribirse);
         app.post("/desuscribirse",ServiceLocator.instanceOf(HeladerasController.class)::desuscribirse);
 
+        app.get("/heladeras/{id}/suscripciones", ctx -> ServiceLocator.instanceOf(HeladerasController.class).verSuscripcionesAHeladera(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+
+        app.get("/suscripciones", ctx -> ServiceLocator.instanceOf(HeladerasController.class).verSuscripcionesDeUsuario(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
+
         // incidentes y fallas
 
         app.get("/heladeras/reportar-falla-tecnica", ViewsController::formFallaTecnica, TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);

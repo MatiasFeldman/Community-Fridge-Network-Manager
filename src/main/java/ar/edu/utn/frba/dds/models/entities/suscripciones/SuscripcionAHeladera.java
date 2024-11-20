@@ -23,6 +23,7 @@ public class SuscripcionAHeladera extends Persistente {
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Usuario observerSuscripcion;
 
+    @Getter
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_suscripcion", referencedColumnName = "id_suscripcion")
     private Suscripcion suscripcion;

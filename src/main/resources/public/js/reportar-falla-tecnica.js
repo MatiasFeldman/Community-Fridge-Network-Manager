@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
             descripcion: descripcion_input.value
         }
 
+
+        if (!validarValores()) {
+            alert('Por favor complete todos los campos')
+            return
+        }
+
         fetch('/heladeras/reportar-falla-tecnica', {
             method: 'POST',
             headers: {
@@ -34,6 +40,11 @@ document.addEventListener("DOMContentLoaded", function() {
         tipo_incidente_inpu.value = ""
         foto_input.value = ""
         descripcion_input.value = ""
+    }
+
+    const validarValores = () =>{
+        return !(fecha_incidente_input.value === "" || hora_incidente_input.value === "" || tipo_incidente_inpu.value === "" || descripcion_input.value === "");
+
     }
 
     boton_reportar.addEventListener('click', reportarFalla)

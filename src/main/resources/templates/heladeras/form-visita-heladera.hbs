@@ -28,17 +28,17 @@
                 <div class="row mt-4">
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5">Fecha de la visita</h3>
-                        <input type="date" class="form-control mt-2" id="fechaVisita" name="fechaVisita">
+                        <input required type="date" class="form-control mt-2" id="fechaVisita" name="fechaVisita">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5">Hora del incidente</h3>
-                        <input type="time" class="form-control mt-2" id="horaVisita" name="horaVisita">
+                        <input required type="time" class="form-control mt-2" id="horaVisita" name="horaVisita">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5">Resolución de Incidente</h3>
-                        <select class="form-control mt-2" id="resolucionIncidente" name="resolucionIncidente">
+                        <select required class="form-control mt-2" id="resolucionIncidente" name="resolucionIncidente">
                             <option value="">Selecciona una opción</option>
-                            <option value="true">Solucionado</option>
+                            <option selected value="true">Solucionado</option>
                             <option value="false">No Solucionado</option>
                         </select>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-12 mb-3">
                         <h3 class="h5">Descripción</h3>
-                        <textarea class="form-control mt-2" rows="4" placeholder="Descripción de la visita"
+                        <textarea required class="form-control mt-2" rows="4" placeholder="Descripción de la visita"
                                   id="descripcion" name="descripcion"></textarea>
                     </div>
                 </div>

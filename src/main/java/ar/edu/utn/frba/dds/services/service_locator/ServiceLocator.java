@@ -182,6 +182,9 @@ public class ServiceLocator {
             } else if (componentName.equals(HashPassword.class.getName())) {
                 HashPassword hashPassword = new HashPassword();
                 instances.put(componentName, hashPassword);
+            }else if (componentName.equals(TecnicosController.class.getName())) {
+                TecnicosController tecnicosController = new TecnicosController();
+                instances.put(componentName, tecnicosController);
             }
             // REPOSITORIOS A PARTIR DE AQUI
 

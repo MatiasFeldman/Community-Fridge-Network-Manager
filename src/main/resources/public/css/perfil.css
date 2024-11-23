@@ -18,6 +18,12 @@
     border-radius: 6px;
     font-weight: bold;
 }
+#TECNICO{
+    background-color: #433def;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
 
 .form-group label {
     font-weight: bold;

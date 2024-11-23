@@ -32,12 +32,15 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="#quienes-somos">Quienes Somos</a>
             </li>
+            {{#if (isEqual rolUsuario "TECNICO")}}
+            {{else}}
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/ofertas">Ofertas</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/colaborar">Colaborar</a>
             </li>
+            {{/if}}
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/heladeras">Heladeras</a>
             </li>
@@ -60,8 +63,12 @@
                         <li><a class="dropdown-item" href="/registro/modificar-registro-humano">Administar Registro Humanos</a></li>
                     {{else}}
                         <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                        <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
-                        <li><a class="dropdown-item" href="/suscripciones">Suscripciones</a></li>
+                        {{#if (isEqual rolUsuario "TECNICO")}}
+                            <li><a class="dropdown-item" href="/misVisitas">Mis Visitas</a></li>
+                            {{else}}
+                            <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
+                            <li><a class="dropdown-item" href="/suscripciones">Suscripciones</a></li>
+                        {{/if}}
                     {{/if}}
                 </ul>
             </div>

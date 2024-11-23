@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.visitasHeladeras;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao.VisitaHeladeraDAO;
 import lombok.AllArgsConstructor;
@@ -35,5 +36,9 @@ public class VisitaHeladeraRepository {
 
     public List<VisitaAHeladera> buscarPorHeladera(Heladera heladera) {
         return dao.buscarPorHeladera(heladera);
+    }
+
+    public List<VisitaAHeladera> buscarPorTecnico(Tecnico tecnico) {
+        return dao.buscarPorTecnico(tecnico);
     }
 }

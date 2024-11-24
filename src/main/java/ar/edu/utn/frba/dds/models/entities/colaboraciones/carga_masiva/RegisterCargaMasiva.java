@@ -31,7 +31,7 @@ public class RegisterCargaMasiva {
         this.ofertas = ofertas;
     }
 
-    public Usuario registrarHumano(String[] line) throws IOException {
+    public UsuarioConPassword registrarHumano(String[] line) throws IOException {
         String tipoDocumento = line[0];
         String documento = line[1];
         String nombre = line[2];
@@ -63,7 +63,8 @@ public class RegisterCargaMasiva {
                 AtributoHumanoRespondido.create(documentoAtributo, documento),
                 AtributoHumanoRespondido.create(telegramAtributo, "")));
 
-        Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
+        UsuarioConPassword userCreadoConPass = this.crearUsuarioHumanoPass(nombre, apellido);
+        Usuario userCreado = userCreadoConPass.getUsuario();
 
         ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales,new ArrayList<>() ,userCreado);
 
@@ -71,8 +72,19 @@ public class RegisterCargaMasiva {
 
         this.guardarEnRepositorios(creado);
 
-        return creado.getUser();
+        return userCreadoConPass;
 
+    }
+
+    public UsuarioConPassword crearUsuarioHumanoPass(String nombre, String apellido) throws IOException {
+        UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
+        String username = usernameGenerator.generateUsername(nombre, apellido);
+        String password = GeneradorDeContrasenias.generateRandomString(16);
+        // hashear password
+
+        System.out.println("Usuario creado: " + username + " " + password);
+        Usuario usuario = new Usuario(username, ServiceLocator.instanceOf(HashPassword.class).hashPassword(password), new ArrayList<>(List.of(TipoRol.HUMANO)));
+        return new UsuarioConPassword(usuario, password);
     }
 
     public Usuario crearUsuarioHumano(String nombre, String apellido) throws IOException {

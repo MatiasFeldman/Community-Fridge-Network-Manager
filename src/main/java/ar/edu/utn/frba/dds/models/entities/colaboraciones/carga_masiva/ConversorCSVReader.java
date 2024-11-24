@@ -68,9 +68,10 @@ public class ConversorCSVReader implements ConversorCSV {
             System.out.println("No existe el humano en la base de datos, se procede a crearlo");
             RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, ofertas);
 
-            Usuario userCreado = registrador.registrarHumano(line);
+            UsuarioConPassword userCreadoConPass = registrador.registrarHumano(line);
+            Usuario userCreado = userCreadoConPass.getUsuario();
 
-            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword(), mailSender);
+            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreadoConPass.getPasswordSinHash(), mailSender);
         } else {
             System.out.println("Ya existe el humano en la base de datos, se procede a agregar la contribucion");
             ColaboradorHumano human = humano.get();

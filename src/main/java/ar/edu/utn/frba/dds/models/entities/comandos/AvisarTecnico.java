@@ -41,11 +41,11 @@ public class AvisarTecnico implements Comando {
 
                     System.out.println("Le voy a avisar al tecnico: " + tecnico.get().getApellido() + ", " + tecnico.get().getNombre());
 
-
+                    /*
                     Mail mail = new Mail("Se ha encontrado el siguiente problema en la heladera " + heladera.getId() + " - " + heladera.getDireccion().getDireccion() + ": " + tipo, "FALLA EN LA HELADERA");
                     mailSender.enviarMail(tecnico.get().getMail(), mail);
 
-
+                     */
 
 
                 } else {

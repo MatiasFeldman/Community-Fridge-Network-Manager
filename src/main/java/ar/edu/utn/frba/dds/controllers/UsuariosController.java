@@ -106,7 +106,7 @@ public class UsuariosController {
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Perfil");
             model.put("roles", roles);
-            model.put("id", id);
+            model.put("id", id);//yo lo sacaria no tiene porque saber su id
 
             model.put("usuario", usuario.get().getUser());
 

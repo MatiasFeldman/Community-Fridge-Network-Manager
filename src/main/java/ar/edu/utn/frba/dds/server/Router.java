@@ -30,6 +30,9 @@ public class Router {
         app.get("/registro/humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).formRegistroHumano(ctx));
         app.post("/registro/humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).save(ctx));
 
+        app.get("/registro/tecnico", ServiceLocator.instanceOf(TecnicosController.class)::create);
+        app.post("/registro/tecnico", ServiceLocator.instanceOf(TecnicosController.class)::save);
+
         app.get("/registro/modificar-registro-humano", ctx -> ServiceLocator.instanceOf(HumanosController.class).camposFormHumano(ctx), TipoRol.ADMIN);
 
         // colaboraciones
@@ -90,8 +93,8 @@ public class Router {
         app.get("/heladeras/incidentes",ViewsController::formAlertas,TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
         app.get("/heladeras/{id}/incidentes", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleInicidenteView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
 
-        app.get("/heladeras/{id}/visita",TecnicosController::formSolucionIncidente,TipoRol.ADMIN,TipoRol.TECNICO);
-        app.post("/heladeras/{id}/visita",TecnicosController::registrarVisita,TipoRol.TECNICO);
+        app.get("/heladeras/{id}/visita",ServiceLocator.instanceOf(TecnicosController.class)::formSolucionIncidente,TipoRol.ADMIN,TipoRol.TECNICO);
+        app.post("/heladeras/{id}/visita",ServiceLocator.instanceOf(TecnicosController.class)::registrarVisita,TipoRol.TECNICO);
 
 
         app.get("/heladeras/{id}/visitas", ctx -> ServiceLocator.instanceOf(ReportesController.class).detalleVisitasView(ctx), TipoRol.ADMIN,TipoRol.HUMANO, TipoRol.JURIDICA);
@@ -119,6 +122,8 @@ public class Router {
 
         //paginas de usuario
         app.get("/misCanjes",  ctx ->  ServiceLocator.instanceOf(ViewsController.class).viewMisCanjes(ctx), TipoRol.HUMANO, TipoRol.JURIDICA);
+        app.get("/misVisitas",  ctx ->  ServiceLocator.instanceOf(TecnicosController.class).viewMisVisitas(ctx), TipoRol.TECNICO);
+
 
         // servicio externo donde donar
         app.get("/donde-donar", ViewsController::dondeDonar, TipoRol.HUMANO, TipoRol.JURIDICA);

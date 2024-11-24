@@ -14,7 +14,8 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_recept
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.AreaCobertura;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.TipoTecnico;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -32,6 +33,7 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasCo
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
+import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.VisitaHeladeraRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorMovimiento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorTemperatura;
@@ -59,6 +61,7 @@ public class Initializer {
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
         TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
+        VisitaHeladeraRepository visitas = ServiceLocator.instanceOf(VisitaHeladeraRepository.class);
 
 
         /*
@@ -181,7 +184,7 @@ public class Initializer {
                 "Pedro",
                 "Martinez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                new TipoTecnico("Tecnico de Heladeras"),
+                Tipo_documento.DNI,
                 "123444",
                 "20-12345678-9",
                 new AreaCobertura(d6, 1500.0)
@@ -192,7 +195,7 @@ public class Initializer {
                 "Marcos",
                 "Gutierrez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                new TipoTecnico("Tecnico de Heladeras"),
+                Tipo_documento.DNI,
                 "4455512",
                 "20-4455512-9",
                 new AreaCobertura(d7, 1500.0)
@@ -203,7 +206,7 @@ public class Initializer {
                 "Gastón",
                 "Fernandez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                new TipoTecnico("Tecnico de Heladeras"),
+                Tipo_documento.DNI,
                 "2211223",
                 "20-2211223-9",
                 new AreaCobertura(d8, 300.0)
@@ -212,6 +215,7 @@ public class Initializer {
         tecnicos.guardar(t1);
         tecnicos.guardar(t2);
         tecnicos.guardar(t3);
+
 
 
 
@@ -404,6 +408,21 @@ public class Initializer {
         incidente4.setResuelto(true);
         incidente4.setFechaResuelto(LocalDateTime.now());
         incidentesRepository.guardar(incidente4);
+
+        // creacion de visitas
+        VisitaAHeladera visita1 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+        VisitaAHeladera visita2 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+        VisitaAHeladera visita3 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+        VisitaAHeladera visita4 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+        VisitaAHeladera visita5 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+        VisitaAHeladera visita6 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
+
+        visitas.guardar(visita1);
+        visitas.guardar(visita2);
+        visitas.guardar(visita3);
+        visitas.guardar(visita4);
+        visitas.guardar(visita5);
+        visitas.guardar(visita6);
 
         // creacion de rubros
 

@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.exceptions.registroPersonaVulnerable.DireccionJuridic
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.ContraseniaJuridicaInseguraException;
 import ar.edu.utn.frba.dds.exceptions.registro_usuario.UsuarioJuridicaExistenteException;
 import ar.edu.utn.frba.dds.exceptions.suscripcion.InputValidationException;
+import ar.edu.utn.frba.dds.exceptions.tecnicoDocumentoIncorrectoException;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Incidente;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
@@ -222,6 +223,7 @@ public class TecnicosController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("tipos",tipoDocConNumeros);
+
         String contraseniaIncorrecta = ctx.queryParam("contrasenia");
         String usuarioExistente = ctx.queryParam("usuarioExistente");
         if(Boolean.parseBoolean(contraseniaIncorrecta)){
@@ -253,7 +255,7 @@ public class TecnicosController {
             Contacto medioContactoTecnico = null;
 
             if (nroDocumento == null || !nroDocumento.matches("\\d+")) {
-                throw new IllegalArgumentException("El número de documento debe contener solo números.");
+                throw new tecnicoDocumentoIncorrectoException("El número de documento debe contener solo números.");
             }
 
 
@@ -345,9 +347,6 @@ public class TecnicosController {
             manejarError(ctx, "Error en la dirección", e.getMessage(), 400);
         } catch (IllegalArgumentException | InputValidationException e) {
             manejarError(ctx, "Error en los datos ingresados", e.getMessage(), 400);
-        }catch (Exception e) {
-            manejarError(ctx, "Error inesperado", "Ocurrió un error inesperado. Por favor, inténtelo más tarde.", 500);
-            e.printStackTrace();
         }
     }
 

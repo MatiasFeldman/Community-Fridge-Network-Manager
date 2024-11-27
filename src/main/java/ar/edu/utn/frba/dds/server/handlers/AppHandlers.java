@@ -36,7 +36,8 @@ public class AppHandlers {
             new canjesTotalesIncorretoHandler(),
             new ReporteProblemaHandler(),
             new error404handler(),
-            new dondeDonarDireccionIncorrectaHandler()
+            new dondeDonarDireccionIncorrectaHandler(),
+            new tecnicoDocumentoIncorrectoHandler()
     };
 
     public static void applyHandlers(Javalin app) {

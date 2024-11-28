@@ -11,6 +11,7 @@ import java.util.Optional;
 public class SuscripcionDataBase implements SuscripcionDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(SuscripcionAHeladera suscripcionAHeladera) {
+        suscripcionAHeladera.setPresente(true);
         beginTransaction();
         entityManager().persist(suscripcionAHeladera);
         commitTransaction();

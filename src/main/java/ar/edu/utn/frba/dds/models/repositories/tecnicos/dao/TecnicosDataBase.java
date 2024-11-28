@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public class TecnicosDataBase implements TecnicosDAO, WithSimplePersistenceUnit {
     public void guardar(Tecnico tecnico) {
+        tecnico.setPresente(true);
         beginTransaction();
         entityManager().persist(tecnico);
         commitTransaction();

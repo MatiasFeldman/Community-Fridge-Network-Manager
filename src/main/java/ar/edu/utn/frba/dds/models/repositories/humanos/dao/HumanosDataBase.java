@@ -10,6 +10,7 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(ColaboradorHumano colaboradorHumano) {
+        colaboradorHumano.setPresente(true);
         beginTransaction();
         entityManager().persist(colaboradorHumano);
         commitTransaction();

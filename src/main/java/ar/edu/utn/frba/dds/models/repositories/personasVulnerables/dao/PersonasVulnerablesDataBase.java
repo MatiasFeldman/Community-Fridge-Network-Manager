@@ -9,6 +9,7 @@ import java.util.Optional;
 public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(PersonaVulnerable personaVulnerable) {
+        personaVulnerable.setPresente(true);
         withTransaction(() -> {
             entityManager().persist(personaVulnerable);
         });

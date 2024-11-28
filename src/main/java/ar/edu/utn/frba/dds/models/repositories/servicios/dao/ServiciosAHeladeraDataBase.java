@@ -9,6 +9,7 @@ import java.util.Optional;
 public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(VisitaAHeladera visita) {
+        visita.setPresente(true);
         beginTransaction();
         entityManager().persist(visita);
         commitTransaction();

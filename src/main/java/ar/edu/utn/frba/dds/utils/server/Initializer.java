@@ -48,7 +48,6 @@ import java.util.List;
 public class Initializer {
     public static void init() {
         Initializer.inicializarAtributos();
-        System.out.println("Inicializando datos");
         HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
         HumanosRepository humanos = ServiceLocator.instanceOf(HumanosRepository.class);
         JuridicasRepository juridicas = ServiceLocator.instanceOf(JuridicasRepository.class);
@@ -62,6 +61,8 @@ public class Initializer {
         TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
         VisitaHeladeraRepository visitas = ServiceLocator.instanceOf(VisitaHeladeraRepository.class);
+
+        System.out.println("Repositorios inicializados");
 
 
         /*
@@ -322,9 +323,9 @@ public class Initializer {
 
 
 
-        TarjetaColaborador tarjetaColaborador1 = TarjetaColaborador.create(100L, c1, true);
+        TarjetaColaborador tarjetaColaborador1 = TarjetaColaborador.create(c1, true);
 
-        TarjetaColaborador tarjetaColaborador2 = TarjetaColaborador.create(101L, c2, true);
+        TarjetaColaborador tarjetaColaborador2 = TarjetaColaborador.create(c2, true);
 
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador1);
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador2);
@@ -454,7 +455,6 @@ public class Initializer {
                         .canjesUsados(0)
                         .image("imagenes/caridad.jpg")
                         .build();
-        oferta1.setId(1L);
         oferta1.setPresente(true);
 
         Oferta oferta2 = Oferta.builder()
@@ -465,7 +465,6 @@ public class Initializer {
                 .canjesUsados(50)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta2.setId(2L);
         oferta2.setPresente(true);
 
         Oferta oferta3 = Oferta.builder()
@@ -476,7 +475,6 @@ public class Initializer {
                 .canjesUsados(25)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta3.setId(3L);
         oferta3.setPresente(true);
 
         Oferta oferta4 = Oferta.builder()
@@ -487,7 +485,6 @@ public class Initializer {
                 .canjesUsados(20)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta4.setId(4L);
         oferta4.setPresente(true);
 
         Oferta oferta5 = Oferta.builder()
@@ -498,7 +495,6 @@ public class Initializer {
                 .canjesUsados(100)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta5.setId(5L);
         oferta5.setPresente(true);
 
         Oferta oferta6 = Oferta.builder()
@@ -509,7 +505,6 @@ public class Initializer {
                 .canjesUsados(10)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta6.setId(6L);
         oferta6.setPresente(true);
 
         Oferta oferta7 = Oferta.builder()
@@ -520,7 +515,6 @@ public class Initializer {
                 .canjesUsados(5)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta7.setId(7L);
         oferta7.setPresente(true);
 
         Oferta oferta8 = Oferta.builder()
@@ -531,7 +525,6 @@ public class Initializer {
                 .canjesUsados(40)
                 .image("imagenes/caridad.jpg")
                 .build();
-        oferta8.setId(8L);
         oferta8.setPresente(false);
 
         ofertasRepository.guardar(oferta1);

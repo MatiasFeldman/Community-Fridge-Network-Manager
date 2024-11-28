@@ -1,21 +1,17 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dtos.direccion.DireccionInputDTO;
-import ar.edu.utn.frba.dds.dtos.humanos.HumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.humanos.UsuarioHumanoOutputDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.JuridicaOutpuDTO;
 import ar.edu.utn.frba.dds.dtos.juridico.UsuarioJuridicaOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.ContraseniaIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.login.UsuarioIncorrectoException;
-import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.models.entities.personas.AtributoHumanoRespondido;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
-import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.direcciones.DireccionFactory;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
@@ -24,10 +20,8 @@ import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
-import lombok.SneakyThrows;
 
 
 import java.io.File;
@@ -46,6 +40,8 @@ public class UsuariosController {
 
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
         Optional<Usuario> user = usuariosRepository.buscarPorUsername(username);
+
+        System.out.println("Usuario: " + user.get().getUser());
 
         if (user.isPresent()) {
             HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
@@ -81,7 +77,7 @@ public class UsuariosController {
         }
         String nombreUsuario = user.get().getUser();
         String rolUsuario = String.valueOf(user.get().getRoles().get(0)); // Si deseas obtener roles personalizados
-        String fotoUsuario =user.get().getFoto();
+        String fotoUsuario = user.get().getFoto();
         System.out.print(nombreUsuario);
 
         // Guardar la información del usuario en el contexto para usar en las vistas
@@ -97,22 +93,30 @@ public class UsuariosController {
 
     public void handlePerfil(Context ctx) {
         UsuariosRepository usuariosRepository = ServiceLocator.instanceOf(UsuariosRepository.class);
-        Long id = ctx.sessionAttribute("user");
-        List<String> roles = ctx.sessionAttribute("roles");
-        Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
+        Long id = ctx.sessionAttribute("user");
+        if (id == null) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        List<String> roles = ctx.sessionAttribute("roles");
+        if (roles == null) {
+            roles = new ArrayList<>(); // O manejar de otra forma si roles es null
+        }
+
+        Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
         if (usuario.isPresent()) {
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Perfil");
             model.put("roles", roles);
-            model.put("id", id);//yo lo sacaria no tiene porque saber su id
-
+            model.put("id", id); // Si no quieres mostrar el id, puedes quitar esta línea
             model.put("usuario", usuario.get().getUser());
 
             if (roles.contains("ADMIN")) {
                 model.put("esAdmin", true);
-            }else if (roles.contains("HUMANO")) {
+            } else if (roles.contains("HUMANO")) {
                 ColaboradorHumano humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id).get();
                 model.put("puntos", humano.calcularPuntaje());
                 model.put("humano", humano.getAllAtributos());
@@ -124,7 +128,7 @@ public class UsuariosController {
                 model.put("esJuridica", true);
             }
 
-            RenderUtils.renderizar(ctx,"perfil.hbs", model);
+            RenderUtils.renderizar(ctx, "perfil.hbs", model);
         } else {
             ctx.redirect("/login");
         }
@@ -138,35 +142,35 @@ public class UsuariosController {
         Optional<Usuario> usuario = usuariosRepository.buscarPorId(id);
 
         if (usuario.isPresent()) {
-              if (roles.contains("HUMANO")) {
-                  Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id);
-                  List<AtributoHumanoRespondido> atributos = humano.get().getAllAtributos();
-                  String direccionValor = null;
-                  String provinciaValor = null;
-                  // Iterar sobre los atributos y asignarles el valor correspondiente
-                  for (AtributoHumanoRespondido atributoRespondido : atributos) {
-                      String nombreAtributo = atributoRespondido.getNombreAtributo();
+            if (roles.contains("HUMANO")) {
+                Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(id);
+                List<AtributoHumanoRespondido> atributos = humano.get().getAllAtributos();
+                String direccionValor = null;
+                String provinciaValor = null;
+                // Iterar sobre los atributos y asignarles el valor correspondiente
+                for (AtributoHumanoRespondido atributoRespondido : atributos) {
+                    String nombreAtributo = atributoRespondido.getNombreAtributo();
 
-                      String nuevoValor = ctx.formParam(nombreAtributo);
+                    String nuevoValor = ctx.formParam(nombreAtributo);
 
-                      if (nuevoValor != null && !nuevoValor.isEmpty()) {
-                          atributoRespondido.setValor(nuevoValor);
-                      }
-                      // Verificar si el atributo es "direccion" o "provincia"
-                      if ("direccion".equalsIgnoreCase(nombreAtributo)) {
-                          direccionValor = nuevoValor;
-                      }
-                      if ("provincia".equalsIgnoreCase(nombreAtributo)) {
-                          provinciaValor = nuevoValor;
-                      }
-                  }
-                  if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
-                      Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
-                      humano.get().setDireccion(direccion);
-                  } else {
-                      humano.get().setDireccion(null);
-                  }
-                  ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano.get());
+                    if (nuevoValor != null && !nuevoValor.isEmpty()) {
+                        atributoRespondido.setValor(nuevoValor);
+                    }
+                    // Verificar si el atributo es "direccion" o "provincia"
+                    if ("direccion".equalsIgnoreCase(nombreAtributo)) {
+                        direccionValor = nuevoValor;
+                    }
+                    if ("provincia".equalsIgnoreCase(nombreAtributo)) {
+                        provinciaValor = nuevoValor;
+                    }
+                }
+                if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
+                    Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
+                    humano.get().setDireccion(direccion);
+                } else {
+                    humano.get().setDireccion(null);
+                }
+                ServiceLocator.instanceOf(HumanosRepository.class).actualizar(humano.get());
 
 
             } else if (roles.contains("JURIDICA")) {
@@ -195,12 +199,12 @@ public class UsuariosController {
             if (archivoImagen != null && archivoImagen.size() > 0) {
                 // Definir la carpeta donde se guardará la imagen
                 String nombreArchivo = id.toString() + "_" + "perfil";
-                String directorioCompleto = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas", "fotosUsuarios",nombreArchivo).toString();
+                String directorioCompleto = Paths.get("src", "main", "java", "ar", "edu", "utn", "frba", "dds", "imagenesDinamicas", "fotosUsuarios", nombreArchivo).toString();
 
                 if (usuario.get().getFoto() != null && !usuario.get().getFoto().isEmpty()) {
                     String foto = usuario.get().getFoto(); // Obtiene la ruta de la foto
                     String nombreArchivoU = foto.replaceFirst("/imagenes/", ""); // Elimina el prefijo "/imagenes/"
-                    String rutaFotoAnterior = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas", nombreArchivoU).toString();
+                    String rutaFotoAnterior = Paths.get("src", "main", "java", "ar", "edu", "utn", "frba", "dds", "imagenesDinamicas", nombreArchivoU).toString();
 
                     // Verificar si la foto anterior existe y borrarla
                     File fotoAnterior = new File(rutaFotoAnterior);
@@ -219,9 +223,9 @@ public class UsuariosController {
                     throw new SolicitudIncorrectaException();
                 }
 
-                    usuario.get().setFoto("/imagenes/fotosUsuarios/"+nombreArchivo); // Guardar la ruta de la imagen en el usuario
-                    ctx.sessionAttribute("fotoUsuario",usuario.get().getFoto());
-                    ServiceLocator.instanceOf(UsuariosRepository.class).modificar(usuario.get()); // Actualizar el usuario en la base de datos
+                usuario.get().setFoto("/imagenes/fotosUsuarios/" + nombreArchivo); // Guardar la ruta de la imagen en el usuario
+                ctx.sessionAttribute("fotoUsuario", usuario.get().getFoto());
+                ServiceLocator.instanceOf(UsuariosRepository.class).modificar(usuario.get()); // Actualizar el usuario en la base de datos
 
             }
 

@@ -21,9 +21,10 @@ public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSi
 
     @Override
     public void guardar(TarjetaColaborador tarjeta) {
-        withTransaction(() -> {
+        tarjeta.setPresente(true);
+        beginTransaction();
             entityManager().persist(tarjeta);
-        });
+        commitTransaction();
     }
 
     @Override

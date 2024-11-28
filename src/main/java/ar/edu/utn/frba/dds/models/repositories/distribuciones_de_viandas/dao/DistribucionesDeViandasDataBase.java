@@ -11,6 +11,7 @@ import java.util.Optional;
 public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUnit, DistribucionesDeViandasDAO {
     @Override
     public void guardar(DistribucionViandas donacionDeVianda) {
+        donacionDeVianda.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeVianda);
         commitTransaction();

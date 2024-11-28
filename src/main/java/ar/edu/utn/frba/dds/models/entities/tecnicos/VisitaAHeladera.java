@@ -20,11 +20,11 @@ import java.time.LocalDateTime;
 public class VisitaAHeladera extends Persistente {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_incidente", referencedColumnName = "id_incidente")
+    @JoinColumn(name = "id_incidente", referencedColumnName = "id")
     private Incidente incidenteAResolver;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tecnico", referencedColumnName = "id_tecnico")
+    @JoinColumn(name = "id_tecnico", referencedColumnName = "id")
     private Tecnico tecnico;
 
     @Column(name = "fecha_visita")

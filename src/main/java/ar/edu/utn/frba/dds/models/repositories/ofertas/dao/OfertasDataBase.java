@@ -10,6 +10,7 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Oferta oferta) {
+        oferta.setPresente(true);
         beginTransaction();
         entityManager().persist(oferta);
         commitTransaction();

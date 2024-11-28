@@ -31,6 +31,16 @@ public class TarjetaColaborador extends Persistente {
                 .build();
     }
 
+    public static TarjetaColaborador create(ColaboradorHumano duenio, Boolean principal) {
+        return TarjetaColaborador
+                .builder()
+                .duenio(duenio)
+                .principal(principal)
+                .presente(true)
+                .build();
+    }
+
+
 
 
     public Long getDuenioId() {

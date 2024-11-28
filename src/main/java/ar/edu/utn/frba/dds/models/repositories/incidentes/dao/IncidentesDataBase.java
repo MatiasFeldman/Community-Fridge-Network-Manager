@@ -11,6 +11,7 @@ import java.util.Optional;
 public class IncidentesDataBase implements WithSimplePersistenceUnit, IncidentesDAO {
     @Override
     public void guardar(Incidente incidente) {
+        incidente.setPresente(true);
         beginTransaction();
         entityManager().persist(incidente);
         commitTransaction();

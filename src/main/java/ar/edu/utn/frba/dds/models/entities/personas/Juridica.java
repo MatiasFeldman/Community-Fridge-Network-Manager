@@ -32,7 +32,7 @@ import javax.persistence.*;
 public class Juridica extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
     private Usuario user;
 
     @Column(name = "razon_social")

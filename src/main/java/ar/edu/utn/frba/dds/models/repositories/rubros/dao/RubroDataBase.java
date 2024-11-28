@@ -10,6 +10,7 @@ public class RubroDataBase implements RubroDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Rubro rubro) {
+        rubro.setPresente(true);
         beginTransaction();
         entityManager().persist(rubro);
         commitTransaction();

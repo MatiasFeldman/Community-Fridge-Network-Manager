@@ -10,6 +10,7 @@ import java.util.Optional;
 public class DonacionDineroDB implements DonacionDineroDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(DonacionDeDinero donacionDeDinero) {
+        donacionDeDinero.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeDinero);
         commitTransaction();

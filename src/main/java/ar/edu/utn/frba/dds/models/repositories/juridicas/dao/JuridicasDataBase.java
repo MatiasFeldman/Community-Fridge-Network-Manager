@@ -11,6 +11,7 @@ import java.util.Optional;
 public class JuridicasDataBase implements JuridicasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Juridica juridica) {
+        juridica.setPresente(true);
         beginTransaction();
         entityManager().persist(juridica);
         commitTransaction();

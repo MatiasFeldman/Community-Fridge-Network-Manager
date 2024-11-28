@@ -10,6 +10,7 @@ import java.util.Optional;
 public class CanjesDB implements CanjesDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Canjes canje) {
+        canje.setPresente(true);
         beginTransaction();
         entityManager().persist(canje);
         commitTransaction();

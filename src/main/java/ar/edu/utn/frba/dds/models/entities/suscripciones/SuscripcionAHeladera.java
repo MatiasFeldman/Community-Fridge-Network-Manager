@@ -20,7 +20,7 @@ public class SuscripcionAHeladera extends Persistente {
 
     @Getter
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario observerSuscripcion;
 
     @Getter
@@ -30,7 +30,7 @@ public class SuscripcionAHeladera extends Persistente {
 
     @Getter
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "heladera_id")
+    @JoinColumn(name = "heladera_id", referencedColumnName = "id")
     private Heladera heladera;
 
 

@@ -12,10 +12,10 @@
     <properties>
       <property name="hibernate.archive.autodetection" value="class"/>
 
-       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/tpanualtest" />
+      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/tpanualdb" />
       <property name="hibernate.connection.username" value="root" />
-      <property name="hibernate.connection.password" value="juancruz" />
+      <property name="hibernate.connection.password" value="JuanCruz!123" />
 
       <!--
       <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>

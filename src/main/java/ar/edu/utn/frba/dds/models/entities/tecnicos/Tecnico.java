@@ -23,7 +23,7 @@ public class Tecnico extends Persistente {
 
     @Setter
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
     private Usuario user;
 
     @Column(name = "nombre")
@@ -33,7 +33,7 @@ public class Tecnico extends Persistente {
     private String apellido;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto")
+    @JoinColumn(name = "id_contacto", referencedColumnName = "id")
     private Contacto medioContacto;
 
     @Enumerated (EnumType.STRING)

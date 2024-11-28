@@ -38,6 +38,7 @@ import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAp
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection;
+import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasDataBase;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDataBase;
@@ -271,7 +272,11 @@ public class ServiceLocator {
                             instanceOf(HeladerasRepository.class), instanceOf(HumanosRepository.class),
                             instanceOf(JuridicasRepository.class));
                     instances.put(componentName, controller);
-                } else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
+                } else if (componentName.equals(JuridicasRepository.class.getName())){
+                    JuridicasRepository juridicas = new JuridicasRepository(new JuridicasDataBase());
+                    instances.put(componentName, juridicas);
+                }
+                else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
                     AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoDataBase());
                     instances.put(componentName, atributos);
                 } else if (componentName.equals(TarjetasColaboradoresRepository.class.getName())) {

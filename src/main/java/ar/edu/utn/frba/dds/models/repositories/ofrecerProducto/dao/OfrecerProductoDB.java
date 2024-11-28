@@ -10,6 +10,7 @@ import java.util.Optional;
 public class OfrecerProductoDB implements OfrecerProductoDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(OfrecerProductoOServicio ofrecerProductoOServicio) {
+        ofrecerProductoOServicio.setPresente(true);
         beginTransaction();
         entityManager().persist(ofrecerProductoOServicio);
         commitTransaction();

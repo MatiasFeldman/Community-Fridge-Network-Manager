@@ -31,6 +31,10 @@ public class SendingStrategyConverter implements AttributeConverter<SendingStrat
 
     @Override
     public SendingStrategy convertToEntityAttribute(String s) {
+        if (s == null) {
+            return null;  // o algún valor predeterminado si lo prefieres
+        }
+
         return switch (s) {
             case "MAIL" -> new MailSendingStrategy(ServiceLocator.instanceOf(MimeMailSender.class));
             case "TELEGRAM" -> new TelegramSendingStategy(ServiceLocator.instanceOf(TelegramSender.class));
@@ -38,4 +42,5 @@ public class SendingStrategyConverter implements AttributeConverter<SendingStrat
             default -> null;
         };
     }
+
 }

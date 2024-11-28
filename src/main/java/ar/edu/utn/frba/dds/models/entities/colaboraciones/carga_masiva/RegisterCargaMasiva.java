@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;

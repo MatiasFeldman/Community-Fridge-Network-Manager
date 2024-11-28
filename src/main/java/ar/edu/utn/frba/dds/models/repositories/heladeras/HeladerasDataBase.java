@@ -11,6 +11,7 @@ import java.util.Optional;
 public class HeladerasDataBase implements HeladerasDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Heladera heladera) {
+        heladera.setPresente(true);
         beginTransaction();
         entityManager().persist(heladera);
         commitTransaction();

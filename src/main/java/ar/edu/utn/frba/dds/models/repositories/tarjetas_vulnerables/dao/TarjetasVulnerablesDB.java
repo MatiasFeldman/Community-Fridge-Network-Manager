@@ -22,6 +22,7 @@ public class TarjetasVulnerablesDB implements TarjetasVulnerablesDAO, WithSimple
 
     @Override
     public void guardar(TarjetaPersonaVulnerable tarjeta) {
+        tarjeta.setPresente(true);
         withTransaction(() -> {
             entityManager().persist(tarjeta);
         });

@@ -11,6 +11,7 @@ public class AtributosHumanoDataBase implements WithSimplePersistenceUnit, Atrib
 
     @Override
     public void guardar(Atributo a) {
+        a.setPresente(true);
         beginTransaction();
         entityManager().persist(a);
         commitTransaction();

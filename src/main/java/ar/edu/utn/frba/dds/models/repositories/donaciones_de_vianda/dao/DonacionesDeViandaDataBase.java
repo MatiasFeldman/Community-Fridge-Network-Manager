@@ -13,6 +13,7 @@ import java.util.Optional;
 public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(DonacionDeVianda donacionDeVianda) {
+        donacionDeVianda.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeVianda);
         commitTransaction();

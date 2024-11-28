@@ -12,6 +12,7 @@ import java.util.Optional;
 public class VisitaHeladeraDB implements VisitaHeladeraDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(VisitaAHeladera visita) {
+        visita.setPresente(true);
         beginTransaction();
         entityManager().persist(visita);
         commitTransaction();

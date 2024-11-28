@@ -32,17 +32,17 @@ import javax.persistence.*;
 public class ColaboradorHumano extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
     private Usuario user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "duenio")
     private List<TarjetaColaborador> tarjetas;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_atributo_obligatorio")
     private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 

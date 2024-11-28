@@ -8,6 +8,7 @@ import java.util.List;
 public class IntentosDeAperturaDataBase implements IntentosDeAperturaDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(IntentoAperturaResuelto intento) {
+        intento.setPresente(true);
         beginTransaction();
         entityManager().persist(intento);
         commitTransaction();

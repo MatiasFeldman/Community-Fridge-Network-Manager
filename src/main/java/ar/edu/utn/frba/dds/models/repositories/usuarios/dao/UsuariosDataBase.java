@@ -10,6 +10,7 @@ import java.util.Optional;
 public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit {
     @Override
     public void guardar(Usuario usuario) {
+        usuario.setPresente(true);
         beginTransaction();
         entityManager().persist(usuario);
         commitTransaction();
@@ -42,13 +43,24 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
 
     @Override
     public Optional<Usuario> buscarPorUsername(String username) {
-        return entityManager()
-                .createQuery("SELECT u FROM Usuario u WHERE u.user = :username AND u.presente = true", Usuario.class)
-                .setParameter("username", username)
-                .getResultList()
-                .stream()
-                .findFirst();
+        try {
+            List<Usuario> usuarios = entityManager()
+                    .createQuery("SELECT u FROM Usuario u WHERE u.user = :username AND u.presente = true", Usuario.class)
+                    .setParameter("username", username)
+                    .getResultList();
+            if (usuarios.isEmpty()) {
+                System.out.println("Usuario no encontrado");
+                return Optional.empty();
+            } else {
+                System.out.println("Usuario encontrado: " + usuarios.get(0).getUser());
+                return Optional.of(usuarios.get(0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al buscar el usuario en la base de datos", e);
+        }
     }
+
 
     @Override
     public boolean existeUsername(String username) {

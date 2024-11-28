@@ -4,10 +4,12 @@ import ar.edu.utn.frba.dds.dtos.ofertas.OfertaOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.error404exception;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Canjes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Oferta;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
+import ar.edu.utn.frba.dds.models.repositories.canjes.CanjesRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
@@ -16,6 +18,7 @@ import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -126,7 +129,15 @@ public class OfertasController {
                         ColaboradorHumano usuario = usuarioOptional.get();
 
                         usuario.canjearOferta(oferta);
+
+
+
+                        Canjes canje = new Canjes(oferta, usuario.getUser() ,LocalDate.now(), oferta.getPuntosNecesarios());
+
+                        ServiceLocator.instanceOf(CanjesRepository.class).guardar(canje);
+
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
+
                         ServiceLocator.instanceOf(HumanosRepository.class).actualizar(usuario);
 
                         ctx.redirect("/ofertas?success=true");
@@ -141,6 +152,11 @@ public class OfertasController {
                         Juridica usuario = usuarioOptional.get();
 
                         usuario.canjearOferta(oferta);
+
+                        Canjes canje = new Canjes(oferta, usuario.getUser() ,LocalDate.now(), oferta.getPuntosNecesarios());
+
+                        ServiceLocator.instanceOf(CanjesRepository.class).guardar(canje);
+
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
 
                         ServiceLocator.instanceOf(JuridicasRepository.class).modificar(usuario);

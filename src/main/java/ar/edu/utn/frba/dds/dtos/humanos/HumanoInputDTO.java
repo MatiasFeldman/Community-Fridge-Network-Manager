@@ -26,7 +26,6 @@ public class HumanoInputDTO {
     private List<AtributoHumanoRespondido> atributosObligatorios;
     private List<String> nombresMediosDeContacto;
     private List<AtributoHumanoRespondido> atributosOpcionales;
-    private List<Canjes> canjesRealizados;
     private Usuario user;
     private Direccion direccion;
 
@@ -34,7 +33,6 @@ public class HumanoInputDTO {
         HumanoInputDTO dto = new HumanoInputDTO();
         dto.atributosObligatorios = new ArrayList<>();
         dto.atributosOpcionales = new ArrayList<>();
-        dto.canjesRealizados = new ArrayList<>();
         dto.nombresMediosDeContacto = new ArrayList<>();
         dto.nombresMediosDeContacto.add("Mail");
         dto.nombresMediosDeContacto.add("WhatsApp");

@@ -3,16 +3,20 @@ package ar.edu.utn.frba.dds.controllers;
 import ar.edu.utn.frba.dds.dtos.heladeras.HeladeraOutputDTO;
 import ar.edu.utn.frba.dds.exceptions.SolicitudIncorrectaException;
 import ar.edu.utn.frba.dds.exceptions.dondeDonarDireccionIncorrectaException;
+import ar.edu.utn.frba.dds.models.entities.colaboraciones.Canjes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Rubro;
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personas.ColaboradorHumano;
 import ar.edu.utn.frba.dds.models.entities.personas.Juridica;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.GeoRefDeDirecc;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.LugarDonacion;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.canjes.CanjesRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.api_integracion.APIAdapter;
 import ar.edu.utn.frba.dds.services.api_integracion.ApiIntegracionGrupo1;
 import ar.edu.utn.frba.dds.services.georef.GobiernoAPI;
@@ -309,23 +313,21 @@ public class ViewsController {
         List<String> roles = ctx.sessionAttribute("roles");
         Double puntos = 0.0;
         Map<String, Object> model = new HashMap<>();
-        if(roles.contains("HUMANO")){
-            Optional<ColaboradorHumano> humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
-            if(humano.isPresent()){
-                puntos = humano.get().calcularPuntaje();
-                model.put("canjesRealizados", humano.get().getCanjesRealizados());
-            } else {
-                throw new SolicitudIncorrectaException();
+        Optional<Usuario> usuarioOptional = ServiceLocator.instanceOf(UsuariosRepository.class).buscarPorId(usuarioId);
+
+
+        if (usuarioOptional.isPresent()){
+         List < Canjes > canjes = ServiceLocator.instanceOf(CanjesRepository.class).buscarPorUsuario(usuarioOptional.get());
+
+            for (Canjes canje : canjes){
+                puntos += canje.getPuntos_necesario();
             }
-        } else if (roles.contains("JURIDICA")){
-            Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId);
-            if(juridica.isPresent()){
-                puntos = juridica.get().calcularPuntaje();
-                model.put("canjesRealizados", juridica.get().getCanjesRealizados());
-            } else {
-                throw new SolicitudIncorrectaException();
-            }
-        } else {
+
+            model.put("canjesRealizados", canjes);
+
+
+        }
+         else {
             throw new SolicitudIncorrectaException();
         }
 

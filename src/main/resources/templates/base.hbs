@@ -38,7 +38,7 @@
                 <a class="nav-link text-dark" href="/ofertas">Ofertas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="/colaborar">Colaborar</a>
+                <a class="nav-link text-dark" href="/colaboraciones">Colaborar</a>
             </li>
             {{/if}}
             <li class="nav-item">
@@ -60,7 +60,7 @@
                     {{#if (isEqual rolUsuario "ADMIN")}}
                         <li><a class="dropdown-item" href="/heladeras/reportes">Ver Reportes</a></li>
                         <li><a class="dropdown-item" href="/colaboradores">Ver Colaboradores</a></li>
-                        <li><a class="dropdown-item" href="/registro/modificar-registro-humano">Administar Registro Humanos</a></li>
+                        <li><a class="dropdown-item" href="/registro/registro-humano">Administar Registro Humanos</a></li>
                     {{else}}
                         <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
                         {{#if (isEqual rolUsuario "TECNICO")}}
@@ -108,7 +108,7 @@
             <div class="footer-column text-center">
                 <h5>Ayúdanos a ayudar</h5>
                 <p>Ayudemos a las personas vulnerables</p>
-                <a href="/colaborar">
+                <a href="/colaboraciones">
                     <button class="boton">Donar</button>
                 </a>
             </div>

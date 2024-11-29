@@ -29,7 +29,7 @@ public class HumanoInputDTO {
     private Usuario user;
     private Direccion direccion;
 
-    public static HumanoInputDTO create(String username, String password, AtributoHumanoRespondido... atributos) {
+    public static HumanoInputDTO create(Usuario user, AtributoHumanoRespondido... atributos) {
         HumanoInputDTO dto = new HumanoInputDTO();
         dto.atributosObligatorios = new ArrayList<>();
         dto.atributosOpcionales = new ArrayList<>();
@@ -38,7 +38,7 @@ public class HumanoInputDTO {
         dto.nombresMediosDeContacto.add("WhatsApp");
         dto.nombresMediosDeContacto.add("Telegram");
         dto.direccion = null;
-        dto.user = new Usuario(username, password, List.of(TipoRol.HUMANO));
+        dto.user = user;
 
         for (AtributoHumanoRespondido atributo : atributos) {
                 if (atributo.getAtributo().getTipo() == TipoAtributo.OBLIGATORIO) {

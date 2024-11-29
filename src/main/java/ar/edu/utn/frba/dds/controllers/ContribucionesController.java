@@ -100,6 +100,11 @@ public class ContribucionesController {
 
         ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
 
+        if (colaboradorHumano.getTarjetaPrincipal() == null) {
+            System.out.println("No tiene tarjeta principal");
+            throw new SolicitudIncorrectaException();
+        }
+
         DonacionDeVianda donacionDeVianda = DonacionDeVianda.of(heladera, colaboradorHumano);
 
         DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
@@ -107,9 +112,15 @@ public class ContribucionesController {
 
         SolicitudApertura solicitud = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladera, 1, MotivoApertura.DONAR, donacionDeVianda.getId());
 
+        System.out.println("Solicitud: " + solicitud);
+
         heladera.agregarSolicitudApertura(solicitud);
 
+        System.out.println("Solicitud agregada a heladera");
+
         ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
+
+        System.out.println("Heladera modificada");
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");

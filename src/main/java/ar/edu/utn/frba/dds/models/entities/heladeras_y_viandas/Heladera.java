@@ -73,8 +73,9 @@ public class Heladera extends Persistente {
 
     private static final String BROKER_URL = "tcp://broker.hivemq.com:1883";
 
-    @Transient
-    private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
+    @OneToMany(mappedBy = "heladera", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SolicitudApertura> solicitudes = new ArrayList<>();
+
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SuscripcionAHeladera> suscriptores;

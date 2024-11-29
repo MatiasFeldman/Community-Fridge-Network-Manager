@@ -65,16 +65,11 @@ public class Initializer {
         System.out.println("Repositorios inicializados");
 
 
-        /*
+
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
 
-         */
-
-
-
-        // creacion de heladeras
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
@@ -297,7 +292,7 @@ public class Initializer {
         List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1, tipoDocumento_respondido1, documento_respondido1);
         // creacion de atributos colaboradores humanos
 
-        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales,new ArrayList<>(), u2, d1);
+        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales, u2, d1);
 
         ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
 
@@ -315,7 +310,7 @@ public class Initializer {
         List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2,email_respondido);
         List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido,tipoDocumento_respondido2,documento_respondido2);
 
-        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2,new ArrayList<>() , u4, d2);
+        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u4, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
 

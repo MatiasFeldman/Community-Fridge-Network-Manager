@@ -97,7 +97,7 @@ public class RegisterCargaMasiva {
     }
 
     public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Canjes> canjes , Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales,canjes , userCreado, null);
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales , userCreado, null);
         return HumanoFactory.crear(dto);
     }
 

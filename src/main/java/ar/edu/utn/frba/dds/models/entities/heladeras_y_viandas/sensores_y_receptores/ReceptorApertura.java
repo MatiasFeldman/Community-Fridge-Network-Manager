@@ -57,23 +57,37 @@ public class ReceptorApertura implements IMqttMessageListener {
 
         ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorTarjeta(idTarjeta).get();
 
-        System.out.println("Colaborador: " + colaborador.getUsername());
 
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
 
-        System.out.println("Heladera: " + posibleHeladera.isPresent());
+System.out.println("id de tarjeta: " + idTarjeta);
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonRta = mapper.createObjectNode();
 
+        System.out.println("Object mappers creados");
+
         if (posibleHeladera.isPresent()) {
             Heladera heladera = posibleHeladera.get();
-            SolicitudApertura solicitud = heladera.buscarSolicitud(idTarjeta).get();
+
+            System.out.println("Cantidad de solicitudes de apertura: " + heladera.getSolicitudes().size());
+
+
+            heladera.getSolicitudes().forEach(solicitud -> System.out.println("Solicitud: " + solicitud.getId()));
+
+            Optional<SolicitudApertura> posiblesolicitud = heladera.buscarSolicitud(idTarjeta);
+
+            SolicitudApertura solicitud = posiblesolicitud.get();
+
+            System.out.println("Solicitud encontrada: " + solicitud.getId());
+
             jsonRta.put("id_heladera", idHeladera);
             jsonRta.put("id_tarjeta", idTarjeta);
             jsonRta.put("id_colaborador", colaborador.getIdUsuario());
             jsonRta.put("fecha", LocalDateTime.now().toString());
             jsonRta.put("id_colaboracion", solicitud.getIdColaboracion());
+
+
 
             if (heladera.tieneAcceso(idTarjeta) && LocalDateTime.now().isBefore(solicitud.getFechaDeExpiracion())){
                 jsonRta.put("acceso", "permitido");
@@ -81,12 +95,19 @@ public class ReceptorApertura implements IMqttMessageListener {
                 jsonRta.put("acceso", "denegado");
             }
 
+            System.out.println("Respuesta: " + jsonRta);
+
         } else{
             jsonRta.put("error", "Heladera no encontrada");
         }
 
         String rtaString = mapper.writeValueAsString(jsonRta);
+
+        System.out.println("Mensaje a publicar: " + rtaString);
+
         MqttMessage rta = new MqttMessage(rtaString.getBytes());
         cliente_intentos.publish("heladeras/intentos_de_apertura", rta);
+
+        System.out.println("Mensaje publicado");
     }
 }

@@ -69,14 +69,28 @@ public class MqttReceptorIntento implements IMqttMessageListener {
         Boolean exitoso = Objects.equals(json.get("acceso").asText(), "permitido");
 
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
+
+
         if (posibleHeladera.isPresent()) {
             Heladera heladera = posibleHeladera.get();
+            System.out.println("Heladera encontrada: " + posibleHeladera.get().getId());
+
+
             SolicitudApertura solicitudApertura = heladera.buscarSolicitud(idTarjeta).get();
+
+            System.out.println("Solicitud encontrada: " + solicitudApertura.getId());
+
             ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idColaborador).get();
+
+            System.out.println("Colaborador encontrado: " + colaborador.getIdUsuario());
+
             if (exitoso) {
+
+                System.out.println("Intento exitoso");
 
                 switch (solicitudApertura.getMotivoApertura()) {
                     case DONAR -> {
+
                         DonacionDeVianda donacion = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class).buscarPorId(idColab).get();
                         donacion.setFinalizada(true);
                         ServiceLocator.instanceOf(DonacionesDeViandaRepository.class).actualizar(donacion);

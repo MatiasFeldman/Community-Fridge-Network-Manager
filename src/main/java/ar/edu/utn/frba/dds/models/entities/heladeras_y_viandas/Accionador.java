@@ -46,7 +46,7 @@ public class Accionador {
         this.registrarIncidente(tipo, fecha, heladera);
         System.out.println(this.comandos.size());
         this.comandos.forEach(c -> System.out.println("Ejecutando comando: " + c.getClass().getSimpleName()));
-        this.comandos.forEach(comando -> comando.ejecutar(heladera, tipo.name()));
+        this.comandos.forEach(comando -> comando.ejecutar(heladera, tipo.toString()));
     }
 
     public void sucedeFallaTecnica(DenunciaFallaTecnica denuncia, Heladera heladera) {

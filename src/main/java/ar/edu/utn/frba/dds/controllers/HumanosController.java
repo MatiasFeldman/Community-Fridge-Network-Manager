@@ -84,6 +84,8 @@ public class HumanosController {
         if(ValidadorUsernames.existe(username, "Humano")){
             context.status(HttpStatus.BAD_REQUEST);
 
+            System.out.println("El nombre de usuario ya existe");
+
             throw new UsuarioHumanoExistenteException("El nombre de usuario ya existe");
         }
 
@@ -111,10 +113,10 @@ public class HumanosController {
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         String passwordHashed = hash.hashPassword(password);
 
-        Usuario usuario = new Usuario(username, passwordHashed, List.of(TipoRol.HUMANO));
+        Usuario user = new Usuario(username, passwordHashed, List.of(TipoRol.HUMANO));
 
 
-        HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
+        HumanoInputDTO dto = HumanoInputDTO.create(user,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
         if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
             Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
             dto.setDireccion(direccion);
@@ -123,8 +125,8 @@ public class HumanosController {
         }
 
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(user);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
-        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         System.out.print("recibimos el formulario");
         context.redirect("/");
     }

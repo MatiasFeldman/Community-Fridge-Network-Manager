@@ -24,10 +24,15 @@ public class AvisarTecnico implements Comando {
     @Override
     @SneakyThrows
     public void ejecutar(Heladera heladera, String mensaje) {
+
+        System.out.println(mensaje);
+
         CompletableFuture.runAsync(() -> {
             try {
+                // Simula una operación que toma tiempo
                 Direccion origen = heladera.getDireccion();
                 Optional<Tecnico> tecnico = tecnicos.buscarMasCercano(origen);
+
                 if (tecnico.isPresent()) {
                     MimeMailSender mailSender = ServiceLocator.instanceOf(MimeMailSender.class);
                     String tipo = switch (mensaje) {
@@ -38,22 +43,22 @@ public class AvisarTecnico implements Comando {
                         default -> "heladera";
                     };
 
+                    System.out.println("Le voy a avisar al técnico: " + tecnico.get().getApellido() + ", " + tecnico.get().getNombre());
 
-                    System.out.println("Le voy a avisar al tecnico: " + tecnico.get().getApellido() + ", " + tecnico.get().getNombre());
-
-
-                    Mail mail = new Mail("Se ha encontrado el siguiente problema en la heladera " + heladera.getId() + " - " + heladera.getDireccion().getDireccion() + ": " + tipo, "FALLA EN LA HELADERA");
+                    Mail mail = new Mail(
+                            "Se ha encontrado el siguiente problema en la heladera " + heladera.getId() +
+                                    " - " + heladera.getDireccion().getDireccion() + ": " + tipo,
+                            "FALLA EN LA HELADERA"
+                    );
                     mailSender.enviarMail(tecnico.get().getMail(), mail);
-
-
-
-
                 } else {
                     throw new NoHayTecnicosDisponiblesException("No hay técnicos disponibles por la zona");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Registra cualquier error, pero no interrumpe el flujo principal
             }
         });
+
+
     }
 }

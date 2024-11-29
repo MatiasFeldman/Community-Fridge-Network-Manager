@@ -13,7 +13,7 @@ document.getElementById("recomendacionForm").addEventListener("submit", function
     formData.append("radio", radio);
 
     // Hacer la solicitud POST
-    fetch("/recomendar-puntos", {
+    fetch("/recomendacion-puntos", {
         method: "POST",
         body: formData
     })

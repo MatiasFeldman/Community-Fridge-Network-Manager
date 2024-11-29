@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.canjes.dao;
 
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.Canjes;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.OfrecerProductoOServicio;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import java.util.List;
@@ -40,5 +41,13 @@ public class CanjesDB implements CanjesDAO, WithSimplePersistenceUnit {
     public void eliminar(Canjes canje) {
         canje.setPresente(false);
         this.actualizar(canje);
+    }
+
+    @Override
+    public List<Canjes> buscarPorUsuario(Usuario usuario) {
+        return entityManager()
+                .createQuery("SELECT c FROM Canjes c WHERE c.usuario.id = :idUsuario AND c.presente = true", Canjes.class)
+                .setParameter("idUsuario", usuario.getId())
+                .getResultList();
     }
 }

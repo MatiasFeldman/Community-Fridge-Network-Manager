@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
@@ -36,12 +37,10 @@ public class RegisterCargaMasiva {
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
-        String formaColaboracion = line[5];
-        Integer cantidad = Integer.parseInt(line[6]);
+        String formaColaboracion = line[6];
+        Integer cantidad = Integer.parseInt(line[7]);
 
         Atributo nombreAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
-        Atributo tipoDocumentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Tipo Documento").get();
-        Atributo documentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Documento").get();
         Atributo apellidoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
         Atributo nacimientoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
         Atributo mailAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
@@ -58,14 +57,15 @@ public class RegisterCargaMasiva {
                 AtributoHumanoRespondido.create(direccionAtributo, ""),
                 AtributoHumanoRespondido.create(provinciaAtributo, ""),
                 AtributoHumanoRespondido.create(wppAtributo, ""),
-                AtributoHumanoRespondido.create(tipoDocumentoAtributo, tipoDocumento),
-                AtributoHumanoRespondido.create(documentoAtributo, documento),
                 AtributoHumanoRespondido.create(telegramAtributo, "")));
 
         UsuarioConPassword userCreadoConPass = this.crearUsuarioHumanoPass(nombre, apellido);
         Usuario userCreado = userCreadoConPass.getUsuario();
 
         ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales,new ArrayList<>() ,userCreado);
+
+        creado.setTipoDocumento(Tipo_documento.valueOf(tipoDocumento));
+        creado.setDocumento(documento);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 

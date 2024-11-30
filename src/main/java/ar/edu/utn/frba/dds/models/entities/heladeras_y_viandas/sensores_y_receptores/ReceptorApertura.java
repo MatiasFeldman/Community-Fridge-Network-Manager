@@ -60,17 +60,12 @@ public class ReceptorApertura implements IMqttMessageListener {
 
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
 
-System.out.println("id de tarjeta: " + idTarjeta);
-
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonRta = mapper.createObjectNode();
 
-        System.out.println("Object mappers creados");
 
         if (posibleHeladera.isPresent()) {
             Heladera heladera = posibleHeladera.get();
-
-            System.out.println("Cantidad de solicitudes de apertura: " + heladera.getSolicitudes().size());
 
 
             heladera.getSolicitudes().forEach(solicitud -> System.out.println("Solicitud: " + solicitud.getId()));
@@ -79,7 +74,6 @@ System.out.println("id de tarjeta: " + idTarjeta);
 
             SolicitudApertura solicitud = posiblesolicitud.get();
 
-            System.out.println("Solicitud encontrada: " + solicitud.getId());
 
             jsonRta.put("id_heladera", idHeladera);
             jsonRta.put("id_tarjeta", idTarjeta);
@@ -108,6 +102,5 @@ System.out.println("id de tarjeta: " + idTarjeta);
         MqttMessage rta = new MqttMessage(rtaString.getBytes());
         cliente_intentos.publish("heladeras/intentos_de_apertura", rta);
 
-        System.out.println("Mensaje publicado");
     }
 }

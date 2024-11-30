@@ -240,7 +240,7 @@ public class Initializer {
         // creacion de usuarios
 
 
-        Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
+        Usuario u1 = new Usuario("usuario1", hash.hashPassword("admin") , List.of(TipoRol.ADMIN));
         Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
@@ -268,8 +268,6 @@ public class Initializer {
         //creamos los tributos posibles
         Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
         Atributo apellido = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
-        Atributo tipoDocumento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Tipo Documento").get();
-        Atributo documento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Documento").get();
         Atributo nacimiento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
         Atributo mail = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
         Atributo direccion = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Direccion").get();
@@ -279,8 +277,6 @@ public class Initializer {
 
         AtributoHumanoRespondido nombre_respondido1 = new AtributoHumanoRespondido("Pedro", nombre);
         AtributoHumanoRespondido apellido_respondido1 = new AtributoHumanoRespondido("Perez", apellido);
-        AtributoHumanoRespondido tipoDocumento_respondido1 = new AtributoHumanoRespondido("DNI", tipoDocumento);
-        AtributoHumanoRespondido documento_respondido1 = new AtributoHumanoRespondido("12345678", documento);
         AtributoHumanoRespondido email_respondido1 = new AtributoHumanoRespondido("", mail);
         AtributoHumanoRespondido nacimiento_respondido1 = new AtributoHumanoRespondido("1990-01-01", nacimiento);
         AtributoHumanoRespondido direccion_respondido1 = new AtributoHumanoRespondido("", direccion);
@@ -289,7 +285,7 @@ public class Initializer {
         AtributoHumanoRespondido telegram_respondido1 = new AtributoHumanoRespondido("", telegram);
 
         List<AtributoHumanoRespondido> obligatorios = List.of(nombre_respondido1, apellido_respondido1,wss_respondido1);
-        List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1, tipoDocumento_respondido1, documento_respondido1);
+        List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1);
         // creacion de atributos colaboradores humanos
 
         HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales, u2, d1);
@@ -298,8 +294,6 @@ public class Initializer {
 
         AtributoHumanoRespondido nombre_respondido2 = new AtributoHumanoRespondido("Luquitas", nombre);
         AtributoHumanoRespondido apellido_respondido2 = new AtributoHumanoRespondido("Perez", apellido);
-        AtributoHumanoRespondido tipoDocumento_respondido2 = new AtributoHumanoRespondido("LE", tipoDocumento);
-        AtributoHumanoRespondido documento_respondido2 = new AtributoHumanoRespondido("55555", documento);
         AtributoHumanoRespondido email_respondido = new AtributoHumanoRespondido("facu@gmail.com", mail);
         AtributoHumanoRespondido nacimiento_respondido2 = new AtributoHumanoRespondido("1992-01-01", nacimiento);
         AtributoHumanoRespondido direccion_respondido = new AtributoHumanoRespondido("", direccion);
@@ -308,7 +302,7 @@ public class Initializer {
         AtributoHumanoRespondido telegram_respondido = new AtributoHumanoRespondido("", telegram);
 
         List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2,email_respondido);
-        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido,tipoDocumento_respondido2,documento_respondido2);
+        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido);
 
         HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u4, d2);
 

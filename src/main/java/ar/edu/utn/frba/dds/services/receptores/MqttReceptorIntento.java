@@ -58,7 +58,6 @@ public class MqttReceptorIntento implements IMqttMessageListener {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        System.out.println("Mensaje de intento de apertura recibido: " + mqttMessage.toString());
 
         JsonNode json = ConversorJSON.convertir(mqttMessage.toString());
         Long idHeladera = json.get("id_heladera").asLong();
@@ -78,15 +77,9 @@ public class MqttReceptorIntento implements IMqttMessageListener {
 
             SolicitudApertura solicitudApertura = heladera.buscarSolicitud(idTarjeta).get();
 
-            System.out.println("Solicitud encontrada: " + solicitudApertura.getId());
-
             ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idColaborador).get();
 
-            System.out.println("Colaborador encontrado: " + colaborador.getIdUsuario());
-
             if (exitoso) {
-
-                System.out.println("Intento exitoso");
 
                 switch (solicitudApertura.getMotivoApertura()) {
                     case DONAR -> {

@@ -29,7 +29,6 @@ public class AvisarTecnico implements Comando {
 
         CompletableFuture.runAsync(() -> {
             try {
-                // Simula una operación que toma tiempo
                 Direccion origen = heladera.getDireccion();
                 Optional<Tecnico> tecnico = tecnicos.buscarMasCercano(origen);
 

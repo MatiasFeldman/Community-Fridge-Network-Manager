@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
@@ -51,6 +52,14 @@ public class ColaboradorHumano extends Persistente {
 
     @Embedded
     private Direccion direccion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_documento")
+    private Tipo_documento tipoDocumento;
+
+
+    @Column(name = "documento")
+    private String documento;
 
     @Column(name = "puntos_canjeados")
     private Double puntosCanjeados;

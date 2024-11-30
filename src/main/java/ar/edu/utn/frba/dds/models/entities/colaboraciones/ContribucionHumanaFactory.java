@@ -13,7 +13,7 @@ public class ContribucionHumanaFactory {
     public static Contribucion createForCargaMasiva(String strategy, Integer cant, ColaboradorHumano colaboradorHumano) {
         return switch (strategy) {
             case "DINERO" -> ContribucionHumanaFactory.crearDonacionDeDinero(cant, colaboradorHumano);
-            case "DONACION_VIANDA" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano);
+            case "DONACION_VIANDAS" -> ContribucionHumanaFactory.crearDonacionDeViandaFinalizada(colaboradorHumano);
             case "REDISTRIBUCION_VIANDAS" -> ContribucionHumanaFactory.crearDistribucionDeViandaFinalizada(cant, colaboradorHumano);
             case "ENTREGA_TARJETAS" -> new RegistroPersonaVulnerable();
             default -> throw new InvalidContribucionException("Forma de contribucion invalida.");

@@ -70,9 +70,11 @@ public class ReceptorTemperatura implements IMqttMessageListener {
 
         JsonNode json = ConversorJSON.convertir(jsonMessage);
         Double temperatura = Double.valueOf(json.get("temperatura").asText());
-        Long idHeladera = Long.valueOf(json.get("idHeladera").asText());
+        Long idHeladera = Long.valueOf(json.get("id_heladera").asText());
 
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
+
+
 
         posibleHeladera.ifPresent(h -> {
             h.evaluarTemperatura(temperatura);

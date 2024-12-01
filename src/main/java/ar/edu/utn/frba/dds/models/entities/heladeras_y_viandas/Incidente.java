@@ -33,7 +33,7 @@ public class Incidente extends Persistente {
     private TipoEvento tipo;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_colaborador", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
     private Usuario colaborador;
 
     @Column(name = "descripcion", columnDefinition = "TEXT")

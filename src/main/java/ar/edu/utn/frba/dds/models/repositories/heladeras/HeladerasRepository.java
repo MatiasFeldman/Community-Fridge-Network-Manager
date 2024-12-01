@@ -35,6 +35,7 @@ public class HeladerasRepository {
 
     public void modificar(Heladera heladera){
         this.heladeras.modificar(heladera);
+        System.out.println("Heladera modificada");
     }
 
     public List<Heladera> buscarHeladerasPorDireccion(String valorBusqueda) {

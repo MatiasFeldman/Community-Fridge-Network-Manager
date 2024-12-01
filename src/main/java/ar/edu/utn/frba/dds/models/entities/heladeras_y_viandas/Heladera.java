@@ -215,10 +215,15 @@ public class Heladera extends Persistente {
     public void evaluarTemperatura(Double temp) {
         this.ultimaTemperaturaRegistrada = temp;
         this.ultFechaRegistrada = LocalDateTime.now();
+        System.out.println("Temperatura registrada en la heladera " + this.getId() + ": " + temp);
+
         if (!this.temperaturaValida(temp)) {
+            System.out.println("Temperatura fuera de rango en la heladera " + this.getId());
             ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
             System.out.println("Temperatura fuera de rango en la healdera " + this.getId());
         }
+
+        System.out.println("Temperatura registrada en la heladera " + this.getId() + ": " + temp);
     }
 
     public void evaluarConexion() {

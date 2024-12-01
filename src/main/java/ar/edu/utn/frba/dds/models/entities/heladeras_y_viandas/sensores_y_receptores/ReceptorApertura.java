@@ -68,32 +68,38 @@ public class ReceptorApertura implements IMqttMessageListener {
             Heladera heladera = posibleHeladera.get();
 
 
-            heladera.getSolicitudes().forEach(solicitud -> System.out.println("Solicitud: " + solicitud.getId()));
-
             Optional<SolicitudApertura> posiblesolicitud = heladera.buscarSolicitud(idTarjeta);
 
-            SolicitudApertura solicitud = posiblesolicitud.get();
 
-
-            jsonRta.put("id_heladera", idHeladera);
-            jsonRta.put("id_tarjeta", idTarjeta);
-            jsonRta.put("id_colaborador", colaborador.getIdUsuario());
-            jsonRta.put("fecha", LocalDateTime.now().toString());
-            jsonRta.put("id_colaboracion", solicitud.getIdColaboracion());
-
-
-
-            if (heladera.tieneAcceso(idTarjeta) && LocalDateTime.now().isBefore(solicitud.getFechaDeExpiracion())){
-                jsonRta.put("acceso", "permitido");
-            } else{
+            if (posiblesolicitud.isEmpty()) {
+                jsonRta.put("id_heladera", idHeladera);
+                jsonRta.put("id_tarjeta", idTarjeta);
+                jsonRta.put("id_colaborador", colaborador.getIdUsuario());
+                jsonRta.put("fecha", LocalDateTime.now().toString());
                 jsonRta.put("acceso", "denegado");
+            } else {
+                SolicitudApertura solicitud = posiblesolicitud.get();
+
+                jsonRta.put("id_heladera", idHeladera);
+                jsonRta.put("id_tarjeta", idTarjeta);
+                jsonRta.put("id_colaborador", colaborador.getIdUsuario());
+                jsonRta.put("fecha", LocalDateTime.now().toString());
+                jsonRta.put("id_colaboracion", solicitud.getIdColaboracion());
+
+                if (heladera.tieneAcceso(idTarjeta) && LocalDateTime.now().isBefore(solicitud.getFechaDeExpiracion())) {
+                    jsonRta.put("acceso", "permitido");
+                } else {
+                    jsonRta.put("acceso", "denegado");
+                }
+
             }
 
             System.out.println("Respuesta: " + jsonRta);
 
-        } else{
+        } else {
             jsonRta.put("error", "Heladera no encontrada");
         }
+
 
         String rtaString = mapper.writeValueAsString(jsonRta);
 

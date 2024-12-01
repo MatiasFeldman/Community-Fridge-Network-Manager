@@ -62,7 +62,6 @@ public class MqttReceptorIntento implements IMqttMessageListener {
         JsonNode json = ConversorJSON.convertir(mqttMessage.toString());
         Long idHeladera = json.get("id_heladera").asLong();
         Long idTarjeta = json.get("id_tarjeta").asLong();
-        Long idColab = json.get("id_colaboracion").asLong();
         Long idColaborador = json.get("id_colaborador").asLong();
         LocalDateTime fecha = LocalDateTime.parse(json.get("fecha").asText());
         Boolean exitoso = Objects.equals(json.get("acceso").asText(), "permitido");
@@ -72,15 +71,20 @@ public class MqttReceptorIntento implements IMqttMessageListener {
 
         if (posibleHeladera.isPresent()) {
             Heladera heladera = posibleHeladera.get();
-            System.out.println("Heladera encontrada: " + posibleHeladera.get().getId());
 
 
-            SolicitudApertura solicitudApertura = heladera.buscarSolicitud(idTarjeta).get();
+            Optional<SolicitudApertura> posibleSolicitud = heladera.buscarSolicitud(idTarjeta);
+
+            SolicitudApertura solicitudApertura = null;
+
+            if (posibleSolicitud.isPresent()) {
+                solicitudApertura = posibleSolicitud.get();
+            }
 
             ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idColaborador).get();
 
             if (exitoso) {
-
+                Long idColab = json.get("id_colaboracion").asLong();
                 switch (solicitudApertura.getMotivoApertura()) {
                     case DONAR -> {
 
@@ -110,6 +114,7 @@ public class MqttReceptorIntento implements IMqttMessageListener {
 
             IntentoAperturaResuelto intento = new IntentoAperturaResuelto(colaborador.buscarTarjetaPorId(idTarjeta), colaborador, heladera, fecha, exitoso);
             ServiceLocator.instanceOf(IntentosDeAperturaRepository.class).guardar(intento);
+
         }
 
 

@@ -69,6 +69,8 @@ public class Initializer {
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
+        ReceptorTemperatura receptorTemp = ReceptorTemperatura.create(ServiceLocator.instanceOf(HeladerasRepository.class));
+        ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
 
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
@@ -215,25 +217,7 @@ public class Initializer {
 
 
 
-/*
-        SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
-        SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
-        SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
-        SensorTemperatura sensorTemp4 = new SensorTemperatura(h4.getId());
-        SensorTemperatura sensorTemp5 = new SensorTemperatura(h5.getId());
 
-        ReceptorTemperatura receptorTemp = ReceptorTemperatura.create(ServiceLocator.instanceOf(HeladerasRepository.class));
-
-
-        SensorDeMovimiento sensorMov1 = new SensorDeMovimiento(h1.getId());
-        SensorDeMovimiento sensorMov2 = new SensorDeMovimiento(h2.getId());
-        SensorDeMovimiento sensorMov3 = new SensorDeMovimiento(h3.getId());
-        SensorDeMovimiento sensorMov4 = new SensorDeMovimiento(h4.getId());
-        SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
-
-        ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
-
- */
 
 
 

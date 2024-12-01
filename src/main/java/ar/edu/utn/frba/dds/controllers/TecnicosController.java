@@ -194,7 +194,7 @@ public class TecnicosController {
                 ServiceLocator.instanceOf(VisitaHeladeraRepository.class).actualizar(visita);
             }
 
-            ctx.redirect("/heladeras");
+            ctx.redirect("/");
 
         } catch (IllegalArgumentException e) {
             // Manejo de errores de datos inválidos

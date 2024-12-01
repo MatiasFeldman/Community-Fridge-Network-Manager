@@ -100,7 +100,10 @@ public class HeladerasController {
         model.put("titulo", "Heladeras");
 
         boolean permisoSuscripcion = verificarPermisoSuscripcion(ctx);
+        boolean permisoTecnico = verificarPermisoTecnico(ctx);
+
         model.put("permisoSuscripcion", permisoSuscripcion);
+        model.put("permisoTecnico", permisoTecnico);
 
         RenderUtils.renderizar(ctx,"heladeras/mapa-de-heladeras-user.hbs", model);
     }
@@ -180,6 +183,14 @@ public class HeladerasController {
 
         return rolesUsuario.stream()
                 .anyMatch(rol -> rol.equals("HUMANO") || rol.equals("JURIDICA"));
+    }
+
+    private boolean verificarPermisoTecnico(Context ctx) {
+        List<String> rolesUsuario = ctx.sessionAttribute("roles");
+        if (rolesUsuario == null || rolesUsuario.isEmpty()) return false;
+
+        return rolesUsuario.stream()
+                .anyMatch(rol -> rol.equals("TECNICO"));
     }
 
     private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context ctx) {

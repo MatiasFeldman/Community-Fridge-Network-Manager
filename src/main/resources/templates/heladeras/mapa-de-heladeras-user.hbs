@@ -75,17 +75,34 @@
                                     disponibles: {{this.capacidadActual}}</p>
                                 {{#if permisoSuscripcion}}
                                     <div class="dropdown-center">
-                                        <a class="boton d-block dropdown-toggle w-100" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a class="boton d-block dropdown-toggle w-100" href="#" role="button"
+                                           data-bs-toggle="dropdown" aria-expanded="false">
                                             Acciones
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/suscripcion/nueva">Suscribirse</a></li>
-                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">Falla técnica</a></li>
-                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/incidentes">Incidentes</a></li>
-                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/visitas">Visitas</a></li>
-                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/suscripciones">Suscripciones</a></li>
+                                            <li><a class="dropdown-item"
+                                                   href="/heladeras/{{this.id}}/suscripcion/nueva">Suscribirse</a></li>
+                                            {{#if this.activa}}
+                                                <li><a class="dropdown-item"
+                                                       href="/heladeras/{{this.id}}/reporte-falla-tecnica/nueva">Falla
+                                                    técnica</a></li>{{/if}}
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/incidentes">Incidentes</a>
+                                            </li>
+                                            <li><a class="dropdown-item"
+                                                   href="/heladeras/{{this.id}}/visitas">Visitas</a></li>
+                                            <li><a class="dropdown-item" href="/heladeras/{{this.id}}/suscripciones">Suscripciones</a>
+                                            </li>
                                         </ul>
                                     </div>
+                                {{/if}}
+                                {{#if permisoTecnico}}
+                                    {{#if this.activa}}
+                                    {{else}}
+                                        <a class="boton d-block w-100" href="/heladeras/{{this.id}}/visita"
+                                           role="button" aria-expanded="false">
+                                            Visitar
+                                        </a>
+                                    {{/if}}
                                 {{/if}}
                             </div>
                         </div>

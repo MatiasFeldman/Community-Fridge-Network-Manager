@@ -32,12 +32,14 @@ import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesReposi
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
+import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.micrometer.core.instrument.Counter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -437,7 +439,13 @@ public class HeladerasController {
             ServiceLocator.instanceOf(SuscripcionesRepository.class).guardar(nuevaSuscripcion);
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
 
+            final var registry = DDMetricsUtils.getInstance().getRegistry();
+            final Counter counter = registry.counter("suscripciones.heladera");
+
+            counter.increment();
             ctx.redirect("/heladeras");
+
+
         } catch (UsuarioNoEncontradoException | HeladeraNoEncontradaException | InputValidationException e) {
             // Renderizar la vista de error 400 con el mensaje específico
             Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista

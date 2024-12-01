@@ -18,11 +18,11 @@ import ar.edu.utn.frba.dds.models.repositories.humanos.HumanosRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.seguridad.HashPassword;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +32,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
+import io.micrometer.core.instrument.Counter;
 
 public class UsuariosController {
+
     public void handleLogin(Context ctx) {
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("login_counter");
+
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
 
@@ -69,6 +74,8 @@ public class UsuariosController {
                 } else {
                     ctx.redirect("/");
                 }
+
+                counter.increment();
             } else {
                 throw new ContraseniaIncorrectaException("La contraseña es incorrecta");
             }
@@ -84,6 +91,8 @@ public class UsuariosController {
         ctx.sessionAttribute("nombreUsuario", nombreUsuario);
         ctx.sessionAttribute("rolUsuario", rolUsuario);
         ctx.sessionAttribute("fotoUsuario", fotoUsuario);
+
+
     }
 
     public void handleLogout(Context ctx) {

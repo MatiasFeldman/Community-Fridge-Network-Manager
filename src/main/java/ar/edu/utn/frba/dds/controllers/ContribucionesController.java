@@ -43,11 +43,13 @@ import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
+import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import com.google.gson.Gson;
 import com.sun.xml.bind.v2.schemagen.xmlschema.ComplexType;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import io.micrometer.core.instrument.Counter;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
@@ -124,6 +126,10 @@ public class ContribucionesController {
 
         System.out.println("Heladera modificada");
 
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("donaciones_de_vianda");
+        counter.increment();
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
@@ -199,6 +205,10 @@ public class ContribucionesController {
 
         DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         distribucionesDeViandasRepository.guardar(distribucionDeViandas);
+
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("distribuciones_de_vianda");
+        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
@@ -280,6 +290,11 @@ public class ContribucionesController {
 
         DonacionDineroRepository donacionDineroRepository = ServiceLocator.instanceOf(DonacionDineroRepository.class);
         donacionDineroRepository.guardar(donacion);
+
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("donaciones.dinero");
+
+        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
@@ -363,6 +378,11 @@ public class ContribucionesController {
 
         juridica.sumarPuntaje(registroPersonaVulnerable);
 
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("personas_vulnerables");
+
+        counter.increment();
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
@@ -439,6 +459,11 @@ public class ContribucionesController {
         heladerasRepository.guardar(heladera);
 
         juridica.sumarPuntaje(hacerseCargoHeladera);
+
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("heladeras_a_cargo");
+
+        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
@@ -526,6 +551,11 @@ public class ContribucionesController {
 
         juridica.sumarPuntaje(ofrecerProductoOServicio);
 
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("ofertas_registradas");
+
+        counter.increment();
+
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
         RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
@@ -550,6 +580,9 @@ public class ContribucionesController {
                 throw new SolicitudIncorrectaException();
             }
         });
+
+        final var registry = DDMetricsUtils.getInstance().getRegistry();
+        final Counter counter = registry.counter("cargas_masivas_realizadas");
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");

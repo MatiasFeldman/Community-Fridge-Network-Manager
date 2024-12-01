@@ -225,6 +225,9 @@ public class HeladerasController {
                 contactosDTO.add(new ContactosDTO(tipoContacto, valor));
             }
         }
+
+        contactosDTO.forEach(c -> System.out.println(c.getTipoContacto() + " " + c.getValor()));
+
         model.put("contactos",contactosDTO);
     }
 
@@ -566,6 +569,8 @@ public class HeladerasController {
         model.put("titulo", "Suscripción");
         // Añadir la lógica de medios de contacto a un metodo separado
         agregarContactosUsuarioAlModelo(model, ctx);
+
+
 
         String idParam = ctx.pathParam("id");
         Long heladeraId = Long.parseLong(idParam);

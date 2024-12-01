@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class SuscripcionAHeladera extends Persistente {
 
     @Getter
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario observerSuscripcion;
 

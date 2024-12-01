@@ -59,6 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function encontrarContactoPorTipo(tipo) {
+        const contactosGuardados = JSON.parse(localStorage.getItem('contactos'));
+        console.log(contactosGuardados);
         return contactosGuardados && contactosGuardados.find(contacto => contacto.tipoContacto.toLowerCase() === tipo.toLowerCase());
     }
 

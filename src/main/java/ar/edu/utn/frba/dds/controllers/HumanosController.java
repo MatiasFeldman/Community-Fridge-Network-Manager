@@ -33,6 +33,7 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HumanosController {
     public Object crear(Object solicitud){
@@ -43,15 +44,21 @@ public class HumanosController {
 
     public void formRegistroHumano(Context context){
         List<Atributo> atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarTodas();
+        //sacamos los atributos que no van en el formulario
+        List<Atributo> atributosFiltrados = atributos.stream()
+                .filter(atributo ->
+                        !atributo.getNombre().equalsIgnoreCase("Tipo Documento") &&
+                                !atributo.getNombre().equalsIgnoreCase("Documento"))
+                .collect(Collectors.toList());
+
         List<AtributoOutputDTO> dtos = new ArrayList<>();
 
-        atributos.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
+        atributosFiltrados.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
 
         Map<String, Object> model = new HashMap<>();
         model.put("campos", dtos);
 
         RenderUtils.renderizar(context,"registro-usuario/registro-humano.hbs", model);
-        System.out.println("Se renderizo el formulario de registro de humano");
     }
 
     public void camposFormHumano(Context context){

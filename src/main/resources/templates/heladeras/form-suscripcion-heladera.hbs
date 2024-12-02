@@ -16,6 +16,13 @@
             {{heladera.nombre}} - {{heladera.direccion}}
         </p>
 
+         <!-- Span oculto para almacenar los contactos -->
+             <span id="contactos" style="display: none;">
+                 {{#each contactos}}
+                     <span class="contacto" data-tipo="{{this.tipoContacto}}" data-valor="{{this.valor}}"></span>
+                 {{/each}}
+             </span>
+
         <div class="row mt-5" id="suscripcion-container" >
 
             <div class="col-12">

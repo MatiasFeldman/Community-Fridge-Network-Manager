@@ -66,5 +66,6 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
         if (oferta.canjesRestantes() == 0) {
             this.eliminar(oferta);
         }
+        this.modficar(oferta);
     }
 }

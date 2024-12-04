@@ -33,10 +33,10 @@ public class OfertasController {
         Long idUsuario = ctx.sessionAttribute("id");
         List<String> rolUsuario = ctx.sessionAttribute("roles");
         Double misPuntos;
-        if(rolUsuario.get(0).contains("HUMANO")){
+        if(rolUsuario.contains("HUMANO")){
             Optional<ColaboradorHumano> Humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario);
             misPuntos = Humano.get().calcularPuntaje();
-        }else if (rolUsuario.get(0).contains("JURIDICA")){
+        }else if (rolUsuario.contains("JURIDICA")){
             Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario);
             misPuntos = juridica.get().calcularPuntaje();
         }else{
@@ -122,14 +122,14 @@ public class OfertasController {
                     throw new SolicitudIncorrectaException();
                 }
                 // Verificamos si el rol del usuario es HUMANO
-                if (rolUsuario.get(0).contains("HUMANO")) {
+                if (rolUsuario.contains("HUMANO")) {
                     Optional<ColaboradorHumano> usuarioOptional = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(usuarioId);
 
                     if (usuarioOptional.isPresent()) {
                         ColaboradorHumano usuario = usuarioOptional.get();
 
                         usuario.canjearOferta(oferta);
-
+                        ServiceLocator.instanceOf(HumanosRepository.class).actualizar(usuario);
 
 
                         Canjes canje = new Canjes(oferta, usuario.getUser() ,LocalDate.now(), oferta.getPuntosNecesarios());
@@ -138,20 +138,20 @@ public class OfertasController {
 
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
 
-                        ServiceLocator.instanceOf(HumanosRepository.class).actualizar(usuario);
 
                         ctx.redirect("/ofertas?success=true");
                     } else {
 
                         ctx.status(404).result("Usuario no encontrado");
                     }
-                }else if (rolUsuario.get(0).contains("JURIDICA")) {
+                }else if (rolUsuario.contains("JURIDICA")) {
                     Optional<Juridica> usuarioOptional = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(usuarioId);
 
                     if (usuarioOptional.isPresent()) {
                         Juridica usuario = usuarioOptional.get();
 
                         usuario.canjearOferta(oferta);
+                        ServiceLocator.instanceOf(JuridicasRepository.class).modificar(usuario);
 
                         Canjes canje = new Canjes(oferta, usuario.getUser() ,LocalDate.now(), oferta.getPuntosNecesarios());
 
@@ -159,7 +159,7 @@ public class OfertasController {
 
                         ServiceLocator.instanceOf(OfertasRepository.class).canjearOferta(oferta);
 
-                        ServiceLocator.instanceOf(JuridicasRepository.class).modificar(usuario);
+
 
                         ctx.redirect("/ofertas?success=true");
                     } else {

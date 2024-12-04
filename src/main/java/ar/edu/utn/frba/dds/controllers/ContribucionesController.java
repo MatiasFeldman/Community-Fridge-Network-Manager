@@ -114,6 +114,8 @@ public class ContribucionesController {
         DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         donacionesDeViandaRepository.guardar(donacionDeVianda);
 
+        humanosRepository.actualizar(colaboradorHumano);
+
         SolicitudApertura solicitud = SolicitudApertura.create(colaboradorHumano, LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladera, 1, MotivoApertura.DONAR, donacionDeVianda.getId());
 
         System.out.println("Solicitud: " + solicitud);
@@ -206,6 +208,8 @@ public class ContribucionesController {
         DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         distribucionesDeViandasRepository.guardar(distribucionDeViandas);
 
+        humanosRepository.actualizar(colaboradorHumano);
+
         final var registry = DDMetricsUtils.getInstance().getRegistry();
         final Counter counter = registry.counter("distribuciones_de_vianda");
         counter.increment();
@@ -267,6 +271,7 @@ public class ContribucionesController {
             }
 
             colaboradorHumano.sumarPuntaje(donacion);
+            humanosRepository.actualizar(colaboradorHumano);
         } else if (roles.contains("JURIDICA")) {
             JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
             Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
@@ -284,6 +289,7 @@ public class ContribucionesController {
             }
 
             juridica.sumarPuntaje(donacion);
+            juridicasRepository.modificar(juridica);
         } else {
             throw new SolicitudIncorrectaException();
         }
@@ -377,6 +383,7 @@ public class ContribucionesController {
         tarjeta.setDuenio(personaVulnerable);
 
         juridica.sumarPuntaje(registroPersonaVulnerable);
+        juridicasRepository.modificar(juridica);
 
         final var registry = DDMetricsUtils.getInstance().getRegistry();
         final Counter counter = registry.counter("personas_vulnerables");
@@ -459,6 +466,7 @@ public class ContribucionesController {
         heladerasRepository.guardar(heladera);
 
         juridica.sumarPuntaje(hacerseCargoHeladera);
+        juridicasRepository.modificar(juridica);
 
         final var registry = DDMetricsUtils.getInstance().getRegistry();
         final Counter counter = registry.counter("heladeras_a_cargo");
@@ -520,8 +528,7 @@ public class ContribucionesController {
                 rubroOFerta.get(),
                 canjesTotalesInt,
                 null);
-        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
-        ofertasRepository.guardar(oferta);
+
 
         // Obtener archivo de imagen (si se cargó uno)
         UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
@@ -543,6 +550,8 @@ public class ContribucionesController {
         }
 
         oferta.setImage(rutaImagen);
+        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
+        ofertasRepository.guardar(oferta);
 
         OfrecerProductoOServicio ofrecerProductoOServicio = OfrecerProductoOServicio.of(oferta, juridica);
 
@@ -550,6 +559,7 @@ public class ContribucionesController {
         ofrecerProductoRepository.guardar(ofrecerProductoOServicio);
 
         juridica.sumarPuntaje(ofrecerProductoOServicio);
+        juridicasRepository.modificar(juridica);
 
         final var registry = DDMetricsUtils.getInstance().getRegistry();
         final Counter counter = registry.counter("ofertas_registradas");

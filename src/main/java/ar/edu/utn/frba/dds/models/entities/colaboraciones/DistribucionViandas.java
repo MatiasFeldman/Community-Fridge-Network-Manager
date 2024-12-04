@@ -26,11 +26,11 @@ public class DistribucionViandas extends Persistente implements Contribucion{
     @JoinColumn(name = "id_colaborador", referencedColumnName = "id")
     private ColaboradorHumano colaborador;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_heladera_origen", referencedColumnName = "id")
     private Heladera heladeraOrigen;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_heladera_destino", referencedColumnName = "id")
     private Heladera heladeraDestino;
 

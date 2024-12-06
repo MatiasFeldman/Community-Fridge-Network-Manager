@@ -49,6 +49,10 @@
 
 
 
+
+
+
+
     <!-- TWILIO API -->
     <dependency>
       <groupId>com.twilio.sdk</groupId>
@@ -86,7 +90,12 @@
       <version>4.4.0</version>
     </dependency>
 
-
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.16</version>
+    </dependency>
 
 
     <!-- JPA Persistence Dependencies -->
@@ -112,23 +121,23 @@
     </dependency>
 
     <dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-engine</artifactId>
-    <version>5.9.0</version>
-    <scope>test</scope>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.0</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.opencsv</groupId>
-        <artifactId>opencsv</artifactId>
-        <version>5.6</version>
+      <artifactId>opencsv</artifactId>
+      <version>5.6</version>
     </dependency>
 
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <version>1.6.2</version>
-    </dependency>
+
+
+
+
+
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -163,7 +172,7 @@
     <dependency>
       <groupId>com.squareup.retrofit2</groupId>
       <artifactId>converter-gson</artifactId>
-        <version>2.9.0</version>
+      <version>2.9.0</version>
     </dependency>
 
     <dependency>
@@ -200,6 +209,10 @@
       <artifactId>micrometer-registry-datadog</artifactId>
       <version>1.8.0</version>
     </dependency>
+
+
+
+
   </dependencies>
 
   <build>
@@ -211,7 +224,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ar/edu/utn/frba/dds/server</mainClass>
+              <mainClass>ar.edu.utn.frba.dds.server.App</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -235,83 +248,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.2.1</version>
-        <configuration>
-          <configLocation>google_checks.xml</configLocation>
-          <violationSeverity>warning</violationSeverity>
-          <violationIgnore>
-            MissingJavadocMethod,
-            MissingJavadocPackage,
-            MissingJavadocType,
-            NonEmptyAtclauseDescription,
-            JavadocParagraph,
-            SummaryJavadoc
-          </violationIgnore>
-        </configuration>
-        <executions>
-          <execution>
-            <id>Validar Formateo</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.2</version>
-        <executions>
-          <execution>
-            <id>Validar Code Smells</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.8</version>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>Validar Cobertura</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <rule>
-                  <element>PACKAGE</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.60</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-              <excludes>
-                <exclude>Main.class</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
+
+
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -321,19 +261,19 @@
           <target>17</target>
         </configuration>
       </plugin>
-      <plugin>
-        <!-- Build an executable JAR -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>ar.edu.utn.frba.dds.main.CroneTask_Reportes</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
+
+      <!-- Build an executable JAR -->
+
+
+
+
+
+
+
+
+
+
+
     </plugins>
   </build>
 </project>

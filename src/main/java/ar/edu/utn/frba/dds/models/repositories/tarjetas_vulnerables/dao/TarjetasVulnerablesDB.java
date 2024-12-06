@@ -10,7 +10,11 @@ public class TarjetasVulnerablesDB implements TarjetasVulnerablesDAO, WithSimple
 
     @Override
     public Optional<TarjetaPersonaVulnerable> buscarPorId(Long idTarjetaRepartida) {
-        return Optional.ofNullable(entityManager().find(TarjetaPersonaVulnerable.class, idTarjetaRepartida));
+        TarjetaPersonaVulnerable tarjeta = entityManager().find(TarjetaPersonaVulnerable.class, idTarjetaRepartida);
+        if (tarjeta != null) {
+            entityManager().refresh(tarjeta); // Forzar sincronización de la entidad
+        }
+        return Optional.ofNullable(tarjeta);
     }
 
     @Override
@@ -36,8 +40,12 @@ public class TarjetasVulnerablesDB implements TarjetasVulnerablesDAO, WithSimple
 
     @Override
     public List<TarjetaPersonaVulnerable> buscarTodas() {
-        return entityManager()
+        List<TarjetaPersonaVulnerable> tarjetas = entityManager()
                 .createQuery("select t from TarjetaPersonaVulnerable t where t.presente = true", TarjetaPersonaVulnerable.class)
                 .getResultList();
+
+        tarjetas.forEach(t -> entityManager().refresh(t)); // Forzar sincronización de todas las entidades
+        return tarjetas;
     }
 }
+

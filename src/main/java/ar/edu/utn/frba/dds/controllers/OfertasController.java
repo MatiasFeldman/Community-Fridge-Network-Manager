@@ -17,6 +17,7 @@ import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import io.javalin.http.Context;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -35,6 +36,8 @@ public class OfertasController {
         Double misPuntos;
         if(rolUsuario.contains("HUMANO")){
             Optional<ColaboradorHumano> Humano = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorIdUsuario(idUsuario);
+            System.out.println(Humano.get().getPuntosGanados());
+            System.out.println(Humano.get().getPuntosCanjeados());
             misPuntos = Humano.get().calcularPuntaje();
         }else if (rolUsuario.contains("JURIDICA")){
             Optional<Juridica> juridica = ServiceLocator.instanceOf(JuridicasRepository.class).buscarPorIdUsuario(idUsuario);
@@ -118,7 +121,7 @@ public class OfertasController {
 
             if (ofertaOptional.isPresent() && ofertaOptional.get().getPresente()) {
                 Oferta oferta = ofertaOptional.get();
-                if (oferta.canjesRestantes() == 0) {
+                if (oferta.canjesRestantes() <= 0) {
                     throw new SolicitudIncorrectaException();
                 }
                 // Verificamos si el rol del usuario es HUMANO

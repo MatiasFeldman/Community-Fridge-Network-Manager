@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SolicitudDeAperturaDB implements WithSimplePersistenceUnit, SolicitudDeAperturaDAO {
+
     @Override
     public void guardar(SolicitudApertura solicitud) {
         solicitud.setPresente(true);
@@ -32,23 +33,33 @@ public class SolicitudDeAperturaDB implements WithSimplePersistenceUnit, Solicit
 
     @Override
     public List<SolicitudApertura> buscarTodas() {
-        return entityManager()
+        List<SolicitudApertura> solicitudes = entityManager()
                 .createQuery("from SolicitudApertura where presente = true", SolicitudApertura.class)
                 .getResultList();
+
+        solicitudes.forEach(s -> entityManager().refresh(s)); // Forzar sincronización de todas las entidades
+        return solicitudes;
     }
 
     @Override
     public Boolean existeSolicitud(TarjetaColaborador idTarjeta, Heladera idHeladera) {
-        return !entityManager()
+        List<SolicitudApertura> solicitudes = entityManager()
                 .createQuery("from SolicitudApertura where solicitante = :idTarjeta and heladera = :idHeladera and presente = true", SolicitudApertura.class)
                 .setParameter("idTarjeta", idTarjeta)
                 .setParameter("idHeladera", idHeladera)
-                .getResultList().isEmpty();
+                .getResultList();
+
+        solicitudes.forEach(s -> entityManager().refresh(s)); // Forzar sincronización de todas las entidades
+        return !solicitudes.isEmpty();
     }
 
     @Override
     public Optional<SolicitudApertura> buscarSolicitudPorId(Long id) {
-        return entityManager().find(SolicitudApertura.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(SolicitudApertura.class, id));
+        SolicitudApertura solicitud = entityManager().find(SolicitudApertura.class, id);
+        if (solicitud != null) {
+            entityManager().refresh(solicitud); // Forzar sincronización si la entidad existe
+        }
+        return Optional.ofNullable(solicitud);
     }
-
 }
+

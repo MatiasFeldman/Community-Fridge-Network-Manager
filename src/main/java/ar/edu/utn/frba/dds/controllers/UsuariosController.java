@@ -159,10 +159,8 @@ public class UsuariosController {
                 // Iterar sobre los atributos y asignarles el valor correspondiente
                 for (AtributoHumanoRespondido atributoRespondido : atributos) {
                     String nombreAtributo = atributoRespondido.getNombreAtributo();
-
                     String nuevoValor = ctx.formParam(nombreAtributo);
-
-                    if (nuevoValor != null && !nuevoValor.isEmpty()) {
+                    if (nuevoValor != null) {
                         atributoRespondido.setValor(nuevoValor);
                     }
                     // Verificar si el atributo es "direccion" o "provincia"

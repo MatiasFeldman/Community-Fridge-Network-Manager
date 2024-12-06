@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSimplePersistenceUnit {
+
     @Override
     public void guardar(PersonaVulnerable personaVulnerable) {
         personaVulnerable.setPresente(true);
@@ -17,9 +18,12 @@ public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSi
 
     @Override
     public List<PersonaVulnerable> buscarTodos() {
-        return entityManager()
+        List<PersonaVulnerable> personas = entityManager()
                 .createQuery("select p from PersonaVulnerable p where p.presente = true", PersonaVulnerable.class)
                 .getResultList();
+
+        personas.forEach(p -> entityManager().refresh(p)); // Forzar sincronización de todas las entidades
+        return personas;
     }
 
     @Override
@@ -30,7 +34,11 @@ public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSi
 
     @Override
     public Optional<PersonaVulnerable> buscarPorId(Long id) {
-        return Optional.ofNullable(entityManager().find(PersonaVulnerable.class, id));
+        PersonaVulnerable persona = entityManager().find(PersonaVulnerable.class, id);
+        if (persona != null) {
+            entityManager().refresh(persona); // Forzar sincronización si la entidad existe
+        }
+        return Optional.ofNullable(persona);
     }
 
     @Override
@@ -40,3 +48,4 @@ public class PersonasVulnerablesDataBase implements PersonaVulnerableDAO, WithSi
         });
     }
 }
+

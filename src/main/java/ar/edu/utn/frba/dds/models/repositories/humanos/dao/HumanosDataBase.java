@@ -37,12 +37,23 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
                 .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.presente = true ", ColaboradorHumano.class)
                 .getResultList();
     }
+
     @Override
     public Optional<ColaboradorHumano> buscarPorIdUsuario(Long id) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.user.id = :idUsuario AND h.presente = true", ColaboradorHumano.class)
-                .setParameter("idUsuario", id)
-                .getSingleResult());
+        try {
+            ColaboradorHumano colaborador = entityManager()
+                    .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.user.id = :idUsuario AND h.presente = true", ColaboradorHumano.class)
+                    .setParameter("idUsuario", id)
+                    .getSingleResult();
+
+            // Forzar sincronización con la base de datos
+            entityManager().refresh(colaborador);
+
+            return Optional.ofNullable(colaborador);
+        } catch (NoResultException e) {
+            // Si no hay resultados, devuelve un Optional vacío
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -57,23 +68,35 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
 
     @Override
     public Optional<ColaboradorHumano> buscarPorTarjeta(Long id) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("SELECT h FROM ColaboradorHumano h JOIN h.tarjetas t WHERE t.id = :idTarjeta AND h.presente = true", ColaboradorHumano.class)
-                .setParameter("idTarjeta", id)
-                .getSingleResult());
-    }
+        try {
+            ColaboradorHumano colaborador = entityManager()
+                    .createQuery("SELECT h FROM ColaboradorHumano h JOIN h.tarjetas t WHERE t.id = :idTarjeta AND h.presente = true", ColaboradorHumano.class)
+                    .setParameter("idTarjeta", id)
+                    .getSingleResult();
 
+            // Forzar sincronización con la base de datos
+            entityManager().refresh(colaborador);
+
+            return Optional.ofNullable(colaborador);
+        } catch (NoResultException e) {
+            // Si no hay resultados, devuelve un Optional vacío
+            return Optional.empty();
+        }
+    }
 
     @Override
     public Optional<ColaboradorHumano> buscarPorDocumento(String tipo, String nro) {
-        System.out.println("tipo: " + tipo + " nro: " + nro);
         try {
-            System.out.println("tipo: " + tipo + " nro: " + nro);
-            return Optional.ofNullable(entityManager()
+            ColaboradorHumano colaborador = entityManager()
                     .createQuery("SELECT h FROM ColaboradorHumano h WHERE h.tipoDocumento = :tipoDoc AND h.documento = :nroDoc AND h.presente = true", ColaboradorHumano.class)
                     .setParameter("tipoDoc", Tipo_documento.valueOf(tipo))
                     .setParameter("nroDoc", nro)
-                    .getSingleResult()); // Si no encuentra, lanzará NoResultException
+                    .getSingleResult();
+
+            // Forzar sincronización con la base de datos
+            entityManager().refresh(colaborador);
+
+            return Optional.ofNullable(colaborador);
         } catch (NoResultException e) {
             System.out.println("No se encontraron resultados para el documento");
             return Optional.empty(); // Devuelve Optional vacío si no hay resultados
@@ -83,3 +106,4 @@ public class HumanosDataBase implements HumanosDAO, WithSimplePersistenceUnit {
         }
     }
 }
+

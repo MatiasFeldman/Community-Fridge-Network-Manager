@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit {
+
     @Override
     public void guardar(Usuario usuario) {
         usuario.setPresente(true);
@@ -31,14 +32,21 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
 
     @Override
     public List<Usuario> buscarTodos() {
-        return entityManager()
+        List<Usuario> usuarios = entityManager()
                 .createQuery("SELECT u FROM Usuario u WHERE u.presente = true ", Usuario.class)
                 .getResultList();
+
+        usuarios.forEach(u -> entityManager().refresh(u)); // Forzar sincronización de todas las entidades
+        return usuarios;
     }
 
     @Override
     public Optional<Usuario> buscarPorId(Long id) {
-        return Optional.ofNullable(entityManager().find(Usuario.class, id));
+        Usuario usuario = entityManager().find(Usuario.class, id);
+        if (usuario != null) {
+            entityManager().refresh(usuario); // Forzar sincronización de la entidad
+        }
+        return Optional.ofNullable(usuario);
     }
 
     @Override
@@ -48,19 +56,21 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
                     .createQuery("SELECT u FROM Usuario u WHERE u.user = :username AND u.presente = true", Usuario.class)
                     .setParameter("username", username)
                     .getResultList();
+
             if (usuarios.isEmpty()) {
                 System.out.println("Usuario no encontrado");
                 return Optional.empty();
             } else {
-                System.out.println("Usuario encontrado: " + usuarios.get(0).getUser());
-                return Optional.of(usuarios.get(0));
+                Usuario usuario = usuarios.get(0);
+                entityManager().refresh(usuario); // Forzar sincronización de la entidad encontrada
+                System.out.println("Usuario encontrado: " + usuario.getUser());
+                return Optional.of(usuario);
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error al buscar el usuario en la base de datos", e);
         }
     }
-
 
     @Override
     public boolean existeUsername(String username) {
@@ -72,3 +82,4 @@ public class UsuariosDataBase implements UsuariosDAO, WithSimplePersistenceUnit 
         return count > 0;
     }
 }
+

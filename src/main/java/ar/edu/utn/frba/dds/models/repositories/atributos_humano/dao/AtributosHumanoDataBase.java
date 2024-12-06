@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.personas.Atributo;
 import ar.edu.utn.frba.dds.models.entities.personas.TipoAtributo;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +20,21 @@ public class AtributosHumanoDataBase implements WithSimplePersistenceUnit, Atrib
 
     @Override
     public List<Atributo> buscarTodas() {
-        return entityManager()
+        List<Atributo> atributos = entityManager()
                 .createQuery("SELECT d FROM Atributo d WHERE d.presente = true", Atributo.class)
                 .getResultList();
+
+        atributos.forEach(attr -> entityManager().refresh(attr)); // Forzar sincronización de todas las entidades
+        return atributos;
     }
 
     @Override
     public Optional<Atributo> buscarPorId(Long id) {
-        return entityManager()
-                .find(Atributo.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(Atributo.class, id));
+        Atributo atributo = entityManager().find(Atributo.class, id);
+        if (atributo != null) {
+            entityManager().refresh(atributo); // Forzar sincronización de la entidad
+        }
+        return Optional.ofNullable(atributo);
     }
 
     @Override
@@ -45,19 +52,28 @@ public class AtributosHumanoDataBase implements WithSimplePersistenceUnit, Atrib
 
     @Override
     public List<Atributo> buscarPorTipo(TipoAtributo tipo) {
-        return entityManager()
+        List<Atributo> atributos = entityManager()
                 .createQuery("SELECT d FROM Atributo d WHERE d.tipo = :tipo AND d.presente = true", Atributo.class)
                 .setParameter("tipo", tipo)
                 .getResultList();
+
+        atributos.forEach(attr -> entityManager().refresh(attr)); // Forzar sincronización de todas las entidades
+        return atributos;
     }
 
     @Override
     public Optional<Atributo> buscarPorNombre(String nombre) {
-        return Optional.of(entityManager()
-                .createQuery("SELECT d FROM Atributo d WHERE d.nombre = :nombre AND d.presente = true", Atributo.class)
-                .setParameter("nombre", nombre)
-                .getSingleResult());
+        try {
+            Atributo atributo = entityManager()
+                    .createQuery("SELECT d FROM Atributo d WHERE d.nombre = :nombre AND d.presente = true", Atributo.class)
+                    .setParameter("nombre", nombre)
+                    .getSingleResult();
 
+            entityManager().refresh(atributo); // Forzar sincronización de la entidad encontrada
+            return Optional.ofNullable(atributo);
+        } catch (NoResultException e) {
+            return Optional.empty(); // Si no encuentra resultados
+        }
     }
-
 }
+

@@ -6,6 +6,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 
 public class IntentosDeAperturaDataBase implements IntentosDeAperturaDAO, WithSimplePersistenceUnit {
+
     @Override
     public void guardar(IntentoAperturaResuelto intento) {
         intento.setPresente(true);
@@ -17,9 +18,12 @@ public class IntentosDeAperturaDataBase implements IntentosDeAperturaDAO, WithSi
     @Override
     @SuppressWarnings("unchecked")
     public List<IntentoAperturaResuelto> buscarTodos() {
-        return entityManager()
+        List<IntentoAperturaResuelto> intentos = entityManager()
                 .createQuery("SELECT i FROM IntentoAperturaResuelto i WHERE i.presente = true ", IntentoAperturaResuelto.class)
                 .getResultList();
+
+        intentos.forEach(i -> entityManager().refresh(i)); // Forzar sincronización de todas las entidades
+        return intentos;
     }
 
     @Override

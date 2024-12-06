@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class VisitaHeladeraDB implements VisitaHeladeraDAO, WithSimplePersistenceUnit {
+
     @Override
     public void guardar(VisitaAHeladera visita) {
         visita.setPresente(true);
@@ -20,15 +21,21 @@ public class VisitaHeladeraDB implements VisitaHeladeraDAO, WithSimplePersistenc
 
     @Override
     public List<VisitaAHeladera> buscarTodas() {
-        return entityManager()
+        List<VisitaAHeladera> visitas = entityManager()
                 .createQuery("SELECT c FROM VisitaAHeladera c WHERE c.presente = true", VisitaAHeladera.class)
                 .getResultList();
+
+        visitas.forEach(v -> entityManager().refresh(v)); // Forzar sincronización de todas las entidades
+        return visitas;
     }
 
     @Override
     public Optional<VisitaAHeladera> buscarPorId(Long id) {
-        return entityManager()
-                .find(OfrecerProductoOServicio.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(VisitaAHeladera.class, id));
+        VisitaAHeladera visita = entityManager().find(VisitaAHeladera.class, id);
+        if (visita != null) {
+            entityManager().refresh(visita); // Forzar sincronización de la entidad
+        }
+        return Optional.ofNullable(visita);
     }
 
     @Override
@@ -46,17 +53,24 @@ public class VisitaHeladeraDB implements VisitaHeladeraDAO, WithSimplePersistenc
 
     @Override
     public List<VisitaAHeladera> buscarPorHeladera(Heladera heladera) {
-        return entityManager()
+        List<VisitaAHeladera> visitas = entityManager()
                 .createQuery("SELECT c FROM VisitaAHeladera c WHERE c.incidenteAResolver.heladera = :heladera", VisitaAHeladera.class)
                 .setParameter("heladera", heladera)
                 .getResultList();
+
+        visitas.forEach(v -> entityManager().refresh(v)); // Forzar sincronización de todas las entidades
+        return visitas;
     }
 
     @Override
     public List<VisitaAHeladera> buscarPorTecnico(Tecnico tecnico) {
-        return entityManager()
+        List<VisitaAHeladera> visitas = entityManager()
                 .createQuery("SELECT c FROM VisitaAHeladera c WHERE c.tecnico = :tecnico", VisitaAHeladera.class)
                 .setParameter("tecnico", tecnico)
                 .getResultList();
+
+        visitas.forEach(v -> entityManager().refresh(v)); // Forzar sincronización de todas las entidades
+        return visitas;
     }
 }
+

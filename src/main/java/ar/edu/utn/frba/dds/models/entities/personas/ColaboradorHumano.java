@@ -30,6 +30,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "humano")
+@Cacheable(false)
 public class ColaboradorHumano extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER)

@@ -32,7 +32,7 @@ import javax.persistence.*;
 public class Juridica extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
     @Column(name = "razon_social")
@@ -57,6 +57,10 @@ public class Juridica extends Persistente {
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_canje")
+    private List<Canjes> canjesRealizados = new ArrayList<>();
+
 
     public List<Coordenada> solicitarRecomendacionParaHeladera(Coordenada coord, double radio) throws IOException, InterruptedException {
         return ServiceLocator.instanceOf(RecomendarPuntos.class).solicitarRecomendacionParaHeladera(coord, radio);
@@ -79,7 +83,8 @@ public class Juridica extends Persistente {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
-
+        Canjes canje = new Canjes(oferta, LocalDate.now(), oferta.getPuntosNecesarios());
+        canjesRealizados.add(canje);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }

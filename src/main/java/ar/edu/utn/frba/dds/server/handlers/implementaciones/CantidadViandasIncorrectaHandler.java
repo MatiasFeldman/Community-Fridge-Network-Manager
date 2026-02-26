@@ -21,25 +21,6 @@ public class CantidadViandasIncorrectaHandler implements IHandler {
             HeladerasRepository heladerasRepository = ServiceLocator.instanceOf(HeladerasRepository.class);
             List<Heladera> heladeras = heladerasRepository.buscarTodos();
 
-            heladeras.forEach(heladera -> {
-                String mensajeDisponibilidad;
-                int cantActual = heladera.cantActual();
-
-                if (cantActual == 0) {
-                    mensajeDisponibilidad = "¡Sin viandas disponibles!";
-                } else if (cantActual <= 4) {
-                    mensajeDisponibilidad = "¡Quedan menos de 5 viandas!";
-                } else if (cantActual <= 10) {
-                    mensajeDisponibilidad = "¡Quedan menos de 10 viandas disponibles!";
-                } else if (cantActual <= 20) {
-                    mensajeDisponibilidad = "Stock moderado de viandas";
-                } else {
-                    mensajeDisponibilidad = "Suficiente stock de viandas";
-                }
-
-                heladera.setMensajeDisponiblididad(mensajeDisponibilidad);
-            });
-
             String motivoDistribucion = ctx.formParam("motivoDistribucion");
             String heladeraOrigenId = ctx.formParam("heladeraOrigen");
             String heladeraDestinoId = ctx.formParam("heladeraDestino");

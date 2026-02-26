@@ -9,10 +9,8 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUnit, DistribucionesDeViandasDAO {
-
     @Override
     public void guardar(DistribucionViandas donacionDeVianda) {
-        donacionDeVianda.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeVianda);
         commitTransaction();
@@ -20,21 +18,15 @@ public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUni
 
     @Override
     public List<DistribucionViandas> buscarTodas() {
-        List<DistribucionViandas> distribuciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM DistribucionViandas d WHERE d.presente = true", DistribucionViandas.class)
                 .getResultList();
-
-        distribuciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return distribuciones;
     }
 
     @Override
     public Optional<DistribucionViandas> buscarPorId(Long id) {
-        DistribucionViandas distribucion = entityManager().find(DistribucionViandas.class, id);
-        if (distribucion != null) {
-            entityManager().refresh(distribucion); // Forzar sincronización de la entidad
-        }
-        return Optional.ofNullable(distribucion);
+        return entityManager()
+                .find(DistribucionViandas.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(DistribucionViandas.class, id));
     }
 
     @Override
@@ -52,12 +44,9 @@ public class DistribucionesDeViandasDataBase implements WithSimplePersistenceUni
 
     @Override
     public List<DistribucionViandas> buscarPorColaborador(Long id) {
-        List<DistribucionViandas> distribuciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM DistribucionViandas d WHERE d.colaborador.id = :id AND d.presente = true", DistribucionViandas.class)
                 .setParameter("id", id)
                 .getResultList();
-
-        distribuciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return distribuciones;
     }
 }

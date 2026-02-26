@@ -73,9 +73,8 @@ public class Heladera extends Persistente {
 
     private static final String BROKER_URL = "tcp://broker.hivemq.com:1883";
 
-    @OneToMany(mappedBy = "heladera", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SolicitudApertura> solicitudes = new ArrayList<>();
-
+    @Transient
+    private List<SolicitudApertura> solicitudes; // x ahora, si debe ser persistido
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SuscripcionAHeladera> suscriptores;
@@ -215,13 +214,10 @@ public class Heladera extends Persistente {
     public void evaluarTemperatura(Double temp) {
         this.ultimaTemperaturaRegistrada = temp;
         this.ultFechaRegistrada = LocalDateTime.now();
-
         if (!this.temperaturaValida(temp)) {
-            System.out.println("Temperatura fuera de rango en la heladera " + this.getId());
             ServiceLocator.instanceOf(Accionador.class).sucedeIncidente(TipoEvento.TEMPERATURA, LocalDateTime.now(), this);
             System.out.println("Temperatura fuera de rango en la healdera " + this.getId());
         }
-
     }
 
     public void evaluarConexion() {

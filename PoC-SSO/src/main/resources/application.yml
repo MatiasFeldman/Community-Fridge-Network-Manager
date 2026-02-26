@@ -1,0 +1,8 @@
+server:
+  port: 3000
+
+okta:
+  oauth2:
+    issuer: https://dev-41uqjklluyl8tm0p.us.auth0.com/
+    client-id: 24FnTBPM97N4ao1c3feAyf7N2R04OCGN
+    client-secret: REDACTED

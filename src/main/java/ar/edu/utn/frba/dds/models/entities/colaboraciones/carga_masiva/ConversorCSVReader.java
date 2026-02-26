@@ -14,10 +14,8 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @AllArgsConstructor
 public class ConversorCSVReader implements ConversorCSV {
@@ -25,78 +23,61 @@ public class ConversorCSVReader implements ConversorCSV {
     private OfertasRepository ofertas;
     private MailSender mailSender;
 
+
     @Override
     @SneakyThrows
     public void convertir(InputStream inputStream) {
-        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try {
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             ValidadorCargaMasiva validador = new ValidadorCargaMasiva();
             String[] line;
 
-            reader.readNext(); // Salta el encabezado
+            reader.readNext(); // salteo el header
 
             while ((line = reader.readNext()) != null) {
-                System.out.println("Procesando línea: " + Arrays.toString(line));
-                // Divide la línea usando coma como separador
-                String[] parsedLine = line[0]
-                        .replace("[", "") // Quitamos el corchete de inicio
-                        .replace("]", "") // Quitamos el corchete de fin
-                        .split(",\\s*");  // Dividimos por coma, ignorando espacios
+                System.out.println(Arrays.toString(line));
+                line = line[0].split(";");
 
-
-                Boolean cumple = validador.validarLinea(line);
-
-                System.out.println("Cumple: " + cumple);
-
-                if (!cumple) {
-                    System.out.println("La línea no cumple con los requisitos: " + Arrays.toString(line));
+                if (!validador.validarLinea(line)) {
+                    System.out.println("La linea no cumple con los requisitos");
                     continue;
-                } else {
-                    System.out.println("La línea cumple con los requisitos");
-                    this.verificarExistenciaHumano(line);
                 }
 
+                this.verificarExistenciaHumano(line);
+
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException("Error al leer el archivo", e);
         }
     }
 
     public void verificarExistenciaHumano(String[] line) throws IOException, MessagingException {
-        System.out.println("Verificando existencia del humano");
-
         String tipoDocumento = line[0];
         String documento = line[1];
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
-        String formaColaboracion = line[6];
-        Integer cantidad = Integer.parseInt(line[7]);
+        String formaColaboracion = line[5];
+        Integer cantidad = Integer.parseInt(line[6]);
 
-        System.out.println("Tipo documento: " + tipoDocumento);
-
-        System.out.println("Documento: " + documento);
 
         Optional<ColaboradorHumano> humano = humanosRepository.buscarPorDocumento(tipoDocumento, documento);
-
-        System.out.println("Humano: " + humano);
 
         if (humano.isEmpty()) {
             System.out.println("No existe el humano en la base de datos, se procede a crearlo");
             RegisterCargaMasiva registrador = new RegisterCargaMasiva(humanosRepository, ofertas);
 
-            UsuarioConPassword userCreadoConPass = registrador.registrarHumano(line);
-            Usuario userCreado = userCreadoConPass.getUsuario();
+            Usuario userCreado = registrador.registrarHumano(line);
 
-            CompletableFuture.runAsync(() ->{
-                MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreadoConPass.getPasswordSinHash(), mailSender);
-            });
+            MailDeBienvenida.enviarMailBienvenida(mail, nombre, apellido, userCreado.getUser(), userCreado.getPassword(), mailSender);
         } else {
-            System.out.println("Ya existe el humano en la base de datos, se procede a agregar la contribución");
+            System.out.println("Ya existe el humano en la base de datos, se procede a agregar la contribucion");
             ColaboradorHumano human = humano.get();
-            System.out.println("Humano encontrado: " + human.getUsername());
-            System.out.println(formaColaboracion);
             ContribucionHumanaFactory.createForCargaMasiva(formaColaboracion, cantidad, human);
-            System.out.println("Contribución agregada");
+
         }
     }
+
+
 }

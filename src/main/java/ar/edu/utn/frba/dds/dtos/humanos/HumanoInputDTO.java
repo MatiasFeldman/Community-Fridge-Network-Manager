@@ -26,19 +26,21 @@ public class HumanoInputDTO {
     private List<AtributoHumanoRespondido> atributosObligatorios;
     private List<String> nombresMediosDeContacto;
     private List<AtributoHumanoRespondido> atributosOpcionales;
+    private List<Canjes> canjesRealizados;
     private Usuario user;
     private Direccion direccion;
 
-    public static HumanoInputDTO create(Usuario user, AtributoHumanoRespondido... atributos) {
+    public static HumanoInputDTO create(String username, String password, AtributoHumanoRespondido... atributos) {
         HumanoInputDTO dto = new HumanoInputDTO();
         dto.atributosObligatorios = new ArrayList<>();
         dto.atributosOpcionales = new ArrayList<>();
+        dto.canjesRealizados = new ArrayList<>();
         dto.nombresMediosDeContacto = new ArrayList<>();
         dto.nombresMediosDeContacto.add("Mail");
         dto.nombresMediosDeContacto.add("WhatsApp");
         dto.nombresMediosDeContacto.add("Telegram");
         dto.direccion = null;
-        dto.user = user;
+        dto.user = new Usuario(username, password, List.of(TipoRol.HUMANO));
 
         for (AtributoHumanoRespondido atributo : atributos) {
                 if (atributo.getAtributo().getTipo() == TipoAtributo.OBLIGATORIO) {

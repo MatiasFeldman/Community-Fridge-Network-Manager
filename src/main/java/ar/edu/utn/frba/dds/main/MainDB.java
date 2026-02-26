@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.main;
 
+import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.sending_strategy.SendingStrategyFactory;
@@ -8,6 +9,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.chrono.IsoEra;
 import java.util.List;
 
 public class MainDB implements WithSimplePersistenceUnit {

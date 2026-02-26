@@ -8,7 +8,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="d-flex flex-column justify-content-center">
             <h1 class="fw-bold text-center text-dark">Registrar Heladera</h1>
-            <form action="/colaboraciones/heladera-a-cargo" method="POST">
+            <form action="/colaborar/heladera-a-cargo" method="POST">
                 <div class="row mt-4 grid" style="grid-template-columns: repeat(2,1fr);">
                     <div class="col-12 col-md-6 mb-3">
                         <h3 class="h5 fw-semibold" >Nombre</h3>
@@ -114,7 +114,7 @@
                 formData.append("radio", radio);
 
                 // Hacer la solicitud POST
-                fetch("/recomendacion-puntos", {
+                fetch("/recomendar-puntos", {
                     method: "POST",
                     body: formData
                 })

@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersistenceUnit {
-
     @Override
     public void guardar(VisitaAHeladera visita) {
-        visita.setPresente(true);
         beginTransaction();
         entityManager().persist(visita);
         commitTransaction();
@@ -19,12 +17,9 @@ public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersist
     @SuppressWarnings("unchecked")
     @Override
     public List<VisitaAHeladera> buscarTodos() {
-        List<VisitaAHeladera> visitas = entityManager()
+        return entityManager()
                 .createQuery("select v from VisitaAHeladera v where v.presente = true ", VisitaAHeladera.class)
                 .getResultList();
-
-        visitas.forEach(v -> entityManager().refresh(v)); // Forzar sincronización de todas las entidades
-        return visitas;
     }
 
     @Override
@@ -35,11 +30,7 @@ public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersist
 
     @Override
     public Optional<VisitaAHeladera> buscarPorId(Long id) {
-        VisitaAHeladera visita = entityManager().find(VisitaAHeladera.class, id);
-        if (visita != null) {
-            entityManager().refresh(visita); // Forzar sincronización si la entidad existe
-        }
-        return Optional.ofNullable(visita);
+        return Optional.ofNullable(entityManager().find(VisitaAHeladera.class, id));
     }
 
     @Override
@@ -49,4 +40,3 @@ public class ServiciosAHeladeraDataBase implements VisitasDAO, WithSimplePersist
         });
     }
 }
-

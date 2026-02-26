@@ -11,10 +11,8 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSimplePersistenceUnit {
-
     @Override
     public void guardar(DonacionDeVianda donacionDeVianda) {
-        donacionDeVianda.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeVianda);
         commitTransaction();
@@ -22,21 +20,15 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
 
     @Override
     public List<DonacionDeVianda> buscarTodas() {
-        List<DonacionDeVianda> donaciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.presente = true", DonacionDeVianda.class)
                 .getResultList();
-
-        donaciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return donaciones;
     }
 
     @Override
     public Optional<DonacionDeVianda> buscarPorId(Long id) {
-        DonacionDeVianda donacion = entityManager().find(DonacionDeVianda.class, id);
-        if (donacion != null) {
-            entityManager().refresh(donacion); // Forzar sincronización de la entidad
-        }
-        return Optional.ofNullable(donacion);
+        return entityManager()
+                .find(DonacionDeVianda.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(DonacionDeVianda.class, id));
     }
 
     @Override
@@ -50,30 +42,25 @@ public class DonacionesDeViandaDataBase implements DonacionesDeViandaDAO, WithSi
     public void eliminar(DonacionDeVianda donacionDeVianda) {
         donacionDeVianda.setPresente(false);
         this.actualizar(donacionDeVianda);
+
     }
 
     @Override
     public List<DonacionDeVianda> buscarPorColaborador(Long id) {
-        List<DonacionDeVianda> donaciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.id = :id AND d.presente = true", DonacionDeVianda.class)
                 .setParameter("id", id)
                 .getResultList();
-
-        donaciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return donaciones;
     }
 
     @Override
     public Integer cantViandasDonadasPor(ColaboradorHumano colaborador) {
         LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-        List<DonacionDeVianda> donaciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM DonacionDeVianda d WHERE d.colaborador.user.id = :id AND d.presente = true AND d.fecha >= :haceUnaSemana", DonacionDeVianda.class)
                 .setParameter("id", colaborador.getIdUsuario())
                 .setParameter("haceUnaSemana", haceUnaSemana)
-                .getResultList();
-
-        donaciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return donaciones.size();
+                .getResultList()
+                .size();
     }
 }
-

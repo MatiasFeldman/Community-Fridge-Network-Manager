@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Redirige a la URL con los parámetros
-        window.location.href = '/heladeras/falla-tecnica?busqueda=' + select_busqueda.value + '&valor=' + encodeURIComponent(valorBusqueda);
+        window.location.href = '/heladeras/reportar-falla-tecnica?busqueda=' + select_busqueda.value + '&valor=' + encodeURIComponent(valorBusqueda);
     };
 
     cards_heladeras.forEach(card =>{
         card.addEventListener('click', () => {
             const idHeladera = card.getAttribute('data-id');
-            window.location.href = '/heladeras/falla-tecnica/' + idHeladera;
+            window.location.href = '/heladeras/reportar-falla-tecnica/' + idHeladera;
         });
 
     })

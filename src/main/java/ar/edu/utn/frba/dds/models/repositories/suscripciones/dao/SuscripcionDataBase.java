@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class SuscripcionDataBase implements SuscripcionDAO, WithSimplePersistenceUnit {
-
     @Override
     public void guardar(SuscripcionAHeladera suscripcionAHeladera) {
-        suscripcionAHeladera.setPresente(true);
         beginTransaction();
         entityManager().persist(suscripcionAHeladera);
         commitTransaction();
@@ -20,40 +18,27 @@ public class SuscripcionDataBase implements SuscripcionDAO, WithSimplePersistenc
 
     @Override
     public List<SuscripcionAHeladera> buscarTodos() {
-        List<SuscripcionAHeladera> suscripciones = entityManager()
+        return entityManager()
                 .createQuery("SELECT h FROM SuscripcionAHeladera h WHERE h.presente = true ", SuscripcionAHeladera.class)
                 .getResultList();
-
-        suscripciones.forEach(s -> entityManager().refresh(s)); // Forzar sincronización de todas las entidades
-        return suscripciones;
     }
 
     @Override
     public Optional<SuscripcionAHeladera> buscarPorId(Long id) {
-        try {
-            SuscripcionAHeladera suscripcion = entityManager()
-                    .createQuery("SELECT h FROM SuscripcionAHeladera h WHERE h.id = :idSuscrip AND h.presente = true", SuscripcionAHeladera.class)
-                    .setParameter("idSuscrip", id)
-                    .getSingleResult();
-
-            entityManager().refresh(suscripcion); // Forzar sincronización de la entidad
-            return Optional.ofNullable(suscripcion);
-        } catch (NoResultException e) {
-            return Optional.empty(); // Si no encuentra resultados
-        }
+        return Optional.ofNullable(entityManager()
+                .createQuery("SELECT h FROM SuscripcionAHeladera h WHERE h.id = :idSuscrip AND h.presente = true", SuscripcionAHeladera.class)
+                .setParameter("idSuscrip", id)
+                .getSingleResult());
     }
 
     @Override
     public Optional<SuscripcionAHeladera> buscarPorUsuarioIdYHeladeraId(Long idUsuario, Long idHeladera) {
         try {
-            SuscripcionAHeladera suscripcion = entityManager()
+            return Optional.ofNullable(entityManager()
                     .createQuery("SELECT h FROM SuscripcionAHeladera h WHERE h.observerSuscripcion.id = :idUsuario AND h.heladera.id = :idHeladera AND h.presente = true", SuscripcionAHeladera.class)
                     .setParameter("idUsuario", idUsuario)
                     .setParameter("idHeladera", idHeladera)
-                    .getSingleResult();
-
-            entityManager().refresh(suscripcion); // Forzar sincronización de la entidad
-            return Optional.ofNullable(suscripcion);
+                    .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty(); // Si no encuentra resultados
         }
@@ -72,4 +57,3 @@ public class SuscripcionDataBase implements SuscripcionDAO, WithSimplePersistenc
         });
     }
 }
-

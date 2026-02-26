@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class DonacionDineroDB implements DonacionDineroDAO, WithSimplePersistenceUnit {
-
     @Override
     public void guardar(DonacionDeDinero donacionDeDinero) {
-        donacionDeDinero.setPresente(true);
         beginTransaction();
         entityManager().persist(donacionDeDinero);
         commitTransaction();
@@ -19,21 +17,15 @@ public class DonacionDineroDB implements DonacionDineroDAO, WithSimplePersistenc
 
     @Override
     public List<DonacionDeDinero> buscarTodas() {
-        List<DonacionDeDinero> donaciones = entityManager()
-                .createQuery("SELECT d FROM DonacionDeDinero d WHERE d.presente = true", DonacionDeDinero.class)
+        return entityManager()
+                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.presente = true", DonacionDeDinero.class)
                 .getResultList();
-
-        donaciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return donaciones;
     }
 
     @Override
     public Optional<DonacionDeDinero> buscarPorId(Long id) {
-        DonacionDeDinero donacion = entityManager().find(DonacionDeDinero.class, id);
-        if (donacion != null) {
-            entityManager().refresh(donacion); // Forzar sincronización de la entidad
-        }
-        return Optional.ofNullable(donacion);
+        return entityManager()
+                .find(DonacionDeDinero.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(DonacionDeDinero.class, id));
     }
 
     @Override
@@ -51,13 +43,9 @@ public class DonacionDineroDB implements DonacionDineroDAO, WithSimplePersistenc
 
     @Override
     public List<DonacionDeDinero> buscarPorColaborador(Long id) {
-        List<DonacionDeDinero> donaciones = entityManager()
-                .createQuery("SELECT d FROM DonacionDeDinero d WHERE d.colaborador.id = :id AND d.presente = true", DonacionDeDinero.class)
+        return entityManager()
+                .createQuery("SELECT d FROM DistribucionViandas d WHERE d.colaborador.id = :id AND d.presente = true", DonacionDeDinero.class)
                 .setParameter("id", id)
                 .getResultList();
-
-        donaciones.forEach(d -> entityManager().refresh(d)); // Forzar sincronización de todas las entidades
-        return donaciones;
     }
 }
-

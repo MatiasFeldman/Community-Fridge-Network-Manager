@@ -33,7 +33,6 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class HumanosController {
     public Object crear(Object solicitud){
@@ -44,21 +43,15 @@ public class HumanosController {
 
     public void formRegistroHumano(Context context){
         List<Atributo> atributos = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarTodas();
-        //sacamos los atributos que no van en el formulario
-        List<Atributo> atributosFiltrados = atributos.stream()
-                .filter(atributo ->
-                        !atributo.getNombre().equalsIgnoreCase("Tipo Documento") &&
-                                !atributo.getNombre().equalsIgnoreCase("Documento"))
-                .collect(Collectors.toList());
-
         List<AtributoOutputDTO> dtos = new ArrayList<>();
 
-        atributosFiltrados.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
+        atributos.forEach(a -> dtos.add(AtributoOutputDTO.of(a)));
 
         Map<String, Object> model = new HashMap<>();
         model.put("campos", dtos);
 
         RenderUtils.renderizar(context,"registro-usuario/registro-humano.hbs", model);
+        System.out.println("Se renderizo el formulario de registro de humano");
     }
 
     public void camposFormHumano(Context context){
@@ -91,8 +84,6 @@ public class HumanosController {
         if(ValidadorUsernames.existe(username, "Humano")){
             context.status(HttpStatus.BAD_REQUEST);
 
-            System.out.println("El nombre de usuario ya existe");
-
             throw new UsuarioHumanoExistenteException("El nombre de usuario ya existe");
         }
 
@@ -120,10 +111,10 @@ public class HumanosController {
         HashPassword hash = ServiceLocator.instanceOf(HashPassword.class);
         String passwordHashed = hash.hashPassword(password);
 
-        Usuario user = new Usuario(username, passwordHashed, List.of(TipoRol.HUMANO));
+        Usuario usuario = new Usuario(username, passwordHashed, List.of(TipoRol.HUMANO));
 
 
-        HumanoInputDTO dto = HumanoInputDTO.create(user,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
+        HumanoInputDTO dto = HumanoInputDTO.create(username, passwordHashed,  atributosRespondidos.toArray(new AtributoHumanoRespondido[0]));
         if (direccionValor != null && !direccionValor.isEmpty() && provinciaValor != null && !provinciaValor.isEmpty()) {
             Direccion direccion = DireccionFactory.create(new DireccionInputDTO(direccionValor, provinciaValor));
             dto.setDireccion(direccion);
@@ -132,8 +123,8 @@ public class HumanosController {
         }
 
         ColaboradorHumano colaborador = ColaboradorHumano.create(dto);
-        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(user);
         ServiceLocator.instanceOf(HumanosRepository.class).guardar(colaborador);
+        ServiceLocator.instanceOf(UsuariosRepository.class).guardar(usuario);
         System.out.print("recibimos el formulario");
         context.redirect("/");
     }

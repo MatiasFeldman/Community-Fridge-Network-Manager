@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class IncidentesDataBase implements WithSimplePersistenceUnit, IncidentesDAO {
-
     @Override
     public void guardar(Incidente incidente) {
-        incidente.setPresente(true);
         beginTransaction();
         entityManager().persist(incidente);
         commitTransaction();
@@ -21,12 +19,9 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
     @Override
     @SuppressWarnings("unchecked")
     public List<Incidente> buscarTodos() {
-        List<Incidente> incidentes = entityManager()
+        return entityManager()
                 .createQuery("SELECT i FROM Incidente i WHERE i.presente = true ", Incidente.class)
                 .getResultList();
-
-        incidentes.forEach(i -> entityManager().refresh(i)); // Forzar sincronización de todas las entidades
-        return incidentes;
     }
 
     @Override
@@ -44,11 +39,7 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
 
     @Override
     public Optional<Incidente> buscarIncidente(Long id) {
-        Incidente incidente = entityManager().find(Incidente.class, id);
-        if (incidente != null) {
-            entityManager().refresh(incidente); // Forzar sincronización de la entidad
-        }
-        return Optional.ofNullable(incidente);
+        return Optional.ofNullable(entityManager().find(Incidente.class, id));
     }
 
     @Override
@@ -62,14 +53,11 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
     }
 
     @Override
-    public List<Incidente> buscarTodosPorHeladera(Heladera heladera) {
-        List<Incidente> incidentes = entityManager()
+    public List<Incidente> buscarTodosPorHeladera(Heladera heladera){
+        return entityManager()
                 .createQuery("SELECT i FROM Incidente i WHERE i.presente = true AND i.heladera = :heladera", Incidente.class)
                 .setParameter("heladera", heladera)
                 .getResultList();
-
-        incidentes.forEach(i -> entityManager().refresh(i)); // Forzar sincronización de todas las entidades
-        return incidentes;
     }
 
     @Override
@@ -82,4 +70,3 @@ public class IncidentesDataBase implements WithSimplePersistenceUnit, Incidentes
                 .getSingleResult()).intValue();
     }
 }
-

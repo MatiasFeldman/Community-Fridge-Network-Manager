@@ -30,9 +30,9 @@ import javax.persistence.*;
 @Table(name = "usuario")
 public class Usuario extends Persistente {
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "usuario", unique = true, nullable = false)
     private String user;
-    @Column(nullable = false)
+    @Column(name = "contrasenia", nullable = false)
     private String password;
     @Column(name = "foto", nullable = false)
     private String foto;
@@ -45,7 +45,7 @@ public class Usuario extends Persistente {
     private List<TipoRol> roles;
 
     @Convert(converter = SendingStrategyConverter.class)
-    @Column()
+    @Column(name = "estrategia_de_envio")
     private SendingStrategy strategiaDeEnvio = null;
 
     @SneakyThrows

@@ -1,0 +1,24 @@
+# Directorios de construcción
+/build/
+.gradle/
+
+# Configuraciones de IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# NetBeans (si usas NetBeans)
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Directorios de compilación
+# (Eliminar excepciones para src porque no deberían existir builds en src)
+build/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

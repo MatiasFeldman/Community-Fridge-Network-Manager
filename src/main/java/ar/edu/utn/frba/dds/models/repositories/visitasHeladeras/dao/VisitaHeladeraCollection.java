@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.dao;
 
 import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.Heladera;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
 import lombok.AllArgsConstructor;
 
@@ -47,15 +46,6 @@ public class VisitaHeladeraCollection implements VisitaHeladeraDAO{
         return this.visitas
                 .stream()
                 .filter(c -> Objects.equals(c.getHeladeraFallada().getId(), heladera.getId()))
-                .toList();
-    }
-
-    @Override
-    public  List<VisitaAHeladera> buscarPorTecnico(Tecnico tecnico){
-
-        return this.visitas
-                .stream()
-                .filter(visita -> visita.getTecnico() != null && visita.getTecnico().equals(tecnico))
                 .toList();
     }
 }

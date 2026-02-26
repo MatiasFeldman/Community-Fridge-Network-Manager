@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
-import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,8 @@ import java.time.LocalDate;
 @Table(name = "canjes")
 public class Canjes extends Persistente {
     @ManyToOne
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id")
+    @JoinColumn(name = "id_oferta")
     private Oferta oferta;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-    private Usuario usuario;
 
     @Column(name = "fecha_de_canje")
     private LocalDate fecha_de_canje;

@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log(contactos);
     let nConfiguradoMin = null;
     let nConfiguradoMax = null;
 
@@ -60,16 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function encontrarContactoPorTipo(tipo) {
-        //return contactos && contactos.find(contacto => contacto.tipoContacto.toLowerCase() === tipo.toLowerCase());
-        // contactos es un span con span's hijos con <span class="contacto" data-tipo="{{this.tipoContacto}}" data-valor="{{this.valor}}"></span>
-        const contactosSpan = document.querySelectorAll('.contacto');
-        let encontrado = false;
-        contactosSpan.forEach(contactoSpan => {
-            if (contactoSpan.dataset.tipo.toLowerCase() === tipo.toLowerCase()) {
-                encontrado = true;
-            }
-        });
-        return encontrado;
+        return contactosGuardados && contactosGuardados.find(contacto => contacto.tipoContacto.toLowerCase() === tipo.toLowerCase());
     }
 
     formSuscripcion.addEventListener('submit', function (event) {

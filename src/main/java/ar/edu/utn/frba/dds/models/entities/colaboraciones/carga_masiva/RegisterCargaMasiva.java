@@ -6,7 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboraciones.Contribucion;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.ContribucionHumanaFactory;
 import ar.edu.utn.frba.dds.models.entities.helpers.creador_usernames.UsernameGenerator;
 import ar.edu.utn.frba.dds.models.entities.personas.*;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
+import ar.edu.utn.frba.dds.models.entities.usuarios.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.models.factories.personas.HumanoFactory;
@@ -31,16 +31,18 @@ public class RegisterCargaMasiva {
         this.ofertas = ofertas;
     }
 
-    public UsuarioConPassword registrarHumano(String[] line) throws IOException {
+    public Usuario registrarHumano(String[] line) throws IOException {
         String tipoDocumento = line[0];
         String documento = line[1];
         String nombre = line[2];
         String apellido = line[3];
         String mail = line[4];
-        String formaColaboracion = line[6];
-        Integer cantidad = Integer.parseInt(line[7]);
+        String formaColaboracion = line[5];
+        Integer cantidad = Integer.parseInt(line[6]);
 
         Atributo nombreAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
+        Atributo tipoDocumentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Tipo Documento").get();
+        Atributo documentoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Documento").get();
         Atributo apellidoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
         Atributo nacimientoAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
         Atributo mailAtributo = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
@@ -57,33 +59,20 @@ public class RegisterCargaMasiva {
                 AtributoHumanoRespondido.create(direccionAtributo, ""),
                 AtributoHumanoRespondido.create(provinciaAtributo, ""),
                 AtributoHumanoRespondido.create(wppAtributo, ""),
+                AtributoHumanoRespondido.create(tipoDocumentoAtributo, tipoDocumento),
+                AtributoHumanoRespondido.create(documentoAtributo, documento),
                 AtributoHumanoRespondido.create(telegramAtributo, "")));
 
-        UsuarioConPassword userCreadoConPass = this.crearUsuarioHumanoPass(nombre, apellido);
-        Usuario userCreado = userCreadoConPass.getUsuario();
+        Usuario userCreado = this.crearUsuarioHumano(nombre, apellido);
 
         ColaboradorHumano creado = this.crearHumano(atributosObligatorios, atributosOpcionales,new ArrayList<>() ,userCreado);
-
-        creado.setTipoDocumento(Tipo_documento.valueOf(tipoDocumento));
-        creado.setDocumento(documento);
 
         this.agregarContribucion(creado, formaColaboracion, cantidad);
 
         this.guardarEnRepositorios(creado);
 
-        return userCreadoConPass;
+        return creado.getUser();
 
-    }
-
-    public UsuarioConPassword crearUsuarioHumanoPass(String nombre, String apellido) throws IOException {
-        UsernameGenerator usernameGenerator = new UsernameGenerator(humanRepository);
-        String username = usernameGenerator.generateUsername(nombre, apellido);
-        String password = GeneradorDeContrasenias.generateRandomString(16);
-        // hashear password
-
-        System.out.println("Usuario creado: " + username + " " + password);
-        Usuario usuario = new Usuario(username, ServiceLocator.instanceOf(HashPassword.class).hashPassword(password), new ArrayList<>(List.of(TipoRol.HUMANO)));
-        return new UsuarioConPassword(usuario, password);
     }
 
     public Usuario crearUsuarioHumano(String nombre, String apellido) throws IOException {
@@ -97,7 +86,7 @@ public class RegisterCargaMasiva {
     }
 
     public ColaboradorHumano crearHumano(ArrayList<AtributoHumanoRespondido> obligatorios, ArrayList<AtributoHumanoRespondido> opcionales, ArrayList<Canjes> canjes , Usuario userCreado){
-        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales , userCreado, null);
+        HumanoInputDTO dto = new HumanoInputDTO(obligatorios,List.of("Mail","WhatsApp","Telegram") ,opcionales,canjes , userCreado, null);
         return HumanoFactory.crear(dto);
     }
 

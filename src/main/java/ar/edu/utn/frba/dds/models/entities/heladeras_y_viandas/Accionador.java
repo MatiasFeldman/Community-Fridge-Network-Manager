@@ -2,9 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas;
 
 import ar.edu.utn.frba.dds.dtos.incidentes.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.comandos.Comando;
-import ar.edu.utn.frba.dds.models.repositories.heladeras.HeladerasRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidentes.imp.IncidentesRepository;
-import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -44,12 +42,11 @@ public class Accionador {
     }
 
     public void sucedeIncidente(TipoEvento tipo, LocalDateTime fecha, Heladera heladera) {
-        System.out.println(heladera);
+        System.out.println("Se ha registrado un incidente de tipo " + tipo.name() + " en la heladera: " + heladera.getId());
         this.registrarIncidente(tipo, fecha, heladera);
         System.out.println(this.comandos.size());
         this.comandos.forEach(c -> System.out.println("Ejecutando comando: " + c.getClass().getSimpleName()));
-        this.comandos.forEach(comando -> comando.ejecutar(heladera, tipo.toString()));
-        ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
+        this.comandos.forEach(comando -> comando.ejecutar(heladera, tipo.name()));
     }
 
     public void sucedeFallaTecnica(DenunciaFallaTecnica denuncia, Heladera heladera) {
@@ -59,21 +56,10 @@ public class Accionador {
     }
 
     public void registrarIncidente(TipoEvento tipo, LocalDateTime fecha, Heladera heladera) {
-
-        heladera.desactivar();
-
         IncidenteDTO dto = new IncidenteDTO(fecha, heladera, tipo);
-
         Incidente incidente = Incidente.of(dto);
-
-        System.out.println("Voy a guardar el incidente");
-
-
-
-        ServiceLocator.instanceOf(IncidentesRepository.class).guardar(incidente);
-
-        System.out.println("Se ha registrado un incidente de tipo " + incidente.getTipo() + " en la heladera: " + incidente.getHeladera().getId());
-
+        incidentesRepository.guardar(incidente);
+        heladera.desactivar();
     }
 
     public void registrarFallaTecnica(DenunciaFallaTecnica denuncia) {
@@ -85,10 +71,7 @@ public class Accionador {
                 denuncia.getDescripcion(),
                 denuncia.getFoto());
         Incidente incidente = Incidente.of(dto);
-        ServiceLocator.instanceOf(IncidentesRepository.class).guardar(incidente);
-
+        incidentesRepository.guardar(incidente);
         heladera.desactivar();
-
-        ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
     }
 }

@@ -57,56 +57,36 @@ public class ReceptorApertura implements IMqttMessageListener {
 
         ColaboradorHumano colaborador = ServiceLocator.instanceOf(HumanosRepository.class).buscarPorTarjeta(idTarjeta).get();
 
+        System.out.println("Colaborador: " + colaborador.getUsername());
 
         Optional<Heladera> posibleHeladera = heladeras.buscarPorId(idHeladera);
+
+        System.out.println("Heladera: " + posibleHeladera.isPresent());
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonRta = mapper.createObjectNode();
 
-
         if (posibleHeladera.isPresent()) {
             Heladera heladera = posibleHeladera.get();
+            SolicitudApertura solicitud = heladera.buscarSolicitud(idTarjeta).get();
+            jsonRta.put("id_heladera", idHeladera);
+            jsonRta.put("id_tarjeta", idTarjeta);
+            jsonRta.put("id_colaborador", colaborador.getIdUsuario());
+            jsonRta.put("fecha", LocalDateTime.now().toString());
+            jsonRta.put("id_colaboracion", solicitud.getIdColaboracion());
 
-
-            Optional<SolicitudApertura> posiblesolicitud = heladera.buscarSolicitud(idTarjeta);
-
-
-            if (posiblesolicitud.isEmpty()) {
-                jsonRta.put("id_heladera", idHeladera);
-                jsonRta.put("id_tarjeta", idTarjeta);
-                jsonRta.put("id_colaborador", colaborador.getIdUsuario());
-                jsonRta.put("fecha", LocalDateTime.now().toString());
+            if (heladera.tieneAcceso(idTarjeta) && LocalDateTime.now().isBefore(solicitud.getFechaDeExpiracion())){
+                jsonRta.put("acceso", "permitido");
+            } else{
                 jsonRta.put("acceso", "denegado");
-            } else {
-                SolicitudApertura solicitud = posiblesolicitud.get();
-
-                jsonRta.put("id_heladera", idHeladera);
-                jsonRta.put("id_tarjeta", idTarjeta);
-                jsonRta.put("id_colaborador", colaborador.getIdUsuario());
-                jsonRta.put("fecha", LocalDateTime.now().toString());
-                jsonRta.put("id_colaboracion", solicitud.getIdColaboracion());
-
-                if (heladera.tieneAcceso(idTarjeta) && LocalDateTime.now().isBefore(solicitud.getFechaDeExpiracion())) {
-                    jsonRta.put("acceso", "permitido");
-                } else {
-                    jsonRta.put("acceso", "denegado");
-                }
-
             }
 
-            System.out.println("Respuesta: " + jsonRta);
-
-        } else {
+        } else{
             jsonRta.put("error", "Heladera no encontrada");
         }
 
-
         String rtaString = mapper.writeValueAsString(jsonRta);
-
-        System.out.println("Mensaje a publicar: " + rtaString);
-
         MqttMessage rta = new MqttMessage(rtaString.getBytes());
         cliente_intentos.publish("heladeras/intentos_de_apertura", rta);
-
     }
 }

@@ -32,14 +32,12 @@ import ar.edu.utn.frba.dds.models.repositories.suscripciones.SuscripcionesReposi
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasColaboradoresRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
-import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import ar.edu.utn.frba.dds.utils.permisos.PermisoDenegadoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-import io.micrometer.core.instrument.Counter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -102,10 +100,7 @@ public class HeladerasController {
         model.put("titulo", "Heladeras");
 
         boolean permisoSuscripcion = verificarPermisoSuscripcion(ctx);
-        boolean permisoTecnico = verificarPermisoTecnico(ctx);
-
         model.put("permisoSuscripcion", permisoSuscripcion);
-        model.put("permisoTecnico", permisoTecnico);
 
         RenderUtils.renderizar(ctx,"heladeras/mapa-de-heladeras-user.hbs", model);
     }
@@ -187,14 +182,6 @@ public class HeladerasController {
                 .anyMatch(rol -> rol.equals("HUMANO") || rol.equals("JURIDICA"));
     }
 
-    private boolean verificarPermisoTecnico(Context ctx) {
-        List<String> rolesUsuario = ctx.sessionAttribute("roles");
-        if (rolesUsuario == null || rolesUsuario.isEmpty()) return false;
-
-        return rolesUsuario.stream()
-                .anyMatch(rol -> rol.equals("TECNICO"));
-    }
-
     private void agregarContactosUsuarioAlModelo(Map<String, Object> model, Context ctx) {
         List<String> rolesUsuario = ctx.sessionAttribute("roles");
         Long idUsuario = ctx.sessionAttribute("id");
@@ -227,9 +214,6 @@ public class HeladerasController {
                 contactosDTO.add(new ContactosDTO(tipoContacto, valor));
             }
         }
-
-        contactosDTO.forEach(c -> System.out.println(c.getTipoContacto() + " " + c.getValor()));
-
         model.put("contactos",contactosDTO);
     }
 
@@ -442,13 +426,7 @@ public class HeladerasController {
             ServiceLocator.instanceOf(SuscripcionesRepository.class).guardar(nuevaSuscripcion);
             ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
 
-            final var registry = DDMetricsUtils.getInstance().getRegistry();
-            final Counter counter = registry.counter("suscripciones.heladera");
-
-            counter.increment();
             ctx.redirect("/heladeras");
-
-
         } catch (UsuarioNoEncontradoException | HeladeraNoEncontradaException | InputValidationException e) {
             // Renderizar la vista de error 400 con el mensaje específico
             Map<String, Object> model = new HashMap<>(); // sirve para pasar parámetros a la vista
@@ -577,8 +555,6 @@ public class HeladerasController {
         model.put("titulo", "Suscripción");
         // Añadir la lógica de medios de contacto a un metodo separado
         agregarContactosUsuarioAlModelo(model, ctx);
-
-
 
         String idParam = ctx.pathParam("id");
         Long heladeraId = Long.parseLong(idParam);

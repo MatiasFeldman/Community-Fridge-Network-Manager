@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/style-btn.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.2"
             integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
             crossorigin="anonymous"></script>
@@ -34,15 +32,12 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="#quienes-somos">Quienes Somos</a>
             </li>
-            {{#if (isEqual rolUsuario "TECNICO")}}
-            {{else}}
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/ofertas">Ofertas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="/colaboraciones">Colaborar</a>
+                <a class="nav-link text-dark" href="/colaborar">Colaborar</a>
             </li>
-            {{/if}}
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/heladeras">Heladeras</a>
             </li>
@@ -62,15 +57,11 @@
                     {{#if (isEqual rolUsuario "ADMIN")}}
                         <li><a class="dropdown-item" href="/heladeras/reportes">Ver Reportes</a></li>
                         <li><a class="dropdown-item" href="/colaboradores">Ver Colaboradores</a></li>
-                        <li><a class="dropdown-item" href="/registro/registro-humano">Administar Registro Humanos</a></li>
+                        <li><a class="dropdown-item" href="/registro/modificar-registro-humano">Administar Registro Humanos</a></li>
                     {{else}}
                         <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                        {{#if (isEqual rolUsuario "TECNICO")}}
-                            <li><a class="dropdown-item" href="/misVisitas">Mis Visitas</a></li>
-                            {{else}}
-                            <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
-                            <li><a class="dropdown-item" href="/suscripciones">Suscripciones</a></li>
-                        {{/if}}
+                        <li><a class="dropdown-item" href="/misCanjes">Mis Canjes</a></li>
+                        <li><a class="dropdown-item" href="/suscripciones">Suscripciones</a></li>
                     {{/if}}
                 </ul>
             </div>
@@ -110,7 +101,7 @@
             <div class="footer-column text-center">
                 <h5>Ayúdanos a ayudar</h5>
                 <p>Ayudemos a las personas vulnerables</p>
-                <a href="/colaboraciones">
+                <a href="/colaborar">
                     <button class="boton">Donar</button>
                 </a>
             </div>

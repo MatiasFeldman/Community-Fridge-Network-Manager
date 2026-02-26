@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class OfrecerProductoDB implements OfrecerProductoDAO, WithSimplePersistenceUnit {
-
     @Override
     public void guardar(OfrecerProductoOServicio ofrecerProductoOServicio) {
-        ofrecerProductoOServicio.setPresente(true);
         beginTransaction();
         entityManager().persist(ofrecerProductoOServicio);
         commitTransaction();
@@ -19,21 +17,15 @@ public class OfrecerProductoDB implements OfrecerProductoDAO, WithSimplePersiste
 
     @Override
     public List<OfrecerProductoOServicio> buscarTodas() {
-        List<OfrecerProductoOServicio> productos = entityManager()
+        return entityManager()
                 .createQuery("SELECT c FROM OfrecerProductoOServicio c WHERE c.presente = true", OfrecerProductoOServicio.class)
                 .getResultList();
-
-        productos.forEach(p -> entityManager().refresh(p)); // Forzar sincronización de todas las entidades
-        return productos;
     }
 
     @Override
     public Optional<OfrecerProductoOServicio> buscarPorId(Long id) {
-        OfrecerProductoOServicio producto = entityManager().find(OfrecerProductoOServicio.class, id);
-        if (producto != null) {
-            entityManager().refresh(producto); // Forzar sincronización si la entidad existe
-        }
-        return Optional.ofNullable(producto);
+        return entityManager()
+                .find(OfrecerProductoOServicio.class, id) == null ? Optional.empty() : Optional.of(entityManager().find(OfrecerProductoOServicio.class, id));
     }
 
     @Override
@@ -51,13 +43,10 @@ public class OfrecerProductoDB implements OfrecerProductoDAO, WithSimplePersiste
 
     @Override
     public Integer cantProductosOfrecidosPor(Juridica colaborador) {
-        List<OfrecerProductoOServicio> productos = entityManager()
+        return entityManager()
                 .createQuery("SELECT d FROM OfrecerProductoOServicio d WHERE d.juridica.user.id = :id AND d.presente = true", OfrecerProductoOServicio.class)
                 .setParameter("id", colaborador.getId())
-                .getResultList();
-
-        productos.forEach(p -> entityManager().refresh(p)); // Forzar sincronización de las entidades
-        return productos.size();
+                .getResultList()
+                .size();
     }
 }
-

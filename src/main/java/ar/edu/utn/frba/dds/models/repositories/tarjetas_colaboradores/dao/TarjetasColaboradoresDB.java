@@ -7,14 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSimplePersistenceUnit {
-
     @Override
     public Optional<TarjetaColaborador> buscarPorId(Long idTarjetaRepartida) {
-        TarjetaColaborador tarjeta = entityManager().find(TarjetaColaborador.class, idTarjetaRepartida);
-        if (tarjeta != null) {
-            entityManager().refresh(tarjeta); // Forzar sincronización de la entidad
-        }
-        return Optional.ofNullable(tarjeta);
+        return Optional.ofNullable(entityManager().find(TarjetaColaborador.class, idTarjetaRepartida));
     }
 
     @Override
@@ -26,10 +21,9 @@ public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSi
 
     @Override
     public void guardar(TarjetaColaborador tarjeta) {
-        tarjeta.setPresente(true);
-        beginTransaction();
-        entityManager().persist(tarjeta);
-        commitTransaction();
+        withTransaction(() -> {
+            entityManager().persist(tarjeta);
+        });
     }
 
     @Override
@@ -40,11 +34,8 @@ public class TarjetasColaboradoresDB implements TarjetasColaboradoresDAO, WithSi
 
     @Override
     public List<TarjetaColaborador> buscarTodas() {
-        List<TarjetaColaborador> tarjetas = entityManager()
+        return entityManager()
                 .createQuery("select t from TarjetaColaborador t where t.presente = true", TarjetaColaborador.class)
                 .getResultList();
-
-        tarjetas.forEach(t -> entityManager().refresh(t)); // Forzar sincronización de todas las entidades
-        return tarjetas;
     }
 }

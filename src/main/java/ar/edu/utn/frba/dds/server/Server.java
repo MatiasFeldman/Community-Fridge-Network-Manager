@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.server;
 import ar.edu.utn.frba.dds.middlewares.AppMiddlewares;
 import ar.edu.utn.frba.dds.models.entities.helpers.conversor_json.ConversorJSON;
 import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
-import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.server.Initializer;
 import ar.edu.utn.frba.dds.utils.server.JavalinRenderer;
 import ar.edu.utn.frba.dds.utils.server.PrettyProperties;
@@ -16,7 +15,6 @@ import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.HttpStatus;
-import io.javalin.micrometer.MicrometerPlugin;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -46,11 +44,7 @@ public class Server {
     }
 
     private static Consumer<JavalinConfig> config() {
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-
-        final var micrometerPlugin = new MicrometerPlugin(config -> config.registry = registry);
         return config -> {
-            config.registerPlugin(micrometerPlugin);
             config.staticFiles.add(staticFiles -> {
                 staticFiles.hostedPath = "/";
                 staticFiles.directory = "/public";

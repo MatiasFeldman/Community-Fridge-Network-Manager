@@ -42,5 +42,4 @@ public class HumanosRepository {
     public Optional<ColaboradorHumano> buscarPorTarjeta(Long id) {
         return humanos.buscarPorTarjeta(id);
     }
-
 }

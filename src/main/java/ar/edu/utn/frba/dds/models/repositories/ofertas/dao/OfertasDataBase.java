@@ -10,7 +10,6 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Oferta oferta) {
-        oferta.setPresente(true);
         beginTransaction();
         entityManager().persist(oferta);
         commitTransaction();
@@ -18,15 +17,12 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public Optional<Oferta> buscarPorNombre(String nombre) {
-        Optional<Oferta> oferta = entityManager()
+        return entityManager()
                 .createQuery("select o from Oferta o where o.nombre = :nombre and o.presente = true", Oferta.class)
                 .setParameter("nombre", nombre)
                 .getResultList()
                 .stream()
                 .findFirst();
-
-        oferta.ifPresent(o -> entityManager().refresh(o)); // Forzar sincronización si la oferta existe
-        return oferta;
     }
 
     @Override
@@ -38,24 +34,18 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public List<Oferta> buscarPorRubro(String rubro) {
-        List<Oferta> ofertas = entityManager()
+        return entityManager()
                 .createQuery("select o from Oferta o where o.rubro.nombre = :rubro and o.presente = true", Oferta.class)
                 .setParameter("rubro", rubro)
                 .getResultList();
-
-        ofertas.forEach(o -> entityManager().refresh(o)); // Forzar sincronización de todas las ofertas
-        return ofertas;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Oferta> buscarTodos() {
-        List<Oferta> ofertas = entityManager()
+        return entityManager()
                 .createQuery("select o from Oferta o where o.presente = true ", Oferta.class)
                 .getResultList();
-
-        ofertas.forEach(o -> entityManager().refresh(o)); // Forzar sincronización de todas las ofertas
-        return ofertas;
     }
 
     @Override
@@ -66,11 +56,7 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
 
     @Override
     public Optional<Oferta> buscarPorId(Long id) {
-        Oferta oferta = entityManager().find(Oferta.class, id);
-        if (oferta != null) {
-            entityManager().refresh(oferta); // Forzar sincronización con la base de datos
-        }
-        return Optional.ofNullable(oferta);
+        return Optional.ofNullable(entityManager().find(Oferta.class, id));
     }
 
     @Override
@@ -79,7 +65,5 @@ public class OfertasDataBase implements OfertasDAO, WithSimplePersistenceUnit {
         if (oferta.canjesRestantes() == 0) {
             this.eliminar(oferta);
         }
-        this.modficar(oferta);
     }
 }
-

@@ -15,9 +15,6 @@ import ar.edu.utn.frba.dds.models.entities.ubicacion.RecomendarPuntos;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.AtributosHumanoRepository;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoCollection;
 import ar.edu.utn.frba.dds.models.repositories.atributos_humano.dao.AtributosHumanoDataBase;
-import ar.edu.utn.frba.dds.models.repositories.canjes.CanjesRepository;
-import ar.edu.utn.frba.dds.models.repositories.canjes.dao.CanjesCollection;
-import ar.edu.utn.frba.dds.models.repositories.canjes.dao.CanjesDB;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.DistribucionesDeViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasCollection;
 import ar.edu.utn.frba.dds.models.repositories.distribuciones_de_viandas.dao.DistribucionesDeViandasDataBase;
@@ -41,7 +38,6 @@ import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAp
 import ar.edu.utn.frba.dds.models.repositories.intentos_de_apertura.IntentosDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.JuridicasRepository;
 import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasCollection;
-import ar.edu.utn.frba.dds.models.repositories.juridicas.dao.JuridicasDataBase;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.OfertasRepository;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasCollection;
 import ar.edu.utn.frba.dds.models.repositories.ofertas.dao.OfertasDataBase;
@@ -113,13 +109,14 @@ public class ServiceLocator {
                 Accionador accionador = Accionador.of(ServiceLocator.instanceOf(IncidentesRepository.class));
                 accionador.agregarComando(new AvisarTecnico(ServiceLocator.instanceOf(TecnicosRepository.class)));
                 instances.put(componentName, accionador);
-            } else if (componentName.equals(ReceptorApertura.class.getName())) {
+            } else if (componentName.equals(ReceptorApertura.class.getName())){
                 ReceptorApertura receptorApertura = new ReceptorApertura(ServiceLocator.instanceOf(HeladerasRepository.class));
                 instances.put(componentName, receptorApertura);
-            } else if (componentName.equals(MqttReceptorIntento.class.getName())) {
+            } else if (componentName.equals(MqttReceptorIntento.class.getName())){
                 MqttReceptorIntento mqttReceptorIntento = new MqttReceptorIntento(ServiceLocator.instanceOf(HeladerasRepository.class));
                 instances.put(componentName, mqttReceptorIntento);
-            } else if (componentName.equals(GeorefCaba.class.getName())) {
+            }
+            else if (componentName.equals(GeorefCaba.class.getName())) {
                 instances.put(componentName, new GeorefCaba());
             } else if (componentName.equals(ReportesController.class.getName())) {
                 ReportesController reportesController = new ReportesController();
@@ -179,15 +176,12 @@ public class ServiceLocator {
             } else if (componentName.equals(ContribucionesController.class.getName())) {
                 ContribucionesController contribucionesController = new ContribucionesController();
                 instances.put(componentName, contribucionesController);
-            } else if (componentName.equals(ViewsController.class.getName())) {
+            }else if (componentName.equals(ViewsController.class.getName())) {
                 ViewsController viewsController = new ViewsController();
                 instances.put(componentName, viewsController);
             } else if (componentName.equals(HashPassword.class.getName())) {
                 HashPassword hashPassword = new HashPassword();
                 instances.put(componentName, hashPassword);
-            } else if (componentName.equals(TecnicosController.class.getName())) {
-                TecnicosController tecnicosController = new TecnicosController();
-                instances.put(componentName, tecnicosController);
             }
             // REPOSITORIOS A PARTIR DE AQUI
 
@@ -202,9 +196,6 @@ public class ServiceLocator {
                             instanceOf(HeladerasRepository.class), instanceOf(HumanosRepository.class),
                             instanceOf(JuridicasRepository.class));
                     instances.put(componentName, controller);
-                } else if (componentName.equals(CanjesRepository.class.getName())) {
-                    CanjesRepository canjes = new CanjesRepository(new CanjesCollection(new ArrayList<>()));
-                    instances.put(componentName, canjes);
                 } else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
                     AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoCollection(new ArrayList<>()));
                     instances.put(componentName, atributos);
@@ -262,7 +253,7 @@ public class ServiceLocator {
                 } else if (componentName.equals(TecnicosRepository.class.getName())) {
                     TecnicosRepository tecnicos = new TecnicosRepository(new TecnicosCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, tecnicos);
-                } else if (componentName.equals(VisitaHeladeraRepository.class.getName())) {
+                }else if (componentName.equals(VisitaHeladeraRepository.class.getName())) {
                     VisitaHeladeraRepository visitaAHeladera = new VisitaHeladeraRepository(new VisitaHeladeraCollection(new ArrayList<>(), 100L));
                     instances.put(componentName, visitaAHeladera);
                 }
@@ -277,12 +268,6 @@ public class ServiceLocator {
                             instanceOf(HeladerasRepository.class), instanceOf(HumanosRepository.class),
                             instanceOf(JuridicasRepository.class));
                     instances.put(componentName, controller);
-                } else if (componentName.equals(CanjesRepository.class.getName())) {
-                    CanjesRepository canjes = new CanjesRepository(new CanjesDB());
-                    instances.put(componentName, canjes);
-                } else if (componentName.equals(JuridicasRepository.class.getName())) {
-                    JuridicasRepository juridicas = new JuridicasRepository(new JuridicasDataBase());
-                    instances.put(componentName, juridicas);
                 } else if (componentName.equals(AtributosHumanoRepository.class.getName())) {
                     AtributosHumanoRepository atributos = new AtributosHumanoRepository(new AtributosHumanoDataBase());
                     instances.put(componentName, atributos);

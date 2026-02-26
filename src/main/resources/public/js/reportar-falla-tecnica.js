@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return
         }
 
-        fetch('/heladeras/falla-tecnica/nueva', {
+        fetch('/heladeras/reportar-falla-tecnica', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

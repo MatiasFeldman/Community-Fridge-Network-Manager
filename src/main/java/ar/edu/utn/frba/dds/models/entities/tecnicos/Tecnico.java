@@ -4,13 +4,14 @@ import ar.edu.utn.frba.dds.dtos.tecnicos.TecnicoDTO;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
 import ar.edu.utn.frba.dds.models.entities.personas.Contacto;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
-import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @SuperBuilder
@@ -21,9 +22,8 @@ import java.util.List;
 @Table(name = "tecnico")
 public class Tecnico extends Persistente {
 
-    @Setter
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
     @Column(name = "nombre")
@@ -33,12 +33,11 @@ public class Tecnico extends Persistente {
     private String apellido;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_contacto", referencedColumnName = "id")
+    @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto")
     private Contacto medioContacto;
 
-    @Enumerated (EnumType.STRING)
-    @Column(name="tipoDocumento",nullable = false)
-    private Tipo_documento tipo;
+    @Embedded
+    private TipoTecnico tipo;
 
     @Column(name = "nro_documento")
     private String nroDocumento;
@@ -51,6 +50,7 @@ public class Tecnico extends Persistente {
 
     public static Tecnico create(TecnicoDTO dto) {
         return Tecnico.builder()
+                .user(new Usuario(dto.getNombreUsuario(),dto.getContrasenia()))
                 .nombre(dto.getNombre())
                 .apellido(dto.getApellido())
                 .medioContacto(dto.getMedioContacto())

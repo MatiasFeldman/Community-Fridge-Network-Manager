@@ -43,13 +43,10 @@ import ar.edu.utn.frba.dds.models.repositories.rubros.RubrosRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.services.georef_caba.GeorefCaba;
 import ar.edu.utn.frba.dds.services.service_locator.ServiceLocator;
-import ar.edu.utn.frba.dds.utils.DDMetricsUtils;
 import ar.edu.utn.frba.dds.utils.RenderUtils;
 import com.google.gson.Gson;
-import com.sun.xml.bind.v2.schemagen.xmlschema.ComplexType;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
-import io.micrometer.core.instrument.Counter;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
@@ -61,7 +58,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import static com.mysql.cj.conf.PropertyKey.logger;
 
@@ -104,38 +100,21 @@ public class ContribucionesController {
 
         ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
 
-        if (colaboradorHumano.getTarjetaPrincipal() == null) {
-            System.out.println("No tiene tarjeta principal");
-            throw new SolicitudIncorrectaException();
-        }
-
         DonacionDeVianda donacionDeVianda = DonacionDeVianda.of(heladera, colaboradorHumano);
 
         DonacionesDeViandaRepository donacionesDeViandaRepository = ServiceLocator.instanceOf(DonacionesDeViandaRepository.class);
         donacionesDeViandaRepository.guardar(donacionDeVianda);
 
-        humanosRepository.actualizar(colaboradorHumano);
-
-        SolicitudApertura solicitud = SolicitudApertura.create(colaboradorHumano, LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladera, 1, MotivoApertura.DONAR, donacionDeVianda.getId());
-
-        System.out.println("Solicitud: " + solicitud);
+        SolicitudApertura solicitud = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladera, 1, MotivoApertura.DONAR, donacionDeVianda.getId());
 
         heladera.agregarSolicitudApertura(solicitud);
 
-        System.out.println("Solicitud agregada a heladera");
-
         ServiceLocator.instanceOf(HeladerasRepository.class).modificar(heladera);
-
-        System.out.println("Heladera modificada");
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("donaciones_de_vianda");
-        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void crearDistribucionDeViandas(Context ctx) {
@@ -199,8 +178,8 @@ public class ContribucionesController {
         DistribucionViandas distribucionDeViandas = DistribucionViandas.of(heladeraOrigen, heladeraDestino, cantidadViandasInt, motivoDistribucion, colaboradorHumano);
 
 
-        SolicitudApertura solicitudColocar = SolicitudApertura.create(colaboradorHumano, LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraDestino, cantidadViandasInt, MotivoApertura.COLOCAR, distribucionDeViandas.getId());
-        SolicitudApertura solicitudRetirar = SolicitudApertura.create(colaboradorHumano, LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraOrigen, cantidadViandasInt, MotivoApertura.RETIRAR, distribucionDeViandas.getId());
+        SolicitudApertura solicitudColocar = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraDestino, cantidadViandasInt, MotivoApertura.COLOCAR, distribucionDeViandas.getId());
+        SolicitudApertura solicitudRetirar = SolicitudApertura.create(colaboradorHumano,LocalDateTime.now(), colaboradorHumano.getTarjetaPrincipal(), heladeraOrigen, cantidadViandasInt, MotivoApertura.RETIRAR, distribucionDeViandas.getId());
 
         heladeraOrigen.agregarSolicitudApertura(solicitudRetirar);
         heladeraDestino.agregarSolicitudApertura(solicitudColocar);
@@ -208,15 +187,9 @@ public class ContribucionesController {
         DistribucionesDeViandasRepository distribucionesDeViandasRepository = ServiceLocator.instanceOf(DistribucionesDeViandasRepository.class);
         distribucionesDeViandasRepository.guardar(distribucionDeViandas);
 
-        humanosRepository.actualizar(colaboradorHumano);
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("distribuciones_de_vianda");
-        counter.increment();
-
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void crearDonacionDeDinero(Context ctx) {
@@ -243,10 +216,10 @@ public class ContribucionesController {
         Integer frecuencia;
         ChronoUnit unidad = null;
 
-        if (frecuenciaTexto.equals("mensual")) {
+        if (frecuenciaTexto.equals("mensual")){
             frecuencia = 1;
             unidad = ChronoUnit.MONTHS;
-        } else if (frecuenciaTexto.equals("unica")) {
+        } else if (frecuenciaTexto.equals("unica")){
             frecuencia = 0;
         } else {
             throw new SolicitudIncorrectaException();
@@ -264,14 +237,13 @@ public class ContribucionesController {
 
             ColaboradorHumano colaboradorHumano = posibleColaboradorHumano.get();
 
-            if (frecuencia > 0) {
+            if (frecuencia > 0){
                 donacion = DonacionDeDinero.of(colaboradorHumano, montoDouble, unidad, frecuencia);
             } else {
                 donacion = DonacionDeDinero.of(colaboradorHumano, montoDouble);
             }
 
             colaboradorHumano.sumarPuntaje(donacion);
-            humanosRepository.actualizar(colaboradorHumano);
         } else if (roles.contains("JURIDICA")) {
             JuridicasRepository juridicasRepository = ServiceLocator.instanceOf(JuridicasRepository.class);
             Optional<Juridica> posibleJuridica = juridicasRepository.buscarPorIdUsuario(userId);
@@ -282,14 +254,13 @@ public class ContribucionesController {
 
             Juridica juridica = posibleJuridica.get();
 
-            if (frecuencia > 0) {
+            if (frecuencia > 0){
                 donacion = DonacionDeDinero.of(juridica, montoDouble, unidad, frecuencia);
             } else {
                 donacion = DonacionDeDinero.of(juridica, montoDouble);
             }
 
             juridica.sumarPuntaje(donacion);
-            juridicasRepository.modificar(juridica);
         } else {
             throw new SolicitudIncorrectaException();
         }
@@ -297,14 +268,9 @@ public class ContribucionesController {
         DonacionDineroRepository donacionDineroRepository = ServiceLocator.instanceOf(DonacionDineroRepository.class);
         donacionDineroRepository.guardar(donacion);
 
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("donaciones.dinero");
-
-        counter.increment();
-
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarPersonaVulnerable(Context ctx) {
@@ -323,8 +289,7 @@ public class ContribucionesController {
         Integer cantMenoresACargo;
 
         try {
-            cantMenoresACargo = Integer.valueOf(menoresACargo);
-            ;
+            cantMenoresACargo = Integer. valueOf(menoresACargo);;
         } catch (NumberFormatException e) {
             throw new MenoresACargoIncorrectoException(); // menoresACargo debe ser un numero
         }
@@ -373,7 +338,7 @@ public class ContribucionesController {
                 dni,
                 cantMenoresACargo,
                 List.of(tarjeta)
-        );
+                );
 
         PersonasVulnerablesRepository personasVulnerablesRepository = ServiceLocator.instanceOf(PersonasVulnerablesRepository.class);
         personasVulnerablesRepository.guardar(personaVulnerable);
@@ -383,17 +348,11 @@ public class ContribucionesController {
         tarjeta.setDuenio(personaVulnerable);
 
         juridica.sumarPuntaje(registroPersonaVulnerable);
-        juridicasRepository.modificar(juridica);
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("personas_vulnerables");
-
-        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarHeladeraACargo(Context ctx) {
@@ -466,17 +425,11 @@ public class ContribucionesController {
         heladerasRepository.guardar(heladera);
 
         juridica.sumarPuntaje(hacerseCargoHeladera);
-        juridicasRepository.modificar(juridica);
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("heladeras_a_cargo");
-
-        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
     public void registrarOferta(Context ctx) {
@@ -485,7 +438,7 @@ public class ContribucionesController {
         String canjesTotales = ctx.formParam("canjesTotales");
         String rubro = ctx.formParam("rubro");
 
-        if (nombreProducto == null || puntosNecesarios == null || canjesTotales == null || rubro == null) {
+        if(nombreProducto == null || puntosNecesarios == null || canjesTotales == null || rubro == null){
             throw new SolicitudIncorrectaException();
         }
         Double puntosNecesariosDouble;
@@ -503,7 +456,7 @@ public class ContribucionesController {
             throw new puntosNecesariosIncorretoException("Los puntos necesarios deben ser mayores a 0");
         }
 
-        if (canjesTotalesInt <= 0) {
+        if (canjesTotalesInt <= 0){
             throw new canjesTotalesIncorretoException("Los canjes totales deben ser mayores a 0");
         }
 
@@ -516,9 +469,10 @@ public class ContribucionesController {
             throw new SolicitudIncorrectaException();
         }
         Optional<Rubro> rubroOFerta = ServiceLocator.instanceOf(RubrosRepository.class).buscarPorId(rubroId);
-        if (!rubroOFerta.isPresent()) {
+        if(!rubroOFerta.isPresent()){
             throw new SolicitudIncorrectaException();
         }
+
 
 
         Juridica juridica = posibleJuridica.get();
@@ -528,7 +482,8 @@ public class ContribucionesController {
                 rubroOFerta.get(),
                 canjesTotalesInt,
                 null);
-
+        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
+        ofertasRepository.guardar(oferta);
 
         // Obtener archivo de imagen (si se cargó uno)
         UploadedFile imagenProducto = ctx.uploadedFile("imagenProducto");
@@ -538,8 +493,8 @@ public class ContribucionesController {
             // Definir el nombre del archivo y la ruta de almacenamiento
             String nombreArchivo = "oferta_" + oferta.getId();
 
-            String directorioCompleto = Paths.get("src", "main", "java", "ar", "edu", "utn", "frba", "dds", "imagenesDinamicas", "fotosOfertas", nombreArchivo).toString();
-            rutaImagen = "/imagenes/fotosOfertas/" + nombreArchivo;
+            String directorioCompleto = Paths.get("src", "main", "java","ar","edu","utn","frba","dds", "imagenesDinamicas","fotosOfertas" ,nombreArchivo).toString();
+            rutaImagen = "/imagenes/fotosOfertas/"+nombreArchivo;
 
             // Guardar la imagen en el servidor
             try (InputStream inputStream = imagenProducto.content()) {
@@ -550,8 +505,6 @@ public class ContribucionesController {
         }
 
         oferta.setImage(rutaImagen);
-        OfertasRepository ofertasRepository = ServiceLocator.instanceOf(OfertasRepository.class);
-        ofertasRepository.guardar(oferta);
 
         OfrecerProductoOServicio ofrecerProductoOServicio = OfrecerProductoOServicio.of(oferta, juridica);
 
@@ -559,19 +512,13 @@ public class ContribucionesController {
         ofrecerProductoRepository.guardar(ofrecerProductoOServicio);
 
         juridica.sumarPuntaje(ofrecerProductoOServicio);
-        juridicasRepository.modificar(juridica);
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("ofertas_registradas");
-
-        counter.increment();
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
     }
 
-    public void cargaMasiva(Context ctx) {
+    public void cargaMasiva(Context ctx){
         UploadedFile file = ctx.uploadedFile("csvFile");
         if (file == null) {
             System.out.println("No se subió ningún archivo");
@@ -580,24 +527,18 @@ public class ContribucionesController {
         String path = file.filename();
         System.out.println("Path: " + path);
 
-        CompletableFuture.runAsync(() -> {
-            try (InputStream inputStream = file.content()) {
-                ConversorCSVReader conversorCSV = ServiceLocator.instanceOf(ConversorCSVReader.class);
-                CargaMasiva cargaMasiva = new CargaMasiva(inputStream, conversorCSV);
-                cargaMasiva.cargar();
-                System.out.println("Carga masiva finalizada");
-            } catch (IOException e) {
-                throw new SolicitudIncorrectaException();
-            }
-        });
-
-        final var registry = DDMetricsUtils.getInstance().getRegistry();
-        final Counter counter = registry.counter("cargas_masivas_realizadas");
+        try (InputStream inputStream = file.content()) {
+            ConversorCSVReader conversorCSV = ServiceLocator.instanceOf(ConversorCSVReader.class);
+            CargaMasiva cargaMasiva = new CargaMasiva(inputStream, conversorCSV);
+            cargaMasiva.cargar();
+        } catch (IOException e) {
+            throw new SolicitudIncorrectaException();
+        }
 
         Map<String, Object> model = new HashMap<>();
         model.put("titulo", "Colaboración confirmada");
 
-        RenderUtils.renderizar(ctx, "colaboraciones/confirmacion-colaboracion.hbs", model);
+        RenderUtils.renderizar(ctx,"colaboraciones/confirmacion-colaboracion.hbs", model);
 
         // todo: suma puntaje??
     }
@@ -609,14 +550,14 @@ public class ContribucionesController {
         Double radio = Double.valueOf(ctx.formParam("radio"));
 
         APIRecomendadoraDePuntos apiRecomendadoraDePuntos = APIRecomendadoraDePuntos.getInstance();
-        ListaDeUbicaciones ubicaciones = apiRecomendadoraDePuntos.puntosIdeales(new Coordenada(latitud, longitud), radio);
+        ListaDeUbicaciones ubicaciones = apiRecomendadoraDePuntos.puntosIdeales(new Coordenada(latitud,longitud),radio);
 
         GeorefCaba georefCaba = ServiceLocator.instanceOf(GeorefCaba.class);
 
 
         List<Direccion> direcciones = new ArrayList<>();
 
-        for (Coordenada coordenada : ubicaciones.getCoordenadas()) {
+        for (Coordenada coordenada : ubicaciones.getCoordenadas()){
             String direccion_calle = georefCaba.getDirecc(coordenada);
             Direccion direc = DireccionFactory.create(new DireccionInputDTO(direccion_calle, "CABA"));
             direcciones.add(direc);

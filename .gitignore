@@ -28,3 +28,4 @@ target/**
 # IJ files
 *.iml
 .idea/**
+.DS_Store

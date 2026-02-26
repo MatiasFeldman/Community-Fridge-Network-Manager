@@ -14,8 +14,7 @@ import ar.edu.utn.frba.dds.models.entities.heladeras_y_viandas.sensores_y_recept
 import ar.edu.utn.frba.dds.models.entities.personas.*;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.AreaCobertura;
 import ar.edu.utn.frba.dds.models.entities.tecnicos.Tecnico;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.VisitaAHeladera;
+import ar.edu.utn.frba.dds.models.entities.tecnicos.TipoTecnico;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
@@ -33,7 +32,6 @@ import ar.edu.utn.frba.dds.models.repositories.tarjetas_colaboradores.TarjetasCo
 import ar.edu.utn.frba.dds.models.repositories.tarjetas_vulnerables.TarjetasVulnerablesRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnicos.TecnicosRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuarios.UsuariosRepository;
-import ar.edu.utn.frba.dds.models.repositories.visitasHeladeras.VisitaHeladeraRepository;
 import ar.edu.utn.frba.dds.services.receptores.MqttReceptorIntento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorMovimiento;
 import ar.edu.utn.frba.dds.services.receptores.ReceptorTemperatura;
@@ -48,6 +46,7 @@ import java.util.List;
 public class Initializer {
     public static void init() {
         Initializer.inicializarAtributos();
+        System.out.println("Inicializando datos");
         HeladerasRepository heladeras = ServiceLocator.instanceOf(HeladerasRepository.class);
         HumanosRepository humanos = ServiceLocator.instanceOf(HumanosRepository.class);
         JuridicasRepository juridicas = ServiceLocator.instanceOf(JuridicasRepository.class);
@@ -60,18 +59,18 @@ public class Initializer {
         TarjetasVulnerablesRepository tarjetasVulnerablesRepository = ServiceLocator.instanceOf(TarjetasVulnerablesRepository.class);
         TarjetasColaboradoresRepository tarjetasColaboradoresRepository = ServiceLocator.instanceOf(TarjetasColaboradoresRepository.class);
         TecnicosRepository tecnicos = ServiceLocator.instanceOf(TecnicosRepository.class);
-        VisitaHeladeraRepository visitas = ServiceLocator.instanceOf(VisitaHeladeraRepository.class);
-
-        System.out.println("Repositorios inicializados");
 
 
-
+        /*
         Accionador accionador = ServiceLocator.instanceOf(Accionador.class);
         ReceptorApertura receptorApertura = ServiceLocator.instanceOf(ReceptorApertura.class);
         MqttReceptorIntento receptorIntento = ServiceLocator.instanceOf(MqttReceptorIntento.class);
-        ReceptorTemperatura receptorTemp = ReceptorTemperatura.create(ServiceLocator.instanceOf(HeladerasRepository.class));
-        ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
 
+         */
+
+
+
+        // creacion de heladeras
 
         Direccion d1 = DireccionFactory.create(new DireccionInputDTO("Mozart 2300", "CABA"));
 
@@ -182,7 +181,7 @@ public class Initializer {
                 "Pedro",
                 "Martinez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                Tipo_documento.DNI,
+                new TipoTecnico("Tecnico de Heladeras"),
                 "123444",
                 "20-12345678-9",
                 new AreaCobertura(d6, 1500.0)
@@ -193,7 +192,7 @@ public class Initializer {
                 "Marcos",
                 "Gutierrez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                Tipo_documento.DNI,
+                new TipoTecnico("Tecnico de Heladeras"),
                 "4455512",
                 "20-4455512-9",
                 new AreaCobertura(d7, 1500.0)
@@ -204,7 +203,7 @@ public class Initializer {
                 "Gastón",
                 "Fernandez",
                 new Contacto(new TipoContacto("Mail"), "juan.andreacchio@gmail.com"),
-                Tipo_documento.DNI,
+                new TipoTecnico("Tecnico de Heladeras"),
                 "2211223",
                 "20-2211223-9",
                 new AreaCobertura(d8, 300.0)
@@ -216,15 +215,32 @@ public class Initializer {
 
 
 
+/*
+        SensorTemperatura sensorTemp1 = new SensorTemperatura(h1.getId());
+        SensorTemperatura sensorTemp2 = new SensorTemperatura(h2.getId());
+        SensorTemperatura sensorTemp3 = new SensorTemperatura(h3.getId());
+        SensorTemperatura sensorTemp4 = new SensorTemperatura(h4.getId());
+        SensorTemperatura sensorTemp5 = new SensorTemperatura(h5.getId());
+
+        ReceptorTemperatura receptorTemp = ReceptorTemperatura.create(ServiceLocator.instanceOf(HeladerasRepository.class));
 
 
+        SensorDeMovimiento sensorMov1 = new SensorDeMovimiento(h1.getId());
+        SensorDeMovimiento sensorMov2 = new SensorDeMovimiento(h2.getId());
+        SensorDeMovimiento sensorMov3 = new SensorDeMovimiento(h3.getId());
+        SensorDeMovimiento sensorMov4 = new SensorDeMovimiento(h4.getId());
+        SensorDeMovimiento sensorMov5 = new SensorDeMovimiento(h5.getId());
+
+        ReceptorMovimiento receptorMov = ReceptorMovimiento.create(ServiceLocator.instanceOf(HeladerasRepository.class));
+
+ */
 
 
 
         // creacion de usuarios
 
 
-        Usuario u1 = new Usuario("usuario1", hash.hashPassword("admin") , List.of(TipoRol.ADMIN));
+        Usuario u1 = new Usuario("usuario1", hash.hashPassword("Pedritoclavounclavito123@") , List.of(TipoRol.ADMIN));
         Usuario u2 = new Usuario("usuario2", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
         Usuario u3 = new Usuario("usuario3", hash.hashPassword("prueba"), List.of(TipoRol.JURIDICA));
         Usuario u4 = new Usuario("usuario4", hash.hashPassword("prueba"), List.of(TipoRol.HUMANO));
@@ -252,6 +268,8 @@ public class Initializer {
         //creamos los tributos posibles
         Atributo nombre = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nombre").get();
         Atributo apellido = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Apellido").get();
+        Atributo tipoDocumento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Tipo Documento").get();
+        Atributo documento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Documento").get();
         Atributo nacimiento = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Nacimiento").get();
         Atributo mail = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Mail").get();
         Atributo direccion = ServiceLocator.instanceOf(AtributosHumanoRepository.class).buscarPorNombre("Direccion").get();
@@ -261,6 +279,8 @@ public class Initializer {
 
         AtributoHumanoRespondido nombre_respondido1 = new AtributoHumanoRespondido("Pedro", nombre);
         AtributoHumanoRespondido apellido_respondido1 = new AtributoHumanoRespondido("Perez", apellido);
+        AtributoHumanoRespondido tipoDocumento_respondido1 = new AtributoHumanoRespondido("DNI", tipoDocumento);
+        AtributoHumanoRespondido documento_respondido1 = new AtributoHumanoRespondido("12345678", documento);
         AtributoHumanoRespondido email_respondido1 = new AtributoHumanoRespondido("", mail);
         AtributoHumanoRespondido nacimiento_respondido1 = new AtributoHumanoRespondido("1990-01-01", nacimiento);
         AtributoHumanoRespondido direccion_respondido1 = new AtributoHumanoRespondido("", direccion);
@@ -269,15 +289,17 @@ public class Initializer {
         AtributoHumanoRespondido telegram_respondido1 = new AtributoHumanoRespondido("", telegram);
 
         List<AtributoHumanoRespondido> obligatorios = List.of(nombre_respondido1, apellido_respondido1,wss_respondido1);
-        List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1);
+        List<AtributoHumanoRespondido> opcionales = List.of(nacimiento_respondido1,email_respondido1,direccion_respondido1,provincia_respondido1 , telegram_respondido1, tipoDocumento_respondido1, documento_respondido1);
         // creacion de atributos colaboradores humanos
 
-        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales, u2, d1);
+        HumanoInputDTO inputDTO = new HumanoInputDTO(obligatorios, List.of("Mail","WhatsApp","Telegram"),opcionales,new ArrayList<>(), u2, d1);
 
         ColaboradorHumano c1 = ColaboradorHumano.create(inputDTO);
 
         AtributoHumanoRespondido nombre_respondido2 = new AtributoHumanoRespondido("Luquitas", nombre);
         AtributoHumanoRespondido apellido_respondido2 = new AtributoHumanoRespondido("Perez", apellido);
+        AtributoHumanoRespondido tipoDocumento_respondido2 = new AtributoHumanoRespondido("LE", tipoDocumento);
+        AtributoHumanoRespondido documento_respondido2 = new AtributoHumanoRespondido("55555", documento);
         AtributoHumanoRespondido email_respondido = new AtributoHumanoRespondido("facu@gmail.com", mail);
         AtributoHumanoRespondido nacimiento_respondido2 = new AtributoHumanoRespondido("1992-01-01", nacimiento);
         AtributoHumanoRespondido direccion_respondido = new AtributoHumanoRespondido("", direccion);
@@ -286,9 +308,9 @@ public class Initializer {
         AtributoHumanoRespondido telegram_respondido = new AtributoHumanoRespondido("", telegram);
 
         List<AtributoHumanoRespondido> obligatorios2 = List.of(nombre_respondido2, apellido_respondido2,email_respondido);
-        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido);
+        List<AtributoHumanoRespondido> opcionales2 = List.of(nacimiento_respondido2,wss_respondido,telegram_respondido,provincia_respondido,direccion_respondido,tipoDocumento_respondido2,documento_respondido2);
 
-        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2, u4, d2);
+        HumanoInputDTO inputDTO2 = new HumanoInputDTO(obligatorios2,List.of("Mail","WhatsApp","Telegram"), opcionales2,new ArrayList<>() , u4, d2);
 
         ColaboradorHumano c2 = ColaboradorHumano.create(inputDTO2);
 
@@ -296,9 +318,9 @@ public class Initializer {
 
 
 
-        TarjetaColaborador tarjetaColaborador1 = TarjetaColaborador.create(c1, true);
+        TarjetaColaborador tarjetaColaborador1 = TarjetaColaborador.create(100L, c1, true);
 
-        TarjetaColaborador tarjetaColaborador2 = TarjetaColaborador.create(c2, true);
+        TarjetaColaborador tarjetaColaborador2 = TarjetaColaborador.create(101L, c2, true);
 
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador1);
         tarjetasColaboradoresRepository.guardar(tarjetaColaborador2);
@@ -383,21 +405,6 @@ public class Initializer {
         incidente4.setFechaResuelto(LocalDateTime.now());
         incidentesRepository.guardar(incidente4);
 
-        // creacion de visitas
-        VisitaAHeladera visita1 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-        VisitaAHeladera visita2 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-        VisitaAHeladera visita3 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-        VisitaAHeladera visita4 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-        VisitaAHeladera visita5 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-        VisitaAHeladera visita6 = VisitaAHeladera.crear(incidente2,t3,LocalDateTime.now(),false,"");
-
-        visitas.guardar(visita1);
-        visitas.guardar(visita2);
-        visitas.guardar(visita3);
-        visitas.guardar(visita4);
-        visitas.guardar(visita5);
-        visitas.guardar(visita6);
-
         // creacion de rubros
 
         Rubro peluqueria = new Rubro("Peluqueria");
@@ -428,6 +435,7 @@ public class Initializer {
                         .canjesUsados(0)
                         .image("imagenes/caridad.jpg")
                         .build();
+        oferta1.setId(1L);
         oferta1.setPresente(true);
 
         Oferta oferta2 = Oferta.builder()
@@ -438,6 +446,7 @@ public class Initializer {
                 .canjesUsados(50)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta2.setId(2L);
         oferta2.setPresente(true);
 
         Oferta oferta3 = Oferta.builder()
@@ -448,6 +457,7 @@ public class Initializer {
                 .canjesUsados(25)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta3.setId(3L);
         oferta3.setPresente(true);
 
         Oferta oferta4 = Oferta.builder()
@@ -458,6 +468,7 @@ public class Initializer {
                 .canjesUsados(20)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta4.setId(4L);
         oferta4.setPresente(true);
 
         Oferta oferta5 = Oferta.builder()
@@ -468,6 +479,7 @@ public class Initializer {
                 .canjesUsados(100)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta5.setId(5L);
         oferta5.setPresente(true);
 
         Oferta oferta6 = Oferta.builder()
@@ -478,6 +490,7 @@ public class Initializer {
                 .canjesUsados(10)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta6.setId(6L);
         oferta6.setPresente(true);
 
         Oferta oferta7 = Oferta.builder()
@@ -488,6 +501,7 @@ public class Initializer {
                 .canjesUsados(5)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta7.setId(7L);
         oferta7.setPresente(true);
 
         Oferta oferta8 = Oferta.builder()
@@ -498,6 +512,7 @@ public class Initializer {
                 .canjesUsados(40)
                 .image("imagenes/caridad.jpg")
                 .build();
+        oferta8.setId(8L);
         oferta8.setPresente(false);
 
         ofertasRepository.guardar(oferta1);

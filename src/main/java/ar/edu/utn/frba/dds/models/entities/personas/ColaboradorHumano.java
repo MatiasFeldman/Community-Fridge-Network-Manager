@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.models.entities.personas;
 import ar.edu.utn.frba.dds.dtos.humanos.HumanoInputDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.persistencia.Persistente;
-import ar.edu.utn.frba.dds.models.entities.tecnicos.Tipo_documento;
 import ar.edu.utn.frba.dds.models.entities.ubicacion.Direccion;
 import ar.edu.utn.frba.dds.models.entities.usuarios.Usuario;
 import ar.edu.utn.frba.dds.exceptions.PuntosInsuficientesException;
@@ -30,21 +29,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "humano")
-@Cacheable(false)
 public class ColaboradorHumano extends Persistente {
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "duenio")
     private List<TarjetaColaborador> tarjetas;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_atributo_obligatorio")
     private List<AtributoHumanoRespondido> atributosObligatorios = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_atributo_opcional")
     private List<AtributoHumanoRespondido> atributosOpcionales = new ArrayList<>();
 
@@ -54,19 +52,15 @@ public class ColaboradorHumano extends Persistente {
     @Embedded
     private Direccion direccion;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_documento")
-    private Tipo_documento tipoDocumento;
-
-
-    @Column(name = "documento")
-    private String documento;
-
     @Column(name = "puntos_canjeados")
     private Double puntosCanjeados;
 
     @Column(name = "puntos_ganados")
     private Double puntosGanados;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_canje")
+    private List<Canjes> canjesRealizados = new ArrayList<>();
 
     public void agregarTarejta(TarjetaColaborador tarjeta) {
         tarjeta.setDuenio(this);
@@ -88,6 +82,7 @@ public class ColaboradorHumano extends Persistente {
                 .direccion(dto.getDireccion())
                 .puntosCanjeados(0.0)
                 .puntosGanados(0.0)
+                .canjesRealizados(dto.getCanjesRealizados())
                 .user(dto.getUser())
                 .tarjetas(new ArrayList<>())
                 .build();
@@ -124,6 +119,8 @@ public class ColaboradorHumano extends Persistente {
         if (oferta.getPuntosNecesarios() > this.calcularPuntaje()) {
             throw new PuntosInsuficientesException("No tiene los puntos necesarios para canjear la oferta");
         }
+        Canjes canje = new Canjes(oferta, LocalDate.now(), oferta.getPuntosNecesarios());
+        canjesRealizados.add(canje);
         this.puntosCanjeados += oferta.getPuntosNecesarios();
 
     }

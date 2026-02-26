@@ -1,80 +1,137 @@
-# java-base-project
+# Community Fridge Network Manager
 
-Esta es una plantilla de proyecto diseñada para: 
+Sistema de gestión de heladeras comunitarias desarrollado para una ONG que busca combatir el hambre y reducir el desperdicio de alimentos. La plataforma conecta colaboradores, personas en situación de vulnerabilidad alimentaria y técnicos de mantenimiento en torno a una red de heladeras solidarias distribuidas geográficamente.
 
-* Java 17. :warning: Si bien el proyecto no lo limita explícitamente, el comando `mvn verify` no funcionará con versiones más antiguas de Java. 
-* JUnit 5. :warning: La versión 5 de JUnit es la más nueva del framework y presenta algunas diferencias respecto a la versión "clásica" (JUnit 4). Para mayores detalles, ver: 
-  *  [Apunte de herramientas](https://docs.google.com/document/d/1VYBey56M0UU6C0689hAClAvF9ILE6E7nKIuOqrRJnWQ/edit#heading=h.dnwhvummp994)
-  *  [Entrada de Blog (en inglés)](https://www.baeldung.com/junit-5-migration) 
-  *  [Entrada de Blog (en español)](https://www.paradigmadigital.com/dev/nos-espera-junit-5/)
-* Maven 3.8.1 o superior
+> Trabajo Práctico Anual — Diseño de Sistemas (K3053) — UTN FRBA — 2024
 
-## Ejecutar tests
+---
+
+## Descripción del Proyecto
+
+La aplicación permite a una organización sin fines de lucro gestionar una red de heladeras comunitarias donde colaboradores pueden donar viandas, dinero o productos, y personas en situación vulnerable pueden retirar alimentos mediante tarjetas de acceso. El sistema monitorea en tiempo real el estado de las heladeras (temperatura, cantidad de viandas, incidentes) mediante sensores IoT conectados por MQTT, y coordina técnicos para la resolución de fallas.
+
+### Funcionalidades principales
+
+- **Gestión de colaboradores**: registro de personas humanas y jurídicas con distintas formas de colaboración (donación de viandas, dinero, distribución de viandas, hacerse cargo de heladeras, ofrecer productos/servicios canjeables por puntos)
+- **Red de heladeras**: alta, baja y modificación de heladeras con geolocalización en mapa interactivo, monitoreo de temperatura y capacidad
+- **Sensores IoT / MQTT**: recepción de datos de temperatura y solicitudes de apertura vía broker MQTT (Eclipse Paho)
+- **Tarjetas de acceso**: sistema de tarjetas para personas vulnerables que habilitan el retiro de viandas con límite diario
+- **Sistema de suscripciones**: alertas configurables por heladera (pocas viandas, muchas viandas, desperfecto) con notificación multicanal
+- **Notificaciones multicanal**: email (JavaMail), WhatsApp (Twilio), Telegram Bot API
+- **Reportes automáticos**: generación periódica de reportes en PDF (iTextPDF) sobre fallas, viandas donadas y movimientos por heladera, con ejecución programada vía Quartz Scheduler
+- **Carga masiva de colaboradores**: importación desde archivos CSV (OpenCSV)
+- **Recomendación de puntos de donación**: integración con API de georreferenciación (GeoRef Argentina / GeoRef CABA) para sugerir ubicaciones óptimas
+- **Canje de puntos**: marketplace de productos y servicios ofrecidos por colaboradores, canjeables por puntos acumulados
+- **Gestión de incidentes**: reporte de fallas técnicas y alertas automáticas por temperatura, con asignación de técnicos por cercanía
+- **Sistema de usuarios con roles y permisos**: autenticación, autorización y SSO (Auth0)
+- **Visitas técnicas**: registro de visitas a heladeras con evidencia fotográfica
+
+## Stack Tecnológico
+
+| Capa | Tecnología |
+|------|-----------|
+| Lenguaje | Java 17 |
+| Build Tool | Maven 3.8+ |
+| Web Framework | Javalin 6.3 |
+| Template Engine | Handlebars (jknack) |
+| ORM / Persistencia | JPA + Hibernate (jpa-extras) |
+| Base de Datos | MySQL 8 |
+| Mensajería IoT | MQTT (Eclipse Paho) |
+| HTTP Client | Retrofit 2 + Gson |
+| Notificaciones | JavaMail, Twilio (WhatsApp), Telegram Bot API |
+| Reportes PDF | iTextPDF 5 |
+| Scheduling | Quartz Scheduler |
+| CSV Parsing | OpenCSV |
+| Utilidades | Lombok, Jackson, dotenv-java |
+| Testing | JUnit 5, Mockito, HSQLDB (in-memory) |
+| Code Quality | Checkstyle (Google), SpotBugs, JaCoCo (60% cobertura) |
+| Autenticación | Auth0 SSO (PoC con Spring Security) |
+
+## Arquitectura
+
+El proyecto sigue una arquitectura **MVC** con las siguientes capas:
 
 ```
+src/main/java/ar/edu/utn/frba/dds/
+├── controllers/        # Controladores HTTP (Javalin handlers)
+├── dtos/               # Data Transfer Objects por dominio
+├── exceptions/         # Excepciones de negocio organizadas por módulo
+├── main/               # Entry points (App, CronTask_Reportes)
+├── middlewares/         # Auth middleware y middlewares de la app
+├── models/
+│   ├── entities/       # Entidades de dominio JPA
+│   │   ├── colaboraciones/    # Donaciones, distribuciones, canjes, carga masiva
+│   │   ├── heladeras_y_viandas/  # Heladeras, viandas, sensores, incidentes
+│   │   ├── personas/          # Colaboradores humanos y jurídicos
+│   │   ├── suscripciones/     # Suscripciones y tipos de alerta
+│   │   ├── tecnicos/          # Técnicos y visitas a heladeras
+│   │   ├── usuarios/          # Usuarios, roles y permisos
+│   │   ├── reportes/          # Generación de reportes
+│   │   └── helpers/           # Mensajería, geolocalización, JSON, etc.
+│   ├── repositories/   # Repositorios con patrón DAO
+│   └── factories/      # Factories para creación de entidades
+├── server/             # Configuración de servidor, router y handlers de error
+├── services/           # Servicios externos (GeoRef, MQTT, API integraciones)
+├── converter/          # Converters JPA para enums
+└── utils/              # Seguridad de contraseñas, permisos, utilidades
+```
+
+**Frontend**: templates Handlebars (.hbs) con CSS y JavaScript vanilla, incluyendo mapas interactivos para geolocalización de heladeras.
+
+## Requisitos
+
+- **Java**: JDK 17+
+- **Maven**: 3.8.1+
+- **MySQL**: 8.0+
+- **Broker MQTT**: para comunicación con sensores de heladeras
+
+## Instalación y Ejecución
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/mfeldacc/Community-Fridge-Network-Manager.git
+cd Community-Fridge-Network-Manager
+
+# Configurar variables de entorno
+# Crear archivo .env o editar config.properties con credenciales de:
+#   - Base de datos MySQL
+#   - Twilio (WhatsApp)
+#   - Telegram Bot Token
+#   - API Keys de georreferenciación
+#   - Auth0 (SSO)
+
+# Compilar y ejecutar tests
+mvn clean verify
+
+# Ejecutar la aplicación
+mvn exec:java -Dexec.mainClass="ar.edu.utn.frba.dds.server.App"
+```
+
+## Testing
+
+```bash
+# Ejecutar tests unitarios
 mvn test
-```
 
-## Validar el proyecto de forma exahustiva
-
-```
+# Validación exhaustiva (tests + checkstyle + spotbugs + cobertura)
 mvn clean verify
 ```
 
-Este comando hará lo siguiente:
+Los tests utilizan **HSQLDB** como base de datos in-memory y **Mockito** para mocking de servicios externos.
 
- 1. Ejecutará los tests
- 2. Validará las convenciones de formato mediante checkstyle
- 3. Detectará la presencia de (ciertos) code smells
- 4. Validará la cobertura del proyecto
+## Documentación
 
-## Entrega del proyecto
+La carpeta `docs/` contiene:
 
-Para entregar el proyecto, crear un tag llamado `entrega-final`. Es importante que antes de realizarlo se corra la validación
-explicada en el punto anterior. Se recomienda hacerlo de la siguiente forma:
+- Diagramas de clases (StarUML `.mdj`)
+- Diagrama de casos de uso
+- Investigación de APIs de integración
+- Justificación de decisiones de diseño
 
-```
-mvn clean verify && git tag entrega-final && git push origin HEAD --tags
-```
+## Equipo
 
-## Configuración del IDE (IntelliJ)
+Grupo 21 — Cursada 2024, turno mañana
 
-### Usar el SDK de Java 17
+---
 
-1. En **File/Project Structure...**, ir a **Project Settings | Project**
-2. En **Project SDK** seleccionar la versión 17 y en **Project language level** seleccionar `17 - Sealed types, always-strict floating-point semantics`
-
-![image](https://user-images.githubusercontent.com/39303639/228126065-221b9851-fb96-4f7f-a8e1-010732dc7ef6.png)
-
-### Usar fin de linea unix
-1. En **File/Settings...**, ir a **Editor | Code Style**.
-2. En la lista **Line separator**, seleccionar `Unix and OS X (\n)`.
-
-![image](https://user-images.githubusercontent.com/39303639/228126546-352289fa-8feb-4b39-99db-d8b860915fea.png)
-
-### Tabular con dos espacios
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Tabs and Indents**.
-2. Cambiar **Tab size**, **Indent** y **Continuation indent** a 2, 2 y 4 respectivamente:
-
-![image](https://user-images.githubusercontent.com/39303639/228127009-8c84ea72-969b-4e05-b311-45e3688a4164.png)
-
-### Ordenar los imports
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Imports**.
-2. Cambiar **Class count to use import with '*'** y **Names count to use static import with '*'** a un número muy alto (ej: 99).
-3. En **Import Layout**, dejarlo como se muestra a continuación:
-    - `import static all other imports`
-    - `<blank line>`
-    - `import all other imports`
-
-![image](https://user-images.githubusercontent.com/39303639/228126787-36f9ecff-27f2-4b99-bf11-a6bd89f67087.png)
-
-### Instalar y configurar Checkstyle
-
-1. Instalar el plugin https://plugins.jetbrains.com/plugin/1065-checkstyle-idea:
-2. En **File/Settings...**, ir a **Tools | Checkstyle**.
-3. Configurarlo activando los Checks de Google y la versión de Checkstyle `== 9.0.1`:
-
-![image](https://github.com/dds-utn/java-base-project/assets/11719816/b1edc122-4675-4f8d-bffc-9e3d3366fac6)
-
+*Proyecto académico desarrollado como Trabajo Práctico Anual para la materia Diseño de Sistemas (K3053) de la Universidad Tecnológica Nacional — Facultad Regional Buenos Aires.*
